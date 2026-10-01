@@ -1,25 +1,32 @@
 # BAEV OS — CMS / CRM / Case System
 
 ## What this is
-BAEV OS is the operating layer behind the BAEV site: Payload 3 for content and CRM, Neon Postgres for data, Vercel Blob for media, and a custom admin UI designed around the actual BAEV workflow.
+BAEV OS is the operating layer behind the BAEV site. Payload 3 is the backend kernel for data, access, drafts and APIs; it is intentionally not the primary product UI. The team works in **BAEV Studio** at `/studio`: a separate visual workspace for content, media and CRM built around BAEV workflows. Neon Postgres stores production data and Vercel Blob stores media.
+
+## Interface boundary
+- `/studio` — primary workspace for the team. This is the product interface.
+- `/admin` — Payload's technical interface. Keep it as an emergency / developer fallback, not as the normal workflow.
+- Studio owns navigation, visual language, motion, role-aware workflows and task-oriented screens.
+- Payload owns collections, validation, access control, versions, storage and APIs.
+- UI direction: restrained SmoothUI-like density, Spectrum-style work patterns where useful (notably kanban), and short explanatory motion rather than decorative animation.
 
 ## Main workflows
 ### Content
-1. Open `/admin/new-case` for the guided wizard or `/admin/studio` to manage all cases.
-2. Enter title, client, year and optional categories.
-3. Choose Editorial, Immersive, Proof or Minimal.
-4. Build the story in Case Builder using scenes. Use `⌘K` / `Ctrl+K` anywhere in admin for quick navigation.
-5. Use the readiness checklist and live preview.
-6. Move workflow status from `В работе` → `На проверке` → `Готов к публикации`.
-7. Publish with Payload drafts/versions.
+1. Open `/studio/cases`; create a case from a template or start blank.
+2. Enter title, client, year and categories in the guided flow.
+3. Open the visual Case Builder at `/studio/cases/[id]`.
+4. Reorder scenes by drag-and-drop, add one of 22 scene types, edit the selected scene in the inspector, and choose media from the Studio library.
+5. Check the embedded desktop/mobile preview without leaving the builder.
+6. Save drafts, inspect versions and publish through the Studio API layer; Payload drafts/versions remain the source of truth.
+7. Use `⌘K` / `Ctrl+K` anywhere in Studio for fast navigation and creation actions.
 
 ### CRM
-1. Public site form posts to `POST /api/leads/submit`.
+1. Public site form posts to `POST /api/leads/submit`; leads can also be created manually in `/studio/crm`.
 2. A new lead automatically gets a follow-up activity.
-3. Qualify service, budget, owner and next action.
+3. Qualify service, budget, owner and next action in the Studio CRM workspace.
 4. Use `→ В сделку` to create/link company + deal + task.
-5. Move deals through the Pipeline kanban.
-6. Complete activities directly from CRM Home or Dashboard.
+5. Use `/studio/pipeline` for the full drag-and-drop deal board with value, probability and next-action context.
+6. Complete activities directly in Studio; Payload remains the persistence/access layer behind these screens.
 
 ## Collections
 - `projects` — real BAEV case studies only.
