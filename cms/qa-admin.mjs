@@ -21,6 +21,14 @@ await page.waitForTimeout(2500)
 
 await page.screenshot({ path: '/tmp/baev-admin-dashboard.png', fullPage: true })
 
+await page.goto('http://localhost:3001/admin/studio', { waitUntil: 'networkidle', timeout: 30000 })
+await page.waitForTimeout(1000)
+await page.screenshot({ path: '/tmp/baev-admin-studio.png', fullPage: true })
+await page.keyboard.press('Meta+K')
+await page.waitForTimeout(300)
+await page.screenshot({ path: '/tmp/baev-admin-command.png', fullPage: false })
+await page.keyboard.press('Escape')
+
 await page.goto('http://localhost:3001/admin/case-system', { waitUntil: 'networkidle', timeout: 30000 })
 await page.waitForTimeout(1200)
 await page.screenshot({ path: '/tmp/baev-admin-case-system.png', fullPage: true })

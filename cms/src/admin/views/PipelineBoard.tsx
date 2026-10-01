@@ -69,9 +69,11 @@ export default function PipelineBoard({ initialDeals }: { initialDeals: Deal[] }
             <div className="baev-kanban__cards">
               {stageDeals.map((deal) => {
                 const company = typeof deal.company === 'object' && deal.company ? deal.company.name : ''
+                const nextAction = deal.nextActionAt ? new Date(deal.nextActionAt) : null
+                const overdue = Boolean(nextAction && nextAction.getTime() < Date.now())
                 return (
                   <a
-                    className={`baev-deal-card ${saving === deal.id ? 'is-saving' : ''}`}
+                    className={['baev-deal-card', saving === deal.id ? 'is-saving' : '', overdue ? 'is-overdue' : ''].filter(Boolean).join(' ')}
                     draggable
                     href={`/admin/collections/deals/${deal.id}`}
                     key={deal.id}
@@ -83,6 +85,9 @@ export default function PipelineBoard({ initialDeals }: { initialDeals: Deal[] }
                       <b>{deal.value ? new Intl.NumberFormat('ru-RU').format(deal.value) : '—'} {deal.currency || ''}</b>
                       <i>↗</i>
                     </div>
+                    <small className="baev-deal-card__next">
+                      {nextAction ? (overdue ? 'Просрочено · ' : 'Следующий шаг · ') + nextAction.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit' }) : 'Следующий шаг не назначен'}
+                    </small>
                   </a>
                 )
               })}

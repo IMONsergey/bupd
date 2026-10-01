@@ -26,6 +26,9 @@ export async function POST(request: Request) {
   const client = typeof body.client === 'string' ? body.client.trim().slice(0, 180) : ''
   const year = Number(body.year) || new Date().getFullYear()
   const templateSlug = typeof body.template === 'string' ? body.template : 'blank'
+  const categories = Array.isArray(body.categories)
+    ? body.categories.map((item) => String(item).trim().slice(0, 80)).filter(Boolean).slice(0, 6)
+    : []
 
   if (!title) return Response.json({ error: 'title_required' }, { status: 400 })
 
@@ -79,6 +82,7 @@ export async function POST(request: Request) {
       kind: 'project',
       client: client || undefined,
       year,
+      categories: categories.map((label) => ({ label })),
       workflowStatus: 'draft',
       owner: user?.id || undefined,
       pageTheme,

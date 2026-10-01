@@ -63,8 +63,17 @@ export default function HelpView({ user }: AdminViewServerProps) {
         </section>
       )}
 
+      <section className="baev-guide">
+        <div className="baev-guide__title"><span>03</span><h2>Быстрая навигация</h2></div>
+        <div className="baev-guide__rules">
+          <p><b>⌘K — перейти куда угодно</b><span>Открывает быстрый поиск по главным разделам BAEV OS. На Windows используйте Ctrl+K.</span></p>
+          <p><b>Case Studio — все кейсы</b><span>Поиск, фильтрация по этапу, preview и дублирование собраны на одном экране.</span></p>
+          <p><b>Live preview — до публикации</b><span>Проверяйте 1440, 1200, tablet и mobile прямо во время редактирования.</span></p>
+        </div>
+      </section>
+
       <section className="baev-guide baev-guide--rules">
-        <div className="baev-guide__title"><span>03</span><h2>Три правила системы</h2></div>
+        <div className="baev-guide__title"><span>04</span><h2>Три правила системы</h2></div>
         <div className="baev-guide__rules">
           <p><b>Не собирайте кейс из одинаковых блоков.</b><span>Меняйте ритм: текст → крупное медиа → доказательство → интерактив → пауза.</span></p>
           <p><b>Не публикуйте «архив проекта».</b><span>Кейс должен объяснять решение, а не просто показывать всё, что было сделано.</span></p>

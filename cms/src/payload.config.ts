@@ -68,6 +68,7 @@ export default buildConfig({
     },
     components: {
       beforeNavLinks: ['./admin/NavShortcuts#default'],
+      afterNavLinks: ['./admin/CommandPalette#default'],
       graphics: {
         Logo: './admin/Logo#default',
         Icon: './admin/Icon#default',
@@ -76,6 +77,10 @@ export default buildConfig({
         newCase: {
           Component: './admin/views/NewCaseView#default',
           path: '/new-case',
+        },
+        studio: {
+          Component: './admin/views/StudioView#default',
+          path: '/studio',
         },
         caseSystem: {
           Component: './admin/views/CaseSystemView#default',

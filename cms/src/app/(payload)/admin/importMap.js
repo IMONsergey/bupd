@@ -27,9 +27,11 @@ import { default as default_7ad5883402e00a557abc34aadc436891 } from '../../../ad
 import { default as default_16c8d24ffbb550bcf78e64aa53f06b50 } from '../../../admin/LeadConvertButton'
 import { default as default_7e1406d132d06bb47e8d4bd64a0af233 } from '../../../admin/Icon'
 import { default as default_492b677cbf2ef90809ce2cae10aacc1c } from '../../../admin/Logo'
+import { default as default_301de105775360dcfe3067c3a90f6eee } from '../../../admin/CommandPalette'
 import { default as default_ccce60d76220deb278fbb28bfd09cbec } from '../../../admin/NavShortcuts'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { default as default_746c34a72c58f28229fe210e2380d67d } from '../../../admin/views/NewCaseView'
+import { default as default_94073834a90fcdad5ffda63c6cad2cb5 } from '../../../admin/views/StudioView'
 import { default as default_df4204625a4f16f81c2140175e3c9d26 } from '../../../admin/views/CaseSystemView'
 import { default as default_94b7abba9f3143ddeb4611efb163a53b } from '../../../admin/views/PipelineView'
 import { default as default_30f69c81e741c8376124342dbb0ba88e } from '../../../admin/views/CRMHomeView'
@@ -75,9 +77,11 @@ export const importMap = {
   "./admin/LeadConvertButton#default": default_16c8d24ffbb550bcf78e64aa53f06b50,
   "./admin/Icon#default": default_7e1406d132d06bb47e8d4bd64a0af233,
   "./admin/Logo#default": default_492b677cbf2ef90809ce2cae10aacc1c,
+  "./admin/CommandPalette#default": default_301de105775360dcfe3067c3a90f6eee,
   "./admin/NavShortcuts#default": default_ccce60d76220deb278fbb28bfd09cbec,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "./admin/views/NewCaseView#default": default_746c34a72c58f28229fe210e2380d67d,
+  "./admin/views/StudioView#default": default_94073834a90fcdad5ffda63c6cad2cb5,
   "./admin/views/CaseSystemView#default": default_df4204625a4f16f81c2140175e3c9d26,
   "./admin/views/PipelineView#default": default_94b7abba9f3143ddeb4611efb163a53b,
   "./admin/views/CRMHomeView#default": default_30f69c81e741c8376124342dbb0ba88e,
