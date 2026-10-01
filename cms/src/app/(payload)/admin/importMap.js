@@ -1,3 +1,4 @@
+import { default as default_1cf5c3a673a0f67175dd2361954acb22 } from '../../../admin/ProjectReadiness'
 import { default as default_bc4ff08772e7656e53791ccf6086616c } from '../../../admin/BlockLabel'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -28,12 +29,15 @@ import { default as default_7e1406d132d06bb47e8d4bd64a0af233 } from '../../../ad
 import { default as default_492b677cbf2ef90809ce2cae10aacc1c } from '../../../admin/Logo'
 import { default as default_ccce60d76220deb278fbb28bfd09cbec } from '../../../admin/NavShortcuts'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
+import { default as default_746c34a72c58f28229fe210e2380d67d } from '../../../admin/views/NewCaseView'
 import { default as default_df4204625a4f16f81c2140175e3c9d26 } from '../../../admin/views/CaseSystemView'
 import { default as default_94b7abba9f3143ddeb4611efb163a53b } from '../../../admin/views/PipelineView'
 import { default as default_30f69c81e741c8376124342dbb0ba88e } from '../../../admin/views/CRMHomeView'
+import { default as default_c8a96282a5f41fba0d18789661970853 } from '../../../admin/views/HelpView'
 import { default as default_0ac0efe759d5f71038d59b8c07804815 } from '../../../admin/widgets/OverviewWidget'
 import { default as default_f46d7ec406858b7d007a4a92ac0968f3 } from '../../../admin/widgets/QuickActionsWidget'
 import { default as default_4252b7c384275953538303aaa3e44d78 } from '../../../admin/widgets/RecentProjectsWidget'
+import { default as default_d2edc024575fee8c59ce4a04c2ab939f } from '../../../admin/widgets/ReviewQueueWidget'
 import { default as default_76629895a38ff50fd104ab98676364fd } from '../../../admin/widgets/PipelineWidget'
 import { default as default_8bc9f0c6c8e74c2b25daecdbc0b339a5 } from '../../../admin/widgets/LeadInboxWidget'
 import { default as default_f4bedd7ca602a9f7aa9f3d34de5cb044 } from '../../../admin/widgets/ActivitiesWidget'
@@ -42,6 +46,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  "./admin/ProjectReadiness#default": default_1cf5c3a673a0f67175dd2361954acb22,
   "./admin/BlockLabel#default": default_bc4ff08772e7656e53791ccf6086616c,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -72,12 +77,15 @@ export const importMap = {
   "./admin/Logo#default": default_492b677cbf2ef90809ce2cae10aacc1c,
   "./admin/NavShortcuts#default": default_ccce60d76220deb278fbb28bfd09cbec,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
+  "./admin/views/NewCaseView#default": default_746c34a72c58f28229fe210e2380d67d,
   "./admin/views/CaseSystemView#default": default_df4204625a4f16f81c2140175e3c9d26,
   "./admin/views/PipelineView#default": default_94b7abba9f3143ddeb4611efb163a53b,
   "./admin/views/CRMHomeView#default": default_30f69c81e741c8376124342dbb0ba88e,
+  "./admin/views/HelpView#default": default_c8a96282a5f41fba0d18789661970853,
   "./admin/widgets/OverviewWidget#default": default_0ac0efe759d5f71038d59b8c07804815,
   "./admin/widgets/QuickActionsWidget#default": default_f46d7ec406858b7d007a4a92ac0968f3,
   "./admin/widgets/RecentProjectsWidget#default": default_4252b7c384275953538303aaa3e44d78,
+  "./admin/widgets/ReviewQueueWidget#default": default_d2edc024575fee8c59ce4a04c2ab939f,
   "./admin/widgets/PipelineWidget#default": default_76629895a38ff50fd104ab98676364fd,
   "./admin/widgets/LeadInboxWidget#default": default_8bc9f0c6c8e74c2b25daecdbc0b339a5,
   "./admin/widgets/ActivitiesWidget#default": default_f4bedd7ca602a9f7aa9f3d34de5cb044,

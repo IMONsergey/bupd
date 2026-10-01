@@ -220,7 +220,8 @@ const ensureTemplates = async () => {
   const templates = [
     {
       slug: '_template-editorial',
-      title: 'Template — Editorial',
+      title: 'Editorial',
+      description: 'Универсальный редакционный кейс: спокойно, структурно, с сильной типографикой.',
       blocks: [
         { blockType: 'caseHero', title: 'Название кейса', layout: 'editorial', theme: 'dark' },
         { blockType: 'manifesto', text: 'Ключевая мысль проекта', size: 'xl', align: 'left', theme: 'dark' },
@@ -232,7 +233,8 @@ const ensureTemplates = async () => {
     },
     {
       slug: '_template-immersive',
-      title: 'Template — Immersive',
+      title: 'Immersive',
+      description: 'Погружающий кейс для сильного визуального материала и интерактивных сцен.',
       blocks: [
         { blockType: 'caseHero', title: 'Название кейса', layout: 'fullscreen', theme: 'dark' },
         { blockType: 'typographyTakeover', text: 'Большая идея', mode: 'center', align: 'left', theme: 'dark' },
@@ -244,7 +246,8 @@ const ensureTemplates = async () => {
     },
     {
       slug: '_template-proof',
-      title: 'Template — Proof',
+      title: 'Proof',
+      description: 'Кейс вокруг результата: было / стало, процесс, цифры и доказательства.',
       blocks: [
         { blockType: 'caseHero', title: 'Название кейса', layout: 'editorial', theme: 'dark' },
         { blockType: 'manifesto', text: 'Задача и ставка проекта', size: 'l', align: 'left', theme: 'dark' },
@@ -257,17 +260,16 @@ const ensureTemplates = async () => {
   ]
 
   for (const template of templates) {
-    const existing = await findOne('projects', { slug: { equals: template.slug } })
+    const existing = await findOne('case-templates', { slug: { equals: template.slug } })
     if (!existing) {
       await payload.create({
-        collection: 'projects',
+        collection: 'case-templates',
         overrideAccess: true,
         draft: true,
         data: {
           ...template,
-          kind: 'template',
           pageTheme: 'dark',
-          summary: 'Системный шаблон BAEV. Дублируйте и заменяйте содержание.',
+          accent: '#ffffff',
         } as any,
       })
     }

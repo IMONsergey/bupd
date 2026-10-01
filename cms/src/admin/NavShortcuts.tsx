@@ -3,11 +3,13 @@ import React from 'react'
 
 const links = [
   { href: '/admin', label: 'Обзор', mark: '01', roles: ['admin', 'editor', 'sales'] },
+  { href: '/admin/new-case', label: 'Новый кейс', mark: '+', roles: ['admin', 'editor'] },
   { href: '/admin/case-system', label: 'Case system', mark: '22', roles: ['admin', 'editor'] },
   { href: '/admin/collections/projects', label: 'Кейсы', mark: '↗', roles: ['admin', 'editor'] },
   { href: '/admin/crm', label: 'CRM home', mark: '02', roles: ['admin', 'sales'] },
   { href: '/admin/pipeline', label: 'Pipeline', mark: '→', roles: ['admin', 'sales'] },
   { href: '/admin/collections/activities', label: 'Задачи', mark: '✓', roles: ['admin', 'sales'] },
+  { href: '/admin/help', label: 'Как работать', mark: '?', roles: ['admin', 'editor', 'sales'] },
 ]
 
 export default function NavShortcuts({ user }: ServerProps) {

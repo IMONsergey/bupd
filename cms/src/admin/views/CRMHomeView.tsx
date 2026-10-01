@@ -1,5 +1,6 @@
 import type { AdminViewServerProps } from 'payload'
 import React from 'react'
+import TaskDoneButton from '../TaskDoneButton'
 
 const money = (value: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value)
 
@@ -63,11 +64,15 @@ export default async function CRMHomeView({ payload, user }: AdminViewServerProp
               const due = activity.dueAt ? new Date(activity.dueAt) : null
               const isOverdue = Boolean(due && due.getTime() < now.getTime())
               return (
-                <a className={['baev-task-row', isOverdue ? 'is-overdue' : ''].filter(Boolean).join(' ')} href={'/admin/collections/activities/' + activity.id} key={activity.id}>
-                  <span>{activity.type}</span><strong>{activity.title}</strong><i>{typeof activity.deal === 'object' && activity.deal ? activity.deal.title : '—'}</i><time>{due ? due.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit' }) : '—'}</time>
-                </a>
+                <div className="baev-task-entry" data-activity-id={activity.id} key={activity.id}>
+                  <a className={['baev-task-row', isOverdue ? 'is-overdue' : ''].filter(Boolean).join(' ')} href={'/admin/collections/activities/' + activity.id}>
+                    <span>{activity.type}</span><strong>{activity.title}</strong><i>{typeof activity.deal === 'object' && activity.deal ? activity.deal.title : '—'}</i><time>{due ? due.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit' }) : '—'}</time>
+                  </a>
+                  <TaskDoneButton id={activity.id} />
+                </div>
               )
             })}
+            {!activities.docs.length && <div className="baev-empty">Нет ближайших действий</div>}
           </div>
         </section>
       </div>

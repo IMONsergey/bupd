@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     projects: Project;
+    'case-templates': CaseTemplate;
     media: Media;
     leads: Lead;
     companies: Company;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'case-templates': CaseTemplatesSelect<false> | CaseTemplatesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     companies: CompaniesSelect<false> | CompaniesSelect<true>;
@@ -110,6 +112,7 @@ export interface Config {
     overview: OverviewWidget;
     'quick-actions': QuickActionsWidget;
     'recent-projects': RecentProjectsWidget;
+    'review-queue': ReviewQueueWidget;
     pipeline: PipelineWidget;
     'lead-inbox': LeadInboxWidget;
     activities: ActivitiesWidget;
@@ -154,8 +157,11 @@ export interface UserAuthOperations {
  */
 export interface Project {
   id: number;
+  workflowStatus?: ('draft' | 'review' | 'ready' | 'paused') | null;
+  owner?: (number | null) | User;
+  deadline?: string | null;
   title: string;
-  kind: 'project' | 'template';
+  kind: 'project';
   /**
    * Создаётся из названия автоматически, можно изменить вручную.
    */
@@ -494,6 +500,34 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  role: 'admin' | 'editor' | 'sales';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -558,6 +592,325 @@ export interface Media {
   };
 }
 /**
+ * Системные стартовые композиции для мастера создания кейса.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-templates".
+ */
+export interface CaseTemplate {
+  id: number;
+  title: string;
+  slug: string;
+  description?: string | null;
+  pageTheme?: ('dark' | 'light') | null;
+  accent?: string | null;
+  /**
+   * Этот порядок и содержимое копируются в новый кейс.
+   */
+  blocks: (
+    | {
+        eyebrow?: string | null;
+        title: string;
+        dek?: string | null;
+        media: number | Media;
+        layout?: ('editorial' | 'media-first' | 'fullscreen') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'caseHero';
+      }
+    | {
+        kicker?: string | null;
+        text: string;
+        size?: ('m' | 'l' | 'xl' | 'display') | null;
+        align?: ('left' | 'center' | 'right') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'manifesto';
+      }
+    | {
+        media: number | Media;
+        caption?: string | null;
+        height?: ('auto' | '70vh' | 'screen' | '120vh') | null;
+        fit?: ('cover' | 'contain') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'fullBleedMedia';
+      }
+    | {
+        left: number | Media;
+        right: number | Media;
+        ratio?: ('1-1' | '1-2' | '2-1') | null;
+        gap?: ('none' | 'xs' | 's' | 'm') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'splitMedia';
+      }
+    | {
+        items?:
+          | {
+              media: number | Media;
+              caption?: string | null;
+              span?: ('1' | '2') | null;
+              id?: string | null;
+            }[]
+          | null;
+        layout?: ('editorial' | 'grid' | 'rail' | 'staggered') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaMosaic';
+      }
+    | {
+        chapter?: string | null;
+        title: string;
+        body: string;
+        frames?:
+          | {
+              media: number | Media;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        pin?: ('copy' | 'media') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'stickyStory';
+      }
+    | {
+        items?:
+          | {
+              value: string;
+              label: string;
+              note?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        style?: ('rail' | 'cards' | 'oversized') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'metrics';
+      }
+    | {
+        before: number | Media;
+        after: number | Media;
+        beforeLabel?: string | null;
+        afterLabel?: string | null;
+        mode?: ('drag' | 'toggle' | 'split') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'beforeAfter';
+      }
+    | {
+        text: string;
+        author?: string | null;
+        role?: string | null;
+        size?: ('l' | 'xl' | 'display') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'quote';
+      }
+    | {
+        title?: string | null;
+        steps?:
+          | {
+              number?: string | null;
+              title: string;
+              body?: string | null;
+              media?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('timeline' | 'accordion' | 'sticky') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'process';
+      }
+    | {
+        items?:
+          | {
+              media: number | Media;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('drag' | 'cursor' | 'stack' | 'filmstrip') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'gallery';
+      }
+    | {
+        media: number | Media;
+        device?: ('none' | 'browser' | 'phone' | 'screen' | 'print') | null;
+        caption?: string | null;
+        float?: boolean | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'deviceShowcase';
+      }
+    | {
+        title?: string | null;
+        items?:
+          | {
+              role: string;
+              name: string;
+              id?: string | null;
+            }[]
+          | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'credits';
+      }
+    | {
+        project: number | Project;
+        label?: string | null;
+        mode?: ('cover' | 'minimal') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'nextProject';
+      }
+    | {
+        title?: string | null;
+        scenes?:
+          | {
+              media: number | Media;
+              title?: string | null;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('snap' | 'scrub') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'horizontalStory';
+      }
+    | {
+        layers?:
+          | {
+              media: number | Media;
+              x?: number | null;
+              y?: number | null;
+              width?: number | null;
+              depth?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('stack' | 'parallax' | 'float') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'layeredMedia';
+      }
+    | {
+        kicker?: string | null;
+        text: string;
+        mode?: ('center' | 'edge' | 'marquee') | null;
+        accentWord?: string | null;
+        align?: ('left' | 'center' | 'right') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'typographyTakeover';
+      }
+    | {
+        video: number | Media;
+        poster?: (number | null) | Media;
+        title?: string | null;
+        caption?: string | null;
+        mode?: ('inline' | 'full' | 'sticky') | null;
+        autoplay?: boolean | null;
+        loop?: boolean | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'videoChapter';
+      }
+    | {
+        title?: string | null;
+        items?:
+          | {
+              title: string;
+              value?: string | null;
+              body?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('columns' | 'table' | 'cards') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'comparison';
+      }
+    | {
+        items?:
+          | {
+              media: number | Media;
+              label?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('fan' | 'stack' | 'spread') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'artifactStack';
+      }
+    | {
+        eyebrow?: string | null;
+        title: string;
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        media: number | Media;
+        layout?: ('text-left' | 'text-right' | 'balanced') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'textMedia';
+      }
+    | {
+        title: string;
+        body?: string | null;
+        buttonLabel?: string | null;
+        buttonURL?: string | null;
+        media?: (number | null) | Media;
+        mode?: ('minimal' | 'statement' | 'media') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'cta';
+      }
+  )[];
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads".
  */
@@ -600,34 +953,6 @@ export interface Company {
   notes?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  role: 'admin' | 'editor' | 'sales';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -788,6 +1113,10 @@ export interface PayloadLockedDocument {
         value: number | Project;
       } | null)
     | ({
+        relationTo: 'case-templates';
+        value: number | CaseTemplate;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -858,6 +1187,9 @@ export interface PayloadMigration {
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
+  workflowStatus?: T;
+  owner?: T;
+  deadline?: T;
   title?: T;
   kind?: T;
   slug?: T;
@@ -1196,6 +1528,329 @@ export interface ProjectsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-templates_select".
+ */
+export interface CaseTemplatesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  pageTheme?: T;
+  accent?: T;
+  blocks?:
+    | T
+    | {
+        caseHero?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              dek?: T;
+              media?: T;
+              layout?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        manifesto?:
+          | T
+          | {
+              kicker?: T;
+              text?: T;
+              size?: T;
+              align?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        fullBleedMedia?:
+          | T
+          | {
+              media?: T;
+              caption?: T;
+              height?: T;
+              fit?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        splitMedia?:
+          | T
+          | {
+              left?: T;
+              right?: T;
+              ratio?: T;
+              gap?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaMosaic?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    span?: T;
+                    id?: T;
+                  };
+              layout?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        stickyStory?:
+          | T
+          | {
+              chapter?: T;
+              title?: T;
+              body?: T;
+              frames?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              pin?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        metrics?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    note?: T;
+                    id?: T;
+                  };
+              style?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        beforeAfter?:
+          | T
+          | {
+              before?: T;
+              after?: T;
+              beforeLabel?: T;
+              afterLabel?: T;
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        quote?:
+          | T
+          | {
+              text?: T;
+              author?: T;
+              role?: T;
+              size?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        process?:
+          | T
+          | {
+              title?: T;
+              steps?:
+                | T
+                | {
+                    number?: T;
+                    title?: T;
+                    body?: T;
+                    media?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        deviceShowcase?:
+          | T
+          | {
+              media?: T;
+              device?: T;
+              caption?: T;
+              float?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        credits?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    role?: T;
+                    name?: T;
+                    id?: T;
+                  };
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        nextProject?:
+          | T
+          | {
+              project?: T;
+              label?: T;
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        horizontalStory?:
+          | T
+          | {
+              title?: T;
+              scenes?:
+                | T
+                | {
+                    media?: T;
+                    title?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        layeredMedia?:
+          | T
+          | {
+              layers?:
+                | T
+                | {
+                    media?: T;
+                    x?: T;
+                    y?: T;
+                    width?: T;
+                    depth?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        typographyTakeover?:
+          | T
+          | {
+              kicker?: T;
+              text?: T;
+              mode?: T;
+              accentWord?: T;
+              align?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        videoChapter?:
+          | T
+          | {
+              video?: T;
+              poster?: T;
+              title?: T;
+              caption?: T;
+              mode?: T;
+              autoplay?: T;
+              loop?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        comparison?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    value?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        artifactStack?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textMedia?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              body?: T;
+              media?: T;
+              layout?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              buttonLabel?: T;
+              buttonURL?: T;
+              media?: T;
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1505,6 +2160,16 @@ export interface QuickActionsWidget {
  * via the `definition` "recent-projects_widget".
  */
 export interface RecentProjectsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "review-queue_widget".
+ */
+export interface ReviewQueueWidget {
   data?: {
     [k: string]: unknown;
   };

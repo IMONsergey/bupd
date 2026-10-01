@@ -26,7 +26,7 @@ export default function CaseSystemView({ user }: AdminViewServerProps) {
         </div>
         <div className="baev-view-hero__side">
           <p>22 строительных блока. У каждого — ограниченный набор режимов, чтобы сохранять качество и не превращать сайт в универсальный конструктор.</p>
-          <a className="baev-button" href="/admin/collections/projects/create">Создать кейс ↗</a>
+          <a className="baev-button" href="/admin/new-case">Создать кейс ↗</a>
         </div>
       </header>
 

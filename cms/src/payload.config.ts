@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { Activities } from './collections/Activities'
+import { CaseTemplates } from './collections/CaseTemplates'
 import { Companies } from './collections/Companies'
 import { Deals } from './collections/Deals'
 import { Leads } from './collections/Leads'
@@ -15,19 +16,18 @@ import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
 import { Users } from './collections/Users'
 import { SiteSettings } from './globals/SiteSettings'
-import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const postgresURL = process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL
+const postgresURLRaw = process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL
+const postgresURL = postgresURLRaw?.replace(/([?&])sslmode=require\b/, '$1sslmode=verify-full')
 const db = postgresURL
   ? postgresAdapter({
       push: false,
       pool: {
         connectionString: postgresURL,
       },
-      prodMigrations: migrations,
     })
   : sqliteAdapter({
       client: {
@@ -73,6 +73,10 @@ export default buildConfig({
         Icon: './admin/Icon#default',
       },
       views: {
+        newCase: {
+          Component: './admin/views/NewCaseView#default',
+          path: '/new-case',
+        },
         caseSystem: {
           Component: './admin/views/CaseSystemView#default',
           path: '/case-system',
@@ -84,6 +88,10 @@ export default buildConfig({
         crm: {
           Component: './admin/views/CRMHomeView#default',
           path: '/crm',
+        },
+        help: {
+          Component: './admin/views/HelpView#default',
+          path: '/help',
         },
       },
     },
@@ -107,6 +115,13 @@ export default buildConfig({
           slug: 'recent-projects',
           label: 'Последние кейсы',
           Component: './admin/widgets/RecentProjectsWidget#default',
+          minWidth: 'medium',
+          maxWidth: 'large',
+        },
+        {
+          slug: 'review-queue',
+          label: 'Очередь проверки',
+          Component: './admin/widgets/ReviewQueueWidget#default',
           minWidth: 'medium',
           maxWidth: 'large',
         },
@@ -143,6 +158,7 @@ export default buildConfig({
         { widgetSlug: 'overview', width: 'full' },
         { widgetSlug: 'quick-actions', width: 'small' },
         { widgetSlug: 'recent-projects', width: 'large' },
+        { widgetSlug: 'review-queue', width: 'large' },
         { widgetSlug: 'lead-inbox', width: 'medium' },
         { widgetSlug: 'activities', width: 'medium' },
         { widgetSlug: 'pipeline', width: 'full' },
@@ -160,7 +176,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Projects, Media, Leads, Companies, Deals, Activities, Users],
+  collections: [Projects, CaseTemplates, Media, Leads, Companies, Deals, Activities, Users],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'development-only-secret-change-me',

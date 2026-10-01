@@ -15,7 +15,7 @@ export const Projects: CollectionConfig = {
     useAsTitle: 'title',
     group: 'Контент',
     hidden: adminHiddenUnless(['admin', 'editor']),
-    defaultColumns: ['title', 'client', 'year', 'kind', '_status', 'updatedAt'],
+    defaultColumns: ['title', 'client', 'year', 'workflowStatus', '_status', 'updatedAt'],
     description: 'Кейсы BAEV собираются как последовательность режиссируемых блоков.',
     preview: (data) => previewURL(data?.slug),
     livePreview: {
@@ -55,27 +55,56 @@ export const Projects: CollectionConfig = {
   },
   fields: [
     {
+      name: 'readiness',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: { Field: './admin/ProjectReadiness#default' },
+      },
+    },
+    {
+      name: 'workflowStatus',
+      label: 'Этап работы',
+      type: 'select',
+      defaultValue: 'draft',
+      options: [
+        { label: 'В работе', value: 'draft' },
+        { label: 'На проверке', value: 'review' },
+        { label: 'Готов к публикации', value: 'ready' },
+        { label: 'На паузе', value: 'paused' },
+      ],
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'owner',
+      label: 'Ответственный',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'deadline',
+      label: 'Дедлайн',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        date: { pickerAppearance: 'dayAndTime' },
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
           label: 'Основное',
           fields: [
+            { name: 'title', label: 'Название кейса', type: 'text', required: true },
             {
-              type: 'row',
-              fields: [
-                { name: 'title', label: 'Название кейса', type: 'text', required: true },
-                {
-                  name: 'kind',
-                  label: 'Тип записи',
-                  type: 'select',
-                  required: true,
-                  defaultValue: 'project',
-                  options: [
-                    { label: 'Кейс', value: 'project' },
-                    { label: 'Шаблон кейса', value: 'template' },
-                  ],
-                },
-              ],
+              name: 'kind',
+              type: 'select',
+              required: true,
+              defaultValue: 'project',
+              options: [{ label: 'Кейс', value: 'project' }],
+              admin: { hidden: true },
             },
             {
               type: 'row',

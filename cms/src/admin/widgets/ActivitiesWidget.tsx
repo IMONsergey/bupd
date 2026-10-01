@@ -1,5 +1,6 @@
 import type { WidgetServerProps } from 'payload'
 import React from 'react'
+import TaskDoneButton from '../TaskDoneButton'
 
 export default async function ActivitiesWidget({ req }: WidgetServerProps) {
   const role = req.user && 'role' in req.user ? String(req.user.role) : ''
@@ -27,12 +28,15 @@ export default async function ActivitiesWidget({ req }: WidgetServerProps) {
           const overdue = Boolean(due && due.getTime() < now.getTime())
           const deal = typeof activity.deal === 'object' && activity.deal ? activity.deal.title : ''
           return (
-            <a className={['baev-task-row', overdue ? 'is-overdue' : ''].filter(Boolean).join(' ')} href={'/admin/collections/activities/' + activity.id} key={activity.id}>
-              <span>{activity.type || 'task'}</span>
-              <strong>{activity.title}</strong>
-              <i>{deal || '—'}</i>
-              <time>{due ? due.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}</time>
-            </a>
+            <div className="baev-task-entry" data-activity-id={activity.id} key={activity.id}>
+              <a className={['baev-task-row', overdue ? 'is-overdue' : ''].filter(Boolean).join(' ')} href={'/admin/collections/activities/' + activity.id}>
+                <span>{activity.type || 'task'}</span>
+                <strong>{activity.title}</strong>
+                <i>{deal || '—'}</i>
+                <time>{due ? due.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}</time>
+              </a>
+              <TaskDoneButton id={activity.id} />
+            </div>
           )
         })}
         {!result.docs.length && <div className="baev-empty">Нет ближайших задач</div>}

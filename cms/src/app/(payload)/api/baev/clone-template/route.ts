@@ -29,12 +29,12 @@ export async function POST(request: Request) {
   if (!templateSlug || !title) return Response.json({ error: 'template_and_title_required' }, { status: 400 })
 
   const found = await payload.find({
-    collection: 'projects',
+    collection: 'case-templates',
     limit: 1,
     depth: 2,
     draft: true,
     overrideAccess: true,
-    where: { and: [{ slug: { equals: templateSlug } }, { kind: { equals: 'template' } }] },
+    where: { slug: { equals: templateSlug } },
   })
   const template = found.docs[0] as any
   if (!template) return Response.json({ error: 'template_not_found' }, { status: 404 })
