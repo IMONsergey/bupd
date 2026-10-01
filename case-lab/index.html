@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090a0b">
+  <title>BAEV — Case system lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../">BAEV</a>
+    <div class="topbar-center">CASE SYSTEM / PAYLOAD LAB <span class="live-dot"></span></div>
+    <button class="blocks-toggle" type="button" aria-expanded="true">Блоки <span>14</span></button>
+  </header>
+  <aside class="block-panel" id="block-panel">
+    <div class="panel-head">
+      <span>Коллекция блоков</span>
+      <span>Payload</span>
+    </div>
+    <nav id="block-nav"></nav>
+    <div class="panel-foot">B — скрыть / показать</div>
+  </aside>
+  <main id="case-root"></main>
+  <template id="loading-template">
+    <section class="loading">Загрузка кейса…</section>
+  </template>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

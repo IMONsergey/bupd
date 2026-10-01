@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320" viewBox="0 0 480 320">
+<rect width="480" height="320" fill="#090a0b"/>
+<text x="24" y="34" font-family="Arial" font-size="10" fill="#777d82" letter-spacing="2">01 / BAEV CASE SYSTEM</text>
+<rect x="24" y="68" width="122" height="200" fill="#15181b"/><rect x="158" y="68" width="298" height="200" fill="#202428"/><circle cx="350" cy="166" r="50" fill="#19f59b"/>
+<rect x="24" y="288" width="432" height="1" fill="#34393e"/>
+<text x="24" y="307" font-family="Arial" font-size="10" font-weight="700" fill="#f5f5f2" letter-spacing="1">CASE HERO</text>
+</svg>
