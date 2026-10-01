@@ -67,26 +67,30 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
     projects: Project;
+    media: Media;
     leads: Lead;
     companies: Company;
     deals: Deal;
+    activities: Activity;
+    users: User;
     'payload-kv': PayloadKv;
+    'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     companies: CompaniesSelect<false> | CompaniesSelect<true>;
     deals: DealsSelect<false> | DealsSelect<true>;
+    activities: ActivitiesSelect<false> | ActivitiesSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -95,15 +99,32 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
+    overview: OverviewWidget;
+    'quick-actions': QuickActionsWidget;
+    'recent-projects': RecentProjectsWidget;
+    pipeline: PipelineWidget;
+    'lead-inbox': LeadInboxWidget;
+    activities: ActivitiesWidget;
+    'block-library': BlockLibraryWidget;
     collections: CollectionsWidget;
   };
   user: User;
   jobs: {
-    tasks: unknown;
+    tasks: {
+      schedulePublish: TaskSchedulePublish;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -126,59 +147,20 @@ export interface UserAuthOperations {
   };
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
+ * Кейсы BAEV собираются как последовательность режиссируемых блоков.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
   id: number;
   title: string;
+  kind: 'project' | 'template';
+  /**
+   * Создаётся из названия автоматически, можно изменить вручную.
+   */
   slug: string;
-  status: 'draft' | 'published' | 'archived';
+  featured?: boolean | null;
   client?: string | null;
   year?: number | null;
   categories?:
@@ -187,10 +169,17 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
+  /**
+   * 2–4 предложения: контекст и задача. Используется в Hero и карточках.
+   */
   summary?: string | null;
   cover?: (number | null) | Media;
+  ogImage?: (number | null) | Media;
   accent?: string | null;
   pageTheme?: ('dark' | 'light') | null;
+  /**
+   * Добавляйте сцены, меняйте порядок drag-and-drop. У каждого блока есть несколько режимов.
+   */
   blocks: (
     | {
         eyebrow?: string | null;
@@ -359,17 +348,214 @@ export interface Project {
     | {
         project: number | Project;
         label?: string | null;
+        mode?: ('cover' | 'minimal') | null;
         theme?: ('dark' | 'light' | 'media') | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'nextProject';
       }
+    | {
+        title?: string | null;
+        scenes?:
+          | {
+              media: number | Media;
+              title?: string | null;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('snap' | 'scrub') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'horizontalStory';
+      }
+    | {
+        layers?:
+          | {
+              media: number | Media;
+              x?: number | null;
+              y?: number | null;
+              width?: number | null;
+              depth?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('stack' | 'parallax' | 'float') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'layeredMedia';
+      }
+    | {
+        kicker?: string | null;
+        text: string;
+        mode?: ('center' | 'edge' | 'marquee') | null;
+        accentWord?: string | null;
+        align?: ('left' | 'center' | 'right') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'typographyTakeover';
+      }
+    | {
+        video: number | Media;
+        poster?: (number | null) | Media;
+        title?: string | null;
+        caption?: string | null;
+        mode?: ('inline' | 'full' | 'sticky') | null;
+        autoplay?: boolean | null;
+        loop?: boolean | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'videoChapter';
+      }
+    | {
+        title?: string | null;
+        items?:
+          | {
+              title: string;
+              value?: string | null;
+              body?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('columns' | 'table' | 'cards') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'comparison';
+      }
+    | {
+        items?:
+          | {
+              media: number | Media;
+              label?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('fan' | 'stack' | 'spread') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'artifactStack';
+      }
+    | {
+        eyebrow?: string | null;
+        title: string;
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        media: number | Media;
+        layout?: ('text-left' | 'text-right' | 'balanced') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'textMedia';
+      }
+    | {
+        title: string;
+        body?: string | null;
+        buttonLabel?: string | null;
+        buttonURL?: string | null;
+        media?: (number | null) | Media;
+        mode?: ('minimal' | 'statement' | 'media') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'cta';
+      }
   )[];
   seoTitle?: string | null;
   seoDescription?: string | null;
+  canonicalURL?: string | null;
+  noIndex?: boolean | null;
+  internalNotes?: string | null;
+  /**
+   * Внутренняя ссылка, на публичный сайт не выводится.
+   */
+  sourceURL?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Коротко опишите изображение — используется для accessibility и SEO.
+   */
+  alt: string;
+  kind?: ('project' | 'site' | 'cover' | 'brand' | 'motion') | null;
+  tags?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  credit?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    wide?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xl?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -382,10 +568,11 @@ export interface Lead {
   phone?: string | null;
   companyName?: string | null;
   company?: (number | null) | Company;
-  source?: ('site' | 'referral' | 'outbound' | 'event' | 'other') | null;
+  message?: string | null;
   service?: ('presentation' | 'strategy' | 'branding' | 'web' | 'conference' | 'other') | null;
   budget?: number | null;
   status: 'new' | 'contacted' | 'qualified' | 'proposal' | 'won' | 'lost';
+  source?: ('site' | 'referral' | 'outbound' | 'event' | 'other') | null;
   owner?: (number | null) | User;
   nextActionAt?: string | null;
   notes?: string | null;
@@ -409,9 +596,38 @@ export interface Company {
   domain?: string | null;
   industry?: string | null;
   owner?: (number | null) | User;
+  city?: string | null;
   notes?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  role: 'admin' | 'editor' | 'sales';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -422,13 +638,32 @@ export interface Deal {
   title: string;
   company: number | Company;
   lead?: (number | null) | Lead;
-  project?: (number | null) | Project;
   stage: 'discovery' | 'brief' | 'estimate' | 'proposal' | 'negotiation' | 'won' | 'lost';
+  probability?: number | null;
   value?: number | null;
   currency?: ('RUB' | 'USD' | 'EUR' | 'AED') | null;
   owner?: (number | null) | User;
   nextActionAt?: string | null;
+  project?: (number | null) | Project;
   notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities".
+ */
+export interface Activity {
+  id: number;
+  type: 'task' | 'call' | 'email' | 'meeting' | 'note';
+  done?: boolean | null;
+  title: string;
+  body?: string | null;
+  lead?: (number | null) | Lead;
+  company?: (number | null) | Company;
+  deal?: (number | null) | Deal;
+  dueAt?: string | null;
+  owner?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -451,22 +686,110 @@ export interface PayloadKv {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'schedulePublish';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'schedulePublish') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'projects';
-        value: number | Project;
       } | null)
     | ({
         relationTo: 'leads';
@@ -479,6 +802,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'deals';
         value: number | Deal;
+      } | null)
+    | ({
+        relationTo: 'activities';
+        value: number | Activity;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -524,53 +855,13 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
+  kind?: T;
   slug?: T;
-  status?: T;
+  featured?: T;
   client?: T;
   year?: T;
   categories?:
@@ -581,6 +872,7 @@ export interface ProjectsSelect<T extends boolean = true> {
       };
   summary?: T;
   cover?: T;
+  ogImage?: T;
   accent?: T;
   pageTheme?: T;
   blocks?:
@@ -768,6 +1060,125 @@ export interface ProjectsSelect<T extends boolean = true> {
           | {
               project?: T;
               label?: T;
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        horizontalStory?:
+          | T
+          | {
+              title?: T;
+              scenes?:
+                | T
+                | {
+                    media?: T;
+                    title?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        layeredMedia?:
+          | T
+          | {
+              layers?:
+                | T
+                | {
+                    media?: T;
+                    x?: T;
+                    y?: T;
+                    width?: T;
+                    depth?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        typographyTakeover?:
+          | T
+          | {
+              kicker?: T;
+              text?: T;
+              mode?: T;
+              accentWord?: T;
+              align?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        videoChapter?:
+          | T
+          | {
+              video?: T;
+              poster?: T;
+              title?: T;
+              caption?: T;
+              mode?: T;
+              autoplay?: T;
+              loop?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        comparison?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    value?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        artifactStack?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    label?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textMedia?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              body?: T;
+              media?: T;
+              layout?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              buttonLabel?: T;
+              buttonURL?: T;
+              media?: T;
+              mode?: T;
               theme?: T;
               id?: T;
               blockName?: T;
@@ -775,9 +1186,84 @@ export interface ProjectsSelect<T extends boolean = true> {
       };
   seoTitle?: T;
   seoDescription?: T;
+  canonicalURL?: T;
+  noIndex?: T;
+  internalNotes?: T;
+  sourceURL?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  kind?: T;
+  tags?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  credit?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumb?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        wide?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        xl?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -789,10 +1275,11 @@ export interface LeadsSelect<T extends boolean = true> {
   phone?: T;
   companyName?: T;
   company?: T;
-  source?: T;
+  message?: T;
   service?: T;
   budget?: T;
   status?: T;
+  source?: T;
   owner?: T;
   nextActionAt?: T;
   notes?: T;
@@ -817,6 +1304,7 @@ export interface CompaniesSelect<T extends boolean = true> {
   domain?: T;
   industry?: T;
   owner?: T;
+  city?: T;
   notes?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -829,15 +1317,58 @@ export interface DealsSelect<T extends boolean = true> {
   title?: T;
   company?: T;
   lead?: T;
-  project?: T;
   stage?: T;
+  probability?: T;
   value?: T;
   currency?: T;
   owner?: T;
   nextActionAt?: T;
+  project?: T;
   notes?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities_select".
+ */
+export interface ActivitiesSelect<T extends boolean = true> {
+  type?: T;
+  done?: T;
+  title?: T;
+  body?: T;
+  lead?: T;
+  company?: T;
+  deal?: T;
+  dueAt?: T;
+  owner?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -846,6 +1377,37 @@ export interface DealsSelect<T extends boolean = true> {
 export interface PayloadKvSelect<T extends boolean = true> {
   key?: T;
   data?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -881,6 +1443,115 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  siteName?: string | null;
+  siteURL?: string | null;
+  defaultDescription?: string | null;
+  defaultOG?: (number | null) | Media;
+  email?: string | null;
+  telegram?: string | null;
+  phone?: string | null;
+  /**
+   * Опционально: n8n / Make / собственный endpoint. Секреты сюда не кладём.
+   */
+  leadWebhookURL?: string | null;
+  analyticsId?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  siteURL?: T;
+  defaultDescription?: T;
+  defaultOG?: T;
+  email?: T;
+  telegram?: T;
+  phone?: T;
+  leadWebhookURL?: T;
+  analyticsId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "overview_widget".
+ */
+export interface OverviewWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-actions_widget".
+ */
+export interface QuickActionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'small' | 'medium';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recent-projects_widget".
+ */
+export interface RecentProjectsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pipeline_widget".
+ */
+export interface PipelineWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lead-inbox_widget".
+ */
+export interface LeadInboxWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activities_widget".
+ */
+export interface ActivitiesWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'medium' | 'large';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "block-library_widget".
+ */
+export interface BlockLibraryWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -888,6 +1559,26 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSchedulePublish".
+ */
+export interface TaskSchedulePublish {
+  input: {
+    type?: ('publish' | 'unpublish') | null;
+    locale?: string | null;
+    doc?: {
+      relationTo: 'projects';
+      value: number | Project;
+    } | null;
+    global?: string | null;
+    user?: {
+      relationTo: 'users';
+      value: number | User;
+    } | null;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
