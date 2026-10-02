@@ -247,30 +247,59 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
   const [previewKey,setPreviewKey]=useState(0)
   const [device,setDevice]=useState<'desktop'|'mobile'>('desktop')
   const saveTimer=useRef<ReturnType<typeof setTimeout>|null>(null)
+  const editRevision=useRef(0)
+  const saveSequence=useRef(0)
+  const saveQueue=useRef<Promise<unknown>>(Promise.resolve())
   const sensors=useSensors(useSensor(PointerSensor,{activationConstraint:{distance:5}}))
 
   const meta=useMemo(()=>Object.fromEntries(catalog.map((item)=>[item.slug,item])),[catalog])
   const selectedBlock=blocks[selected]
 
-  const save=async(nextBlocks=blocks)=>{
-    setSaving(true)
-    const response=await fetch('/api/studio/projects/'+project.id,{
-      method:'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({blocks:stripRelations(nextBlocks)}),
+  const save=async(nextBlocks=blocks,revisionAtSave=editRevision.current)=>{
+    if(saveTimer.current){clearTimeout(saveTimer.current);saveTimer.current=null}
+    const sequence=++saveSequence.current
+    const run=saveQueue.current.catch(()=>undefined).then(async()=>{
+      setSaving(true)
+      try{
+        const response=await fetch('/api/studio/projects/'+project.id,{
+          method:'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({blocks:stripRelations(nextBlocks)}),
+        })
+        const isLatest=sequence===saveSequence.current
+        if(isLatest)setSaving(false)
+        if(response.ok){
+          if(isLatest){
+            setSaved(revisionAtSave===editRevision.current)
+            setPreviewKey((v)=>v+1)
+          }
+          return true
+        }
+        if(isLatest)setSaved(false)
+        return false
+      }catch{
+        if(sequence===saveSequence.current){
+          setSaving(false)
+          setSaved(false)
+        }
+        return false
+      }
     })
-    setSaving(false)
-    if(response.ok){setSaved(true);setPreviewKey((v)=>v+1);return true}
-    setSaved(false)
-    return false
+    saveQueue.current=run.then(()=>undefined,()=>undefined)
+    return run
   }
 
   const scheduleSave=(next:AnyBlock[])=>{
+    editRevision.current+=1
+    const revisionAtSchedule=editRevision.current
     setBlocks(next);setSaved(false)
     if(saveTimer.current)clearTimeout(saveTimer.current)
-    saveTimer.current=setTimeout(()=>void save(next),650)
+    saveTimer.current=setTimeout(()=>{
+      saveTimer.current=null
+      void save(next,revisionAtSchedule)
+    },650)
   }
 
-  useEffect(()=>()=>{if(saveTimer.current)clearTimeout(saveTimer.current)},[])
+  useEffect(()=>()=>{if(saveTimer.current)clearTimeout(saveTimer.current);saveSequence.current+=1},[])
 
   const loadVersions=async()=>{
     setHistoryOpen(true);setVersionsLoading(true);setHistoryError('')
