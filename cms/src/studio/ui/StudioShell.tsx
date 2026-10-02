@@ -56,6 +56,7 @@ export default function StudioShell({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const isBuilderRoute = /^\/studio\/cases\/[^/]+$/.test(pathname)
   const router = useRouter()
   const role = String(user.role || '')
   const [commandOpen,setCommandOpen] = useState(false)
@@ -127,7 +128,7 @@ export default function StudioShell({
   }
 
   return (
-    <div className="studio-shell">
+    <div className={['studio-shell',isBuilderRoute?'studio-shell--focus':''].filter(Boolean).join(' ')}>
       <motion.aside
         className={['studio-sidebar',mobileOpen?'is-mobile-open':''].join(' ')}
         initial={false}
@@ -185,7 +186,7 @@ export default function StudioShell({
         <motion.main
           className="studio-content"
           key={pathname}
-          initial={{opacity:0,y:8,filter:'blur(4px)'}}
+          initial={false}
           animate={{opacity:1,y:0,filter:'blur(0px)'}}
           transition={{duration:.32,ease:[.22,1,.36,1]}}
         >
