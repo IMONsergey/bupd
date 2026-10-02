@@ -61,14 +61,14 @@ function CaseBlock({ block, index }: { block: any; index: number }) {
   switch (type) {
     case 'caseHero':
       return (
-        <section className="case-section case-hero">
-          <BlockLabel index={index} title="CASE HERO" />
-          <div className="case-hero__copy">
-            <span>{block.eyebrow || 'Case study'}</span>
-            <h2>{block.title}</h2>
-            {block.dek && <p>{block.dek}</p>}
-          </div>
+        <section className={`case-section case-hero case-hero--${block.layout || 'editorial'}`}>
           <div className="case-hero__media"><Media value={block.media} /></div>
+          {block.layout !== 'editorial' && (block.eyebrow || block.dek) && (
+            <div className="case-hero__copy">
+              {block.eyebrow && <span>{block.eyebrow}</span>}
+              {block.dek && <p>{block.dek}</p>}
+            </div>
+          )}
         </section>
       )
 
@@ -358,8 +358,18 @@ function CaseBlock({ block, index }: { block: any; index: number }) {
   }
 }
 
-export default function LiveCase({ initialData, serverURL }: { initialData: any; serverURL: string }) {
-  const { data, isLoading } = useLivePreview({ initialData, serverURL, depth: 2 })
+export default function LiveCase({
+  initialData,
+  serverURL,
+  preview = true,
+}: {
+  initialData: any
+  serverURL: string
+  preview?: boolean
+}) {
+  const live = useLivePreview({ initialData, serverURL, depth: 2 })
+  const data = preview ? live.data : initialData
+  const isLoading = preview ? live.isLoading : false
 
   const categories = useMemo(
     () => (data.categories || []).map((item: any) => item.label).filter(Boolean).join(', '),
@@ -367,35 +377,41 @@ export default function LiveCase({ initialData, serverURL }: { initialData: any;
   )
 
   return (
-    <div className={`case-preview case-preview--${data.pageTheme || 'dark'} ${isLoading ? 'is-syncing' : ''}`}>
-      <header className="case-preview__topbar">
+    <div className={`case-preview case-preview--${data.pageTheme || 'dark'} ${preview ? 'case-preview--editor' : ''} ${isLoading ? 'is-syncing' : ''}`}>
+      <header className="case-site-nav">
         <strong>BAEV</strong>
-        <span>LIVE CASE PREVIEW</span>
-        <i>{isLoading ? 'SYNC' : 'LIVE'}</i>
+        <nav><a href="/">Главная</a><a href="/work">Проекты</a><a href="/about">О нас</a><a href="/blog">Журнал</a></nav>
+        <a href="/contact">Связь</a>
       </header>
 
-      <section className="case-project-intro">
-        <div>
+      <div className="case-layout">
+        <aside className="case-project-rail">
           <h1>{data.title || 'Новый кейс'}</h1>
-          <p>{data.summary}</p>
-        </div>
-        <dl>
-          <div><dt>Категории</dt><dd>{categories || '—'}</dd></div>
-          <div><dt>Клиент</dt><dd>{data.client || '—'}</dd></div>
-          <div><dt>Год</dt><dd>{data.year || '—'}</dd></div>
-        </dl>
-      </section>
+          <div className="case-project-rail__bottom">
+            {data.summary && <p>{data.summary}</p>}
+            <dl>
+              <div><dt>Категории</dt><dd>{categories || '—'}</dd></div>
+              <div><dt>Клиент</dt><dd>{data.client || '—'}</dd></div>
+              <div><dt>Год</dt><dd>{data.year || '—'}</dd></div>
+            </dl>
+          </div>
+        </aside>
 
-      {(data.blocks || []).map((block: any, index: number) => (
-        <CaseBlock block={block} index={index} key={block.id || `${block.blockType}-${index}`} />
-      ))}
+        <main className="case-story">
+          {(data.blocks || []).map((block: any, index: number) => (
+            <CaseBlock block={block} index={index} key={block.id || `${block.blockType}-${index}`} />
+          ))}
 
-      {!data.blocks?.length && (
-        <section className="case-empty-preview">
-          <span>CASE BUILDER</span>
-          <h2>Добавьте первый блок<br />в админ-панели.</h2>
-        </section>
-      )}
+          {!data.blocks?.length && (
+            <section className="case-empty-preview">
+              <span>CASE BUILDER</span>
+              <h2>Добавьте первый блок<br />в BAEV Studio.</h2>
+            </section>
+          )}
+        </main>
+      </div>
+
+      {preview && <div className="case-live-indicator">{isLoading ? 'SYNC' : 'LIVE'}</div>}
     </div>
   )
 }
