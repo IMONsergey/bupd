@@ -41,6 +41,8 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {useDialogFocus} from '@/studio/ui/useDialogFocus'
 import dynamic from 'next/dynamic'
+import { readDraftRecovery, writeDraftRecovery, type RecoveredDraft } from './draftRecovery'
+import { blockShortcut, blockSearchText } from './editorInteraction'
 import { canvasField, updatePath } from './canvasFields'
 import type { EditorField } from './editorSchema'
 import { serializeDocument, copyScene, textToRichText } from './document'
@@ -63,7 +65,7 @@ type AnyBlock=Record<string,any>&{blockType:string;id?:string}
 
 function blockName(block:AnyBlock,meta?:BlockMeta){
   const detail=block.title||block.chapter||block.kicker||block.text||block.label||''
-  return {title:meta?.title||block.blockType,detail:String(detail).replace(/\s+/g,' ').slice(0,42)}
+  return {title:meta?.title||block.blockType,detail:(typeof detail==='object'?blockSearchText(detail):String(detail)).replace(/\s+/g,' ').slice(0,42)}
 }
 
 function SortableScene({block,index,meta,active,disabled=false,issueCount=0,onSelect,onDuplicate,onDelete}:{block:AnyBlock;index:number;meta?:BlockMeta;active:boolean;disabled?:boolean;issueCount?:number;onSelect:()=>void;onDuplicate:()=>void;onDelete:()=>void}){
@@ -154,12 +156,30 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   const [library,setLibrary]=useState(false)
   const [saving,setSaving]=useState(false)
   const [saved,setSaved]=useState(true)
+  const recoveryKey='studio:recovery:'+kind+':'+project.id
+  const recoveryStored=useRef(false)
+  const serverUpdatedAt=useRef(String(project.updatedAt||''))
+  const [recovery,setRecovery]=useState<RecoveredDraft|null>(null)
+  const [online,setOnline]=useState(true)
+  useEffect(()=>{
+    try{setRecovery(readDraftRecovery(sessionStorage,recoveryKey))}catch{}
+    setOnline(navigator.onLine)
+    const connected=()=>{setOnline(true);canvasActions.current({type:'baev:retry'})}
+    const disconnected=()=>setOnline(false)
+    window.addEventListener('online',connected);window.addEventListener('offline',disconnected)
+    return()=>{window.removeEventListener('online',connected);window.removeEventListener('offline',disconnected)}
+  },[recoveryKey])
+  const cacheDraft=(snapshot:{blocks:AnyBlock[];metadata:Record<string,any>})=>{
+    try{recoveryStored.current=writeDraftRecovery(sessionStorage,recoveryKey,snapshot,serverUpdatedAt.current)}catch{recoveryStored.current=false}
+  }
+  const clearRecovery=()=>{try{sessionStorage.removeItem(recoveryKey)}catch{};recoveryStored.current=false;setRecovery(null)}
   const [published,setPublished]=useState(initialPublished)
   const [publishing,setPublishing]=useState(false)
   const [publishAction,setPublishAction]=useState<'publish'|'unpublish'|null>(null)
   const [publicationError,setPublicationError]=useState('')
   const [publishedSignature,setPublishedSignature]=useState(initialPublishedSignature??(initialPublished?projectContentSignature(project):''))
   const [notice,setNotice]=useState('')
+  const [deletedNotice,setDeletedNotice]=useState(false)
   const [sceneQuery,setSceneQuery]=useState('')
   const [focusField,setFocusField]=useState('')
   useEffect(()=>{if(!notice)return;const timer=setTimeout(()=>setNotice(''),7000);return()=>clearTimeout(timer)},[notice])
@@ -203,6 +223,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   const editRevision=useRef(0)
   const saveSequence=useRef(0)
   const saveQueue=useRef<Promise<unknown>>(Promise.resolve())
+  const saveLatest=useRef<(snapshot?:{blocks:AnyBlock[];metadata:Record<string,any>},revision?:number)=>Promise<boolean>>(async()=>false)
   const previewRef=useRef<HTMLIFrameElement|null>(null)
   const frameRef=useRef<HTMLDivElement|null>(null)
   const [canvasSize,setCanvasSize]=useState({width:1440,height:900})
@@ -227,7 +248,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   const hasUnpublishedChanges=published&&projectContentSignature({...metadata,blocks})!==publishedSignature
   const visibleScenes=blocks.map((block,index)=>({block,index})).filter(({block})=>{
     const name=blockName(block,meta[block.blockType])
-    return !sceneQuery.trim()||(name.title+' '+name.detail).toLowerCase().includes(sceneQuery.trim().toLowerCase())
+    return !sceneQuery.trim()||(name.title+' '+blockSearchText(block)).toLowerCase().includes(sceneQuery.trim().toLowerCase())
   })
 
   const sendPreview=(selection=canvasStateRef.current.selected)=>{
@@ -248,6 +269,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   },[])
 
   const save=async(document=latest.current,revisionAtSave=editRevision.current)=>{
+    if(recovery)return false
     if(saveTimer.current){clearTimeout(saveTimer.current);saveTimer.current=null}
     const snapshot=structuredClone(document)
     const sequence=++saveSequence.current
@@ -259,6 +281,11 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
           body:JSON.stringify(serializeDocument({...snapshot.metadata,blocks:snapshot.blocks})),
         })
         const data=await response.json().catch(()=>({}))
+        if(response.ok){
+          serverUpdatedAt.current=String(data.updatedAt||serverUpdatedAt.current)
+          if(revisionAtSave===editRevision.current)clearRecovery()
+          else cacheDraft(latest.current)
+        }
         if(sequence===saveSequence.current){
           setSaving(false)
           setSaved(response.ok&&revisionAtSave===editRevision.current)
@@ -266,7 +293,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
         }
         return response.ok
       }catch{
-        if(sequence===saveSequence.current){setSaving(false);setSaved(false);setError('Нет связи. Изменения остаются в редакторе. Нажмите «Сохранить» для повтора.')}
+        if(sequence===saveSequence.current){setSaving(false);setSaved(false);setError(recoveryStored.current?'Нет связи. Копия правок сохранена в этой вкладке; при восстановлении связи повторим сохранение.':'Нет связи. Изменения остаются в редакторе. Оставьте вкладку открытой и повторите сохранение.')}
         return false
       }
     })
@@ -274,15 +301,19 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     return run
   }
 
+  useEffect(()=>{saveLatest.current=save})
+
   const change=(next:{blocks:AnyBlock[];metadata:Record<string,any>},record=true)=>{
     const before=structuredClone(latest.current)
     if(record){setUndoStack(stack=>[...stack.slice(-39),before]);setRedoStack([])}
     latest.current=next
+    setNotice('');setDeletedNotice(false)
+    cacheDraft(next)
     editRevision.current+=1
     const revision=editRevision.current
     setBlocks(next.blocks);setMetadata(next.metadata);setSaved(false);setError('')
     if(saveTimer.current)clearTimeout(saveTimer.current)
-    saveTimer.current=setTimeout(()=>{saveTimer.current=null;void save(next,revision)},800)
+    saveTimer.current=setTimeout(()=>{saveTimer.current=null;void saveLatest.current(next,revision)},800)
   }
   const scheduleSave=(next:AnyBlock[])=>change({...latest.current,blocks:next})
   const updateMetadata=(key:string,value:any)=>{if(Object.is(latest.current.metadata[key],value))return;change({...latest.current,blocks:key==='title'&&latest.current.blocks[0]?.blockType==='caseHero'?latest.current.blocks.map((block,index)=>index===0?{...block,title:value}:block):latest.current.blocks,metadata:{...latest.current.metadata,[key]:value}})}
@@ -300,7 +331,12 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     const next=redoStack[redoStack.length-1]
     setRedoStack(stack=>stack.slice(0,-1));change(next,false);setSelected(index=>Math.max(0,Math.min(index,next.blocks.length-1)))
   }
-  const leave=async()=>{if(saved||await save())router.push(listURL)}
+  const leave=async()=>{
+    if(!saved&&!await save())return
+    let destination=listURL
+    try{const previous=sessionStorage.getItem('studio:catalog:'+kind+':return');if(previous===listURL||previous?.startsWith(listURL+'?'))destination=previous}catch{}
+    router.push(destination)
+  }
   useEffect(()=>{
     const beforeUnload=(event:BeforeUnloadEvent)=>{if(editRevision.current&&!saved){event.preventDefault();event.returnValue=''}}
     window.addEventListener('beforeunload',beforeUnload)
@@ -312,12 +348,14 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
       if(event.key==='Escape'){setLibrary(false);setHistoryOpen(false);setMoreOpen(false);setWorkspaceTab('canvas');setSelected(-1)}
       if(publishing||publishAction)return
       const editing=(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')
-      if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();void save()}
+      const shortcut=!editing&&!document.querySelector('[role="dialog"]')&&selected>=0?blockShortcut(event):null
+      if(shortcut){event.preventDefault();canvasActions.current({type:'baev:shortcut',action:shortcut})}
+      if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();void saveLatest.current()}
       if(!editing&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();if(event.shiftKey)redo();else undo()}
     }
     window.addEventListener('keydown',keys)
     return()=>window.removeEventListener('keydown',keys)
-  },[undoStack,redoStack,publishing,publishAction])
+  },[undoStack,redoStack,publishing,publishAction,selected])
 
   useEffect(()=>{
     const navigate=(event:Event)=>{
@@ -410,7 +448,8 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
 
   const remove=(index:number)=>{
     const next=blocks.filter((_,i)=>i!==index)
-    setSelected(Math.max(0,Math.min(selected,index-1,next.length-1)));scheduleSave(next)
+    setSelected(next.length?Math.max(0,Math.min(selected,index-1,next.length-1)):-1);scheduleSave(next)
+    setDeletedNotice(true);setNotice('Блок удалён.')
   }
 
   const duplicate=(index:number)=>{
@@ -431,6 +470,16 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   useEffect(()=>{
   canvasActions.current=(data:any)=>{
     const type=data?.type
+    if(type==='baev:retry'){if(!saved&&!recovery&&!publishing)void save();return}
+    if(type==='baev:shortcut'){
+      if(selected<0||publishing||publishAction||library||historyOpen||canvasMedia)return
+      if(data.action==='previous'||data.action==='next'){
+        const index=Math.max(0,Math.min(blocks.length-1,selected+(data.action==='next'?1:-1)))
+        canvasScroll.current=true;setSelected(index);setDetails(false);return
+      }
+      if(!['duplicate','delete','up','down'].includes(data.action))return
+      canvasActions.current({type:'baev:action',index:selected,blockId:blocks[selected]?.id,action:data.action});return
+    }
     if(type==='baev:deselect'){setSelected(-1);setWorkspaceTab('canvas');return}
     if(type==='baev:undo'){undo();return}
     if(type==='baev:redo'){redo();return}
@@ -475,18 +524,18 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   const canvasMediaValue=canvasMedia?canvasMedia.path.split('.').reduce((node:any,key)=>node?.[key],canvasMedia.index===-1?metadata:blocks[canvasMedia.index]):null
 
   return <div className={'builder-root builder-root--quiet builder-root--'+workspaceTab+(focusMode?' builder-root--focus':'')}>
-    <header className="builder-topbar" inert={publishing?true:undefined}>
+    <header className="builder-topbar" inert={publishing||recovery?true:undefined}>
       <button aria-label={article?'Вернуться к блогу':'Вернуться к кейсам'} title={article?'Вернуться к блогу':'Вернуться к кейсам'} className="builder-back" onClick={()=>void leave()}><ChevronLeft size={17}/></button>
-      <div className="builder-title"><button onClick={()=>{setDetails(true);setWorkspaceTab('settings')}}>{metadata.title}</button><span>{published?(hasUnpublishedChanges?'Есть правки':'На сайте'):'Черновик'}<em className="builder-save-mobile">{saving?'Сохраняем…':saved?'Черновик сохранён':'Есть несохранённые изменения'}</em></span></div>
-      <div className="builder-save-state" role="status" aria-live="polite"><StudioIcon name={saving?'RefreshCcw':saved?'Check':'Save'} className={saving?'is-spin':''} size={14}/>{saving?'Сохраняем':saved?'Сохранено':'Есть изменения'}</div>
+      <div className="builder-title"><button onClick={()=>{setDetails(true);setWorkspaceTab('settings')}}>{metadata.title}</button><span>{published?(hasUnpublishedChanges?'Есть правки':'На сайте'):'Черновик'}<em className="builder-save-mobile">{recovery?'Найдены несохранённые правки':!online?'Нет сети':saving?'Сохраняем…':saved?'Черновик сохранён':'Есть несохранённые изменения'}</em></span></div>
+      <div className="builder-save-state" role="status" aria-live="polite"><StudioIcon name={recovery?'Save':saving?'RefreshCcw':saved?'Check':'Save'} className={saving?'is-spin':''} size={14}/>{recovery?'Найдены правки':!online?'Нет сети':saving?'Сохраняем':saved?'Сохранено':'Есть изменения'}</div>
 
-      <button className="builder-icon-button" aria-label="Отменить" disabled={!undoStack.length} onClick={undo}><Undo2 size={16}/></button><button className="builder-icon-button" aria-label="Повторить" disabled={!redoStack.length} onClick={redo}><Redo2 size={16}/></button>
+      <button className="builder-icon-button" title="Отменить · Ctrl/⌘ Z" aria-label="Отменить" disabled={!undoStack.length} onClick={undo}><Undo2 size={16}/></button><button className="builder-icon-button" aria-label="Повторить" disabled={!redoStack.length} onClick={redo}><Redo2 size={16}/></button>
       <a className="studio-button studio-button--soft builder-preview-action" href={previewURL} target="_blank" rel="noopener noreferrer" onClick={event=>void preview(event)}><Eye size={16}/><span>Просмотр</span></a>
       <div ref={moreRef} className="builder-more"><button className="studio-button studio-button--soft" aria-expanded={moreOpen} aria-label="Дополнительные действия" onClick={()=>setMoreOpen(v=>!v)}><StudioIcon name={moreOpen?'X':'Ellipsis'} size={14}/></button>{moreOpen&&<div className="builder-more__menu"><button className="quiet-mobile-action" disabled={!undoStack.length} onClick={()=>{setMoreOpen(false);undo()}}><Undo2 size={15}/>Отменить изменение</button><button className="quiet-mobile-action" disabled={!redoStack.length} onClick={()=>{setMoreOpen(false);redo()}}><Redo2 size={15}/>Повторить изменение</button><button onClick={()=>{setMoreOpen(false);void loadVersions()}}><History size={15}/>История версий</button><button onClick={()=>{setMoreOpen(false);void save()}}><Save size={15}/>Сохранить сейчас</button>{published&&<><a href={publicURL} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15}/>Открыть на сайте</a><button onClick={()=>{setMoreOpen(false);void copyPublicLink()}}><Copy size={15}/>Скопировать ссылку</button><button className="is-danger" onClick={()=>{setMoreOpen(false);setPublicationError('');setPublishAction('unpublish')}}><StudioIcon name="EyeOff" size={15}/>Снять с сайта</button></>}</div>}</div>
       <button className="studio-button builder-publish-action" aria-label={published?'Опубликовать изменения':'Опубликовать'} disabled={publishing} onClick={()=>{setPublicationError('');setPublishAction('publish')}}><span className="builder-publish-label">{published?'Опубликовать изменения':'Опубликовать'}</span><span className="builder-publish-label--compact">{published?'Обновить':'Опубликовать'}</span></button>
     </header>
 
-    <nav className="quiet-tools" aria-label="Инструменты редактора">
+    <nav inert={recovery?true:undefined} className="quiet-tools" aria-label="Инструменты редактора">
       <button aria-label="Добавить блок" onClick={()=>{setInsertAt(selected<0?blocks.length:selected+1);setLibrary(true)}}><Plus size={16}/><span>Добавить</span></button>
       <button aria-label="Структура" title="Структура страницы" aria-pressed={workspaceTab==='blocks'} onClick={()=>setWorkspaceTab(tab=>tab==='blocks'?'canvas':'blocks')}><StudioIcon name="Layers" size={16}/><span>Структура</span></button>
       <button aria-label="Оформление страницы" title="Фон и скругление медиа" aria-pressed={workspaceTab==='design'} onClick={()=>setWorkspaceTab(tab=>tab==='design'?'canvas':'design')}><Settings2 size={16}/><span>Оформление</span></button>
@@ -495,13 +544,14 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
       <div className="quiet-tools__view"><div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на планшете" className={device==='tablet'?'is-active':''} onClick={()=>setDevice('tablet')}><StudioIcon name="PanelsTopLeft" size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div><select aria-label="Масштаб холста" value={zoom} onChange={event=>setZoom(event.target.value as typeof zoom)}><option value="fit">{Math.round(canvasScale*100)}%</option><option value="100">100%</option></select></div>
     </nav>
 
+    {recovery&&<div className="builder-recovery" role="region" aria-label="Восстановление правок"><div><strong>Найдены несохранённые правки этой вкладки</strong><p>{recovery.baseUpdatedAt!==String(project.updatedAt||'')?'На сервере уже есть более новая версия. Вернуть правки — значит заменить её содержимое вашей копией.':'Можно продолжить с того места, где вы остановились.'}</p></div><div><button className="studio-button" onClick={()=>{const snapshot=recovery.snapshot as {blocks:AnyBlock[];metadata:Record<string,any>};setRecovery(null);change(snapshot);setNotice('Правки восстановлены. Сохраняем черновик.')}}>Вернуть правки</button><button className="studio-button studio-button--soft" onClick={clearRecovery}>Оставить серверную версию</button></div></div>}
     {error&&<div className="builder-error" role="alert">{error}<button onClick={()=>void save()}>Повторить сохранение</button></div>}
-    {notice&&<div className="builder-notice" role="status"><span>{notice}</span>{published&&<a href={publicURL} target="_blank" rel="noopener noreferrer">Открыть <ArrowUpRight size={13}/></a>}<button aria-label="Закрыть уведомление" onClick={()=>setNotice('')}><X size={14}/></button></div>}
-    <div className="builder-layout" inert={publishing?true:undefined}>
+    {notice&&<div className="builder-notice" role="status"><span>{notice}</span>{deletedNotice&&undoStack.length>0&&<button onClick={()=>{undo();setNotice('');setDeletedNotice(false)}}>Вернуть блок</button>}{published&&!deletedNotice&&<a href={publicURL} target="_blank" rel="noopener noreferrer">Открыть <ArrowUpRight size={13}/></a>}<button aria-label="Закрыть уведомление" onClick={()=>setNotice('')}><X size={14}/></button></div>}
+    <div className="builder-layout" inert={publishing||recovery?true:undefined}>
       <aside className="builder-scenes">
 
         <div className="builder-scenes__head"><div><strong>Блоки</strong><span>{blocks.length}</span></div><button aria-label="Закрыть структуру" onClick={()=>setWorkspaceTab('canvas')}><X size={15}/></button></div>
-        <label className="builder-scene-search"><Search size={14}/><input aria-label="Найти блок в кейсе" value={sceneQuery} onChange={event=>setSceneQuery(event.target.value)} placeholder="Найти блок в кейсе"/>{sceneQuery&&<button aria-label="Сбросить поиск блоков" onClick={()=>setSceneQuery('')}><X size={13}/></button>}</label>
+        <label className="builder-scene-search"><Search size={14}/><input aria-label="Найти блок или текст" value={sceneQuery} onChange={event=>setSceneQuery(event.target.value)} placeholder="Найти блок или текст"/>{sceneQuery&&<button aria-label="Сбросить поиск блоков" onClick={()=>setSceneQuery('')}><X size={13}/></button>}</label>
         <DndContext id={'case-builder-'+project.id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnd}>
           <SortableContext items={visibleScenes.map(({block,index})=>block.id||'scene-'+index)} strategy={verticalListSortingStrategy}>
             <div className="builder-scenes__list">{visibleScenes.map(({block,index})=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} disabled={Boolean(sceneQuery.trim())} issueCount={issues.filter(issue=>issue.severity==='error'&&issue.blockIndex===index).length} onSelect={()=>{canvasScroll.current=true;setSelected(index);sendPreview(index);setDetails(false);if(window.innerWidth<=760)setWorkspaceTab('canvas')}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}{!visibleScenes.length&&<div className="studio-empty">Блоки не найдены.<button className="studio-button studio-button--soft" onClick={()=>setSceneQuery('')}>Сбросить поиск</button></div>}</div>
@@ -539,8 +589,8 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
 
     <AnimatePresence>
       {historyOpen&&<motion.div className="builder-history-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setHistoryOpen(false)}>
-        <motion.aside ref={historyRef} role="dialog" aria-modal="true" aria-label="История кейса" className="builder-history" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
-          <header><div><span>История</span><strong>Версии кейса</strong></div><button onClick={()=>setHistoryOpen(false)}><X size={16}/></button></header>
+        <motion.aside ref={historyRef} role="dialog" aria-modal="true" aria-label={article?"История статьи":"История кейса"} className="builder-history" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
+          <header><div><span>История</span><strong>{article?"Версии статьи":"Версии кейса"}</strong></div><button onClick={()=>setHistoryOpen(false)}><X size={16}/></button></header>
           <div className="builder-history__list">
             {versionsLoading&&<div className="builder-history__empty">Загружаем версии…</div>}
             {!versionsLoading&&historyError&&<div className="builder-history__error">{historyError}</div>}

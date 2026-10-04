@@ -119,3 +119,6 @@
 .builder-root--quiet .block-presentation label>span{margin:0;font-size:11px}
 .builder-root--quiet .builder-inspector .block-presentation input[type=checkbox]{min-height:15px;height:15px;width:15px;padding:0}
 .builder-root--quiet .block-presentation{gap:7px}.builder-root--quiet .block-presentation label{min-height:25px}.builder-root--quiet .block-presentation label>span{font-size:12px}
+
+.builder-recovery{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#222;border-bottom:1px solid #3c3c3c;padding:16px 24px;font-size:13px}.builder-recovery strong{font-weight:500;color:#f3f3f3}.builder-recovery p{margin:6px 0 0;color:#bbb;max-width:640px;line-height:1.5}.builder-recovery>div:last-child{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
+@media(max-width:1000px){.builder-recovery{align-items:flex-start;flex-direction:column;padding:14px;gap:12px}.builder-recovery>div:last-child{flex-shrink:1}.builder-recovery .studio-button{white-space:normal}}

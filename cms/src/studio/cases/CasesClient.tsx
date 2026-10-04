@@ -3,7 +3,7 @@
 import { Copy, Eye, Plus, Search, Layers, X, LayoutGrid, Menu, ArrowUpRight } from '@/studio/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { pagePresets } from '@/studio/builder/presets'
 import { BlockPreview } from '@/studio/builder/BlockPreview'
 import {useDialogFocus} from '@/studio/ui/useDialogFocus'
@@ -47,6 +47,11 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
   const publicPath=article?'/blog/':'/work/'
   const presets=pagePresets.filter(item=>item.kind===kind)
   const router=useRouter()
+  const preferenceKey='studio:catalog:'+kind
+  const draftKey='studio:create:'+kind
+  const draftReady=useRef(false)
+  const created=useRef(false)
+  const [recoveredForm,setRecoveredForm]=useState(false)
   const params=useSearchParams()
   const [query,setQuery]=useState(params.get('q')||'')
   const [status,setStatus]=useState<string>(caseStatuses.includes(params.get('status') as any)?params.get('status')||'all':'all')
@@ -66,6 +71,30 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
   const [actionError,setActionError]=useState('')
   const modalRef=useDialogFocus(modal,()=>{if(!busy)setModal(false)})
 
+  useEffect(()=>{
+    try {
+      const preferences=JSON.parse(localStorage.getItem(preferenceKey)||'{}')
+      const url=new URL(location.href)
+      if(!url.searchParams.has('view')&&preferences.view==='list'){setView('list');url.searchParams.set('view','list')}
+      if(!url.searchParams.has('sort')&&caseSorts.includes(preferences.sort)&&preferences.sort!=='updated'){setSort(preferences.sort);url.searchParams.set('sort',preferences.sort)}
+      window.history.replaceState(window.history.state,'',url.pathname+url.search)
+      const draft=JSON.parse(sessionStorage.getItem(draftKey)||'null')
+      if(draft&&Date.now()-draft.at<86400000&&typeof draft.title==='string'){
+        setTitle(draft.title);setClient(draft.client||'');setYear(draft.year||String(new Date().getFullYear()));setCategories(draft.categories||'')
+        if(draft.template==='blank'||presets.some(item=>item.id===draft.template)||templates.some(item=>item.slug===draft.template))setTemplate(draft.template)
+        setRecoveredForm(Boolean(draft.title.trim()))
+      }
+    } catch { /* Storage is optional, including in private browsing. */ }
+    draftReady.current=true
+  // Only restore on entry. URL changes remain authoritative while browsing.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[kind])
+  useEffect(()=>{
+    if(!draftReady.current||created.current)return
+    try {sessionStorage.setItem(draftKey,JSON.stringify({title,client,year,categories,template,at:Date.now()}))}catch{}
+  },[title,client,year,categories,template,draftKey])
+  const rememberReturn=()=>{try{sessionStorage.setItem(preferenceKey+':return',location.pathname+location.search)}catch{}}
+
   useEffect(()=>{if(params.get('new')==='1'){
     setModal(true)
     const url=new URL(location.href);url.searchParams.delete('new')
@@ -73,10 +102,11 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
   }},[params])
   const paramStatus=params.get('status'),paramQuery=params.get('q'),paramSort=params.get('sort'),paramView=params.get('view')
   useEffect(()=>{
-    setStatus(caseStatuses.includes(paramStatus as any)?paramStatus||'all':'all')
-    setQuery(paramQuery||'')
-    setSort(caseSorts.includes(paramSort as any)?paramSort||'updated':'updated')
-    setView(paramView==='list'?'list':'grid')
+    const current=new URL(location.href).searchParams
+    setStatus(caseStatuses.includes(current.get('status') as any)?current.get('status')||'all':'all')
+    setQuery(current.get('q')||'')
+    setSort(caseSorts.includes(current.get('sort') as any)?current.get('sort')||'updated':'updated')
+    setView(current.get('view')==='list'?'list':'grid')
   },[paramStatus,paramQuery,paramSort,paramView])
   const changeView=(updates:Record<string,string>)=>{
     setVisibleLimit(24)
@@ -91,6 +121,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
     if('status' in updates)setStatus(updates.status)
     if('sort' in updates)setSort(updates.sort)
     if('view' in updates)setView(updates.view)
+    try{localStorage.setItem(preferenceKey,JSON.stringify({view:updates.view??view,sort:updates.sort??sort}))}catch{}
   }
 
   const visible=useMemo(()=>filterCases(items,query,status,sort) as CaseItem[],[items,query,status,sort])
@@ -110,6 +141,9 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
     })
     const data=await response.json().catch(()=>({}))
     if(!response.ok){setError(data?.error||(article?'Не удалось создать статью':'Не удалось создать кейс'));setBusy(false);return}
+    created.current=true
+    try{sessionStorage.removeItem(draftKey)}catch{}
+    rememberReturn()
     router.push(listURL+data.id)
     } catch {setError('Нет связи с сервером. Данные сохранены в форме — попробуйте ещё раз.')}
     finally {setBusy(false)}
@@ -165,7 +199,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
             exit={{opacity:0,scale:.97}}
             transition={{duration:.25,delay:Math.min(index*.025,.18)}}
           >
-            <a className="studio-case-card__link" href={listURL+item.id} aria-label={'Редактировать '+item.title}>
+            <a className="studio-case-card__link" onClick={rememberReturn} href={listURL+item.id} aria-label={'Редактировать '+item.title}>
             {item.cover?.url&&!failedCovers.includes(String(item.id))?<img loading="lazy" className="studio-case-cover" src={item.cover.sizes?.card?.url||item.cover.url} alt={item.cover.alt||''} onError={()=>setFailedCovers(ids=>[...ids,String(item.id)])}/>:<div className="studio-case-no-cover"><Layers size={28}/><span>{item.cover?.url?'Превью недоступно':'Добавьте обложку'}</span></div>}
             <div className="studio-case-card__top">
               <span className={['studio-chip',state==='published'||state==='ready'?'studio-chip--green':state==='review'?'studio-chip--amber':''].join(' ')}>{item.hasUnpublishedChanges?'Есть правки':label[state]||state}</span>
@@ -201,6 +235,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
           <header><div><span>Готовые структуры BAEV</span><h2 id="new-case-title">{article?'Новая статья':'Новый кейс'}</h2></div><button type="button" disabled={busy} aria-label={article?'Закрыть создание статьи':'Закрыть создание кейса'} onClick={()=>setModal(false)}><X size={17}/></button></header>
           <form className="studio-create-form" onSubmit={event=>{event.preventDefault();void create()}}>
           <div className="studio-new-form">
+            {recoveredForm&&<div className="create-recovery" role="status"><span>Продолжите незавершённую форму</span><button type="button" onClick={()=>{setTitle('');setClient('');setYear(String(new Date().getFullYear()));setCategories('');setTemplate(presets[0]?.id||'blank');setRecoveredForm(false)}}>Начать заново</button></div>}
             <label><span>Название *</span><input value={title} onChange={(e)=>setTitle(e.target.value)} placeholder={article?'О чём будет статья?':'Название проекта'}/></label>
             <details className="create-details"><summary>Добавить подробности <span>Необязательно</span></summary><div><label><span>{article?'Автор':'Клиент'}</span><input value={client} onChange={(e)=>setClient(e.target.value)} placeholder={article?'Имя автора':'Название компании'}/></label>{!article&&<label><span>Год</span><input type="number" min="2000" max="2100" value={year} onChange={(e)=>setYear(e.target.value)}/></label>}</div>
             {!article&&<label><span>Категории</span><input value={categories} onChange={(e)=>setCategories(e.target.value)} placeholder="Презентация, Брендинг, Event"/></label>}</details>
@@ -208,6 +243,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
           <div className="page-presets">
             <div className="page-presets__heading"><strong>С чего начнём?</strong><span>Любую структуру можно изменить в редакторе.</span></div>
             <div className="page-presets__grid">{presets.map(item=><button type="button" key={item.id} className={'page-preset '+(template===item.id?'is-selected':'')} aria-pressed={template===item.id} onClick={()=>setTemplate(item.id)}><div className="page-preset__preview">{item.blocks.slice(0,4).map((block,index)=><BlockPreview key={index} slug={block.blockType}/>)}</div><div><strong>{item.title}</strong><p>{item.description}</p><small>{item.blocks.length} блоков · адаптивная страница</small></div><span className="page-preset__check">{template===item.id?'✓':'○'}</span></button>)}</div>
+            {presets.find(item=>item.id===template)&&<div className="create-outline" aria-label="Структура выбранного шаблона"><span>Внутри</span>{presets.find(item=>item.id===template)!.blocks.map((block,index)=><React.Fragment key={index}>{index>0&&<i aria-hidden="true">→</i>}<span>{block.title||block.kicker||({'caseHero':'Обложка','mediaFrame':'Медиа','editorialText':'Текст','textColumns':'Задача и решение','mediaGrid':'Галерея','projectFacts':'О проекте','fullBleedMedia':'Большой кадр','splitMedia':'Два кадра','deviceShowcase':'Экраны','credits':'Команда','cta':'Контакт','articleText':'Текст','minimalGallery':'Галерея','minimalSplit':'Текст и медиа','minimalQuote':'Цитата','minimalStats':'Результаты','caseNext':'Следующий кейс'} as Record<string,string>)[block.blockType]||'Блок '+(index+1)}</span></React.Fragment>)}</div>}
             <div className="page-presets__other"><button type="button" aria-pressed={template==='blank'} onClick={()=>setTemplate('blank')}><Plus size={16}/>Начать с чистого листа</button>{!article&&templates.length>0&&<label>Шаблоны команды<select aria-label="Шаблоны команды" value={templates.some(item=>item.slug===template)?template:''} onChange={event=>{if(event.target.value)setTemplate(event.target.value)}}><option value="">Выбрать шаблон</option>{templates.map(item=><option key={item.slug} value={item.slug}>{item.title.replace('Template — ','')}</option>)}</select></label>}</div>
           </div>
           <footer>{error&&<span role="alert">{error}</span>}<button type="button" disabled={busy} className="studio-button studio-button--soft" onClick={()=>setModal(false)}>Отмена</button><button className="studio-button" type="submit" disabled={!title.trim()||busy}>{busy?'Создаём…':article?'Создать статью':'Создать кейс'}</button></footer>

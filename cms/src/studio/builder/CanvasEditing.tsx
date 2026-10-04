@@ -45,9 +45,9 @@ export function CanvasToolbar({ index, count, title }: { index: number; count: n
   return <div className="canvas-toolbar" onClick={event => event.stopPropagation()}>
     <button className="canvas-toolbar__title" onClick={() => action('settings')}><Settings2 size={15}/>{String(index + 1).padStart(2, '0')} · {title}</button>
     <span/>
-    <button aria-label="Переместить блок выше" disabled={index === 0} onClick={() => action('up')}><ArrowUp size={16}/></button>
-    <button aria-label="Переместить блок ниже" disabled={index === count - 1} onClick={() => action('down')}><ArrowDown size={16}/></button>
-    <button aria-label="Дублировать блок" onClick={() => action('duplicate')}><Copy size={15}/></button>
-    <button aria-label="Удалить блок" onClick={() => action('delete')}><Trash2 size={15}/></button>
+    <button title="Переместить выше · Alt ↑" aria-label="Переместить блок выше" disabled={index === 0} onClick={() => action('up')}><ArrowUp size={16}/></button>
+    <button title="Переместить ниже · Alt ↓" aria-label="Переместить блок ниже" disabled={index === count - 1} onClick={() => action('down')}><ArrowDown size={16}/></button>
+    <button title="Дублировать · Ctrl/⌘ D" aria-label="Дублировать блок" onClick={() => action('duplicate')}><Copy size={15}/></button>
+    <button title="Удалить · Delete" aria-label="Удалить блок" onClick={() => action('delete')}><Trash2 size={15}/></button>
   </div>
 }

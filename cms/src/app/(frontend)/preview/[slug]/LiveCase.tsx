@@ -1,7 +1,10 @@
 'use client'
 
+import { blockShortcut } from '@/studio/builder/editorInteraction'
+
+import Link from 'next/link'
 import { useLivePreview } from '@payloadcms/live-preview-react'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Menu, X, ArrowUpRight } from 'lucide-react'
 import sourcePalette from '@/content/framer-palette.json'
 import {caseSiteLink} from '@/lib/siteLinks'
@@ -432,13 +435,16 @@ export default function LiveCase({
     const preventNavigation=(event:MouseEvent)=>{if((event.target as HTMLElement).closest('a'))event.preventDefault()}
     const keys=(event:KeyboardEvent)=>{
       if(event.key==='Escape'){window.parent.postMessage({type:'baev:deselect'},location.origin);return}
+      const editing=(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')
+      const shortcut=!editing&&selected>=0?blockShortcut(event):null
+      if(shortcut){event.preventDefault();window.parent.postMessage({type:'baev:shortcut',action:shortcut},location.origin);return}
       if(!(event.ctrlKey||event.metaKey))return
       if(event.key.toLowerCase()==='s'){event.preventDefault();window.parent.postMessage({type:'baev:save'},location.origin)}
       if(event.key.toLowerCase()==='z'&&!(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')){event.preventDefault();window.parent.postMessage({type:event.shiftKey?'baev:redo':'baev:undo'},location.origin)}
     }
     document.addEventListener('click',preventNavigation,true);document.addEventListener('keydown',keys)
     return()=>{document.removeEventListener('click',preventNavigation,true);document.removeEventListener('keydown',keys)}
-  },[inCanvas])
+  },[inCanvas,selected])
   const sourceCase=String(data.blocks?.[0]?.blockName||'').startsWith('framer:')
   const href=(path:string)=>siteURL.replace(/\/$/,'')+path
 
@@ -470,16 +476,16 @@ export default function LiveCase({
     <div data-page-background={appearance.color||undefined} data-media-radius={appearance.radius??undefined} style={{...(appearance.color?{'--page-bg':appearance.color,'--page-ink':appearance.ink,'--page-muted':appearance.muted,'--page-line':appearance.line}:{}),...(appearance.radius!==null?{'--media-radius':`${appearance.radius}px`}:{}),'--canvas-ui-scale':uiScale,'--source-bg':sourceCase?(sourcePalette as Record<string,string>)[data.slug]||'#080808':'#080808'} as React.CSSProperties} className={`case-preview case-preview--${data.pageTheme || 'dark'} ${inCanvas ? 'case-preview--canvas' : ''} ${sourceCase?'case-preview--source':''} ${article?'case-preview--article':''} ${isLoading ? 'is-syncing' : ''}`}>
       <header className="case-site-nav">
         <a className="case-logo" href={href('/')} aria-label="BAEV — главная">BAEV</a>
-        <nav><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href="/blog">Журнал</a></nav>
+        <nav><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><Link href="/blog">Журнал</Link></nav>
         <a className="case-contact" href={href('/contact')}>Связь</a>
         <button className="case-menu-button" onClick={()=>setMenuOpen(v=>!v)} aria-label={menuOpen?'Закрыть меню':'Открыть меню'} aria-expanded={menuOpen}>{menuOpen?<X/>:<Menu/>}</button>
       </header>
-      {menuOpen&&<nav className="case-mobile-nav"><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href="/blog">Журнал</a><a href={href('/contact')}>Связь</a></nav>}
+      {menuOpen&&<nav className="case-mobile-nav"><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><Link href="/blog">Журнал</Link><a href={href('/contact')}>Связь</a></nav>}
 
       <div className={'case-layout '+(article?'article-layout':'')}>
         <CanvasContext.Provider value={{enabled:inCanvas,selected:true,index:-1,blockId:''}}>
         {article ? <header className="article-intro">
-          <a href="/blog" className="article-back">← Журнал BAEV</a>
+          <Link href="/blog" className="article-back">← Журнал BAEV</Link>
           <span className="article-rubric">{categories || 'Журнал'}</span>
           <CanvasText as="h1" path="title" value={data.title || 'Новая статья'}/>
           <CanvasText as="p" className="article-dek" path="summary" value={data.summary || (inCanvas?'Добавьте вступление к статье':'')}/>
