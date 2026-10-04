@@ -10,7 +10,7 @@ export type PublicationIssue = {
   blockIndex?: number
 }
 
-const contentKeys = ['title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
+const contentKeys = ['title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
 
 // Compare content, not version timestamps, row IDs or editorial workflow status.
 export function projectContentSignature(project: Record<string, any>): string {
@@ -28,6 +28,8 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
   const filled = (value: any) => typeof value === 'string' ? Boolean(value.trim()) : value !== null && value !== undefined && value !== ''
   if (!filled(project.title)) add({key:'title',severity:'error',label:'Название страницы',detail:'Укажите название, которое увидит посетитель.',field:'title'})
   if (project.year !== null && project.year !== undefined && project.year !== '' && (!Number.isFinite(Number(project.year)) || Number(project.year) < 2000 || Number(project.year) > 2100)) add({key:'year',severity:'error',label:'Год проекта',detail:'Укажите год от 2000 до 2100.',field:'year'})
+  if (project.pageBackground && !/^#[\da-f]{6}$/i.test(project.pageBackground)) add({key:'pageBackground',severity:'error',label:'Фон страницы',detail:'Укажите цвет в формате #RRGGBB.',field:'pageBackground'})
+  if (project.mediaRadius != null && project.mediaRadius !== '' && (!Number.isFinite(Number(project.mediaRadius)) || Number(project.mediaRadius)<0 || Number(project.mediaRadius)>80)) add({key:'mediaRadius',severity:'error',label:'Скругление медиа',detail:'Укажите значение от 0 до 80 px.',field:'mediaRadius'})
   const blocks = Array.isArray(project.blocks) ? project.blocks : []
   if (!blocks.length) add({key:'blocks',severity:'error',label:'На странице нет блоков',detail:'Добавьте хотя бы один блок с содержимым.',field:'blocks'})
   const inspect = (data: Record<string, any>, fields: EditorField[], blockIndex: number, path = '', topField?: string) => {

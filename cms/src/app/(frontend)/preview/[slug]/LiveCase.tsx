@@ -7,6 +7,8 @@ import sourcePalette from '@/content/framer-palette.json'
 import {caseSiteLink} from '@/lib/siteLinks'
 import { CanvasContext, CanvasText, CanvasRichText, CanvasMediaButton, CanvasInsert, CanvasToolbar } from '@/studio/builder/CanvasEditing'
 import { catalogBySlug } from '@/blocks/catalog'
+import '@/studio/builder/case-custom.css'
+import { pageAppearance } from '@/lib/pageAppearance'
 
 type MediaDoc = {
   url?: string | null
@@ -71,6 +73,30 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
   )
 
   switch (type) {
+    case 'editorialText':
+      return <section className="case-section minimal-block minimal-text" data-width={block.width} data-align={block.align} data-spacing={block.spacing}>
+        {block.eyebrow && <CanvasText as="small" path="eyebrow" value={block.eyebrow}/>}
+        {block.title && <CanvasText as="h2" path="title" value={block.title}/>}
+        <div className="minimal-rich"><CanvasRichText path="body" value={block.body}/></div>
+      </section>
+    case 'mediaFrame':
+      return <section className="case-section minimal-block minimal-frame" data-width={block.width} data-align={block.align} data-spacing={block.spacing} data-aspect={block.aspect}>
+        <figure><div className="minimal-media"><Media path="media" value={block.media}/></div>{block.caption && <CanvasText as="figcaption" path="caption" value={block.caption}/>}</figure>
+      </section>
+    case 'mediaGrid':
+      return <section className="case-section minimal-block minimal-grid" data-width={block.width} data-spacing={block.spacing} data-aspect={block.aspect} style={{'--minimal-columns':Number(block.columns)||2,'--minimal-gap':`${Math.max(0,Math.min(64,Number(block.gap)||0))}px`} as React.CSSProperties}>
+        {(block.items||[]).map((item:any,i:number)=><figure key={item.id||i}><div className="minimal-media"><Media path={`items.${i}.media`} value={item.media}/></div>{item.caption && <CanvasText as="figcaption" path={`items.${i}.caption`} value={item.caption}/>}</figure>)}
+      </section>
+    case 'textColumns':
+      return <section className="case-section minimal-block minimal-columns" data-width={block.width} data-spacing={block.spacing} style={{'--minimal-columns':Math.max(2,Math.min(3,block.items?.length||2))} as React.CSSProperties}>
+        {(block.items||[]).map((item:any,i:number)=><div key={item.id||i}>{item.title&&<CanvasText as="h3" path={`items.${i}.title`} value={item.title}/>}<CanvasText as="p" path={`items.${i}.body`} value={item.body}/></div>)}
+      </section>
+    case 'projectFacts':
+      return <section className="case-section minimal-block minimal-facts" data-width={block.width} data-spacing={block.spacing}><dl>{(block.items||[]).map((item:any,i:number)=><div key={item.id||i}><CanvasText as="dt" path={`items.${i}.label`} value={item.label}/><CanvasText as="dd" path={`items.${i}.value`} value={item.value}/></div>)}</dl></section>
+    case 'sectionBreak':
+      return <section className="case-section minimal-block minimal-break" data-width={block.width} style={{minHeight:`${Math.max(16,Math.min(320,Number(block.height)||80))}px`}}>
+        {block.line&&<hr/>}{block.eyebrow&&<CanvasText as="small" path="eyebrow" value={block.eyebrow}/>}{block.title&&<CanvasText as="h2" path="title" value={block.title}/>}
+      </section>
     case 'caseHero':
       return (
         <section className={`case-section case-hero case-hero--${block.layout || 'editorial'}`}>
@@ -394,7 +420,6 @@ export default function LiveCase({
   const live = useLivePreview({ initialData, serverURL, depth: 2 })
   const [canvasData,setCanvasData]=useState<any>(null)
   const [selected,setSelected]=useState(-1)
-  const selectionSeen=useRef(false)
   const [menuOpen,setMenuOpen]=useState(false)
   const [uiScale,setUIScale]=useState(1)
   const article=initialData.kind==='article'
@@ -405,7 +430,12 @@ export default function LiveCase({
   useEffect(()=>{
     if(!inCanvas)return
     const preventNavigation=(event:MouseEvent)=>{if((event.target as HTMLElement).closest('a'))event.preventDefault()}
-    const keys=(event:KeyboardEvent)=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();window.parent.postMessage({type:'baev:save'},location.origin)}}
+    const keys=(event:KeyboardEvent)=>{
+      if(event.key==='Escape'){window.parent.postMessage({type:'baev:deselect'},location.origin);return}
+      if(!(event.ctrlKey||event.metaKey))return
+      if(event.key.toLowerCase()==='s'){event.preventDefault();window.parent.postMessage({type:'baev:save'},location.origin)}
+      if(event.key.toLowerCase()==='z'&&!(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')){event.preventDefault();window.parent.postMessage({type:event.shiftKey?'baev:redo':'baev:undo'},location.origin)}
+    }
     document.addEventListener('click',preventNavigation,true);document.addEventListener('keydown',keys)
     return()=>{document.removeEventListener('click',preventNavigation,true);document.removeEventListener('keydown',keys)}
   },[inCanvas])
@@ -422,25 +452,22 @@ export default function LiveCase({
       setUIScale(Math.max(1,Math.min(4,Number(event.data.uiScale)||1)))
       const index=event.data.selected
       if(Number.isInteger(index))setSelected(index)
+      if(event.data.scrollTo && Number.isInteger(index))requestAnimationFrame(()=>document.querySelector(`[data-scene-index="${index}"]`)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'}))
     }
     window.addEventListener('message',receive)
     window.parent.postMessage({type:'baev:ready'},location.origin)
     return()=>window.removeEventListener('message',receive)
   },[preview,initialData.id])
-  useEffect(()=>{
-    if(selected<0)return
-    if(!selectionSeen.current){selectionSeen.current=true;return}
-    const scene=document.querySelector(`[data-scene-index="${selected}"]`)
-    scene?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})
-  },[selected])
+
 
   const categories = useMemo(
     () => (data.categories || []).map((item: any) => item.label).filter(Boolean).join(', '),
     [data.categories],
   )
 
+  const appearance = pageAppearance(data.pageBackground, data.mediaRadius)
   return (
-    <div style={{'--canvas-ui-scale':uiScale,'--source-bg':sourceCase?(sourcePalette as Record<string,string>)[data.slug]||'#080808':'#080808'} as React.CSSProperties} className={`case-preview case-preview--${data.pageTheme || 'dark'} ${inCanvas ? 'case-preview--canvas' : ''} ${sourceCase?'case-preview--source':''} ${article?'case-preview--article':''} ${isLoading ? 'is-syncing' : ''}`}>
+    <div data-page-background={appearance.color||undefined} data-media-radius={appearance.radius??undefined} style={{...(appearance.color?{'--page-bg':appearance.color,'--page-ink':appearance.ink,'--page-muted':appearance.muted,'--page-line':appearance.line}:{}),...(appearance.radius!==null?{'--media-radius':`${appearance.radius}px`}:{}),'--canvas-ui-scale':uiScale,'--source-bg':sourceCase?(sourcePalette as Record<string,string>)[data.slug]||'#080808':'#080808'} as React.CSSProperties} className={`case-preview case-preview--${data.pageTheme || 'dark'} ${inCanvas ? 'case-preview--canvas' : ''} ${sourceCase?'case-preview--source':''} ${article?'case-preview--article':''} ${isLoading ? 'is-syncing' : ''}`}>
       <header className="case-site-nav">
         <a className="case-logo" href={href('/')} aria-label="BAEV — главная">BAEV</a>
         <nav><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href="/blog">Журнал</a></nav>

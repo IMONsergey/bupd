@@ -24,10 +24,11 @@ describe('Studio history during batched selection and document changes',()=>{
   it('keeps the first-screen title and page title in sync with undo',()=>{
     const project={id:1,slug:'test',title:'Original',blocks:[{id:'hero',blockType:'caseHero',title:'Original'}]}
     render(React.createElement(VisualCaseBuilder,{project,catalog:[],media:[],schemas:{caseHero:[{name:'title',label:'Заголовок',type:'text'}]}}))
+    fireEvent.click(screen.getByRole('button',{name:'Сцена 1: caseHero'}))
     fireEvent.change(screen.getByLabelText('Заголовок'),{target:{value:'Updated'}})
-    expect(document.querySelector('.builder-title strong')?.textContent).toBe('Updated')
+    expect(document.querySelector('.builder-title>button')?.textContent).toBe('Updated')
     fireEvent.click(screen.getByRole('button',{name:'Отменить'}))
-    expect(document.querySelector('.builder-title strong')?.textContent).toBe('Original')
+    expect(document.querySelector('.builder-title>button')?.textContent).toBe('Original')
     expect((screen.getByLabelText('Заголовок') as HTMLInputElement).value).toBe('Original')
   })
 

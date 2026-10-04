@@ -47,7 +47,7 @@ describe('Publication checks and separation of draft from public content',()=>{
     await waitFor(()=>expect(screen.queryByRole('dialog')).toBeNull())
     const posted=fetcher.mock.calls.find(call=>call[1]?.method==='POST')
     expect(JSON.parse(String(posted?.[1]?.body)).action).toBe('publish')
-    expect(screen.getByText('На сайте · актуальная версия')).toBeTruthy()
+    expect(screen.getByText('На сайте')).toBeTruthy()
   })
   it('keeps failed publication retryable, preserving the draft and dialog',async()=>{
     vi.stubGlobal('ResizeObserver',class{observe(){}disconnect(){}})

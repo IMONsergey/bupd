@@ -26,6 +26,15 @@ export const blockDefaults:Record<string,Record<string,any>>={
 }
 
 
+Object.assign(blockDefaults, {
+  editorialText: {blockType:'editorialText',eyebrow:'',title:'',body:textToRichText('Расскажите о задаче, идее или результате проекта.'),width:'reading',align:'left',spacing:'medium'},
+  mediaFrame: {blockType:'mediaFrame',caption:'',width:'wide',aspect:'auto',align:'center',spacing:'medium'},
+  mediaGrid: {blockType:'mediaGrid',items:[{media:null,caption:''},{media:null,caption:''}],columns:'2',gap:16,width:'full',aspect:'square',spacing:'small'},
+  textColumns: {blockType:'textColumns',items:[{title:'Задача',body:'Что предстояло изменить.'},{title:'Решение',body:'Как мы к этому подошли.'}],width:'wide',spacing:'medium'},
+  projectFacts: {blockType:'projectFacts',items:[{label:'Услуги',value:'Брендинг, дизайн'},{label:'Год',value:'2026'}],width:'wide',spacing:'medium'},
+  sectionBreak: {blockType:'sectionBreak',eyebrow:'',title:'',line:false,height:80,width:'wide'},
+})
+
 blockDefaults.articleText = { blockType: 'articleText', title: 'Название раздела', body: textToRichText('Раскройте одну мысль. Добавьте примеры, факты и выводы.'), width: 'reading', theme: 'light' }
 
 export type PagePreset = { id: string; kind: 'case' | 'article'; title: string; description: string; blocks: Record<string, any>[] }
@@ -37,6 +46,7 @@ const text = (title: string) => block('articleText', { title })
 const contact = () => block('cta')
 
 export const pagePresets: PagePreset[] = [
+  {id:'baev-minimal',kind:'case',title:'Минималистичный',description:'Спокойный текст, большие изображения и ровная сетка.',blocks:[hero(),block('textColumns'),block('mediaFrame'),block('mediaGrid'),block('editorialText',{title:'Результат'}),block('projectFacts')]},
   { id: 'baev-brand', kind: 'case', title: 'Брендинг', description: 'От задачи и идеи — к системе и её применению.', blocks: [hero(), idea('Задачу'), idea('Идею'), photo(), block('splitMedia'), photo(), block('credits'), contact()] },
   { id: 'baev-digital', kind: 'case', title: 'Сайт / digital', description: 'Контекст, решение, экраны и результат.', blocks: [hero(), idea('Задачу'), block('textMedia', { title: 'Решение', body: textToRichText('Как устроен продукт и почему выбрано это решение.') }), block('deviceShowcase', { device: 'browser' }), block('splitMedia'), block('metrics', { items: [{ value: '', label: 'Результат', note: 'Добавьте подтверждённые данные' }] }), contact()] },
   { id: 'baev-event', kind: 'case', title: 'Презентация / событие', description: 'Концепция, ключевые кадры и впечатление.', blocks: [hero(), idea('Концепцию'), photo(), block('splitMedia'), photo(), block('quote', { text: 'Добавьте отзыв участника или клиента.' }), block('credits'), contact()] },
@@ -65,3 +75,40 @@ export const blockVariants: Record<string, BlockVariant[]> = {
   quote: [{ id: 'reading', title: 'Компактная', values: { size: 'l' } }, { id: 'big', title: 'Крупная', values: { size: 'xl' } }],
   cta: [{ id: 'statement', title: 'Крупный заголовок', values: { mode: 'statement' } }, { id: 'minimal', title: 'Компактный контакт', values: { mode: 'minimal' } }],
 }
+
+
+const mediaItems = (count:number) => Array.from({length:count},()=>({media:null,caption:''}))
+Object.assign(blockVariants, {
+  editorialText: [
+    {id:'intro',title:'Короткое вступление',values:{title:'',width:'reading',align:'left'}},
+    {id:'heading',title:'Заголовок и текст',values:{title:'Идея проекта',width:'reading',align:'left'}},
+    {id:'wide',title:'Широкая колонка',values:{title:'',width:'wide',align:'left'}},
+    {id:'center',title:'Текст по центру',values:{title:'Главная мысль',width:'reading',align:'center'}},
+  ],
+  mediaFrame: [
+    {id:'wide',title:'Изображение с полями',values:{width:'wide',aspect:'auto'}},
+    {id:'reading',title:'Узкое изображение',values:{width:'reading',aspect:'auto'}},
+    {id:'full',title:'Во всю ширину',values:{width:'full',spacing:'none',aspect:'auto'}},
+    {id:'portrait',title:'Вертикальный кадр',values:{width:'reading',aspect:'portrait'}},
+    {id:'square',title:'Квадратный кадр',values:{width:'wide',aspect:'square'}},
+  ],
+  mediaGrid: [
+    {id:'two',title:'Два кадра',values:{columns:'2',aspect:'classic',items:mediaItems(2)}},
+    {id:'three',title:'Три кадра',values:{columns:'3',aspect:'portrait',items:mediaItems(3)}},
+    {id:'four',title:'Четыре в ряд',values:{columns:'4',aspect:'square',items:mediaItems(4)}},
+    {id:'grid',title:'Сетка 2 × 2',values:{columns:'2',aspect:'square',items:mediaItems(4)}},
+    {id:'portrait',title:'Два вертикальных',values:{columns:'2',aspect:'portrait',items:mediaItems(2)}},
+  ],
+  textColumns: [
+    {id:'two',title:'Задача и решение',values:{items:[{title:'Задача',body:'Опишите исходную задачу.'},{title:'Решение',body:'Расскажите о выбранном решении.'}]}},
+    {id:'three',title:'Три колонки текста',values:{items:[{title:'Контекст',body:'С чего всё началось.'},{title:'Подход',body:'Что мы сделали.'},{title:'Результат',body:'Что изменилось.'}]}},
+  ],
+  projectFacts: [{id:'facts',title:'Детали проекта',values:{}}],
+  sectionBreak: [
+    {id:'space',title:'Свободное пространство',values:{title:'',line:false,height:96}},
+    {id:'line',title:'Тонкая линия',values:{title:'',line:true,height:64}},
+    {id:'heading',title:'Название раздела',values:{eyebrow:'02',title:'Новая глава',line:false,height:80}},
+  ],
+})
+
+export const minimalBlockTypes = ['editorialText','mediaFrame','mediaGrid','textColumns','projectFacts','sectionBreak']

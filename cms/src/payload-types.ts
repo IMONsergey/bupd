@@ -183,6 +183,14 @@ export interface Project {
   summary?: string | null;
   cover?: (number | null) | Media;
   ogImage?: (number | null) | Media;
+  /**
+   * Единый фон всех блоков. Пустое значение сохраняет оформление блоков.
+   */
+  pageBackground?: string | null;
+  /**
+   * От 0 до 80. Пустое значение сохраняет исходное оформление.
+   */
+  mediaRadius?: number | null;
   accent?: string | null;
   pageTheme?: ('dark' | 'light') | null;
   /**
@@ -486,6 +494,91 @@ export interface Project {
         blockName?: string | null;
         blockType: 'cta';
       }
+    | {
+        eyebrow?: string | null;
+        title?: string | null;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        width?: ('full' | 'wide' | 'reading') | null;
+        align?: ('left' | 'center' | 'right') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'editorialText';
+      }
+    | {
+        media: number | Media;
+        caption?: string | null;
+        width?: ('full' | 'wide' | 'reading') | null;
+        aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
+        align?: ('left' | 'center' | 'right') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaFrame';
+      }
+    | {
+        items: {
+          media: number | Media;
+          caption?: string | null;
+          id?: string | null;
+        }[];
+        columns?: ('2' | '3' | '4') | null;
+        gap?: number | null;
+        width?: ('full' | 'wide' | 'reading') | null;
+        aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaGrid';
+      }
+    | {
+        items: {
+          title?: string | null;
+          body: string;
+          id?: string | null;
+        }[];
+        width?: ('full' | 'wide' | 'reading') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'textColumns';
+      }
+    | {
+        items: {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[];
+        width?: ('full' | 'wide' | 'reading') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'projectFacts';
+      }
+    | {
+        eyebrow?: string | null;
+        title?: string | null;
+        line?: boolean | null;
+        height?: number | null;
+        width?: ('full' | 'wide' | 'reading') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'sectionBreak';
+      }
   )[];
   seoTitle?: string | null;
   seoDescription?: string | null;
@@ -778,6 +871,14 @@ export interface Article {
       }
   )[];
   pageTheme?: ('light' | 'dark') | null;
+  /**
+   * Единый фон всех блоков. Пустое значение сохраняет оформление блоков.
+   */
+  pageBackground?: string | null;
+  /**
+   * От 0 до 80. Пустое значение сохраняет исходное оформление.
+   */
+  mediaRadius?: number | null;
   featured?: boolean | null;
   workflowStatus?: ('draft' | 'review' | 'ready' | 'paused') | null;
   seoTitle?: string | null;
@@ -1105,6 +1206,91 @@ export interface CaseTemplate {
         blockName?: string | null;
         blockType: 'cta';
       }
+    | {
+        eyebrow?: string | null;
+        title?: string | null;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        width?: ('full' | 'wide' | 'reading') | null;
+        align?: ('left' | 'center' | 'right') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'editorialText';
+      }
+    | {
+        media: number | Media;
+        caption?: string | null;
+        width?: ('full' | 'wide' | 'reading') | null;
+        aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
+        align?: ('left' | 'center' | 'right') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaFrame';
+      }
+    | {
+        items: {
+          media: number | Media;
+          caption?: string | null;
+          id?: string | null;
+        }[];
+        columns?: ('2' | '3' | '4') | null;
+        gap?: number | null;
+        width?: ('full' | 'wide' | 'reading') | null;
+        aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaGrid';
+      }
+    | {
+        items: {
+          title?: string | null;
+          body: string;
+          id?: string | null;
+        }[];
+        width?: ('full' | 'wide' | 'reading') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'textColumns';
+      }
+    | {
+        items: {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[];
+        width?: ('full' | 'wide' | 'reading') | null;
+        spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'projectFacts';
+      }
+    | {
+        eyebrow?: string | null;
+        title?: string | null;
+        line?: boolean | null;
+        height?: number | null;
+        width?: ('full' | 'wide' | 'reading') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'sectionBreak';
+      }
   )[];
   updatedAt: string;
   createdAt: string;
@@ -1409,6 +1595,8 @@ export interface ProjectsSelect<T extends boolean = true> {
   summary?: T;
   cover?: T;
   ogImage?: T;
+  pageBackground?: T;
+  mediaRadius?: T;
   accent?: T;
   pageTheme?: T;
   blocks?:
@@ -1719,6 +1907,89 @@ export interface ProjectsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        editorialText?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              body?: T;
+              width?: T;
+              align?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaFrame?:
+          | T
+          | {
+              media?: T;
+              caption?: T;
+              width?: T;
+              aspect?: T;
+              align?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaGrid?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              columns?: T;
+              gap?: T;
+              width?: T;
+              aspect?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textColumns?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    title?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              width?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        projectFacts?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              width?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        sectionBreak?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              line?: T;
+              height?: T;
+              width?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   seoTitle?: T;
   seoDescription?: T;
@@ -1899,6 +2170,8 @@ export interface ArticlesSelect<T extends boolean = true> {
             };
       };
   pageTheme?: T;
+  pageBackground?: T;
+  mediaRadius?: T;
   featured?: T;
   workflowStatus?: T;
   seoTitle?: T;
@@ -2227,6 +2500,89 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               media?: T;
               mode?: T;
               theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        editorialText?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              body?: T;
+              width?: T;
+              align?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaFrame?:
+          | T
+          | {
+              media?: T;
+              caption?: T;
+              width?: T;
+              aspect?: T;
+              align?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaGrid?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              columns?: T;
+              gap?: T;
+              width?: T;
+              aspect?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textColumns?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    title?: T;
+                    body?: T;
+                    id?: T;
+                  };
+              width?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        projectFacts?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              width?: T;
+              spacing?: T;
+              id?: T;
+              blockName?: T;
+            };
+        sectionBreak?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              line?: T;
+              height?: T;
+              width?: T;
               id?: T;
               blockName?: T;
             };

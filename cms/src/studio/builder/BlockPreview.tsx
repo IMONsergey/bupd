@@ -10,6 +10,12 @@ export function BlockPreview({ slug, imageURL = "/studio/block-preview.jpg", lar
   let content: React.ReactNode
   switch (slug) {
     default: content = asset(); break
+    case 'editorialText': content=<div className="mini-editorial" data-align={values.align} data-width={values.width}>{values.title&&<strong>{values.title}</strong>}{copy}{copy}</div>; break
+    case 'mediaFrame': content=<div className="mini-frame" data-width={values.width} data-aspect={values.aspect}>{asset()}<i/></div>; break
+    case 'mediaGrid': content=<div className="mini-grid" style={{gridTemplateColumns:`repeat(${values.columns||2},1fr)`}}>{Array.from({length:values.items?.length||2},(_,i)=><div key={i}>{asset(i%2?'is-secondary':'')}</div>)}</div>; break
+    case 'textColumns': content=<div className="mini-columns" style={{gridTemplateColumns:`repeat(${values.items?.length||2},1fr)`}}>{(values.items||[{title:'Задача'},{title:'Решение'}]).map((item:any,i:number)=><div key={i}><strong>{item.title}</strong>{copy}{copy}</div>)}</div>; break
+    case 'projectFacts': content=<div className="mini-facts">{['Услуги','Клиент','Год'].map(item=><div key={item}><small>{item}</small><i/></div>)}</div>; break
+    case 'sectionBreak': content=<div className="mini-break">{values.title?<><small>{values.eyebrow}</small><strong>{values.title}</strong></>:values.line?<hr/>:<span>↕</span>}</div>; break
     case 'caseHero': content = <><div className="block-preview__rail"><small>ПРОЕКТ / 2026</small><strong>Новая<br/>история.</strong>{copy}</div>{asset()}</>; break
     case 'manifesto': content = <div className="block-preview__statement"><small>ИДЕЯ</small><strong>Хороший дизайн<br/>начинается<br/>с ясной мысли.</strong></div>; break
     case 'fullBleedMedia': content = asset(); break

@@ -5,7 +5,7 @@ import { studioError } from '@/studio/lib/apiError'
 
 const allowed = new Set([
   'title','client','year','summary','workflowStatus','deadline',
-  'pageTheme','accent','featured','blocks','categories','cover','ogImage',
+  'pageBackground','mediaRadius','pageTheme','accent','featured','blocks','categories','cover','ogImage',
   'seoTitle','seoDescription','canonicalURL','noIndex','sourceURL','internalNotes',
 ])
 

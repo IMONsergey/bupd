@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { pageAppearanceFields } from '../fields/pageAppearance'
 import { adminHiddenUnless, contentAccess, contentFieldAccess, isEditor } from '../access/roles'
 import { ArticleBlocks } from '../blocks/articleBlocks'
 import { ensureSlug } from '../lib/slug'
@@ -27,6 +28,7 @@ export const Articles: CollectionConfig = {
     { name: 'categories', label: 'Рубрики', type: 'array', maxRows: 6, fields: [{ name: 'label', label: 'Название', type: 'text', required: true }] },
     { name: 'blocks', label: 'Содержание', type: 'blocks', blocks: ArticleBlocks, required: true },
     { name: 'pageTheme', label: 'Тема', type: 'select', defaultValue: 'light', options: ['light', 'dark'] },
+    ...pageAppearanceFields,
     { name: 'featured', label: 'В избранном', type: 'checkbox', defaultValue: false },
     { name: 'workflowStatus', label: 'Этап работы', type: 'select', defaultValue: 'draft', options: ['draft', 'review', 'ready', 'paused'] },
     { name: 'seoTitle', label: 'Заголовок в поиске', type: 'text', maxLength: 70 },

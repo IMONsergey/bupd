@@ -32,6 +32,15 @@ export const blockCatalog: BlockCatalogItem[] = [
   { slug:'cta', number:'22', title:'Контакт', description:'Финальная конверсионная сцена с переходом к контакту.', group:'System', modes:['minimal','statement','media'] },
 ]
 
+blockCatalog.push(
+  {slug:'editorialText',number:'23',title:'Текстовая колонка',description:'Спокойный заголовок и текст без декоративных элементов.',group:'Narrative',modes:['reading','wide']},
+  {slug:'mediaFrame',number:'24',title:'Медиа с полями',description:'Фото или видео с выбранной шириной и подписью.',group:'Media',modes:['full','wide','reading']},
+  {slug:'mediaGrid',number:'25',title:'Ровная медиасетка',description:'Два, три или четыре медиа в ряд; сетка 2×2.',group:'Media',modes:['2','3','4']},
+  {slug:'textColumns',number:'26',title:'Колонки текста',description:'Задача и решение или три коротких мысли рядом.',group:'Narrative',modes:['2','3']},
+  {slug:'projectFacts',number:'27',title:'Детали проекта',description:'Услуги, сроки и другие данные в простой таблице.',group:'Data',modes:['rows']},
+  {slug:'sectionBreak',number:'28',title:'Разделитель',description:'Пауза, тонкая линия или название следующего раздела.',group:'System',modes:['space','line','heading']},
+)
+
 export const catalogBySlug = Object.fromEntries(blockCatalog.map((item) => [item.slug, item]))
 
 export const blockThumbnail = (slug: string) => `/block-thumbs/${slug}.svg`

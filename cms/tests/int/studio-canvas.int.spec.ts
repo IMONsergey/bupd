@@ -20,7 +20,7 @@ describe('Visual canvas document boundaries', () => {
     for (const path of ['items.6.media', 'items.__proto__.media', '__proto__.polluted', 'items.0.constructor', 'unknown', 'items.0.private']) expect(canvasField(editorSchemas.gallery, path, block)).toBeUndefined()
   })
   it('keeps the article and case presets separate and returns independent documents', () => {
-    expect(pagePresets.filter(item => item.kind === 'case')).toHaveLength(4)
+    expect(pagePresets.filter(item => item.kind === 'case')).toHaveLength(5)
     expect(pagePresets.filter(item => item.kind === 'article')).toHaveLength(3)
     for (const preset of pagePresets) {
       const schemas = preset.kind === 'article' ? articleSchemas : editorSchemas

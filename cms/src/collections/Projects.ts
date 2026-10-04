@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { pageAppearanceFields } from '../fields/pageAppearance'
 import { adminHiddenUnless, contentFieldAccess, contentAccess, isEditor } from '../access/roles'
 import { CaseBlocks } from '../blocks/caseBlocks'
 import { ensureSlug } from '../lib/slug'
@@ -153,6 +154,7 @@ export const Projects: CollectionConfig = {
             {
               type: 'row',
               fields: [
+                ...pageAppearanceFields,
                 { name: 'accent', label: 'Accent color', type: 'text', defaultValue: '#ffffff' },
                 {
                   name: 'pageTheme',

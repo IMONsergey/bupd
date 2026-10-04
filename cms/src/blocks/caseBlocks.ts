@@ -1,4 +1,5 @@
 import type { Block, Field } from 'payload'
+import { MinimalBlocks } from './minimalBlocks'
 import { blockThumbnail, catalogBySlug } from './catalog'
 
 const media = (name: string, required = false): Field => ({
@@ -379,5 +380,5 @@ const rawBlocks: Block[] = [
   },
 ]
 
-export const CaseBlocks: Block[] = rawBlocks.map(decorate)
+export const CaseBlocks: Block[] = [...rawBlocks, ...MinimalBlocks].map(decorate)
 
