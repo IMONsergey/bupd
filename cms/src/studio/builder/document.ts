@@ -37,7 +37,10 @@ export function copyScene(block: any) {
 }
 
 export function copyDocument(value:any):any {
-  const serialized=serializeDocument(value)
+  // The document itself also has an id + slug. Only nested relationships become IDs.
+  const source=value&&typeof value==='object'&&!Array.isArray(value)?{...value}:value
+  if(source&&typeof source==='object'&&!Array.isArray(source))delete source.id
+  const serialized=serializeDocument(source)
   const clear=(node:any):any=>Array.isArray(node)?node.map(clear):node&&typeof node==='object'
     ?Object.fromEntries(Object.entries(node).filter(([key])=>!['id','createdAt','updatedAt','_status'].includes(key)).map(([key,child])=>[key,clear(child)])):node
   return clear(serialized)

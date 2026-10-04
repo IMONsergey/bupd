@@ -3,6 +3,15 @@
 import React from 'react'
 import { MorphIcon, type MorphIconProps } from 'morphicons/react'
 import {
+  ArrowUp as ArrowUpData,
+  ArrowDown as ArrowDownData,
+  Bold as BoldData,
+  Italic as ItalicData,
+  Underline as UnderlineData,
+  List as ListData,
+  ListOrdered as ListOrderedData,
+  Link as LinkData,
+  Unlink as UnlinkData,
   ArrowRight as ArrowRightData,
   ArrowUpRight as ArrowUpRightData,
   BriefcaseBusiness as BriefcaseBusinessData,
@@ -55,6 +64,16 @@ import {
 } from 'lucide'
 
 const icons = {
+  ArrowUp: ArrowUpData,
+  ArrowDown: ArrowDownData,
+  Bold: BoldData,
+  Italic: ItalicData,
+  Underline: UnderlineData,
+  List: ListData,
+  ListOrdered: ListOrderedData,
+  Link: LinkData,
+  Unlink: UnlinkData,
+
   ArrowRight: ArrowRightData,
   ArrowUpRight: ArrowUpRightData,
   BriefcaseBusiness: BriefcaseBusinessData,
@@ -161,3 +180,13 @@ export function Upload(props: IconProps) { return <StudioIcon name="Upload" {...
 export function UserPlus(props: IconProps) { return <StudioIcon name="UserPlus" {...props} /> }
 export function Users(props: IconProps) { return <StudioIcon name="Users" {...props} /> }
 export function X(props: IconProps) { return <StudioIcon name="X" {...props} /> }
+
+export function ArrowUp(props: IconProps) { return <StudioIcon name="ArrowUp" {...props} /> }
+export function ArrowDown(props: IconProps) { return <StudioIcon name="ArrowDown" {...props} /> }
+export function Bold(props: IconProps) { return <StudioIcon name="Bold" {...props} /> }
+export function Italic(props: IconProps) { return <StudioIcon name="Italic" {...props} /> }
+export function Underline(props: IconProps) { return <StudioIcon name="Underline" {...props} /> }
+export function List(props: IconProps) { return <StudioIcon name="List" {...props} /> }
+export function ListOrdered(props: IconProps) { return <StudioIcon name="ListOrdered" {...props} /> }
+export function Link(props: IconProps) { return <StudioIcon name="Link" {...props} /> }
+export function Unlink(props: IconProps) { return <StudioIcon name="Unlink" {...props} /> }

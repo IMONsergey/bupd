@@ -1,11 +1,12 @@
 'use client'
 
 import { useLivePreview } from '@payloadcms/live-preview-react'
-import { RichText } from '@payloadcms/richtext-lexical/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Menu, X, ArrowUpRight } from 'lucide-react'
 import sourcePalette from '@/content/framer-palette.json'
 import {caseSiteLink} from '@/lib/siteLinks'
+import { CanvasContext, CanvasText, CanvasRichText, CanvasMediaButton, CanvasInsert, CanvasToolbar } from '@/studio/builder/CanvasEditing'
+import { catalogBySlug } from '@/blocks/catalog'
 
 type MediaDoc = {
   url?: string | null
@@ -23,16 +24,13 @@ const mediaDoc = (value: any): MediaDoc | null =>
 const mediaURL = (value: any) => mediaDoc(value)?.url || ''
 const mediaAlt = (value: any) => mediaDoc(value)?.alt || ''
 
-function Media({ value, className = '', contain = false }: { value: any; className?: string; contain?: boolean }) {
-  const doc = mediaDoc(value)
-  const url = doc?.url
-  if (!url) return <div className={`case-media-placeholder ${className}`}>MEDIA</div>
-
-  if (doc?.mimeType?.startsWith('video/')) {
-    return <video className={className} src={url} autoPlay muted loop playsInline preload="metadata" />
-  }
-
-  return <img className={className} src={url} alt={mediaAlt(value)} width={doc?.width||undefined} height={doc?.height||undefined} style={{ objectFit: contain ? 'contain' : 'cover', objectPosition:`${doc?.focalX??50}% ${doc?.focalY??50}%` }} />
+function Media({ value, className = '', contain = false, path }: { value: any; className?: string; contain?: boolean; path?: string }) {
+  const context = useContext(CanvasContext)
+  const doc = mediaDoc(value), url = doc?.url
+  const media = !url ? <div className={`case-media-placeholder ${className}`}>{context.enabled ? 'Добавьте изображение или видео' : 'MEDIA'}</div>
+    : doc?.mimeType?.startsWith('video/') ? <video className={className} src={url} autoPlay={!context.enabled} muted loop playsInline preload="metadata"/>
+    : <img className={className} src={url} alt={mediaAlt(value)} width={doc?.width||undefined} height={doc?.height||undefined} style={{ objectFit: contain ? 'contain' : 'cover', objectPosition:`${doc?.focalX??50}% ${doc?.focalY??50}%` }}/>
+  return context.enabled && path ? <div className="canvas-media">{media}<CanvasMediaButton path={path} empty={!url}/></div> : media
 }
 
 function BeforeAfter({ block }: { block: any }) {
@@ -40,8 +38,8 @@ function BeforeAfter({ block }: { block: any }) {
 
   return (
     <div className="case-before-after" style={{ '--split': `${split}%` } as React.CSSProperties}>
-      <div className="case-ba-layer"><Media value={block.before} /></div>
-      <div className="case-ba-layer case-ba-layer--after"><Media value={block.after} /></div>
+      <div className="case-ba-layer"><Media path="before" value={block.before} /></div>
+      <div className="case-ba-layer case-ba-layer--after"><Media path="after" value={block.after} /></div>
       {block.mode!=='split'&&block.mode!=='toggle'&&<input
         aria-label="До и после"
         className="case-ba-range"
@@ -68,7 +66,7 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
 
   if (String(block.blockName||'').startsWith('framer:') && type==='manifesto') return (
     <section className={'case-section case-source-copy '+(block.size==='l'?'case-source-copy--intro':'')} data-align={block.align||'right'}>
-      <p>{block.text}</p>
+      <CanvasText as="p" path="text" value={block.text}/>
     </section>
   )
 
@@ -76,11 +74,11 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
     case 'caseHero':
       return (
         <section className={`case-section case-hero case-hero--${block.layout || 'editorial'}`}>
-          <div className="case-hero__media"><Media value={block.media} /></div>
+          <div className="case-hero__media"><Media path="media" value={block.media} /></div>
           {block.layout !== 'editorial' && (block.eyebrow || block.dek) && (
             <div className="case-hero__copy">
-              {block.eyebrow && <span>{block.eyebrow}</span>}
-              {block.dek && <p>{block.dek}</p>}
+              {block.eyebrow && <CanvasText as="span" path="eyebrow" value={block.eyebrow}/>}
+              {block.dek && <CanvasText as="p" path="dek" value={block.dek}/>}
             </div>
           )}
         </section>
@@ -90,8 +88,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className={`case-section case-manifesto case-theme--${block.theme || 'dark'}`}>
           <BlockLabel index={index} title="MANIFESTO" />
-          {block.kicker && <small>{block.kicker}</small>}
-          <p data-size={block.size || 'xl'}>{block.text}</p>
+          {block.kicker && <CanvasText as="small" path="kicker" value={block.kicker}/>}
+          <CanvasText as="p" data-size={block.size || 'xl'} path="text" value={block.text}/>
         </section>
       )
 
@@ -99,8 +97,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className="case-section case-full-media" data-height={block.height || 'screen'}>
           <BlockLabel index={index} title="FULL BLEED" />
-          <Media value={block.media} contain={block.fit === 'contain'} />
-          {block.caption && <p className="case-caption">{block.caption}</p>}
+          <Media path="media" value={block.media} contain={block.fit === 'contain'} />
+          {block.caption && <CanvasText as="p" className="case-caption" path="caption" value={block.caption}/>}
         </section>
       )
 
@@ -108,8 +106,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className="case-section case-split" data-ratio={block.ratio || '1-1'}>
           <BlockLabel index={index} title="SPLIT MEDIA" />
-          <figure><Media value={block.left} /></figure>
-          <figure><Media value={block.right} /></figure>
+          <figure><Media path="left" value={block.left} /></figure>
+          <figure><Media path="right" value={block.right} /></figure>
         </section>
       )
 
@@ -119,8 +117,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <BlockLabel index={index} title="MOSAIC" />
           {(block.items || []).map((item: any, itemIndex: number) => (
             <figure key={item.id || itemIndex} data-span={item.span || '1'}>
-              <Media value={item.media} />
-              {item.caption && <figcaption>{item.caption}</figcaption>}
+              <Media path={`items.${itemIndex}.media`} value={item.media} />
+              {item.caption && <CanvasText as="figcaption" path={`items.${itemIndex}.caption`} value={item.caption}/>}
             </figure>
           ))}
         </section>
@@ -132,14 +130,14 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <BlockLabel index={index} title="STICKY STORY" />
           <div className="case-sticky__copy">
             <span>{block.chapter || 'Chapter'}</span>
-            <h3>{block.title}</h3>
-            <p>{block.body}</p>
+            <CanvasText as="h3" path="title" value={block.title}/>
+            <CanvasText as="p" path="body" value={block.body}/>
           </div>
           <div className="case-sticky__frames">
             {(block.frames || []).map((frame: any, frameIndex: number) => (
               <figure key={frame.id || frameIndex}>
-                <Media value={frame.media} />
-                {frame.caption && <figcaption>{frame.caption}</figcaption>}
+                <Media path={`frames.${frameIndex}.media`} value={frame.media} />
+                {frame.caption && <CanvasText as="figcaption" path={`frames.${frameIndex}.caption`} value={frame.caption}/>}
               </figure>
             ))}
           </div>
@@ -153,9 +151,9 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <div className="case-metrics__grid">
             {(block.items || []).map((item: any, itemIndex: number) => (
               <article key={item.id || itemIndex}>
-                <strong>{item.value}</strong>
-                <span>{item.label}</span>
-                {item.note && <small>{item.note}</small>}
+                <CanvasText as="strong" path={`items.${itemIndex}.value`} value={item.value}/>
+                <CanvasText as="span" path={`items.${itemIndex}.label`} value={item.label}/>
+                {item.note && <CanvasText as="small" path={`items.${itemIndex}.note`} value={item.note}/>}
               </article>
             ))}
           </div>
@@ -174,8 +172,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className="case-section case-quote">
           <BlockLabel index={index} title="QUOTE" />
-          <blockquote>“{block.text}”</blockquote>
-          {(block.author || block.role) && <cite>{block.author}{block.role ? ` — ${block.role}` : ''}</cite>}
+          <blockquote>“<CanvasText path="text" value={block.text}/>”</blockquote>
+          {(block.author || block.role) && <cite><CanvasText path="author" value={block.author}/>{block.role && <> — <CanvasText path="role" value={block.role}/></>}</cite>}
         </section>
       )
 
@@ -188,8 +186,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
             {(block.steps || []).map((step: any, stepIndex: number) => (
               <article key={step.id || stepIndex}>
                 <span>{step.number || String(stepIndex + 1).padStart(2, '0')}</span>
-                <h4>{step.title}</h4>
-                <p>{step.body}</p>
+                <CanvasText as="h4" path={`steps.${stepIndex}.title`} value={step.title}/>
+                <CanvasText as="p" path={`steps.${stepIndex}.body`} value={step.body}/>
               </article>
             ))}
           </div>
@@ -203,8 +201,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <div className="case-gallery__track">
             {(block.items || []).map((item: any, itemIndex: number) => (
               <figure key={item.id || itemIndex}>
-                <Media value={item.media} />
-                {item.caption && <figcaption>{item.caption}</figcaption>}
+                <Media path={`items.${itemIndex}.media`} value={item.media} />
+                {item.caption && <CanvasText as="figcaption" path={`items.${itemIndex}.caption`} value={item.caption}/>}
               </figure>
             ))}
           </div>
@@ -216,9 +214,9 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
         <section className="case-section case-device">
           <BlockLabel index={index} title="DEVICE / ARTIFACT" />
           <div className={`case-device__frame case-device__frame--${block.device || 'none'}`}>
-            <Media value={block.media} contain={block.device === 'print'} />
+            <Media path="media" value={block.media} contain={block.device === 'print'} />
           </div>
-          {block.caption && <p>{block.caption}</p>}
+          {block.caption && <CanvasText as="p" path="caption" value={block.caption}/>}
         </section>
       )
 
@@ -229,7 +227,7 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <h3>{block.title || 'Команда'}</h3>
           <div>
             {(block.items || []).map((item: any, itemIndex: number) => (
-              <p key={item.id || itemIndex}><span>{item.role}</span><strong>{item.name}</strong></p>
+              <p key={item.id || itemIndex}><CanvasText as="span" path={`items.${itemIndex}.role`} value={item.role}/><CanvasText as="strong" path={`items.${itemIndex}.name`} value={item.name}/></p>
             ))}
           </div>
         </section>
@@ -250,12 +248,12 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className="case-section case-horizontal">
           <BlockLabel index={index} title="HORIZONTAL STORY" />
-          {block.title && <h3>{block.title}</h3>}
+          {block.title && <CanvasText as="h3" path="title" value={block.title}/>}
           <div className="case-horizontal__track">
             {(block.scenes || []).map((scene: any, sceneIndex: number) => (
               <figure key={scene.id || sceneIndex}>
-                <Media value={scene.media} />
-                <figcaption><span>{String(sceneIndex + 1).padStart(2, '0')}</span><strong>{scene.title}</strong><p>{scene.caption}</p></figcaption>
+                <Media path={`scenes.${sceneIndex}.media`} value={scene.media} />
+                <figcaption><span>{String(sceneIndex + 1).padStart(2, '0')}</span><CanvasText as="strong" path={`scenes.${sceneIndex}.title`} value={scene.title}/><CanvasText as="p" path={`scenes.${sceneIndex}.caption`} value={scene.caption}/></figcaption>
               </figure>
             ))}
           </div>
@@ -279,7 +277,7 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
                   '--depth': layer.depth ?? layerIndex,
                 } as React.CSSProperties}
               >
-                <Media value={layer.media} />
+                <Media path={`layers.${layerIndex}.media`} value={layer.media} />
               </div>
             ))}
           </div>
@@ -290,8 +288,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className={`case-section case-type case-type--${block.mode || 'center'}`}>
           <BlockLabel index={index} title="TYPOGRAPHY" />
-          {block.kicker && <small>{block.kicker}</small>}
-          <p>{block.text}</p>
+          {block.kicker && <CanvasText as="small" path="kicker" value={block.kicker}/>}
+          <CanvasText as="p" path="text" value={block.text}/>
         </section>
       )
 
@@ -302,9 +300,9 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <div className="case-video__media">
             {mediaURL(block.video)
               ? <video src={mediaURL(block.video)} poster={mediaURL(block.poster)} autoPlay={block.autoplay !== false} muted loop={block.loop !== false} playsInline controls={!block.autoplay} />
-              : <Media value={block.poster} />}
+              : <Media path="poster" value={block.poster} />}
           </div>
-          {(block.title || block.caption) && <div className="case-video__copy"><h3>{block.title}</h3><p>{block.caption}</p></div>}
+          {(block.title || block.caption) && <div className="case-video__copy"><CanvasText as="h3" path="title" value={block.title}/><CanvasText as="p" path="caption" value={block.caption}/></div>}
         </section>
       )
 
@@ -312,14 +310,14 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
       return (
         <section className="case-section case-comparison">
           <BlockLabel index={index} title="COMPARISON" />
-          {block.title && <h3>{block.title}</h3>}
+          {block.title && <CanvasText as="h3" path="title" value={block.title}/>}
           <div className="case-comparison__grid">
             {(block.items || []).map((item: any, itemIndex: number) => (
               <article key={item.id || itemIndex}>
                 <span>{String(itemIndex + 1).padStart(2, '0')}</span>
-                <strong>{item.title}</strong>
+                <CanvasText as="strong" path={`items.${itemIndex}.title`} value={item.title}/>
                 {item.value && <b>{item.value}</b>}
-                <p>{item.body}</p>
+                <CanvasText as="p" path={`items.${itemIndex}.body`} value={item.body}/>
               </article>
             ))}
           </div>
@@ -333,8 +331,8 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
           <div className="case-stack__stage">
             {(block.items || []).map((item: any, itemIndex: number) => (
               <figure key={item.id || itemIndex} style={{ '--i': itemIndex } as React.CSSProperties}>
-                <Media value={item.media} />
-                {item.label && <figcaption>{item.label}</figcaption>}
+                <Media path={`items.${itemIndex}.media`} value={item.media} />
+                {item.label && <CanvasText as="figcaption" path={`items.${itemIndex}.label`} value={item.label}/>}
               </figure>
             ))}
           </div>
@@ -346,22 +344,28 @@ function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;site
         <section className={`case-section case-text-media case-text-media--${block.layout || 'text-left'}`}>
           <BlockLabel index={index} title="TEXT + MEDIA" />
           <div className="case-text-media__copy">
-            {block.eyebrow && <small>{block.eyebrow}</small>}
-            <h3>{block.title}</h3>
-            {block.body && <div className="case-richtext"><RichText data={block.body} /></div>}
+            {block.eyebrow && <CanvasText as="small" path="eyebrow" value={block.eyebrow}/>}
+            <CanvasText as="h3" path="title" value={block.title}/>
+            {block.body && <div className="case-richtext"><CanvasRichText path="body" value={block.body}/></div>}
           </div>
-          <div className="case-text-media__media"><Media value={block.media} /></div>
+          <div className="case-text-media__media"><Media path="media" value={block.media} /></div>
         </section>
       )
+
+    case 'articleText':
+      return <section className="case-section article-text" data-width={block.width || 'reading'}>
+        {block.title && <CanvasText as="h2" path="title" value={block.title}/>}
+        <div className="case-richtext"><CanvasRichText path="body" value={block.body}/></div>
+      </section>
 
     case 'cta':
       return (
         <section className={`case-section case-cta case-cta--${block.mode || 'statement'}`}>
           <BlockLabel index={index} title="CTA" />
-          {block.media && <div className="case-cta__media"><Media value={block.media} /></div>}
+          {block.media && <div className="case-cta__media"><Media path="media" value={block.media} /></div>}
           <div className="case-cta__copy">
-            <h3>{block.title}</h3>
-            {block.body && <p>{block.body}</p>}
+            <CanvasText as="h3" path="title" value={block.title}/>
+            {block.body && <CanvasText as="p" path="body" value={block.body}/>}
             <a href={caseSiteLink(block.buttonURL,siteURL)}>{block.buttonLabel || 'Обсудить проект'} ↗</a>
           </div>
         </section>
@@ -390,11 +394,21 @@ export default function LiveCase({
   const live = useLivePreview({ initialData, serverURL, depth: 2 })
   const [canvasData,setCanvasData]=useState<any>(null)
   const [selected,setSelected]=useState(-1)
+  const selectionSeen=useRef(false)
   const [menuOpen,setMenuOpen]=useState(false)
+  const [uiScale,setUIScale]=useState(1)
+  const article=initialData.kind==='article'
   const data = preview ? canvasData || live.data : initialData
   const isLoading = preview ? live.isLoading : false
   const [inCanvas,setInCanvas]=useState(false)
   useEffect(()=>{setInCanvas(preview&&window.parent!==window)},[preview])
+  useEffect(()=>{
+    if(!inCanvas)return
+    const preventNavigation=(event:MouseEvent)=>{if((event.target as HTMLElement).closest('a'))event.preventDefault()}
+    const keys=(event:KeyboardEvent)=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();window.parent.postMessage({type:'baev:save'},location.origin)}}
+    document.addEventListener('click',preventNavigation,true);document.addEventListener('keydown',keys)
+    return()=>{document.removeEventListener('click',preventNavigation,true);document.removeEventListener('keydown',keys)}
+  },[inCanvas])
   const sourceCase=String(data.blocks?.[0]?.blockName||'').startsWith('framer:')
   const href=(path:string)=>siteURL.replace(/\/$/,'')+path
 
@@ -405,6 +419,7 @@ export default function LiveCase({
       const next=event.data.data
       if(!next||String(next.id)!==String(initialData.id)||!Array.isArray(next.blocks))return
       setCanvasData(next)
+      setUIScale(Math.max(1,Math.min(4,Number(event.data.uiScale)||1)))
       const index=event.data.selected
       if(Number.isInteger(index))setSelected(index)
     }
@@ -414,6 +429,7 @@ export default function LiveCase({
   },[preview,initialData.id])
   useEffect(()=>{
     if(selected<0)return
+    if(!selectionSeen.current){selectionSeen.current=true;return}
     const scene=document.querySelector(`[data-scene-index="${selected}"]`)
     scene?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})
   },[selected])
@@ -424,35 +440,51 @@ export default function LiveCase({
   )
 
   return (
-    <div style={{'--source-bg':sourceCase?(sourcePalette as Record<string,string>)[data.slug]||'#080808':'#080808'} as React.CSSProperties} className={`case-preview case-preview--${data.pageTheme || 'dark'} ${inCanvas ? 'case-preview--canvas' : ''} ${sourceCase?'case-preview--source':''} ${isLoading ? 'is-syncing' : ''}`}>
+    <div style={{'--canvas-ui-scale':uiScale,'--source-bg':sourceCase?(sourcePalette as Record<string,string>)[data.slug]||'#080808':'#080808'} as React.CSSProperties} className={`case-preview case-preview--${data.pageTheme || 'dark'} ${inCanvas ? 'case-preview--canvas' : ''} ${sourceCase?'case-preview--source':''} ${article?'case-preview--article':''} ${isLoading ? 'is-syncing' : ''}`}>
       <header className="case-site-nav">
         <a className="case-logo" href={href('/')} aria-label="BAEV — главная">BAEV</a>
-        <nav><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/blog')}>Журнал</a></nav>
+        <nav><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href="/blog">Журнал</a></nav>
         <a className="case-contact" href={href('/contact')}>Связь</a>
         <button className="case-menu-button" onClick={()=>setMenuOpen(v=>!v)} aria-label={menuOpen?'Закрыть меню':'Открыть меню'} aria-expanded={menuOpen}>{menuOpen?<X/>:<Menu/>}</button>
       </header>
-      {menuOpen&&<nav className="case-mobile-nav"><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/blog')}>Журнал</a><a href={href('/contact')}>Связь</a></nav>}
+      {menuOpen&&<nav className="case-mobile-nav"><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href="/blog">Журнал</a><a href={href('/contact')}>Связь</a></nav>}
 
-      <div className="case-layout">
-        <aside className="case-project-rail">
-          <h1>{data.title || 'Новый кейс'}</h1>
+      <div className={'case-layout '+(article?'article-layout':'')}>
+        <CanvasContext.Provider value={{enabled:inCanvas,selected:true,index:-1,blockId:''}}>
+        {article ? <header className="article-intro">
+          <a href="/blog" className="article-back">← Журнал BAEV</a>
+          <span className="article-rubric">{categories || 'Журнал'}</span>
+          <CanvasText as="h1" path="title" value={data.title || 'Новая статья'}/>
+          <CanvasText as="p" className="article-dek" path="summary" value={data.summary || (inCanvas?'Добавьте вступление к статье':'')}/>
+          <div className="article-byline"><CanvasText path="author" value={data.author || (inCanvas?'Имя автора':'BAEV')}/>{data.publishedAt && <time dateTime={data.publishedAt}>{new Date(data.publishedAt).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time>}</div>
+          {(data.cover||inCanvas)&&<div className="article-cover"><Media value={data.cover} path="cover"/></div>}
+        </header> : <aside className="case-project-rail">
+          <CanvasText as="h1" path="title" value={data.title || 'Новый кейс'}/>
           <div className="case-project-rail__bottom">
-            {data.summary && <p>{data.summary}</p>}
+            {(data.summary||inCanvas)&&<CanvasText as="p" path="summary" value={data.summary||'Добавьте описание проекта'}/>}
             <dl>
               <div><dt>Категории</dt><dd>{categories || '—'}</dd></div>
-              <div><dt>Клиент</dt><dd>{data.client || '—'}</dd></div>
+              <div><dt>Клиент</dt><dd><CanvasText path="client" value={data.client||'—'}/></dd></div>
               <div><dt>Год</dt><dd>{data.year || '—'}</dd></div>
             </dl>
           </div>
-        </aside>
+        </aside>}
+        </CanvasContext.Provider>
 
         <main className="case-story">
+          {inCanvas&&<CanvasInsert index={0}/>}
           {(data.blocks || []).map((block: any, index: number) => (
-            <div className="case-scene" data-theme={block.theme} data-mode={block.mode} data-align={block.align} data-size={block.size} data-gap={block.gap} data-style={block.style} data-pin={block.pin} data-scene-index={index} data-selected={inCanvas&&selected===index?'true':undefined} key={block.id || `${block.blockType}-${index}`} onClick={event=>{
-              if(!inCanvas)return
-              if((event.target as HTMLElement).closest('a'))event.preventDefault()
-              window.parent.postMessage({type:'baev:select',index},location.origin)
-            }}><CaseBlock block={block} index={index} siteURL={siteURL}/></div>
+            <CanvasContext.Provider key={block.id || `${block.blockType}-${index}`} value={{enabled:inCanvas,selected:selected===index,index,blockId:String(block.id||'')}}>
+              <div className="case-scene" data-theme={block.theme} data-mode={block.mode} data-align={block.align} data-size={block.size} data-gap={block.gap} data-style={block.style} data-pin={block.pin} data-scene-index={index} data-selected={inCanvas&&selected===index?'true':undefined} onClick={event=>{
+                if(!inCanvas)return
+                if((event.target as HTMLElement).closest('a'))event.preventDefault()
+                window.parent.postMessage({type:'baev:select',index},location.origin)
+              }}>
+                {inCanvas&&<CanvasToolbar index={index} count={data.blocks.length} title={catalogBySlug[block.blockType]?.title||'Текст статьи'}/>}
+                <CaseBlock block={block} index={index} siteURL={siteURL}/>
+              </div>
+              {inCanvas&&<CanvasInsert index={index+1}/>}
+            </CanvasContext.Provider>
           ))}
 
           {!data.blocks?.length && (
@@ -464,7 +496,7 @@ export default function LiveCase({
         </main>
       </div>
 
-      {!inCanvas&&related.length>0&&<section className="case-related"><h2>Другие проекты</h2><div>{related.map(project=><a key={project.id} href={'/work/'+project.slug}><Media value={project.cover}/><h3>{project.title}</h3><p>{(project.categories||[]).map((item:any)=>item.label).join(', ')}</p></a>)}</div></section>}
+      {!inCanvas&&!article&&related.length>0&&<section className="case-related"><h2>Другие проекты</h2><div>{related.map(project=><a key={project.id} href={'/work/'+project.slug}><Media value={project.cover}/><h3>{project.title}</h3><p>{(project.categories||[]).map((item:any)=>item.label).join(', ')}</p></a>)}</div></section>}
       {!inCanvas&&<footer className="case-footer"><div><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/contact')}>Связь</a><a href={'mailto:'+contactEmail}>{contactEmail}</a></div><a href={href('/')} className="case-footer__logo">BAEV®</a><p>BAEV Agency / Агентство БАЕВ / {new Date().getFullYear()}. Все права защищены</p></footer>}
     </div>
   )

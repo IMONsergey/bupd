@@ -1,5 +1,6 @@
 import type { Field } from 'payload'
 import { CaseBlocks } from '@/blocks/caseBlocks'
+import { ArticleBlocks } from '@/blocks/articleBlocks'
 
 export type EditorField = {
   name: string
@@ -52,3 +53,5 @@ export function describeFields(fields: Field[]): EditorField[] {
 }
 
 export const editorSchemas = Object.fromEntries(CaseBlocks.map(block => [block.slug, describeFields(block.fields)]))
+
+export const articleSchemas = Object.fromEntries(ArticleBlocks.map(block => [block.slug, describeFields(block.fields)]))

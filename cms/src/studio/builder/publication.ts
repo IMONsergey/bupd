@@ -1,5 +1,5 @@
 import type { EditorField } from './editorSchema'
-import { serializeDocument } from './document'
+import { serializeDocument, richTextToText } from './document'
 
 export type PublicationIssue = {
   key: string
@@ -10,7 +10,7 @@ export type PublicationIssue = {
   blockIndex?: number
 }
 
-const contentKeys = ['title','client','year','summary','categories','cover','ogImage','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
+const contentKeys = ['title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
 
 // Compare content, not version timestamps, row IDs or editorial workflow status.
 export function projectContentSignature(project: Record<string, any>): string {
@@ -26,10 +26,10 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
   const issues: PublicationIssue[] = []
   const add = (issue: PublicationIssue) => issues.push(issue)
   const filled = (value: any) => typeof value === 'string' ? Boolean(value.trim()) : value !== null && value !== undefined && value !== ''
-  if (!filled(project.title)) add({key:'title',severity:'error',label:'Название кейса',detail:'Укажите название, которое увидит посетитель.',field:'title'})
+  if (!filled(project.title)) add({key:'title',severity:'error',label:'Название страницы',detail:'Укажите название, которое увидит посетитель.',field:'title'})
   if (project.year !== null && project.year !== undefined && project.year !== '' && (!Number.isFinite(Number(project.year)) || Number(project.year) < 2000 || Number(project.year) > 2100)) add({key:'year',severity:'error',label:'Год проекта',detail:'Укажите год от 2000 до 2100.',field:'year'})
   const blocks = Array.isArray(project.blocks) ? project.blocks : []
-  if (!blocks.length) add({key:'blocks',severity:'error',label:'В кейсе нет блоков',detail:'Добавьте хотя бы один блок с содержимым.',field:'blocks'})
+  if (!blocks.length) add({key:'blocks',severity:'error',label:'На странице нет блоков',detail:'Добавьте хотя бы один блок с содержимым.',field:'blocks'})
   const inspect = (data: Record<string, any>, fields: EditorField[], blockIndex: number, path = '', topField?: string) => {
     for (const field of fields) {
       const value = data?.[field.name]
@@ -44,6 +44,7 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
         rows.forEach((row, index) => inspect(row, field.fields || [], blockIndex, `${name} ${index + 1} / `, focusField))
         if (!rows.length && field.minRows && !field.required) add({key,severity:'warning',label:`Блок ${blockIndex + 1} · ${name}`,detail:'Этот блок пока пустой. Добавьте содержимое или удалите его.',field:focusField,blockIndex})
       } else {
+        if (field.type === 'richText' && field.required && !richTextToText(value).trim()) { fail('Добавьте текст.'); continue }
         if (field.required && !filled(value)) { fail(field.type === 'upload' ? 'Выберите изображение или видео из медиатеки.' : 'Заполните обязательное поле.'); continue }
         if (!filled(value)) continue
         if (field.type === 'number' && (!Number.isFinite(Number(value)) || (field.min !== undefined && Number(value) < field.min) || (field.max !== undefined && Number(value) > field.max))) fail('Проверьте допустимое значение.')
@@ -61,9 +62,9 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
   for (const [field,label,detail] of [
     ['cover','Обложка','Добавьте обложку для карточки в портфолио.'],
     ['summary','Короткое описание','Объясните задачу и результат в нескольких предложениях.'],
-    ['client','Клиент','Укажите, для кого сделан проект.'],
+    ...(project.kind==='article' ? [['author','Автор','Укажите автора статьи.']] : [['client','Клиент','Укажите, для кого сделан проект.']]),
   ]) if (!filled(project[field])) add({key:field,severity:'warning',label,detail,field})
   if (!filled(project.seoDescription) && !filled(project.summary)) add({key:'seoDescription',severity:'warning',label:'Описание в поиске',detail:'Без описания поисковик выберет текст страницы самостоятельно.',field:'seoDescription'})
-  if (project.noIndex) add({key:'noIndex',severity:'warning',label:'Скрыт от поисковиков',detail:'Кейс будет доступен по ссылке, но индексация отключена.',field:'noIndex'})
+  if (project.noIndex) add({key:'noIndex',severity:'warning',label:'Скрыт от поисковиков',detail:'Страница будет доступна по ссылке, но индексация отключена.',field:'noIndex'})
   return issues
 }

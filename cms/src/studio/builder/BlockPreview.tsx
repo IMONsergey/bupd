@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 
 // Each miniature describes the layout it inserts. It never changes the case theme.
-export function BlockPreview({ slug, imageURL, large = false }: { slug: string; imageURL?: string | null; large?: boolean }) {
+export function BlockPreview({ slug, imageURL = "/studio/block-preview.jpg", large = false, values = {} }: { slug: string; imageURL?: string | null; large?: boolean; values?: Record<string,any> }) {
   const [failedURL, setFailedURL] = useState<string | null>(null)
   const asset = (className = '') => <div className={'block-preview__asset ' + className}>{imageURL && imageURL !== failedURL ? <img src={imageURL} alt="" loading="lazy" onError={() => setFailedURL(imageURL)}/> : <div className="block-preview__landscape"><i/><b/></div>}</div>
   const copy = <div className="block-preview__copy"><b/><i/><i/></div>
@@ -31,7 +31,8 @@ export function BlockPreview({ slug, imageURL, large = false }: { slug: string; 
     case 'comparison': content = <>{['Первый подход','Второй подход'].map(n=><div className="block-preview__comparison" key={n}><small>{n}</small><strong>Aa</strong>{copy}</div>)}</>; break
     case 'artifactStack': content = <>{[0,1,2].map(i=><div className="block-preview__artifact" key={i}><small>ПРОЕКТ / 0{i+1}</small><strong>BAEV.</strong>{copy}</div>)}</>; break
     case 'textMedia': content = <><div className="block-preview__rail"><small>ПОДХОД</small><strong>Внимание<br/>к деталям.</strong>{copy}</div>{asset()}</>; break
+    case 'articleText': content = <div className="block-preview__article"><small>ЖУРНАЛ BAEV</small><strong>Мысль, которую<br/>стоит раскрыть.</strong>{copy}{copy}<b>Следующая глава</b>{copy}</div>; break
     case 'cta': content = <div className="block-preview__statement"><small>ЕСТЬ ЗАДАЧА?</small><strong>Давайте<br/>обсудим.</strong><b className="block-preview__cta">Написать ↗</b></div>; break
   }
-  return <div aria-hidden="true" className={'block-preview block-preview--'+slug+(large?' is-large':'')}>{content}</div>
+  return <div aria-hidden="true" data-variant={values.layout||values.ratio||values.device||values.width||values.style||values.size||values.height||values.mode} className={'block-preview block-preview--'+slug+(large?' is-large':'')}>{content}</div>
 }

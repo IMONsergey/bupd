@@ -1,0 +1,14 @@
+.rich-editor{position:relative;border:1px solid #3a3a3a;border-radius:7px;background:#131313;color:#ededed;letter-spacing:0;font:14px/1.6 Inter,Arial,sans-serif;overflow:visible}
+.rich-editor__tools{position:sticky;top:0;z-index:3;display:flex;align-items:center;flex-wrap:wrap;gap:2px;padding:5px;background:#222;border-bottom:1px solid #3a3a3a;border-radius:6px 6px 0 0;color:#eee}
+.rich-editor__tools button{height:30px;min-width:28px;display:grid;place-items:center;background:none;border:0;border-radius:4px;color:inherit;padding:4px 6px;cursor:pointer}
+.rich-editor__tools button:hover,.rich-editor__tools button[aria-pressed=true]{background:#444;color:white}
+.rich-editor__tools select{max-width:108px;border:0;background:#222;color:#eee;padding:5px;font-size:12px;width:auto}
+.rich-editor__content{outline:none;min-height:160px;max-height:55vh;overflow:auto;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.rich-editor__content p{margin:0 0 12px}.rich-editor__content p:last-child{margin-bottom:0}.rich-editor__content h2{font-size:1.6em;margin:1.2em 0 .6em;line-height:1.2}.rich-editor__content h3{font-size:1.25em;margin:1em 0 .5em;line-height:1.3}.rich-editor__content blockquote{font-size:inherit;margin:16px 0;padding-left:16px;border-left:2px solid #888}.rich-editor__content ul,.rich-editor__content ol{padding-left:24px}
+.rich-bold{font-weight:700}.rich-italic{font-style:italic}.rich-underline{text-decoration:underline}.rich-strike{text-decoration:line-through}.rich-link{text-decoration:underline;text-underline-offset:3px}
+.rich-editor__link{flex-basis:100%;display:flex;gap:4px;flex-wrap:wrap;padding:5px 0}.rich-editor__link input{flex:1;min-width:90px;background:#111;color:#fff;border:1px solid #555;border-radius:4px;padding:6px;font-size:12px}.rich-editor__link small{flex-basis:100%;font-size:12px}
+.rich-editor--inline{border:0;border-radius:0;background:transparent;color:inherit;font:inherit}
+.rich-editor--inline .rich-editor__content{min-height:100px;max-height:none;overflow:visible;padding:0;font:inherit}
+.rich-editor--inline .rich-editor__tools{margin:0 0 20px;border-radius:4px;font:13px/1.2 Arial,sans-serif;top:calc(38px * var(--canvas-ui-scale,1))}
+.rich-editor .rich-link,.rich-editor .rich-link:visited{color:inherit}
+.rich-editor{font-family:"Studio Inter",Inter,Arial,sans-serif}

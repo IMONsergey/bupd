@@ -17,7 +17,7 @@ describe('Studio chooser and recoverable network failures',()=>{
     fireEvent.change(search,{target:{value:'цитата'}})
     expect(screen.getByRole('button',{name:'Цитата'})).toBeTruthy()
     fireEvent.keyDown(search,{key:'Enter'})
-    expect(add).toHaveBeenCalledWith('quote')
+    expect(add).toHaveBeenCalledWith('quote', {size:'l'})
   })
   it('does not insert anything when search results are empty',()=>{
     const add=vi.fn()

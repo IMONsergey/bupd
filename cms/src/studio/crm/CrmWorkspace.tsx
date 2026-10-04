@@ -108,7 +108,7 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
         })}</div>}
 
         {tab==='leads'&&<>
-          <div className="studio-toolbar"><div style={{position:'relative',flex:1}}><Search size={15} style={{position:'absolute',left:11,top:12,color:'#a1a1aa'}}/><input className="studio-input studio-input--search" style={{paddingLeft:34}} value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Имя, компания, email, направление"/></div><button className="studio-button" onClick={()=>setNewLeadOpen(true)}><Plus size={14}/> Новый лид</button></div>
+          <div className="studio-toolbar"><div style={{position:'relative',flex:1}}><Search size={15} style={{position:'absolute',left:11,top:12,color:'#a4a4a4'}}/><input className="studio-input studio-input--search" style={{paddingLeft:34}} value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Имя, компания, email, направление"/></div><button className="studio-button" onClick={()=>setNewLeadOpen(true)}><Plus size={14}/> Новый лид</button></div>
           <div className="crm-leads">{filteredLeads.map((lead)=><button key={lead.id} onClick={()=>setSelectedLead(lead)}><div><strong>{lead.name}</strong><span>{lead.companyName||'Без компании'}</span></div><span>{lead.email||lead.phone||'—'}</span><span>{lead.service||'—'}</span><i className="studio-chip">{lead.status||'new'}</i><b>{lead.budget?money(lead.budget)+' ₽':'—'}</b></button>)}</div>
         </>}
 

@@ -5,11 +5,12 @@ import { motion } from 'motion/react'
 import { Plus, Search, SearchX, X, Layers } from '@/studio/ui/icons'
 import { TransitionPanel } from '@/studio/ui/TransitionPanel'
 import { useDialogFocus } from '@/studio/ui/useDialogFocus'
+import { blockVariants } from './presets'
 import { BlockPreview } from './BlockPreview'
 
 type BlockMeta = { slug: string; title: string; description: string; group: string }
 const groups = [['popular','Основные'],['all','Все блоки'],['Narrative','Текст и история'],['Media','Фото и видео'],['Data','Результаты'],['Interaction','Интерактив'],['System','Завершение']] as const
-const common = ['fullBleedMedia','textMedia','splitMedia','manifesto','videoChapter','mediaMosaic']
+const common = ['articleText','fullBleedMedia','textMedia','splitMedia','manifesto','videoChapter','mediaMosaic']
 const descriptions: Record<string,string> = {
   caseHero:'Название, описание и главный визуал в начале кейса.',
   manifesto:'Крупная мысль или короткое утверждение.',
@@ -40,11 +41,12 @@ export function BlockLibrary({ catalog, imageURL, afterLabel, onClose, onAdd }: 
   imageURL?: string | null
   afterLabel?: string
   onClose: () => void
-  onAdd: (slug: string) => void
+  onAdd: (slug: string, variant?: Record<string, any>) => void
 }) {
   const ref = useDialogFocus(true, onClose)
   const [group,setGroup] = useState('popular')
   const [query,setQuery] = useState('')
+  const [variant,setVariant] = useState('')
   const [selected,setSelected] = useState('fullBleedMedia')
   const cardRefs = useRef(new Map<string,HTMLButtonElement>())
   const visible = useMemo(() => catalog.filter(item => {
@@ -54,6 +56,9 @@ export function BlockLibrary({ catalog, imageURL, afterLabel, onClose, onAdd }: 
     return !q || (item.title+' '+(descriptions[item.slug]||item.description)).toLocaleLowerCase('ru').includes(q)
   }),[catalog,group,query])
   const active = visible.find(item=>item.slug===selected)||visible[0]
+  const variants=blockVariants[active?.slug||'']||[]
+  const activeVariant=variants.find(item=>item.id===variant)||variants[0]
+  const insert=(slug:string)=>onAdd(slug,activeVariant?.values)
   const choose = (slug:string) => {setSelected(slug);cardRefs.current.get(slug)?.scrollIntoView?.({block:'nearest'})}
   const navigate = (e:React.KeyboardEvent<HTMLInputElement>) => {
     if(!visible.length)return
@@ -62,7 +67,7 @@ export function BlockLibrary({ catalog, imageURL, afterLabel, onClose, onAdd }: 
       e.preventDefault()
       choose(visible[(index+(e.key==='ArrowDown'?1:-1)+visible.length)%visible.length].slug)
     }
-    if(e.key==='Enter'&&active){e.preventDefault();onAdd(active.slug)}
+    if(e.key==='Enter'&&active){e.preventDefault();insert(active.slug)}
   }
   return <motion.div className="builder-library-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={e=>e.target===e.currentTarget&&onClose()}>
     <motion.section ref={ref} role="dialog" aria-modal="true" aria-labelledby="block-library-title" className="block-library"
@@ -76,17 +81,17 @@ export function BlockLibrary({ catalog, imageURL, afterLabel, onClose, onAdd }: 
           <div className="block-library__grid" aria-label="Блоки">{visible.map(item=><button
             ref={el=>{if(el)cardRefs.current.set(item.slug,el);else cardRefs.current.delete(item.slug)}}
             className={'block-library__card '+(active?.slug===item.slug?'is-selected':'')} key={item.slug}
-            aria-pressed={active?.slug===item.slug} onClick={()=>setSelected(item.slug)} onDoubleClick={()=>onAdd(item.slug)}>
-            <BlockPreview slug={item.slug}/><strong>{item.title}</strong>
+            aria-pressed={active?.slug===item.slug} onClick={()=>setSelected(item.slug)} onDoubleClick={()=>onAdd(item.slug,blockVariants[item.slug]?.[0]?.values)}>
+            <BlockPreview slug={item.slug} imageURL={imageURL||undefined}/><strong>{item.title}</strong>
           </button>)}{!visible.length&&<div className="block-library__empty"><SearchX size={24}/><strong>Блок не найден</strong><span>Попробуйте «фото», «текст» или «видео».</span><button className="studio-button studio-button--soft" onClick={()=>{setQuery('');setGroup('all')}}>Показать все блоки</button></div>}</div>
         </section>
         <aside className="block-library__detail"><TransitionPanel activeKey={active?.slug||'empty'}>{active&&<>
-          <span className="block-library__detail-label">Так выглядит блок</span><BlockPreview slug={active.slug} imageURL={imageURL} large/>
-          <h3>{active.title}</h3><p>{descriptions[active.slug]||active.description}</p>
+          <span className="block-library__detail-label">Так выглядит блок</span><BlockPreview slug={active.slug} imageURL={imageURL} large values={activeVariant?.values}/>
+          <h3>{active.title}</h3><p>{descriptions[active.slug]||active.description}</p>{variants.length>1&&<div className="block-variants" aria-label="Готовые композиции">{variants.map(item=><button key={item.id} aria-pressed={activeVariant?.id===item.id} onClick={()=>setVariant(item.id)}>{item.title}</button>)}</div>}
           <span className="block-library__detail-note">Содержимое и оформление можно изменить после добавления.</span>
         </>}</TransitionPanel></aside>
       </div>
-      <footer className="block-library__footer"><span>{afterLabel?'После блока «'+afterLabel+'»':'В начало кейса'}</span><button className="studio-button studio-button--soft" onClick={onClose}>Отмена</button><button className="studio-button" disabled={!active} onClick={()=>active&&onAdd(active.slug)}><Plus size={16}/>Добавить блок</button></footer>
+      <footer className="block-library__footer"><span>{afterLabel?'После блока «'+afterLabel+'»':'В начало страницы'}</span><button className="studio-button studio-button--soft" onClick={onClose}>Отмена</button><button className="studio-button" disabled={!active} onClick={()=>active&&insert(active.slug)}><Plus size={16}/>Добавить блок</button></footer>
     </motion.section>
   </motion.div>
 }

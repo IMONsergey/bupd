@@ -17,10 +17,10 @@ it('does not expose content to a sales-only account',async()=>{
   expect(find).not.toHaveBeenCalled()
 })
 it('searches drafts with a bounded query and returns only navigation data',async()=>{
-  const find=vi.fn(async()=>({docs:[{id:1,title:'Кейс',client:'Клиент',slug:'case',internalNotes:'private'}],totalDocs:1}))
+  const find=vi.fn(async({collection}:any)=>collection==='articles'?{docs:[],totalDocs:0}:({docs:[{id:1,title:'Кейс',client:'Клиент',slug:'case',internalNotes:'private'}],totalDocs:1}))
   vi.mocked(getStudioSession).mockResolvedValue({payload:{find} as any,user:{role:'editor'} as any})
   const result=await GET(new Request('https://test/api/studio/search?q='+('a'.repeat(150))))
   expect(result.headers.get('Cache-Control')).toContain('no-store')
-  expect(await result.json()).toEqual({docs:[{id:1,title:'Кейс',client:'Клиент',slug:'case'}],totalDocs:1})
+  expect(await result.json()).toEqual({docs:[{id:1,title:'Кейс',client:'Клиент',slug:'case',kind:'case'}],totalDocs:1})
   expect(find).toHaveBeenCalledWith(expect.objectContaining({draft:true,limit:8,where:{or:[{title:{contains:'a'.repeat(80)}},{client:{contains:'a'.repeat(80)}},{slug:{contains:'a'.repeat(80)}}]}}))
 })

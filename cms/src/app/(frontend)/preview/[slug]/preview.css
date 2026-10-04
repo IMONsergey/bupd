@@ -1,4 +1,5 @@
 @import './source-fonts.css';
+@import '../../../../studio/ui/fonts.css';
 :root {
   --case-bg:#090a0b;
   --case-fg:#f5f5f2;
@@ -831,7 +832,7 @@ body{overflow-x:hidden;background:var(--case-bg);font-family:Arial,Helvetica,san
 .case-source-copy--intro p{width:65%;font-size:35px;line-height:1.2}
 .case-source-copy[data-align='center']{justify-content:center}
 .case-preview--canvas .case-scene{cursor:pointer;position:relative}
-.case-preview--canvas .case-scene[data-selected='true']::after{content:'';position:absolute;inset:0;pointer-events:none;border:2px solid #8e7af7;z-index:40}
+.case-preview--canvas .case-scene[data-selected='true']::after{content:'';position:absolute;inset:0;pointer-events:none;border:1px solid #ffffff;z-index:40}
 .case-related{padding:100px 20px 70px}
 .case-related h2{font-size:50px;font-weight:500;line-height:1;letter-spacing:-.05em;margin:0 0 40px}
 .case-related>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
@@ -872,3 +873,47 @@ body{overflow-x:hidden;background:var(--case-bg);font-family:Arial,Helvetica,san
 .case-mosaic--rail{display:flex;overflow:auto;scroll-snap-type:x mandatory}.case-mosaic--rail figure{flex:0 0 80%;height:60vh;scroll-snap-align:start}
 .case-scene[data-mode='minimal'] .case-cta{min-height:35vh}.case-scene[data-mode='minimal'] .case-cta h3{font-size:clamp(40px,6vw,80px)}
 @media(max-width:809px){.case-scene[data-mode='table'] .case-comparison article{grid-template-columns:1fr}}
+
+/* Visual authoring chrome is confined to the private canvas. */
+.case-preview--canvas{--case-accent:#fff;overflow:visible}
+.case-preview--canvas .case-scene{scroll-margin-top:calc(44px * var(--canvas-ui-scale,1))}
+.case-preview--canvas .case-scene[data-selected=true]::after{outline:1px solid #111;border:1px solid #fff;outline-offset:1px;z-index:9}
+.case-preview--canvas .case-story{gap:0!important;overflow:visible}
+.case-preview--canvas .case-scene:has(.canvas-toolbar:hover){z-index:12}
+.canvas-toolbar{display:flex;position:sticky;top:0;align-items:center;gap:2px;padding:calc(4px * var(--canvas-ui-scale,1));background:#202020;color:#fff;border-bottom:1px solid #444;z-index:11;font:calc(12px * var(--canvas-ui-scale,1))/1.2 Arial,sans-serif;letter-spacing:0;opacity:.7}
+.case-scene:hover>.canvas-toolbar,.case-scene[data-selected=true]>.canvas-toolbar{opacity:1}
+.canvas-toolbar>span{flex:1}.canvas-toolbar button{display:flex;align-items:center;justify-content:center;gap:6px;border:0;background:transparent;color:inherit;min-height:calc(28px * var(--canvas-ui-scale,1));min-width:calc(28px * var(--canvas-ui-scale,1));font:inherit;padding:4px 8px;cursor:pointer;border-radius:4px}.canvas-toolbar button:hover{background:#404040}.canvas-toolbar button:disabled{opacity:.3;cursor:default}
+.canvas-toolbar svg,.canvas-insert svg,.canvas-media-edit svg{width:calc(14px * var(--canvas-ui-scale,1));height:calc(14px * var(--canvas-ui-scale,1));flex-shrink:0}
+.canvas-toolbar__title{max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.canvas-insert{display:flex;align-items:center;justify-content:center;position:relative;z-index:10;height:calc(38px * var(--canvas-ui-scale,1));background:#101010;border-top:1px solid #333;border-bottom:1px solid #333;flex:none;width:100%}
+.canvas-insert:before,.canvas-insert:after{content:'';flex:1;background:#333;height:1px;margin:0 16px}.canvas-insert button{display:flex;align-items:center;gap:5px;background:#242424;color:#bcbcbc;border:1px solid #454545;padding:calc(5px * var(--canvas-ui-scale,1)) calc(10px * var(--canvas-ui-scale,1));border-radius:4px;font:calc(11px * var(--canvas-ui-scale,1))/1.2 Arial,sans-serif;letter-spacing:0;cursor:pointer}.canvas-insert button:hover,.canvas-insert button:focus-visible{background:#fff;color:#111}
+[data-canvas-text]{cursor:text;outline:1px dashed transparent;outline-offset:5px;min-width:1ch;white-space:pre-wrap;overflow-wrap:anywhere}
+[data-canvas-text]:hover{outline-color:#888}[data-canvas-text]:focus{outline:1px solid currentColor}
+.canvas-media{position:relative;width:100%;height:100%;min-height:120px}.canvas-media>.case-media-placeholder{min-height:240px}.canvas-media-edit{position:absolute;z-index:10;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid #fff;border-radius:5px;background:#171717;color:#fff;padding:calc(8px * var(--canvas-ui-scale,1)) calc(12px * var(--canvas-ui-scale,1));font:calc(12px * var(--canvas-ui-scale,1))/1.2 Arial,sans-serif;letter-spacing:0;cursor:pointer;opacity:0;box-shadow:0 2px 16px #0003}.canvas-media:hover>.canvas-media-edit,.canvas-media-edit:focus-visible,.canvas-media-edit.is-empty{opacity:1}.canvas-media-edit:hover{background:#fff;color:#111}
+.case-preview--canvas .case-full-media[data-height=auto] .canvas-media img{height:auto}.case-preview--canvas .case-source-copy{padding-block:64px}
+@media(max-width:809px){.case-preview--canvas.case-preview--source .case-story{display:block;order:2}.case-preview--canvas.case-preview--source .case-scene{width:100%;margin:0!important}.case-preview--canvas.case-preview--source .case-project-rail{order:0}.canvas-toolbar__title{max-width:52%}}
+
+/* Journal and reading layouts share BAEV typography and authored blocks. */
+.case-preview--article{--case-bg:#fff;--case-fg:#151515;--case-muted:#666;--case-line:#ddd;background:#fff;color:#151515}
+.case-preview--article.case-preview--dark{--case-bg:#111;--case-fg:#f2f2f2;--case-muted:#aaa;--case-line:#333;background:#111;color:#f2f2f2}
+.case-preview--article .case-site-nav{background:var(--case-bg);color:var(--case-fg);border-color:var(--case-line)}
+.article-layout{display:block!important;max-width:1440px;margin:auto}.article-layout>.case-story{width:100%;display:block;padding:0}
+.article-intro{padding:80px 6% 32px;max-width:1240px;margin:auto}.article-back{display:inline-block;font-size:13px;text-decoration:none;margin-bottom:64px;color:var(--case-muted)}.article-rubric{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px}.article-intro h1{font-size:clamp(44px,6.3vw,92px);line-height:1.03;font-weight:500;letter-spacing:-.055em;margin:0 0 32px;max-width:1100px}.article-dek{font-size:clamp(20px,2vw,28px);line-height:1.4;max-width:800px;margin:0 0 32px;color:var(--case-muted)}.article-byline{display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--case-muted);margin:0 0 48px}.article-cover{width:100%;aspect-ratio:16/9;overflow:hidden}.article-cover img{object-fit:cover}
+.article-text{padding:48px 24px;min-height:0!important;width:100%;margin:auto}.article-text>h2,.article-text>.case-richtext{width:min(100%,720px);margin-inline:auto}.article-text[data-width=wide]>h2,.article-text[data-width=wide]>.case-richtext{width:min(100%,1000px)}.article-text>h2{font-size:clamp(28px,3vw,44px);line-height:1.15;font-weight:500;letter-spacing:-.035em;margin-top:0;margin-bottom:24px}.article-text .case-richtext{font:20px/1.65 Arial,sans-serif;letter-spacing:-.015em}.article-text .case-richtext p{margin:0 0 1.2em}.article-text .case-richtext h2{font-size:1.65em;line-height:1.2}.article-text .case-richtext h3{font-size:1.3em;line-height:1.3}.article-text .case-richtext a{text-decoration:underline;text-underline-offset:4px}.article-text .case-richtext blockquote{font-size:1.25em;line-height:1.45;border-left:2px solid currentColor;padding-left:24px;margin:30px 0}
+.case-preview--article .case-scene[data-theme=light]>.case-section{background:#fff;color:#151515}.case-preview--article .case-scene[data-theme=dark]>.case-section{background:#111;color:#f2f2f2}.case-preview--article .case-scene[data-theme=dark] .case-richtext{color:#ddd}.case-preview--article .case-quote{padding:70px max(24px,calc((100% - 900px)/2));min-height:0}.case-preview--article .case-quote blockquote{font-size:clamp(30px,4vw,56px)}.case-preview--article .case-block-label{display:none}.case-preview--article .case-footer{border-top:1px solid var(--case-line);background:var(--case-bg);color:var(--case-fg)}
+.journal-page{background:#fff;color:#141414;min-height:100dvh;font-family:Arial,sans-serif}.journal-nav{display:flex;align-items:center;justify-content:space-between;padding:26px 4vw;border-bottom:1px solid #ddd}.journal-nav nav{display:flex;gap:32px}.journal-nav nav a{font-size:14px;text-decoration:none}.journal-page>main{padding:0 4vw 100px;max-width:1600px;margin:auto}.journal-heading{padding:84px 0 72px;display:grid;grid-template-columns:1fr 1fr;align-items:end}.journal-heading>span{grid-column:1/-1;font-size:12px;letter-spacing:.05em}.journal-heading h1{font-size:clamp(68px,10vw,160px);font-weight:500;letter-spacing:-.07em;margin:24px 0 0;line-height:1}.journal-heading p{justify-self:end;font-size:20px;line-height:1.4;margin:0}.journal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:64px 28px}.journal-card{text-decoration:none}.journal-card>img,.journal-card__type{aspect-ratio:4/3;width:100%;height:auto;object-fit:cover;transition:opacity .2s}.journal-card:hover>img{opacity:.85}.journal-card__type{background:#171717;color:#fff;padding:28px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}.journal-card__type>span{font-size:10px;letter-spacing:.08em}.journal-card__type strong{font-size:clamp(24px,2.4vw,42px);font-weight:500;line-height:1.1;letter-spacing:-.04em}.journal-card>small{display:block;color:#777;margin:22px 0 12px}.journal-card h2{display:flex;justify-content:space-between;gap:16px;font-size:26px;font-weight:500;letter-spacing:-.035em;line-height:1.2;margin:0}.journal-card p{font-size:15px;line-height:1.5;color:#666;max-width:90%}.journal-empty{padding:80px 0;border-top:1px solid #ddd}.journal-empty h2{font-size:36px;font-weight:500;letter-spacing:-.03em}.journal-empty p{color:#666}.journal-empty a{display:inline-block;margin-top:20px}.journal-pagination{display:flex;gap:40px;justify-content:center;margin-top:60px}.journal-footer{padding:32px 4vw;border-top:1px solid #ddd;display:flex;justify-content:space-between;font-size:14px}
+@media(max-width:800px){.article-intro{padding:40px 24px 24px}.article-back{margin-bottom:40px}.article-intro h1{font-size:48px}.article-text{padding:32px 24px}.article-text .case-richtext{font-size:18px}.journal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.journal-heading{padding:50px 0}.journal-heading p{font-size:16px}.journal-nav nav{gap:18px}}
+@media(max-width:500px){.journal-nav{padding:22px 20px}.journal-nav .case-logo{font-size:30px}.journal-nav nav{gap:14px}.journal-nav nav a{font-size:12px}.journal-page>main{padding:0 20px 60px}.journal-heading{display:block}.journal-heading h1{font-size:72px}.journal-heading p{margin-top:30px}.journal-grid{grid-template-columns:1fr;gap:48px}.journal-card__type strong{font-size:36px}.journal-footer{padding:24px 20px;gap:20px}.article-intro h1{font-size:40px}.article-dek{font-size:20px}}
+.case-preview--canvas .case-site-nav{position:relative;mix-blend-mode:normal;background:#111;color:#eee;border-bottom:1px solid #333;z-index:2}
+.case-preview--article .case-site-nav{mix-blend-mode:normal;background:var(--case-bg);color:var(--case-fg)}
+.case-preview--article .case-story{background:var(--case-bg)}
+.case-preview--article .article-intro{padding-top:120px}
+.case-preview--canvas.case-preview--article .article-intro{padding-top:48px}
+.case-preview--canvas [data-canvas-text]{font-synthesis:weight}
+.case-preview--canvas .case-media-placeholder{background:#171717;color:#aaa;font:14px/1.5 Arial,sans-serif;text-align:center;padding:24px;display:grid;place-items:center}
+.case-preview--canvas .rich-editor__tools{font-size:calc(12px * var(--canvas-ui-scale,1))}
+.case-preview--canvas .rich-editor__tools button{height:calc(28px * var(--canvas-ui-scale,1));min-width:calc(26px * var(--canvas-ui-scale,1))}.case-preview--canvas .rich-editor__tools button svg{width:calc(14px * var(--canvas-ui-scale,1));height:calc(14px * var(--canvas-ui-scale,1))}.case-preview--canvas .rich-editor__tools select{font-size:inherit;max-width:none}
+@media(max-width:600px){.case-preview--article .article-intro{padding-top:100px}.case-preview--canvas.case-preview--article .article-intro{padding-top:36px}}
+.case-preview--article .case-richtext{font-family:Inter,Arial,sans-serif}
+
+.case-preview--article,.case-preview--article .case-richtext{font-family:"Studio Inter",Inter,Arial,sans-serif}

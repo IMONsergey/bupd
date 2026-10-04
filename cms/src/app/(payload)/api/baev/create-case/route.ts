@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { slugify } from '@/lib/slug'
 import {copyDocument} from '@/studio/builder/document'
+import { presetBlocks, pagePresets } from '@/studio/builder/presets'
 import {studioError} from '@/studio/lib/apiError'
 
 export async function POST(request: Request) {
@@ -35,7 +36,9 @@ export async function POST(request: Request) {
   let pageTheme = 'dark'
   let accent = '#ffffff'
 
-  if (templateSlug !== 'blank') {
+  if (pagePresets.some(preset => preset.id === templateSlug && preset.kind === 'case')) {
+    blocks = presetBlocks(templateSlug, title) || []
+  } else if (templateSlug !== 'blank') {
     const found = await payload.find({
       collection: 'case-templates',
       limit: 1,

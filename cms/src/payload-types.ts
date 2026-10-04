@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     projects: Project;
+    articles: Article;
     'case-templates': CaseTemplate;
     media: Media;
     leads: Lead;
@@ -84,6 +85,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'case-templates': CaseTemplatesSelect<false> | CaseTemplatesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
@@ -590,6 +592,204 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  slug: string;
+  author?: string | null;
+  publishedAt?: string | null;
+  summary?: string | null;
+  cover?: (number | null) | Media;
+  categories?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  blocks: (
+    | {
+        title?: string | null;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        width?: ('reading' | 'wide') | null;
+        theme?: ('light' | 'dark') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'articleText';
+      }
+    | {
+        media: number | Media;
+        caption?: string | null;
+        height?: ('auto' | '70vh' | 'screen' | '120vh') | null;
+        fit?: ('cover' | 'contain') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'fullBleedMedia';
+      }
+    | {
+        left: number | Media;
+        right: number | Media;
+        ratio?: ('1-1' | '1-2' | '2-1') | null;
+        gap?: ('none' | 'xs' | 's' | 'm') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'splitMedia';
+      }
+    | {
+        items?:
+          | {
+              media: number | Media;
+              caption?: string | null;
+              span?: ('1' | '2') | null;
+              id?: string | null;
+            }[]
+          | null;
+        layout?: ('editorial' | 'grid' | 'rail' | 'staggered') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaMosaic';
+      }
+    | {
+        items?:
+          | {
+              value: string;
+              label: string;
+              note?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        style?: ('rail' | 'cards' | 'oversized') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'metrics';
+      }
+    | {
+        text: string;
+        author?: string | null;
+        role?: string | null;
+        size?: ('l' | 'xl' | 'display') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'quote';
+      }
+    | {
+        title?: string | null;
+        steps?:
+          | {
+              number?: string | null;
+              title: string;
+              body?: string | null;
+              media?: (number | null) | Media;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('timeline' | 'accordion' | 'sticky') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'process';
+      }
+    | {
+        items?:
+          | {
+              media: number | Media;
+              caption?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        mode?: ('drag' | 'cursor' | 'stack' | 'filmstrip') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'gallery';
+      }
+    | {
+        video: number | Media;
+        poster?: (number | null) | Media;
+        title?: string | null;
+        caption?: string | null;
+        mode?: ('inline' | 'full' | 'sticky') | null;
+        autoplay?: boolean | null;
+        loop?: boolean | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'videoChapter';
+      }
+    | {
+        eyebrow?: string | null;
+        title: string;
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        media: number | Media;
+        layout?: ('text-left' | 'text-right' | 'balanced') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'textMedia';
+      }
+    | {
+        title: string;
+        body?: string | null;
+        buttonLabel?: string | null;
+        buttonURL?: string | null;
+        media?: (number | null) | Media;
+        mode?: ('minimal' | 'statement' | 'media') | null;
+        theme?: ('dark' | 'light' | 'media') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'cta';
+      }
+  )[];
+  pageTheme?: ('light' | 'dark') | null;
+  featured?: boolean | null;
+  workflowStatus?: ('draft' | 'review' | 'ready' | 'paused') | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  ogImage?: (number | null) | Media;
+  canonicalURL?: string | null;
+  noIndex?: boolean | null;
+  owner?: (number | null) | User;
+  internalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * Системные стартовые композиции для мастера создания кейса.
@@ -1113,6 +1313,10 @@ export interface PayloadLockedDocument {
         value: number | Project;
       } | null)
     | ({
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
         relationTo: 'case-templates';
         value: number | CaseTemplate;
       } | null)
@@ -1522,6 +1726,188 @@ export interface ProjectsSelect<T extends boolean = true> {
   noIndex?: T;
   internalNotes?: T;
   sourceURL?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  author?: T;
+  publishedAt?: T;
+  summary?: T;
+  cover?: T;
+  categories?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  blocks?:
+    | T
+    | {
+        articleText?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              width?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        fullBleedMedia?:
+          | T
+          | {
+              media?: T;
+              caption?: T;
+              height?: T;
+              fit?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        splitMedia?:
+          | T
+          | {
+              left?: T;
+              right?: T;
+              ratio?: T;
+              gap?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        mediaMosaic?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    span?: T;
+                    id?: T;
+                  };
+              layout?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        metrics?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    value?: T;
+                    label?: T;
+                    note?: T;
+                    id?: T;
+                  };
+              style?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        quote?:
+          | T
+          | {
+              text?: T;
+              author?: T;
+              role?: T;
+              size?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        process?:
+          | T
+          | {
+              title?: T;
+              steps?:
+                | T
+                | {
+                    number?: T;
+                    title?: T;
+                    body?: T;
+                    media?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    media?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        videoChapter?:
+          | T
+          | {
+              video?: T;
+              poster?: T;
+              title?: T;
+              caption?: T;
+              mode?: T;
+              autoplay?: T;
+              loop?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textMedia?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              body?: T;
+              media?: T;
+              layout?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+        cta?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              buttonLabel?: T;
+              buttonURL?: T;
+              media?: T;
+              mode?: T;
+              theme?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  pageTheme?: T;
+  featured?: T;
+  workflowStatus?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  ogImage?: T;
+  canonicalURL?: T;
+  noIndex?: T;
+  owner?: T;
+  internalNotes?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

@@ -35,3 +35,8 @@ export const blockCatalog: BlockCatalogItem[] = [
 export const catalogBySlug = Object.fromEntries(blockCatalog.map((item) => [item.slug, item]))
 
 export const blockThumbnail = (slug: string) => `/block-thumbs/${slug}.svg`
+
+export const articleCatalog: BlockCatalogItem[] = [
+  { slug: 'articleText', number: '01', title: 'Текст статьи', description: 'Заголовки, абзацы, списки, выделения и ссылки в удобной колонке.', group: 'Narrative', modes: ['reading', 'wide'] },
+  ...blockCatalog.filter(item => ['fullBleedMedia', 'splitMedia', 'mediaMosaic', 'quote', 'process', 'gallery', 'videoChapter', 'textMedia', 'cta', 'metrics'].includes(item.slug)),
+]

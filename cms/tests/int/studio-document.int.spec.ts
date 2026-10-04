@@ -22,6 +22,12 @@ describe('Studio document boundaries',()=>{
     expect(copyDocument({id:1,_status:'published',owner:{id:3,email:'editor@example.com',role:'editor'},cover:media,blocks:[{id:'old',media}]}))
       .toEqual({owner:3,cover:7,blocks:[{media:7}]})
   })
+  it('does not collapse the document root with its slug into a relation ID',()=>{
+    const source={id:1,slug:'source',title:'Source',cover:media,blocks:[{id:'scene',blockType:'gallery',items:[{id:'row',media}]}]}
+    const copy=copyDocument(source)
+    expect(copy).toEqual({slug:'source',title:'Source',cover:7,blocks:[{blockType:'gallery',items:[{media:7}]}]})
+    expect(source.id).toBe(1)
+  })
   it('round-trips paragraphs and explicit line breaks through Lexical',()=>{
     const text='Первая строка\nВторая строка\n\nДругой абзац'
     expect(richTextToText(textToRichText(text))).toBe(text)

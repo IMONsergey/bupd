@@ -14,6 +14,7 @@ import { Deals } from './collections/Deals'
 import { Leads } from './collections/Leads'
 import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
+import { Articles } from './collections/Articles'
 import { Users } from './collections/Users'
 import { SiteSettings } from './globals/SiteSettings'
 
@@ -181,7 +182,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Projects, CaseTemplates, Media, Leads, Companies, Deals, Activities, Users],
+  collections: [Projects, Articles, CaseTemplates, Media, Leads, Companies, Deals, Activities, Users],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'development-only-secret-change-me',
@@ -195,4 +196,3 @@ export default buildConfig({
   sharp,
   plugins,
 })
-

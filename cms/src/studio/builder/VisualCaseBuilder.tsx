@@ -40,8 +40,11 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {useDialogFocus} from '@/studio/ui/useDialogFocus'
+import dynamic from 'next/dynamic'
+import { canvasField, updatePath } from './canvasFields'
 import type { EditorField } from './editorSchema'
-import { serializeDocument, copyScene, richTextToText, textToRichText } from './document'
+import { serializeDocument, copyScene, textToRichText } from './document'
+import { blockDefaults } from './presets'
 import { BlockLibrary } from './BlockLibrary'
 import { BlockPreview } from './BlockPreview'
 import { PublishDialog } from './PublishDialog'
@@ -49,33 +52,11 @@ import { publicationIssues, projectContentSignature, type PublicationIssue } fro
 import MediaPicker from '@/studio/media/MediaPicker'
 import type { MediaItem } from '@/studio/media/types'
 
+const RichTextEditor = dynamic(() => import('./RichTextEditor'), { ssr: false })
+
 type BlockMeta={slug:string;number:string;title:string;description:string;group:string;modes:string[]}
 type AnyBlock=Record<string,any>&{blockType:string;id?:string}
 
-const blockDefaults:Record<string,AnyBlock>={
-  caseHero:{blockType:'caseHero',eyebrow:'Новый кейс',title:'Заголовок кейса',dek:'Короткое описание',layout:'editorial',theme:'dark'},
-  manifesto:{blockType:'manifesto',kicker:'Идея',text:'Крупная мысль, которая меняет ритм истории.',size:'xl',align:'left',theme:'dark'},
-  fullBleedMedia:{blockType:'fullBleedMedia',caption:'',height:'screen',fit:'cover',theme:'media'},
-  splitMedia:{blockType:'splitMedia',ratio:'1-1',gap:'s',theme:'dark'},
-  mediaMosaic:{blockType:'mediaMosaic',items:[],layout:'editorial',theme:'dark'},
-  stickyStory:{blockType:'stickyStory',chapter:'Глава',title:'Заголовок главы',body:'Описание логики и решения.',frames:[],pin:'copy',theme:'dark'},
-  metrics:{blockType:'metrics',items:[{value:'00',label:'Результат',note:''}],style:'oversized',theme:'dark'},
-  beforeAfter:{blockType:'beforeAfter',beforeLabel:'До',afterLabel:'После',mode:'drag',theme:'dark'},
-  quote:{blockType:'quote',text:'Ключевая цитата или вывод.',author:'',role:'',size:'xl',theme:'light'},
-  process:{blockType:'process',title:'Процесс',steps:[{number:'01',title:'Этап',body:'Описание'}],mode:'timeline',theme:'dark'},
-  gallery:{blockType:'gallery',items:[],mode:'drag',theme:'dark'},
-  deviceShowcase:{blockType:'deviceShowcase',device:'screen',caption:'',float:true,theme:'dark'},
-  credits:{blockType:'credits',title:'Команда',items:[{role:'Role',name:'Name'}],theme:'dark'},
-  nextProject:{blockType:'nextProject',label:'Следующий проект',theme:'dark'},
-  horizontalStory:{blockType:'horizontalStory',title:'Последовательность',scenes:[],mode:'snap',theme:'dark'},
-  layeredMedia:{blockType:'layeredMedia',layers:[],mode:'stack',theme:'dark'},
-  typographyTakeover:{blockType:'typographyTakeover',kicker:'',text:'Большая идея',mode:'center',align:'left',theme:'dark'},
-  videoChapter:{blockType:'videoChapter',title:'Видео-глава',caption:'',autoplay:true,loop:true,mode:'inline',theme:'dark'},
-  comparison:{blockType:'comparison',title:'Сравнение',items:[{title:'Вариант',value:'',body:''}],mode:'columns',theme:'dark'},
-  artifactStack:{blockType:'artifactStack',items:[],mode:'fan',theme:'dark'},
-  textMedia:{blockType:'textMedia',eyebrow:'',title:'Заголовок',layout:'text-left',theme:'dark'},
-  cta:{blockType:'cta',title:'Обсудим следующий проект?',body:'',buttonLabel:'Связаться',buttonURL:'/contact',mode:'statement',theme:'light'},
-}
 
 function blockName(block:AnyBlock,meta?:BlockMeta){
   const detail=block.title||block.chapter||block.kicker||block.text||block.label||''
@@ -125,11 +106,12 @@ function FieldEditor({field,value,media,projects,blobEnabled,onChange}:{field:Ed
   if(field.type==='array'){
     const rows=Array.isArray(value)?value:[]
     return <div className="builder-array"><div className="builder-array__head"><span>{caption}</span><button disabled={field.maxRows!==undefined&&rows.length>=field.maxRows} onClick={()=>onChange([...rows,defaultValues(field.fields||[])])}><Plus size={14}/> Добавить</button></div>
-      {rows.map((row,index)=><div className="builder-array__row" key={row.id||index}><header><strong>{String(index+1).padStart(2,'0')}</strong><button aria-label={'Удалить элемент '+(index+1)} onClick={()=>onChange(rows.filter((_:any,i:number)=>i!==index))}><Trash2 size={14}/></button></header>{(field.fields||[]).map(f=><FieldEditor key={f.name} field={f} value={row[f.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={next=>onChange(rows.map((r:any,i:number)=>i===index?{...r,[f.name]:next}:r))}/>)}</div>)}
+      {rows.map((row,index)=><div className="builder-array__row" key={row.id||index}><header><strong>{row.title||row.caption||String(index+1).padStart(2,'0')}</strong><button disabled={index===0} aria-label={'Поднять элемент '+(index+1)} onClick={()=>onChange(arrayMove(rows,index,index-1))}>↑</button><button disabled={index===rows.length-1} aria-label={'Опустить элемент '+(index+1)} onClick={()=>onChange(arrayMove(rows,index,index+1))}>↓</button><button aria-label={'Удалить элемент '+(index+1)} onClick={()=>onChange(rows.filter((_:any,i:number)=>i!==index))}><Trash2 size={14}/></button></header>{(field.fields||[]).map(f=><FieldEditor key={f.name} field={f} value={row[f.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={next=>onChange(rows.map((r:any,i:number)=>i===index?{...r,[f.name]:next}:r))}/>)}</div>)}
       {!rows.length&&<div className="builder-array__empty">Добавьте первый элемент.</div>}</div>
   }
   if(field.options)return <label><span>{caption}</span><select value={String(value??field.defaultValue??'')} onChange={e=>onChange(e.target.value)}>{!value&&!field.defaultValue&&<option value="">Выберите</option>}{field.options.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>
-  if(field.type==='richText')return <label><span>{caption}</span><textarea rows={7} value={richTextToText(value)} onChange={e=>onChange(textToRichText(e.target.value))}/><small>Абзацы разделяются пустой строкой.</small></label>
+  if(field.type==='richText')return <div className="builder-rich-field"><span>{caption}</span><RichTextEditor label={field.label} value={value} onChange={onChange}/></div>
+  if(field.type==='date')return <label><span>{caption}</span><input type="date" value={String(value||'').slice(0,10)} onChange={event=>onChange(event.target.value?new Date(event.target.value+'T12:00:00Z').toISOString():null)}/></label>
   return <label><span>{caption}</span>{field.type==='textarea'?<textarea rows={4} value={String(value??'')} onChange={e=>onChange(e.target.value)}/>:<input type={field.type==='number'?'number':'text'} min={field.min} max={field.max} value={String(value??'')} onChange={e=>onChange(field.type==='number'?(e.target.value===''?null:Number(e.target.value)):e.target.value)}/>}</label>
 }
 
@@ -137,16 +119,30 @@ function defaultValues(fields:EditorField[]):Record<string,any>{
   return Object.fromEntries(fields.map(f=>[f.name,f.defaultValue??(f.type==='array'?[]:f.type==='checkbox'?false:f.type==='upload'||f.type==='relationship'||f.type==='number'?null:f.type==='richText'?textToRichText(''):'')]))
 }
 
+const designFields = new Set(['theme','layout','mode','size','align','height','fit','ratio','gap','pin','style','device','float','width'])
 function Inspector({block,fields,title,media,projects,blobEnabled,onChange}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];blobEnabled:boolean;onChange:(next:AnyBlock)=>void}){
-  return <div className="builder-inspector"><header><span>Настройки блока</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}</div></div>
+  const [tab,setTab]=useState('content')
+  const visible=fields.filter(field=>tab==='design'?designFields.has(field.name):!designFields.has(field.name))
+  return <div className="builder-inspector"><header><span>Выбранный блок</span><strong>{title}</strong></header><div className="inspector-tabs" role="tablist" aria-label="Настройки блока"><button role="tab" aria-selected={tab==='content'} onClick={()=>setTab('content')}>Содержание</button><button role="tab" aria-selected={tab==='design'} onClick={()=>setTab('design')}>Оформление</button></div><div className="builder-inspector__fields">{visible.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}{!visible.length&&<p className="inspector-hint">Оформление этого блока уже настроено для BAEV.</p>}</div></div>
 }
 
-export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=false,schemas,projects=[],initialPublished=false,initialPublishedSignature}:{project:any;catalog:BlockMeta[];media?:MediaItem[];blobEnabled?:boolean;schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean;initialPublishedSignature?:string}){
+export default function VisualCaseBuilder({kind='case',project,catalog,media=[],blobEnabled=false,schemas,projects=[],initialPublished=false,initialPublishedSignature}:{kind?:'case'|'article';project:any;catalog:BlockMeta[];media?:MediaItem[];blobEnabled?:boolean;schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean;initialPublishedSignature?:string}){
   const router=useRouter()
+  const article=kind==='article'
+  const apiBase=article?'/api/studio/articles/':'/api/studio/projects/'
+  const listURL=article?'/studio/blog':'/studio/cases'
+  const previewURL=(article?'/preview-blog/':'/preview/')+project.slug
+  const publicURL=(article?'/blog/':'/work/')+project.slug
+  const [insertAt,setInsertAt]=useState<number|null>(null)
+  const [canvasMedia,setCanvasMedia]=useState<{index:number;path:string;blockId:string}|null>(null)
+  const [focusMode,setFocusMode]=useState(false)
+  const [zoom,setZoom]=useState<'fit'|'100'>('fit')
+  const canvasActions=useRef<(data:any)=>void>(()=>{})
+  const inlineEdit=useRef({key:'',time:0})
   const [blocks,setBlocks]=useState<AnyBlock[]>(()=>((project.blocks||[]) as AnyBlock[]).map((b,index)=>({...b,id:b.id||'local-'+index+'-'+Date.now()})))
   const [selected,setSelected]=useState(0)
   const [details,setDetails]=useState(false)
-  const [metadata,setMetadata]=useState(()=>Object.fromEntries(['title','client','year','summary','categories','cover','ogImage','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:key==='year'?null:key==='workflowStatus'?'draft':'')])))
+  const [metadata,setMetadata]=useState(()=>Object.fromEntries(['title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:key==='year'?null:key==='workflowStatus'?'draft':'')])))
   const [error,setError]=useState('')
   const [undoStack,setUndoStack]=useState<any[]>([])
   const [redoStack,setRedoStack]=useState<any[]>([])
@@ -195,7 +191,7 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
   const [historyError,setHistoryError]=useState('')
   const [restoring,setRestoring]=useState<string|number|null>(null)
   const [previewKey,setPreviewKey]=useState(0)
-  const [device,setDevice]=useState<'desktop'|'mobile'>('desktop')
+  const [device,setDevice]=useState<'desktop'|'tablet'|'mobile'>('desktop')
   const saveTimer=useRef<ReturnType<typeof setTimeout>|null>(null)
   const editRevision=useRef(0)
   const saveSequence=useRef(0)
@@ -210,31 +206,33 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     observer.observe(frame)
     return()=>observer.disconnect()
   },[])
-  const canvasWidth=device==='mobile'?390:1440
-  const canvasScale=Math.min(1,canvasSize.width/canvasWidth)||1
+  const canvasWidth=device==='mobile'?390:device==='tablet'?768:1440
+  const canvasScale=zoom==='100'?1:Math.min(1,canvasSize.width/canvasWidth)||1
+  const canvasStateRef=useRef({selected,canvasScale})
+  canvasStateRef.current={selected,canvasScale}
   const latest=useRef({blocks,metadata})
   latest.current={blocks,metadata}
   const sensors=useSensors(useSensor(PointerSensor,{activationConstraint:{distance:5}}),useSensor(KeyboardSensor,{coordinateGetter:sortableKeyboardCoordinates}))
 
   const meta=useMemo(()=>Object.fromEntries(catalog.map((item)=>[item.slug,item])),[catalog])
   const selectedBlock=blocks[selected]
-  const issues=useMemo(()=>publicationIssues({...metadata,blocks},schemas),[metadata,blocks,schemas])
+  const issues=useMemo(()=>publicationIssues({...metadata,blocks,kind},schemas),[metadata,blocks,schemas])
   const hasUnpublishedChanges=published&&projectContentSignature({...metadata,blocks})!==publishedSignature
   const visibleScenes=blocks.map((block,index)=>({block,index})).filter(({block})=>{
     const name=blockName(block,meta[block.blockType])
     return !sceneQuery.trim()||(name.title+' '+name.detail).toLowerCase().includes(sceneQuery.trim().toLowerCase())
   })
 
-  const sendPreview=(selection=selected)=>{
-    previewRef.current?.contentWindow?.postMessage({type:'baev:canvas',data:{...project,...latest.current.metadata,blocks:latest.current.blocks},selected:selection},location.origin)
+  const sendPreview=(selection=canvasStateRef.current.selected)=>{
+    previewRef.current?.contentWindow?.postMessage({type:'baev:canvas',data:{...project,...latest.current.metadata,blocks:latest.current.blocks,kind},selected:selection,uiScale:1/canvasStateRef.current.canvasScale},location.origin)
   }
 
-  useEffect(()=>{sendPreview()},[blocks,metadata,selected,previewKey])
+  useEffect(()=>{sendPreview()},[blocks,metadata,selected,previewKey,canvasScale])
   useEffect(()=>{
     const select=(event:MessageEvent)=>{
       if(event.origin!==location.origin||event.source!==previewRef.current?.contentWindow)return
       if(event.data?.type==='baev:ready'){sendPreview();return}
-      if(event.data?.type!=='baev:select')return
+      if(event.data?.type!=='baev:select'){canvasActions.current(event.data);return}
       if(Number.isInteger(event.data.index)&&event.data.index>=0&&event.data.index<latest.current.blocks.length){setSelected(event.data.index);setDetails(false)}
     }
     window.addEventListener('message',select)
@@ -248,7 +246,7 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     setSaving(true)
     const run=saveQueue.current.catch(()=>undefined).then(async()=>{
       try{
-        const response=await fetch('/api/studio/projects/'+project.id,{
+        const response=await fetch(apiBase+project.id,{
           method:'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},
           body:JSON.stringify(serializeDocument({...snapshot.metadata,blocks:snapshot.blocks})),
         })
@@ -294,7 +292,7 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     const next=redoStack[redoStack.length-1]
     setRedoStack(stack=>stack.slice(0,-1));change(next,false);setSelected(index=>Math.max(0,Math.min(index,next.blocks.length-1)))
   }
-  const leave=async()=>{if(saved||await save())router.push('/studio/cases')}
+  const leave=async()=>{if(saved||await save())router.push(listURL)}
   useEffect(()=>{
     const beforeUnload=(event:BeforeUnloadEvent)=>{if(editRevision.current&&!saved){event.preventDefault();event.returnValue=''}}
     window.addEventListener('beforeunload',beforeUnload)
@@ -327,7 +325,7 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
   const loadVersions=async()=>{
     setHistoryOpen(true);setVersionsLoading(true);setHistoryError('')
     try {
-    const response=await fetch('/api/studio/projects/'+project.id+'/versions',{credentials:'include'})
+    const response=await fetch(apiBase+project.id+'/versions',{credentials:'include'})
     const data=await response.json().catch(()=>({docs:[]}))
     setVersionsLoading(false)
     if(!response.ok){setHistoryError(data?.error||'Не удалось загрузить историю');return}
@@ -339,7 +337,7 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     setRestoring(versionId);setHistoryError('')
     if(!await save()){setRestoring(null);setHistoryError('Сначала сохраните текущие изменения.');return}
     try {
-    const response=await fetch('/api/studio/projects/'+project.id+'/versions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({versionId})})
+    const response=await fetch(apiBase+project.id+'/versions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({versionId})})
     const data=await response.json().catch(()=>({}))
     if(!response.ok){setHistoryError(data?.error||'Не удалось восстановить версию');setRestoring(null);return}
     location.reload()
@@ -350,13 +348,13 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     if(publishing)return
     const action=publishAction
     if(!action)return
-    if(action==='publish'&&publicationIssues({...latest.current.metadata,blocks:latest.current.blocks},schemas).some(issue=>issue.severity==='error'))return
+    if(action==='publish'&&publicationIssues({...latest.current.metadata,blocks:latest.current.blocks,kind},schemas).some(issue=>issue.severity==='error'))return
     setPublishing(true)
     setPublicationError('')
     const savedOk=await save()
     if(!savedOk){setPublishing(false);setPublicationError('Черновик не сохранён. Проверьте соединение и повторите публикацию.');return}
     try {
-    const response=await fetch('/api/studio/projects/'+project.id+'/publish',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})})
+    const response=await fetch(apiBase+project.id+'/publish',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})})
     const data=await response.json().catch(()=>({}))
     if(response.ok){
       const isPublished=data.status==='published'
@@ -364,13 +362,13 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
       setPublishedSignature(isPublished?projectContentSignature({...latest.current.metadata,blocks:latest.current.blocks}):'')
       const nextMetadata={...latest.current.metadata,workflowStatus:isPublished?'ready':'draft'}
       latest.current={...latest.current,metadata:nextMetadata};setMetadata(nextMetadata)
-      setNotice(isPublished?'Кейс опубликован. Текущая версия доступна посетителям.':'Кейс снят с сайта. Вы можете продолжить редактирование.')
+      setNotice(isPublished?'Страница опубликована. Текущая версия доступна посетителям.':'Страница снята с сайта. Вы можете продолжить редактирование.')
     }else setPublicationError(data.error||'Не удалось опубликовать. Проверьте обязательные поля.')
     } catch { setPublicationError('Нет связи. Не удалось изменить публикацию. Повторите попытку.') } finally { setPublishing(false) }
   }
 
   const fixIssue=(issue:PublicationIssue)=>{
-    setPublishAction(null);setSceneQuery('')
+    setPublishAction(null);setSceneQuery('');setFocusMode(false)
     if(issue.field==='blocks'&&issue.blockIndex===undefined){setLibrary(true);return}
     if(issue.blockIndex!==undefined){setSelected(issue.blockIndex);setDetails(false)}else setDetails(true)
     setWorkspaceTab('settings');setFocusField(issue.field)
@@ -380,11 +378,11 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     const tab=window.open('about:blank','_blank')
     if(tab)tab.opener=null
     if(!saved&&!await save()){tab?.close();if(publishAction)setPublicationError('Не удалось сохранить черновик для предпросмотра. Проверьте соединение.');return}
-    if(tab)tab.location.href='/preview/'+project.slug
+    if(tab)tab.location.href=previewURL
     else setNotice('Браузер заблокировал новое окно. Разрешите всплывающие окна для предпросмотра.')
   }
   const copyPublicLink=async()=>{
-    try{await navigator.clipboard.writeText(location.origin+'/work/'+project.slug);setNotice('Ссылка на опубликованный кейс скопирована.')}catch{setNotice('Не удалось скопировать ссылку. Откройте страницу на сайте и скопируйте её адрес.')}
+    try{await navigator.clipboard.writeText(location.origin+publicURL);setNotice('Ссылка на опубликованный кейс скопирована.')}catch{setNotice('Не удалось скопировать ссылку. Откройте страницу на сайте и скопируйте её адрес.')}
   }
 
   const updateSelected=(next:AnyBlock)=>{
@@ -393,11 +391,12 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     change({blocks:nextBlocks,metadata})
   }
 
-  const add=(slug:string)=>{
-    const base={...defaultValues(schemas[slug]||[]),...(blockDefaults[slug]||{}),blockType:slug}
+  const add=(slug:string,variant:Record<string,any>={})=>{
+    const base={...defaultValues(schemas[slug]||[]),...(blockDefaults[slug]||{}),...(article?{theme:'light'}:{}),...variant,blockType:slug}
     const next={...structuredClone(base),id:'local-'+crypto.randomUUID()}
-    const nextBlocks=[...blocks.slice(0,selected+1),next,...blocks.slice(selected+1)]
-    setSelected(Math.min(selected+1,nextBlocks.length-1));setDetails(false);setLibrary(false);scheduleSave(nextBlocks)
+    const index=Math.max(0,Math.min(insertAt??selected+1,blocks.length))
+    const nextBlocks=[...blocks.slice(0,index),next,...blocks.slice(index)]
+    setSelected(index);setDetails(false);setLibrary(false);setInsertAt(null);scheduleSave(nextBlocks)
   }
 
   const remove=(index:number)=>{
@@ -420,25 +419,66 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
     setSelected(newIndex);scheduleSave(next)
   }
 
-  return <div className={'builder-root builder-root--'+workspaceTab}>
+  canvasActions.current=(data:any)=>{
+    const type=data?.type
+    if(type==='baev:save'){void save();return}
+    if(type==='baev:insert'&&Number.isInteger(data.index)){setInsertAt(Math.max(0,Math.min(data.index,latest.current.blocks.length)));setLibrary(true);return}
+    const index=data.index
+    if(!Number.isInteger(index)||index < -1||index>=latest.current.blocks.length)return
+    const current=index===-1?latest.current.metadata:latest.current.blocks[index]
+    if(index>=0&&String(current.id||'')!==String(data.blockId||''))return
+    if(type==='baev:action'&&index>=0){
+      setSelected(index);setDetails(false)
+      if(data.action==='settings'){setFocusMode(false);setWorkspaceTab('settings')}
+      if(data.action==='duplicate')duplicate(index)
+      if(data.action==='delete')remove(index)
+      if(data.action==='up'&&index>0){setSelected(index-1);scheduleSave(arrayMove(blocks,index,index-1))}
+      if(data.action==='down'&&index<blocks.length-1){setSelected(index+1);scheduleSave(arrayMove(blocks,index,index+1))}
+      return
+    }
+    if(typeof data.path!=='string')return
+    const field=index===-1?([{name:'title',type:'text'},{name:'summary',type:'textarea'},{name:'client',type:'text'},{name:'author',type:'text'},{name:'cover',type:'upload'}].find(item=>item.name===data.path)):canvasField(schemas[current.blockType]||[],data.path,current)
+    if(!field)return
+    if(type==='baev:media'&&field.type==='upload'){setCanvasMedia({index,path:data.path,blockId:String(data.blockId||'')});return}
+    if(type!=='baev:edit'||!['text','textarea','richText'].includes(field.type))return
+    if(field.type==='richText'?!data.value?.root:typeof data.value!=='string')return
+    const updated=updatePath(current,data.path,data.value)
+    const key=String(index)+data.path
+    const record=inlineEdit.current.key!==key||Date.now()-inlineEdit.current.time>1500
+    inlineEdit.current={key,time:Date.now()}
+    let next={...latest.current}
+    if(index===-1){next.metadata=updated;if(data.path==='title'&&next.blocks[0]?.blockType==='caseHero')next.blocks=next.blocks.map((block,i)=>i===0?{...block,title:data.value}:block)}
+    else next.blocks=next.blocks.map((block,i)=>i===index?updated:block)
+    change(next,record)
+  }
+  const chooseCanvasMedia=(value:MediaItem)=>{
+    if(!canvasMedia)return
+    const {index,path,blockId}=canvasMedia
+    if(index===-1)updateMetadata(path,value)
+    else {const at=latest.current.blocks.findIndex(item=>String(item.id)===blockId);if(at>=0)scheduleSave(latest.current.blocks.map((item,i)=>i===at?updatePath(item,path,value):item))}
+    setCanvasMedia(null)
+  }
+  const canvasMediaValue=canvasMedia?canvasMedia.path.split('.').reduce((node:any,key)=>node?.[key],canvasMedia.index===-1?metadata:blocks[canvasMedia.index]):null
+
+  return <div className={'builder-root builder-root--'+workspaceTab+(focusMode?' builder-root--focus':'')}>
     <header className="builder-topbar" inert={publishing?true:undefined}>
-      <button className="builder-back" onClick={()=>void leave()}><ChevronLeft size={17}/> Кейсы</button>
+      <button className="builder-back" onClick={()=>void leave()}><ChevronLeft size={17}/> {article?'Блог':'Кейсы'}</button>
       <div className="builder-title"><strong>{metadata.title}</strong><span>{published?(hasUnpublishedChanges?'На сайте · есть новые правки':'На сайте · актуальная версия'):'Черновик · не на сайте'}<em className="builder-save-mobile">{saving?'Сохраняем…':saved?'Черновик сохранён':'Есть несохранённые изменения'}</em></span></div>
       <div className="builder-save-state" role="status" aria-live="polite"><StudioIcon name={saving?'RefreshCcw':saved?'Check':'Save'} className={saving?'is-spin':''} size={14}/>{saving?'Сохраняем':saved?'Сохранено':'Есть изменения'}</div>
-      <div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div>
+      <div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на планшете" className={device==='tablet'?'is-active':''} onClick={()=>setDevice('tablet')}><StudioIcon name="PanelsTopLeft" size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div>
       <button className="builder-icon-button" aria-label="Отменить" disabled={!undoStack.length} onClick={undo}><Undo2 size={16}/></button><button className="builder-icon-button" aria-label="Повторить" disabled={!redoStack.length} onClick={redo}><Redo2 size={16}/></button>
-      <a className="studio-button studio-button--soft builder-preview-action" href={'/preview/'+project.slug} target="_blank" rel="noopener noreferrer" onClick={event=>void preview(event)}><Eye size={14}/><span>Предпросмотр</span></a>
-      <div ref={moreRef} className="builder-more"><button className="studio-button studio-button--soft" aria-expanded={moreOpen} aria-label="Дополнительные действия" onClick={()=>setMoreOpen(v=>!v)}>Ещё <StudioIcon name={moreOpen?'X':'ChevronDown'} size={14}/></button>{moreOpen&&<div className="builder-more__menu"><button onClick={()=>{setMoreOpen(false);void loadVersions()}}><History size={15}/>История версий</button><button onClick={()=>{setMoreOpen(false);void save()}}><Save size={15}/>Сохранить сейчас</button>{published&&<><a href={'/work/'+project.slug} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15}/>Открыть на сайте</a><button onClick={()=>{setMoreOpen(false);void copyPublicLink()}}><Copy size={15}/>Скопировать ссылку</button><button className="is-danger" onClick={()=>{setMoreOpen(false);setPublicationError('');setPublishAction('unpublish')}}><StudioIcon name="EyeOff" size={15}/>Снять с сайта</button></>}</div>}</div>
+      <a className="studio-button studio-button--soft builder-preview-action" href={previewURL} target="_blank" rel="noopener noreferrer" onClick={event=>void preview(event)}><Eye size={14}/><span>Предпросмотр</span></a>
+      <div ref={moreRef} className="builder-more"><button className="studio-button studio-button--soft" aria-expanded={moreOpen} aria-label="Дополнительные действия" onClick={()=>setMoreOpen(v=>!v)}>Ещё <StudioIcon name={moreOpen?'X':'ChevronDown'} size={14}/></button>{moreOpen&&<div className="builder-more__menu"><button onClick={()=>{setMoreOpen(false);void loadVersions()}}><History size={15}/>История версий</button><button onClick={()=>{setMoreOpen(false);void save()}}><Save size={15}/>Сохранить сейчас</button>{published&&<><a href={publicURL} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15}/>Открыть на сайте</a><button onClick={()=>{setMoreOpen(false);void copyPublicLink()}}><Copy size={15}/>Скопировать ссылку</button><button className="is-danger" onClick={()=>{setMoreOpen(false);setPublicationError('');setPublishAction('unpublish')}}><StudioIcon name="EyeOff" size={15}/>Снять с сайта</button></>}</div>}</div>
       <button className="studio-button builder-publish-action" aria-label={published?'Опубликовать изменения':'Опубликовать'} disabled={publishing} onClick={()=>{setPublicationError('');setPublishAction('publish')}}><span className="builder-publish-label">{published?'Опубликовать изменения':'Опубликовать'}</span><span className="builder-publish-label--compact">{published?'Обновить':'Опубликовать'}</span></button>
     </header>
 
     <nav className="builder-workspace-tabs" aria-label="Панели редактора">{[['canvas','Холст'],['blocks','Блоки'],['settings','Настройки']].map(([id,label])=><button key={id} aria-pressed={workspaceTab===id} className={workspaceTab===id?'is-active':''} onClick={()=>setWorkspaceTab(id as typeof workspaceTab)}><StudioIcon name={id==='canvas'?'Monitor':id==='blocks'?'Layers':'SlidersHorizontal'} size={16}/>{label}</button>)}</nav>
 
     {error&&<div className="builder-error" role="alert">{error}<button onClick={()=>void save()}>Повторить сохранение</button></div>}
-    {notice&&<div className="builder-notice" role="status"><span>{notice}</span>{published&&<a href={'/work/'+project.slug} target="_blank" rel="noopener noreferrer">Открыть <ArrowUpRight size={13}/></a>}<button aria-label="Закрыть уведомление" onClick={()=>setNotice('')}><X size={14}/></button></div>}
+    {notice&&<div className="builder-notice" role="status"><span>{notice}</span>{published&&<a href={publicURL} target="_blank" rel="noopener noreferrer">Открыть <ArrowUpRight size={13}/></a>}<button aria-label="Закрыть уведомление" onClick={()=>setNotice('')}><X size={14}/></button></div>}
     <div className="builder-layout" inert={publishing?true:undefined}>
       <aside className="builder-scenes">
-        <button className={'builder-page-settings '+(details?'is-active':'')} onClick={()=>{setDetails(true);setWorkspaceTab('settings')}}><Settings2 size={16}/> Настройки кейса</button>
+        <button className={'builder-page-settings '+(details?'is-active':'')} onClick={()=>{setDetails(true);setWorkspaceTab('settings')}}><Settings2 size={16}/> {article?'Настройки статьи':'Настройки кейса'}</button>
         <div className="builder-scenes__head"><div><strong>Блоки</strong><span>{blocks.length}</span></div><button aria-label="Добавить блок" onClick={()=>setLibrary(true)}><Plus size={14}/></button></div>
         <label className="builder-scene-search"><Search size={14}/><input aria-label="Найти блок в кейсе" value={sceneQuery} onChange={event=>setSceneQuery(event.target.value)} placeholder="Найти блок в кейсе"/>{sceneQuery&&<button aria-label="Сбросить поиск блоков" onClick={()=>setSceneQuery('')}><X size={13}/></button>}</label>
         <DndContext id={'case-builder-'+project.id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnd}>
@@ -450,20 +490,22 @@ export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=
       </aside>
 
       <main className="builder-canvas">
-        <div ref={frameRef} className={['builder-preview-frame','is-'+device].join(' ')}>
-          <iframe style={{width:canvasWidth,height:canvasSize.height/canvasScale,transform:`scale(${canvasScale})`,transformOrigin:'top left'}} ref={previewRef} src={'/preview/'+project.slug+'?canvas=1'} title="Предпросмотр кейса" onLoad={()=>{setPreviewKey(v=>v+1);sendPreview()}}/>
+        <div className="canvas-workspace-bar"><span><i/> Редактирование на странице</span><div><select aria-label="Масштаб холста" value={zoom} onChange={event=>setZoom(event.target.value as typeof zoom)}><option value="fit">Вписать · {Math.round(canvasScale*100)}%</option><option value="100">100%</option></select><button aria-label={focusMode?'Показать панели':'Скрыть панели'} aria-pressed={focusMode} onClick={()=>setFocusMode(value=>!value)}><StudioIcon name="PanelLeft" size={15}/></button></div></div>
+        <div ref={frameRef} className={['builder-preview-frame','is-'+device,zoom==='100'?'is-actual':''].join(' ')}>
+          <iframe style={{width:canvasWidth,height:canvasSize.height/canvasScale,transform:`scale(${canvasScale})`,transformOrigin:'top left'}} ref={previewRef} src={previewURL+'?canvas=1'} title={article?'Предпросмотр статьи':'Предпросмотр кейса'} onLoad={()=>{setPreviewKey(v=>v+1);sendPreview()}}/>
         </div>
       </main>
 
       <aside className="builder-right">
-        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>updateMetadata(field.name,value)}/></div>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} blobEnabled={blobEnabled} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
+        {details?<div className="builder-inspector"><header><span>Страница</span><strong>{article?'Настройки статьи':'Настройки кейса'}</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},...(article?[{name:'author',label:'Автор',type:'text'},{name:'publishedAt',label:'Дата статьи',type:'date'}]:[{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100}]),{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'pageTheme',label:'Тема страницы',type:'select',options:[{value:'dark',label:'Чёрная'},{value:'light',label:'Белая'}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>updateMetadata(field.name,value)}/></div>)}</div></div>:selectedBlock?<Inspector key={selectedBlock.id} block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} blobEnabled={blobEnabled} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
       </aside>
     </div>
 
-    <AnimatePresence>{publishAction&&<PublishDialog project={{...metadata,slug:project.slug,blocks}} published={published} action={publishAction} busy={publishing} error={publicationError} issues={issues} onClose={()=>{if(!publishing)setPublishAction(null)}} onConfirm={()=>void publish()} onFix={fixIssue} onPreview={()=>void preview()}/>}</AnimatePresence>
+    <AnimatePresence>{canvasMedia&&<MediaPicker current={resolveMedia(canvasMediaValue,media)} blobEnabled={blobEnabled} label="Изображение на странице" onClose={()=>setCanvasMedia(null)} onChoose={chooseCanvasMedia}/>}</AnimatePresence>
+    <AnimatePresence>{publishAction&&<PublishDialog project={{...metadata,slug:project.slug,blocks,kind}} published={published} action={publishAction} busy={publishing} error={publicationError} issues={issues} onClose={()=>{if(!publishing)setPublishAction(null)}} onConfirm={()=>void publish()} onFix={fixIssue} onPreview={()=>void preview()}/>}</AnimatePresence>
 
     <AnimatePresence>
-      {library&&<BlockLibrary catalog={catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={selectedBlock?meta[selectedBlock.blockType]?.title:undefined} onClose={()=>setLibrary(false)} onAdd={slug=>{add(slug);setWorkspaceTab('settings')}}/>}
+      {library&&<BlockLibrary catalog={catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={(insertAt??selected+1)>0?meta[blocks[(insertAt??selected+1)-1]?.blockType]?.title:undefined} onClose={()=>{setLibrary(false);setInsertAt(null)}} onAdd={(slug,variant)=>{add(slug,variant);setWorkspaceTab('canvas')}}/>}
     </AnimatePresence>
 
     <AnimatePresence>
