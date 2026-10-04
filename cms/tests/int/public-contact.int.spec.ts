@@ -38,3 +38,17 @@ describe('Public contact recovery without real submissions',()=>{
     }finally{dom.window.close()}
   })
 })
+
+describe('Export hydration corrections',()=>{
+  it('keeps publication metadata and the article count correct after the export hydrates',async()=>{
+    const dom=new JSDOM('<title>Old title</title><meta property="og:title" content="Old"><h2>(6)</h2>',{url:'https://baev-case-lab.vercel.app/blog',runScripts:'outside-only',pretendToBeVisual:true})
+    try{
+      dom.window.eval(readFileSync('../site-refinements.js','utf8'));dom.window.dispatchEvent(new dom.window.Event('load'))
+      expect(dom.window.document.querySelector('h2')!.textContent).toBe('(3)')
+      dom.window.document.title='Export title';dom.window.document.querySelector('h2')!.textContent='(6)'
+      await vi.waitFor(()=>expect(dom.window.document.title).toBe('Журнал BAEV - презентации и публичная коммуникация'))
+      expect(dom.window.document.querySelector('h2')!.textContent).toBe('(3)')
+      expect(dom.window.document.querySelector('meta')!.content).toBe(dom.window.document.title)
+    }finally{dom.window.close()}
+  })
+})

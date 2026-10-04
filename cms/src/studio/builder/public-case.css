@@ -1,5 +1,6 @@
 /* Cover geometry is independent of the body appearance. */
-.case-preview.case-preview{overflow:clip}
+body:has(.case-preview){overflow-x:clip}
+.case-preview.case-preview{overflow:visible}
 .case-preview .case-scene[data-case-cover=true]{--block-top:0px;--block-bottom:0px;padding:0!important;margin:0!important;width:100%!important}
 .case-preview .case-scene[data-case-cover=true]>.case-hero,.case-preview .case-cover{height:100svh;min-height:100svh;padding:0!important;border-radius:0!important}
 .case-preview .case-scene[data-case-cover=true] :is(img,video,.case-motion-media,.case-hero__media,.canvas-media),.case-preview[data-media-radius] .case-scene[data-case-cover=true] :is(img,video,.case-motion-media,.case-hero__media,.canvas-media),.case-preview .case-cover :is(img,video,.case-hero__media){border-radius:0!important}
@@ -43,3 +44,6 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.case-preview *{scroll-behavior:auto!important}}
 
 @media(max-width:809px){.case-preview .case-menu-button{display:flex}.case-preview .case-project-rail{min-height:0;padding:40px 20px}.case-preview .case-project-rail__bottom{margin-top:40px}}
+
+.case-preview .case-project-rail{z-index:2;isolation:isolate}
+.case-preview .case-site-nav[data-scrolled=true]{background:color-mix(in srgb,var(--page-bg,var(--case-bg)) 92%,transparent);color:var(--page-ink,var(--case-fg));mix-blend-mode:normal;backdrop-filter:blur(14px);border-bottom:1px solid var(--page-line,var(--case-line))}
