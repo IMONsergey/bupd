@@ -10,7 +10,7 @@ import { projectContentSignature } from '@/studio/builder/publication'
 export default async function CaseBuilderPage({params}:{params:Promise<{id:string}>}){
   const {id}=await params
   const {payload}=await requireContentUser()
-  const [project,media,projects,publicState]=await Promise.all([
+  const [project,projects,publicState]=await Promise.all([
     payload.findByID({
       collection:'projects',
       id,
@@ -18,18 +18,11 @@ export default async function CaseBuilderPage({params}:{params:Promise<{id:strin
       draft:true,
       overrideAccess:true,
     }).catch(()=>null),
-    payload.find({
-      collection:'media',
-      limit:1000,
-      sort:'-createdAt',
-      depth:0,
-      overrideAccess:true,
-    }),
     payload.find({collection:'projects',depth:1,draft:true,limit:200,overrideAccess:true,select:{title:true,slug:true,cover:true}}),
     payload.findByID({collection:'projects',id,depth:0,draft:false,overrideAccess:true}).catch(()=>null),
   ])
 
   if(!project)notFound()
 
-  return <VisualCaseBuilder initialPublished={publicState?._status==='published'} initialPublishedSignature={publicState?._status==='published'?projectContentSignature(publicState):undefined} project={project as any} catalog={blockCatalog as any} media={media.docs as any} schemas={editorSchemas} projects={projects.docs.filter(p=>String(p.id)!==id)}/>
+  return <VisualCaseBuilder initialPublished={publicState?._status==='published'} initialPublishedSignature={publicState?._status==='published'?projectContentSignature(publicState):undefined} project={project as any} catalog={blockCatalog as any} blobEnabled={Boolean(process.env.BLOB_READ_WRITE_TOKEN)} schemas={editorSchemas} projects={projects.docs.filter(p=>String(p.id)!==id)}/>
 }

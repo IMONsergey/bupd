@@ -50,6 +50,7 @@ import {
   Upload as UploadData,
   UserPlus as UserPlusData,
   Users as UsersData,
+  Video as VideoData,
   X as XData,
 } from 'lucide'
 
@@ -101,6 +102,7 @@ const icons = {
   Upload: UploadData,
   UserPlus: UserPlusData,
   Users: UsersData,
+  Video: VideoData,
   X: XData,
 }
 

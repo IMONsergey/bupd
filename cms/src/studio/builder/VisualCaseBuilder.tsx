@@ -46,6 +46,8 @@ import { BlockLibrary } from './BlockLibrary'
 import { BlockPreview } from './BlockPreview'
 import { PublishDialog } from './PublishDialog'
 import { publicationIssues, projectContentSignature, type PublicationIssue } from './publication'
+import MediaPicker from '@/studio/media/MediaPicker'
+import type { MediaItem } from '@/studio/media/types'
 
 type BlockMeta={slug:string;number:string;title:string;description:string;group:string;modes:string[]}
 type AnyBlock=Record<string,any>&{blockType:string;id?:string}
@@ -93,58 +95,37 @@ function SortableScene({block,index,meta,active,disabled=false,issueCount=0,onSe
   </motion.div>
 }
 
-type MediaItem={
-  id:string|number
-  url?:string|null
-  alt?:string|null
-  filename?:string|null
-  mimeType?:string|null
-  sizes?:Record<string,{url?:string|null}|null>|null
-}
-
 function resolveMedia(value:any,media:MediaItem[]){
   if(value&&typeof value==='object')return value as MediaItem
   return media.find((item)=>String(item.id)===String(value))||null
 }
 
-function MediaField({label,value,media,onSelect}:{label:string;value:any;media:MediaItem[];onSelect:(value:any)=>void}){
+function MediaField({label,value,media,blobEnabled,onSelect}:{label:string;value:any;media:MediaItem[];blobEnabled:boolean;onSelect:(value:any)=>void}){
   const [open,setOpen]=useState(false)
-  const [query,setQuery]=useState('')
   const [failedURL,setFailedURL]=useState('')
-  const dialogRef=useDialogFocus(open,()=>setOpen(false))
   const current=resolveMedia(value,media)
-  const visible=media.filter((item)=>!query.trim()||[item.alt,item.filename].filter(Boolean).some((v)=>String(v).toLowerCase().includes(query.toLowerCase())))
   return <div className="builder-media-field">
     <span>{label}</span>
     <button className="builder-media-field__preview" aria-label={(current?'Заменить ':'Выбрать ')+label.replace(' *','')} onClick={()=>setOpen(true)}>
-      {current?.url?(failedURL===current.url?<span className="builder-media-unavailable">Файл выбран, но превью не загрузилось. Нажмите, чтобы выбрать другой.</span>:current.mimeType?.startsWith('video/')?<video src={current.url} muted onError={()=>setFailedURL(current.url||'')}/>:<img src={current.sizes?.thumb?.url||current.url} alt={current.alt||''} onError={()=>setFailedURL(current.url||'')}/>):<><Plus size={15}/><b>Выбрать медиа</b></>}
+      {current?.url?(failedURL===current.url?<span className="builder-media-unavailable">Файл выбран, но превью не загрузилось. Нажмите, чтобы выбрать другой.</span>:current.mimeType?.startsWith('video/')?<StudioIcon name="Video" size={26}/>:<img src={current.sizes?.thumb?.url||current.url} alt={current.alt||''} onError={()=>setFailedURL(current.url||'')}/>):<><Plus size={15}/><b>Выбрать медиа</b></>}
       {current&&<i>{current.alt||current.filename}</i>}
     </button>
     {current&&<button className="builder-media-field__clear" onClick={()=>onSelect(null)}>Убрать</button>}
     <AnimatePresence>
-      {open&&<motion.div className="builder-media-picker-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setOpen(false)}>
-        <motion.section ref={dialogRef} role="dialog" aria-modal="true" aria-label="Выбор медиа" className="builder-media-picker" initial={{opacity:0,scale:.97,y:10}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.98}} transition={{type:'spring',stiffness:390,damping:32}}>
-          <header><div><span>Медиатека</span><strong>Выберите файл</strong></div><button aria-label="Закрыть выбор файла" onClick={()=>setOpen(false)}><X size={16}/></button></header>
-          <div className="builder-media-picker__search"><input aria-label="Найти файл" value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Поиск по названию"/></div>
-          <div className="builder-media-picker__grid">{visible.map((item)=><button key={item.id} onClick={()=>{onSelect(item);setOpen(false)}}>
-            {item.mimeType?.startsWith('video/')?<video src={item.url||''} muted preload="none"/>:<img src={item.sizes?.thumb?.url||item.url||''} alt={item.alt||''}/>}
-            <span>{item.alt||item.filename}</span>
-          </button>)}</div>
-        </motion.section>
-      </motion.div>}
+      {open&&<MediaPicker current={current} blobEnabled={blobEnabled} label={label} onClose={()=>setOpen(false)} onChoose={item=>{onSelect(item);setOpen(false)}}/>}
     </AnimatePresence>
   </div>
 }
 
-function FieldEditor({field,value,media,projects,onChange}:{field:EditorField;value:any;media:MediaItem[];projects:any[];onChange:(value:any)=>void}){
+function FieldEditor({field,value,media,projects,blobEnabled,onChange}:{field:EditorField;value:any;media:MediaItem[];projects:any[];blobEnabled:boolean;onChange:(value:any)=>void}){
   const caption=field.label+(field.required?' *':'')
-  if(field.type==='upload')return <MediaField label={caption} value={value} media={media} onSelect={onChange}/>
+  if(field.type==='upload')return <MediaField label={caption} value={value} media={media} blobEnabled={blobEnabled} onSelect={onChange}/>
   if(field.type==='relationship')return <label><span>{caption}</span><select value={String(value?.id??value??'')} onChange={e=>onChange(projects.find(p=>String(p.id)===e.target.value)||null)}><option value="">Выберите проект</option>{projects.map(p=><option key={p.id} value={p.id}>{p.title}</option>)}</select></label>
   if(field.type==='checkbox')return <label className="builder-toggle"><span>{caption}</span><button type="button" role="switch" aria-label={field.label} aria-checked={Boolean(value)} className={value?'is-on':''} onClick={()=>onChange(!value)}><i/></button></label>
   if(field.type==='array'){
     const rows=Array.isArray(value)?value:[]
     return <div className="builder-array"><div className="builder-array__head"><span>{caption}</span><button disabled={field.maxRows!==undefined&&rows.length>=field.maxRows} onClick={()=>onChange([...rows,defaultValues(field.fields||[])])}><Plus size={14}/> Добавить</button></div>
-      {rows.map((row,index)=><div className="builder-array__row" key={row.id||index}><header><strong>{String(index+1).padStart(2,'0')}</strong><button aria-label={'Удалить элемент '+(index+1)} onClick={()=>onChange(rows.filter((_:any,i:number)=>i!==index))}><Trash2 size={14}/></button></header>{(field.fields||[]).map(f=><FieldEditor key={f.name} field={f} value={row[f.name]} media={media} projects={projects} onChange={next=>onChange(rows.map((r:any,i:number)=>i===index?{...r,[f.name]:next}:r))}/>)}</div>)}
+      {rows.map((row,index)=><div className="builder-array__row" key={row.id||index}><header><strong>{String(index+1).padStart(2,'0')}</strong><button aria-label={'Удалить элемент '+(index+1)} onClick={()=>onChange(rows.filter((_:any,i:number)=>i!==index))}><Trash2 size={14}/></button></header>{(field.fields||[]).map(f=><FieldEditor key={f.name} field={f} value={row[f.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={next=>onChange(rows.map((r:any,i:number)=>i===index?{...r,[f.name]:next}:r))}/>)}</div>)}
       {!rows.length&&<div className="builder-array__empty">Добавьте первый элемент.</div>}</div>
   }
   if(field.options)return <label><span>{caption}</span><select value={String(value??field.defaultValue??'')} onChange={e=>onChange(e.target.value)}>{!value&&!field.defaultValue&&<option value="">Выберите</option>}{field.options.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>
@@ -156,11 +137,11 @@ function defaultValues(fields:EditorField[]):Record<string,any>{
   return Object.fromEntries(fields.map(f=>[f.name,f.defaultValue??(f.type==='array'?[]:f.type==='checkbox'?false:f.type==='upload'||f.type==='relationship'||f.type==='number'?null:f.type==='richText'?textToRichText(''):'')]))
 }
 
-function Inspector({block,fields,title,media,projects,onChange}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];onChange:(next:AnyBlock)=>void}){
-  return <div className="builder-inspector"><header><span>Настройки блока</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}</div></div>
+function Inspector({block,fields,title,media,projects,blobEnabled,onChange}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];blobEnabled:boolean;onChange:(next:AnyBlock)=>void}){
+  return <div className="builder-inspector"><header><span>Настройки блока</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}</div></div>
 }
 
-export default function VisualCaseBuilder({project,catalog,media,schemas,projects=[],initialPublished=false,initialPublishedSignature}:{project:any;catalog:BlockMeta[];media:MediaItem[];schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean;initialPublishedSignature?:string}){
+export default function VisualCaseBuilder({project,catalog,media=[],blobEnabled=false,schemas,projects=[],initialPublished=false,initialPublishedSignature}:{project:any;catalog:BlockMeta[];media?:MediaItem[];blobEnabled?:boolean;schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean;initialPublishedSignature?:string}){
   const router=useRouter()
   const [blocks,setBlocks]=useState<AnyBlock[]>(()=>((project.blocks||[]) as AnyBlock[]).map((b,index)=>({...b,id:b.id||'local-'+index+'-'+Date.now()})))
   const [selected,setSelected]=useState(0)
@@ -475,7 +456,7 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
       </main>
 
       <aside className="builder-right">
-        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} onChange={value=>updateMetadata(field.name,value)}/></div>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
+        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>updateMetadata(field.name,value)}/></div>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} blobEnabled={blobEnabled} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
       </aside>
     </div>
 
