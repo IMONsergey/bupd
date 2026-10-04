@@ -1,10 +1,12 @@
 import type { Block } from 'payload'
+import { blockPresentationFields } from '../fields/blockPresentation'
 import { CaseBlocks } from './caseBlocks'
 
 export const articleText: Block = {
   slug: 'articleText',
   labels: { singular: 'Текст статьи', plural: 'Текст статьи' },
   fields: [
+    ...blockPresentationFields,
     { name: 'title', label: 'Заголовок раздела', type: 'text' },
     { name: 'body', label: 'Текст', type: 'richText', required: true },
     { name: 'width', label: 'Ширина текста', type: 'select', defaultValue: 'reading', options: [{ label: 'Для чтения', value: 'reading' }, { label: 'Широкая колонка', value: 'wide' }] },

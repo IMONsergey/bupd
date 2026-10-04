@@ -8,9 +8,9 @@ import { articleSchemas } from '@/studio/builder/editorSchema'
 export default async function CasesPage(){
   const {payload}=await requireContentUser()
   const [projects,templates,published]=await Promise.all([
-    payload.find({collection:'articles',limit:200,sort:'-updatedAt',depth:1,draft:true,overrideAccess:true}),
+    payload.find({collection:'articles',pagination:false,sort:'-updatedAt',depth:1,draft:true,overrideAccess:true}),
     Promise.resolve({docs:[]}),
-    payload.find({collection:'articles',limit:200,depth:0,draft:false,overrideAccess:true,where:{_status:{equals:'published'}}}),
+    payload.find({collection:'articles',pagination:false,depth:0,draft:false,overrideAccess:true,where:{_status:{equals:'published'}}}),
   ])
   const publishedByID=new Map(published.docs.map(project=>[String(project.id),projectContentSignature(project)]))
   const items=projects.docs.map(project=>({

@@ -1,4 +1,5 @@
 import type { Block, Field } from 'payload'
+import { blockPresentationFields } from '../fields/blockPresentation'
 import { MinimalBlocks } from './minimalBlocks'
 import { blockThumbnail, catalogBySlug } from './catalog'
 
@@ -37,6 +38,7 @@ const decorate = (block: Block): Block => {
   const meta = catalogBySlug[block.slug]
   return {
     ...block,
+    fields: [...block.fields, ...blockPresentationFields],
     labels: {
       singular: meta ? `${meta.number} — ${meta.title}` : block.slug,
       plural: meta ? `${meta.number} — ${meta.title}` : block.slug,

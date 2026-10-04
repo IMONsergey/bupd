@@ -204,6 +204,9 @@ export interface Project {
         media: number | Media;
         layout?: ('editorial' | 'media-first' | 'fullscreen') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'caseHero';
@@ -214,6 +217,9 @@ export interface Project {
         size?: ('m' | 'l' | 'xl' | 'display') | null;
         align?: ('left' | 'center' | 'right') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'manifesto';
@@ -224,6 +230,9 @@ export interface Project {
         height?: ('auto' | '70vh' | 'screen' | '120vh') | null;
         fit?: ('cover' | 'contain') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'fullBleedMedia';
@@ -234,6 +243,9 @@ export interface Project {
         ratio?: ('1-1' | '1-2' | '2-1') | null;
         gap?: ('none' | 'xs' | 's' | 'm') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'splitMedia';
@@ -249,6 +261,9 @@ export interface Project {
           | null;
         layout?: ('editorial' | 'grid' | 'rail' | 'staggered') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaMosaic';
@@ -266,6 +281,9 @@ export interface Project {
           | null;
         pin?: ('copy' | 'media') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'stickyStory';
@@ -281,6 +299,9 @@ export interface Project {
           | null;
         style?: ('rail' | 'cards' | 'oversized') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'metrics';
@@ -292,6 +313,9 @@ export interface Project {
         afterLabel?: string | null;
         mode?: ('drag' | 'toggle' | 'split') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'beforeAfter';
@@ -302,6 +326,9 @@ export interface Project {
         role?: string | null;
         size?: ('l' | 'xl' | 'display') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'quote';
@@ -319,6 +346,9 @@ export interface Project {
           | null;
         mode?: ('timeline' | 'accordion' | 'sticky') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'process';
@@ -333,6 +363,9 @@ export interface Project {
           | null;
         mode?: ('drag' | 'cursor' | 'stack' | 'filmstrip') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'gallery';
@@ -343,6 +376,9 @@ export interface Project {
         caption?: string | null;
         float?: boolean | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'deviceShowcase';
@@ -357,6 +393,9 @@ export interface Project {
             }[]
           | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'credits';
@@ -366,6 +405,9 @@ export interface Project {
         label?: string | null;
         mode?: ('cover' | 'minimal') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'nextProject';
@@ -382,6 +424,9 @@ export interface Project {
           | null;
         mode?: ('snap' | 'scrub') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'horizontalStory';
@@ -399,6 +444,9 @@ export interface Project {
           | null;
         mode?: ('stack' | 'parallax' | 'float') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'layeredMedia';
@@ -410,6 +458,9 @@ export interface Project {
         accentWord?: string | null;
         align?: ('left' | 'center' | 'right') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'typographyTakeover';
@@ -423,6 +474,9 @@ export interface Project {
         autoplay?: boolean | null;
         loop?: boolean | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'videoChapter';
@@ -439,6 +493,9 @@ export interface Project {
           | null;
         mode?: ('columns' | 'table' | 'cards') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'comparison';
@@ -453,6 +510,9 @@ export interface Project {
           | null;
         mode?: ('fan' | 'stack' | 'spread') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'artifactStack';
@@ -478,6 +538,9 @@ export interface Project {
         media: number | Media;
         layout?: ('text-left' | 'text-right' | 'balanced') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'textMedia';
@@ -490,6 +553,9 @@ export interface Project {
         media?: (number | null) | Media;
         mode?: ('minimal' | 'statement' | 'media') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'cta';
@@ -515,6 +581,9 @@ export interface Project {
         width?: ('full' | 'wide' | 'reading') | null;
         align?: ('left' | 'center' | 'right') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'editorialText';
@@ -526,6 +595,9 @@ export interface Project {
         aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
         align?: ('left' | 'center' | 'right') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaFrame';
@@ -541,6 +613,9 @@ export interface Project {
         width?: ('full' | 'wide' | 'reading') | null;
         aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaGrid';
@@ -553,6 +628,9 @@ export interface Project {
         }[];
         width?: ('full' | 'wide' | 'reading') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'textColumns';
@@ -565,6 +643,9 @@ export interface Project {
         }[];
         width?: ('full' | 'wide' | 'reading') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'projectFacts';
@@ -575,6 +656,9 @@ export interface Project {
         line?: boolean | null;
         height?: number | null;
         width?: ('full' | 'wide' | 'reading') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'sectionBreak';
@@ -706,6 +790,9 @@ export interface Article {
     | null;
   blocks: (
     | {
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         title?: string | null;
         body: {
           root: {
@@ -734,6 +821,9 @@ export interface Article {
         height?: ('auto' | '70vh' | 'screen' | '120vh') | null;
         fit?: ('cover' | 'contain') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'fullBleedMedia';
@@ -744,6 +834,9 @@ export interface Article {
         ratio?: ('1-1' | '1-2' | '2-1') | null;
         gap?: ('none' | 'xs' | 's' | 'm') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'splitMedia';
@@ -759,6 +852,9 @@ export interface Article {
           | null;
         layout?: ('editorial' | 'grid' | 'rail' | 'staggered') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaMosaic';
@@ -774,6 +870,9 @@ export interface Article {
           | null;
         style?: ('rail' | 'cards' | 'oversized') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'metrics';
@@ -784,6 +883,9 @@ export interface Article {
         role?: string | null;
         size?: ('l' | 'xl' | 'display') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'quote';
@@ -801,6 +903,9 @@ export interface Article {
           | null;
         mode?: ('timeline' | 'accordion' | 'sticky') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'process';
@@ -815,6 +920,9 @@ export interface Article {
           | null;
         mode?: ('drag' | 'cursor' | 'stack' | 'filmstrip') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'gallery';
@@ -828,6 +936,9 @@ export interface Article {
         autoplay?: boolean | null;
         loop?: boolean | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'videoChapter';
@@ -853,6 +964,9 @@ export interface Article {
         media: number | Media;
         layout?: ('text-left' | 'text-right' | 'balanced') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'textMedia';
@@ -865,6 +979,9 @@ export interface Article {
         media?: (number | null) | Media;
         mode?: ('minimal' | 'statement' | 'media') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'cta';
@@ -916,6 +1033,9 @@ export interface CaseTemplate {
         media: number | Media;
         layout?: ('editorial' | 'media-first' | 'fullscreen') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'caseHero';
@@ -926,6 +1046,9 @@ export interface CaseTemplate {
         size?: ('m' | 'l' | 'xl' | 'display') | null;
         align?: ('left' | 'center' | 'right') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'manifesto';
@@ -936,6 +1059,9 @@ export interface CaseTemplate {
         height?: ('auto' | '70vh' | 'screen' | '120vh') | null;
         fit?: ('cover' | 'contain') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'fullBleedMedia';
@@ -946,6 +1072,9 @@ export interface CaseTemplate {
         ratio?: ('1-1' | '1-2' | '2-1') | null;
         gap?: ('none' | 'xs' | 's' | 'm') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'splitMedia';
@@ -961,6 +1090,9 @@ export interface CaseTemplate {
           | null;
         layout?: ('editorial' | 'grid' | 'rail' | 'staggered') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaMosaic';
@@ -978,6 +1110,9 @@ export interface CaseTemplate {
           | null;
         pin?: ('copy' | 'media') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'stickyStory';
@@ -993,6 +1128,9 @@ export interface CaseTemplate {
           | null;
         style?: ('rail' | 'cards' | 'oversized') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'metrics';
@@ -1004,6 +1142,9 @@ export interface CaseTemplate {
         afterLabel?: string | null;
         mode?: ('drag' | 'toggle' | 'split') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'beforeAfter';
@@ -1014,6 +1155,9 @@ export interface CaseTemplate {
         role?: string | null;
         size?: ('l' | 'xl' | 'display') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'quote';
@@ -1031,6 +1175,9 @@ export interface CaseTemplate {
           | null;
         mode?: ('timeline' | 'accordion' | 'sticky') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'process';
@@ -1045,6 +1192,9 @@ export interface CaseTemplate {
           | null;
         mode?: ('drag' | 'cursor' | 'stack' | 'filmstrip') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'gallery';
@@ -1055,6 +1205,9 @@ export interface CaseTemplate {
         caption?: string | null;
         float?: boolean | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'deviceShowcase';
@@ -1069,6 +1222,9 @@ export interface CaseTemplate {
             }[]
           | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'credits';
@@ -1078,6 +1234,9 @@ export interface CaseTemplate {
         label?: string | null;
         mode?: ('cover' | 'minimal') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'nextProject';
@@ -1094,6 +1253,9 @@ export interface CaseTemplate {
           | null;
         mode?: ('snap' | 'scrub') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'horizontalStory';
@@ -1111,6 +1273,9 @@ export interface CaseTemplate {
           | null;
         mode?: ('stack' | 'parallax' | 'float') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'layeredMedia';
@@ -1122,6 +1287,9 @@ export interface CaseTemplate {
         accentWord?: string | null;
         align?: ('left' | 'center' | 'right') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'typographyTakeover';
@@ -1135,6 +1303,9 @@ export interface CaseTemplate {
         autoplay?: boolean | null;
         loop?: boolean | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'videoChapter';
@@ -1151,6 +1322,9 @@ export interface CaseTemplate {
           | null;
         mode?: ('columns' | 'table' | 'cards') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'comparison';
@@ -1165,6 +1339,9 @@ export interface CaseTemplate {
           | null;
         mode?: ('fan' | 'stack' | 'spread') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'artifactStack';
@@ -1190,6 +1367,9 @@ export interface CaseTemplate {
         media: number | Media;
         layout?: ('text-left' | 'text-right' | 'balanced') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'textMedia';
@@ -1202,6 +1382,9 @@ export interface CaseTemplate {
         media?: (number | null) | Media;
         mode?: ('minimal' | 'statement' | 'media') | null;
         theme?: ('dark' | 'light' | 'media') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'cta';
@@ -1227,6 +1410,9 @@ export interface CaseTemplate {
         width?: ('full' | 'wide' | 'reading') | null;
         align?: ('left' | 'center' | 'right') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'editorialText';
@@ -1238,6 +1424,9 @@ export interface CaseTemplate {
         aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
         align?: ('left' | 'center' | 'right') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaFrame';
@@ -1253,6 +1442,9 @@ export interface CaseTemplate {
         width?: ('full' | 'wide' | 'reading') | null;
         aspect?: ('auto' | 'landscape' | 'classic' | 'square' | 'portrait') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaGrid';
@@ -1265,6 +1457,9 @@ export interface CaseTemplate {
         }[];
         width?: ('full' | 'wide' | 'reading') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'textColumns';
@@ -1277,6 +1472,9 @@ export interface CaseTemplate {
         }[];
         width?: ('full' | 'wide' | 'reading') | null;
         spacing?: ('none' | 'small' | 'medium' | 'large') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'projectFacts';
@@ -1287,6 +1485,9 @@ export interface CaseTemplate {
         line?: boolean | null;
         height?: number | null;
         width?: ('full' | 'wide' | 'reading') | null;
+        squareMedia?: boolean | null;
+        flushTop?: boolean | null;
+        flushBottom?: boolean | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'sectionBreak';
@@ -1611,6 +1812,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               media?: T;
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1622,6 +1826,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               size?: T;
               align?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1633,6 +1840,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               height?: T;
               fit?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1644,6 +1854,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               ratio?: T;
               gap?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1660,6 +1873,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1678,6 +1894,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               pin?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1694,6 +1913,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               style?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1706,6 +1928,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               afterLabel?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1717,6 +1942,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               role?: T;
               size?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1735,6 +1963,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1750,6 +1981,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1761,6 +1995,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               caption?: T;
               float?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1776,6 +2013,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                     id?: T;
                   };
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1786,6 +2026,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               label?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1803,6 +2046,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1821,6 +2067,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1833,6 +2082,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               accentWord?: T;
               align?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1847,6 +2099,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               autoplay?: T;
               loop?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1864,6 +2119,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1879,6 +2137,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1891,6 +2152,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               media?: T;
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1904,6 +2168,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               media?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1916,6 +2183,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               width?: T;
               align?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1928,6 +2198,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               aspect?: T;
               align?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1946,6 +2219,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               width?: T;
               aspect?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1961,6 +2237,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               width?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1976,6 +2255,9 @@ export interface ProjectsSelect<T extends boolean = true> {
                   };
               width?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -1987,6 +2269,9 @@ export interface ProjectsSelect<T extends boolean = true> {
               line?: T;
               height?: T;
               width?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2024,6 +2309,9 @@ export interface ArticlesSelect<T extends boolean = true> {
         articleText?:
           | T
           | {
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               title?: T;
               body?: T;
               width?: T;
@@ -2039,6 +2327,9 @@ export interface ArticlesSelect<T extends boolean = true> {
               height?: T;
               fit?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2050,6 +2341,9 @@ export interface ArticlesSelect<T extends boolean = true> {
               ratio?: T;
               gap?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2066,6 +2360,9 @@ export interface ArticlesSelect<T extends boolean = true> {
                   };
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2082,6 +2379,9 @@ export interface ArticlesSelect<T extends boolean = true> {
                   };
               style?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2093,6 +2393,9 @@ export interface ArticlesSelect<T extends boolean = true> {
               role?: T;
               size?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2111,6 +2414,9 @@ export interface ArticlesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2126,6 +2432,9 @@ export interface ArticlesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2140,6 +2449,9 @@ export interface ArticlesSelect<T extends boolean = true> {
               autoplay?: T;
               loop?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2152,6 +2464,9 @@ export interface ArticlesSelect<T extends boolean = true> {
               media?: T;
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2165,6 +2480,9 @@ export interface ArticlesSelect<T extends boolean = true> {
               media?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2207,6 +2525,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               media?: T;
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2218,6 +2539,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               size?: T;
               align?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2229,6 +2553,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               height?: T;
               fit?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2240,6 +2567,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               ratio?: T;
               gap?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2256,6 +2586,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2274,6 +2607,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               pin?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2290,6 +2626,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               style?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2302,6 +2641,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               afterLabel?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2313,6 +2655,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               role?: T;
               size?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2331,6 +2676,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2346,6 +2694,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2357,6 +2708,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               caption?: T;
               float?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2372,6 +2726,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                     id?: T;
                   };
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2382,6 +2739,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               label?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2399,6 +2759,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2417,6 +2780,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2429,6 +2795,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               accentWord?: T;
               align?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2443,6 +2812,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               autoplay?: T;
               loop?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2460,6 +2832,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2475,6 +2850,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2487,6 +2865,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               media?: T;
               layout?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2500,6 +2881,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               media?: T;
               mode?: T;
               theme?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2512,6 +2896,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               width?: T;
               align?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2524,6 +2911,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               aspect?: T;
               align?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2542,6 +2932,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               width?: T;
               aspect?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2557,6 +2950,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               width?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2572,6 +2968,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
                   };
               width?: T;
               spacing?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };
@@ -2583,6 +2982,9 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
               line?: T;
               height?: T;
               width?: T;
+              squareMedia?: T;
+              flushTop?: T;
+              flushBottom?: T;
               id?: T;
               blockName?: T;
             };

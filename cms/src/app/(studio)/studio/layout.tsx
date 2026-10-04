@@ -3,6 +3,7 @@ import React from 'react'
 import { requireStudioUser } from '@/studio/lib/auth'
 import StudioShell from '@/studio/ui/StudioShell'
 import '@/studio/ui/studio.css'
+import '@/studio/ui/workspace.css'
 
 export const metadata = {
   title: 'BAEV Studio',

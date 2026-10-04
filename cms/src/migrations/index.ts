@@ -3,6 +3,7 @@ import * as migration_20261001_065757_baev_editorial_workflow from './20261001_0
 import * as migration_20261001_071316_baev_templates_and_workflow_v2 from './20261001_071316_baev_templates_and_workflow_v2';
 import * as migration_20261004_124623_baev_visual_blog from './20261004_124623_baev_visual_blog';
 import * as migration_20261004_133854_baev_quiet_builder from './20261004_133854_baev_quiet_builder';
+import * as migration_20261004_142135_baev_block_spacing from './20261004_142135_baev_block_spacing';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261004_133854_baev_quiet_builder.up,
     down: migration_20261004_133854_baev_quiet_builder.down,
-    name: '20261004_133854_baev_quiet_builder'
+    name: '20261004_133854_baev_quiet_builder',
+  },
+  {
+    up: migration_20261004_142135_baev_block_spacing.up,
+    down: migration_20261004_142135_baev_block_spacing.down,
+    name: '20261004_142135_baev_block_spacing'
   },
 ];

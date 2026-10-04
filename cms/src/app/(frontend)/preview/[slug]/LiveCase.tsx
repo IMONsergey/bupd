@@ -502,7 +502,7 @@ export default function LiveCase({
           {inCanvas&&<CanvasInsert index={0}/>}
           {(data.blocks || []).map((block: any, index: number) => (
             <CanvasContext.Provider key={block.id || `${block.blockType}-${index}`} value={{enabled:inCanvas,selected:selected===index,index,blockId:String(block.id||'')}}>
-              <div className="case-scene" data-theme={block.theme} data-mode={block.mode} data-align={block.align} data-size={block.size} data-gap={block.gap} data-style={block.style} data-pin={block.pin} data-scene-index={index} data-selected={inCanvas&&selected===index?'true':undefined} onClick={event=>{
+              <div className="case-scene" data-square-media={block.squareMedia===true?true:undefined} data-flush-top={block.flushTop===true?true:undefined} data-flush-bottom={block.flushBottom===true?true:undefined} data-block-spacing={block.spacing||'auto'} data-block-type={block.blockType} data-theme={block.theme} data-mode={block.mode} data-align={block.align} data-size={block.size} data-gap={block.gap} data-style={block.style} data-pin={block.pin} data-scene-index={index} data-selected={inCanvas&&selected===index?'true':undefined} onClick={event=>{
                 if(!inCanvas)return
                 if((event.target as HTMLElement).closest('a'))event.preventDefault()
                 window.parent.postMessage({type:'baev:select',index},location.origin)

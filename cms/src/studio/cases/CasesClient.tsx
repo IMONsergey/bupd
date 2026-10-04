@@ -34,10 +34,8 @@ type TemplateItem={
 const statuses=[
   ['all','Все'],
   ['draft','В работе'],
-  ['review','Проверка'],
-  ['ready','Готово'],
   ['published','Опубликовано'],
-  ['paused','Пауза'],
+  ['changes','Есть правки'],
 ] as const
 
 const label:Record<string,string>={draft:'В работе',review:'Проверка',ready:'Готов',paused:'Пауза',published:'Опубликован'}
@@ -55,6 +53,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
   const [sort,setSort]=useState(caseSorts.includes(params.get('sort') as any)?params.get('sort')||'updated':'updated')
   const [view,setView]=useState(params.get('view')==='list'?'list':'grid')
   const [failedCovers,setFailedCovers]=useState<string[]>([])
+  const [visibleLimit,setVisibleLimit]=useState(24)
   const [modal,setModal]=useState(params.get('new')==='1')
   const [title,setTitle]=useState('')
   const [client,setClient]=useState('')
@@ -80,6 +79,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
     setView(paramView==='list'?'list':'grid')
   },[paramStatus,paramQuery,paramSort,paramView])
   const changeView=(updates:Record<string,string>)=>{
+    setVisibleLimit(24)
     const url=new URL(location.href)
     const defaults:Record<string,string>={q:'',status:'all',sort:'updated',view:'grid'}
     for(const [key,value] of Object.entries(updates)){
@@ -109,7 +109,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
       }),
     })
     const data=await response.json().catch(()=>({}))
-    if(!response.ok){setError(data?.error||'Не удалось создать кейс');setBusy(false);return}
+    if(!response.ok){setError(data?.error||(article?'Не удалось создать статью':'Не удалось создать кейс'));setBusy(false);return}
     router.push(listURL+data.id)
     } catch {setError('Нет связи с сервером. Данные сохранены в форме — попробуйте ещё раз.')}
     finally {setBusy(false)}
@@ -132,27 +132,29 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
     <div className="studio-toolbar">
       <div style={{position:'relative',flex:1}}>
         <Search size={15} style={{position:'absolute',left:11,top:12,color:'#a4a4a4'}}/>
-        <input aria-label="Найти кейс" className="studio-input studio-input--search" style={{paddingLeft:34}} value={query} onChange={(e)=>changeView({q:e.target.value})} placeholder="Название, клиент или год"/>
+        <input aria-label={article?'Найти статью':'Найти кейс'} className="studio-input studio-input--search" style={{paddingLeft:34}} value={query} onChange={(e)=>changeView({q:e.target.value})} placeholder={article?'Найти статью':'Найти кейс'}/>
+        {query&&<button type="button" className="case-search-clear" aria-label="Очистить поиск" onClick={()=>changeView({q:''})}><X size={14}/></button>}
       </div>
       <div className="studio-segmented">
-        {statuses.map(([value,text])=><button aria-label={text} aria-pressed={status===value} key={value} onClick={()=>changeView({status:value})}>
+        {statuses.map(([value,text])=><button type="button" aria-label={text} aria-pressed={status===value} key={value} onClick={()=>changeView({status:value})}>
           {status===value&&<motion.i layoutId="case-status-bg" transition={{type:'spring',stiffness:430,damping:35}}/>}
           <span>{text} <small aria-hidden="true">{items.filter(item=>matchesCaseStatus(item,value)).length}</small></span>
         </button>)}
       </div>
-      <button className="studio-button" onClick={()=>setModal(true)}><Plus size={14}/> {article?'Новая статья':'Новый кейс'}</button>
+      <button type="button" className="studio-button" onClick={()=>setModal(true)}><Plus size={14}/> {article?'Новая статья':'Новый кейс'}</button>
     </div>
     <div className="case-view-toolbar">
       <span role="status">{visible.length} из {items.length} {article?'статей':'кейсов'}</span>
-      <div className="case-view-quick"><button aria-pressed={status==='changes'} onClick={()=>changeView({status:status==='changes'?'all':'changes'})}>Новые правки <small>{items.filter(item=>item.hasUnpublishedChanges).length}</small></button><button aria-pressed={status==='issues'} onClick={()=>changeView({status:status==='issues'?'all':'issues'})}>Незаполненные поля <small>{items.filter(item=>item.issueCount).length}</small></button></div>
-      <label><span className="studio-sr-only">Сортировать кейсы</span><select aria-label="Сортировать кейсы" value={sort} onChange={event=>changeView({sort:event.target.value})}><option value="updated">Сначала изменённые</option><option value="title">По названию</option><option value="year">Сначала новые проекты</option></select></label>
-      <div className="case-view-toggle"><button aria-label="Карточки кейсов" aria-pressed={view==='grid'} onClick={()=>changeView({view:'grid'})}><LayoutGrid size={16}/></button><button aria-label="Список кейсов" aria-pressed={view==='list'} onClick={()=>changeView({view:'list'})}><Menu size={16}/></button></div>
+      <label className="case-more-filter"><span className="studio-sr-only">Другие фильтры</span><select aria-label="Другие фильтры" value={['review','ready','paused','issues'].includes(status)?status:''} onChange={event=>changeView({status:event.target.value||'all'})}><option value="">Другие фильтры</option><option value="review">На проверке · {items.filter(item=>matchesCaseStatus(item,'review')).length}</option><option value="ready">Готово к публикации · {items.filter(item=>matchesCaseStatus(item,'ready')).length}</option><option value="paused">На паузе · {items.filter(item=>matchesCaseStatus(item,'paused')).length}</option><option value="issues">Незаполненные поля · {items.filter(item=>item.issueCount).length}</option></select></label>
+      {(query||status!=='all')&&<button type="button" className="case-reset" onClick={()=>changeView({q:'',status:'all'})}>Сбросить<X size={12}/></button>}
+      <label><span className="studio-sr-only">Сортировать кейсы</span><select aria-label={article?'Сортировать статьи':'Сортировать кейсы'} value={sort} onChange={event=>changeView({sort:event.target.value})}><option value="updated">Сначала изменённые</option><option value="title">По названию</option><option value="year">Сначала новые проекты</option></select></label>
+      <div className="case-view-toggle"><button type="button" aria-label={article?'Карточки статей':'Карточки кейсов'} aria-pressed={view==='grid'} onClick={()=>changeView({view:'grid'})}><LayoutGrid size={16}/></button><button type="button" aria-label={article?'Список статей':'Список кейсов'} aria-pressed={view==='list'} onClick={()=>changeView({view:'list'})}><Menu size={16}/></button></div>
     </div>
 
     {actionError&&<p role="alert" className="studio-inline-error">{actionError}</p>}
     <motion.div className={'studio-cases '+(view==='list'?'is-list':'')} layout>
       <AnimatePresence mode="popLayout">
-        {visible.map((item,index)=>{
+        {visible.slice(0,visibleLimit).map((item,index)=>{
           const state=onSite(item)?'published':item.workflowStatus||'draft'
           return <motion.article
             layout
@@ -166,20 +168,20 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
             <a className="studio-case-card__link" href={listURL+item.id} aria-label={'Редактировать '+item.title}>
             {item.cover?.url&&!failedCovers.includes(String(item.id))?<img loading="lazy" className="studio-case-cover" src={item.cover.sizes?.card?.url||item.cover.url} alt={item.cover.alt||''} onError={()=>setFailedCovers(ids=>[...ids,String(item.id)])}/>:<div className="studio-case-no-cover"><Layers size={28}/><span>{item.cover?.url?'Превью недоступно':'Добавьте обложку'}</span></div>}
             <div className="studio-case-card__top">
-              <span className={['studio-chip',state==='published'||state==='ready'?'studio-chip--green':state==='review'?'studio-chip--amber':''].join(' ')}>{label[state]||state}</span>
-              {onSite(item)&&item.hasUnpublishedChanges?<span className="case-draft-indicator">Новые правки</span>:<span className="case-workflow">{onSite(item)&&item.workflowStatus&&item.workflowStatus!=='ready'?label[item.workflowStatus]:String(index+1).padStart(2,'0')}</span>}
+              <span className={['studio-chip',state==='published'||state==='ready'?'studio-chip--green':state==='review'?'studio-chip--amber':''].join(' ')}>{item.hasUnpublishedChanges?'Есть правки':label[state]||state}</span>
+
             </div>
             <div className="studio-case-card__body">
               <small>{item.client||(article?'Автор не указан':'Без клиента')}{item.year?' · '+item.year:''}</small>
               <h3>{item.title}</h3>
-              <p>/{item.slug}{item.deadline?' · дедлайн '+new Date(item.deadline).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):''}</p>
+              {item.deadline&&<p>Срок · {new Date(item.deadline).toLocaleDateString('ru-RU',{day:'2-digit',month:'short'})}</p>}
               {Boolean(item.issueCount)&&<span className="case-completion-note">Незаполненные поля · {item.issueCount}</span>}
             </div>
             </a>
             <footer className="studio-case-card__footer">
               <span>Изменён {item.updatedAt?new Date(item.updatedAt).toLocaleDateString('ru-RU',{day:'2-digit',month:'short'}):'—'}</span>
               <span style={{display:'flex',gap:10}}>
-                <button aria-label={'Создать копию '+item.title} disabled={duplicating!==null} title="Создать копию" onClick={(e)=>duplicate(item.id,e)} style={{border:0,background:'transparent',padding:0,cursor:'pointer',color:'inherit'}}><Copy size={16}/></button>
+                <button type="button" aria-label={'Создать копию '+item.title} disabled={duplicating!==null} title="Создать копию" onClick={(e)=>duplicate(item.id,e)} style={{border:0,background:'transparent',padding:0,cursor:'pointer',color:'inherit'}}><Copy size={16}/></button>
                 <a href={previewPath+item.slug} aria-label={'Предпросмотр '+item.title} target="_blank" rel="noopener noreferrer"><Eye size={16}/></a>
                 {onSite(item)&&<a href={publicPath+item.slug} aria-label={'Открыть на сайте '+item.title} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16}/></a>}
               </span>
@@ -189,23 +191,27 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
       </AnimatePresence>
     </motion.div>
 
-    {!visible.length&&<div className="studio-card studio-empty case-empty"><Search size={24}/><strong>{items.length?'Ничего не найдено':article?'Добавьте первую статью':'Добавьте первый кейс'}</strong><p>{items.length?'Измените запрос или сбросьте фильтры.':'Начните с готовой структуры и заполните её своими материалами.'}</p><button className="studio-button studio-button--soft" onClick={()=>items.length?changeView({q:'',status:'all'}):setModal(true)}>{items.length?'Сбросить фильтры':article?'Создать статью':'Создать первый кейс'}</button></div>}
+    {visibleLimit<visible.length&&<div className="case-load-more"><button type="button" className="studio-button studio-button--soft" onClick={()=>setVisibleLimit(value=>value+24)}>Показать ещё · {visible.length-visibleLimit}</button></div>}
+
+    {!visible.length&&<div className="studio-card studio-empty case-empty"><Search size={24}/><strong>{items.length?'Ничего не найдено':article?'Добавьте первую статью':'Добавьте первый кейс'}</strong><p>{items.length?'Измените запрос или сбросьте фильтры.':'Начните с готовой структуры и заполните её своими материалами.'}</p><button type="button" className="studio-button studio-button--soft" onClick={()=>items.length?changeView({q:'',status:'all'}):setModal(true)}>{items.length?'Сбросить фильтры':article?'Создать статью':'Создать первый кейс'}</button></div>}
 
     <AnimatePresence>
       {modal&&<motion.div className="studio-new-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>{if(e.target===e.currentTarget&&!busy)setModal(false)}}>
-        <motion.section ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="new-case-title" className="studio-new-dialog studio-template-dialog" initial={{opacity:0,scale:.985,y:12}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.99,y:6}} transition={{type:'spring',stiffness:390,damping:34}}>
-          <header><div><span>Готовые структуры BAEV</span><h2 id="new-case-title">{article?'Новая статья':'Новый кейс'}</h2></div><button disabled={busy} aria-label="Закрыть создание кейса" onClick={()=>setModal(false)}><X size={17}/></button></header>
+        <motion.section ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="new-case-title" className="studio-new-dialog studio-template-dialog studio-create-flow" initial={{opacity:0,scale:.985,y:12}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.99,y:6}} transition={{type:'spring',stiffness:390,damping:34}}>
+          <header><div><span>Готовые структуры BAEV</span><h2 id="new-case-title">{article?'Новая статья':'Новый кейс'}</h2></div><button type="button" disabled={busy} aria-label={article?'Закрыть создание статьи':'Закрыть создание кейса'} onClick={()=>setModal(false)}><X size={17}/></button></header>
+          <form className="studio-create-form" onSubmit={event=>{event.preventDefault();void create()}}>
           <div className="studio-new-form">
             <label><span>Название *</span><input value={title} onChange={(e)=>setTitle(e.target.value)} placeholder={article?'О чём будет статья?':'Название проекта'}/></label>
-            <div><label><span>{article?'Автор':'Клиент'}</span><input value={client} onChange={(e)=>setClient(e.target.value)} placeholder={article?'Имя автора':'Название компании'}/></label>{!article&&<label><span>Год</span><input type="number" min="2000" max="2100" value={year} onChange={(e)=>setYear(e.target.value)}/></label>}</div>
-            {!article&&<label><span>Категории</span><input value={categories} onChange={(e)=>setCategories(e.target.value)} placeholder="Презентация, Брендинг, Event"/></label>}
+            <details className="create-details"><summary>Добавить подробности <span>Необязательно</span></summary><div><label><span>{article?'Автор':'Клиент'}</span><input value={client} onChange={(e)=>setClient(e.target.value)} placeholder={article?'Имя автора':'Название компании'}/></label>{!article&&<label><span>Год</span><input type="number" min="2000" max="2100" value={year} onChange={(e)=>setYear(e.target.value)}/></label>}</div>
+            {!article&&<label><span>Категории</span><input value={categories} onChange={(e)=>setCategories(e.target.value)} placeholder="Презентация, Брендинг, Event"/></label>}</details>
           </div>
           <div className="page-presets">
-            <div className="page-presets__heading"><strong>С чего начнём?</strong><span>Структура уже собрана. Замените текст и добавьте свои материалы.</span></div>
-            <div className="page-presets__grid">{presets.map(item=><button key={item.id} className={'page-preset '+(template===item.id?'is-selected':'')} aria-pressed={template===item.id} onClick={()=>setTemplate(item.id)}><div className="page-preset__preview">{item.blocks.slice(0,4).map((block,index)=><BlockPreview key={index} slug={block.blockType}/>)}</div><div><strong>{item.title}</strong><p>{item.description}</p><small>{item.blocks.length} блоков · адаптивная страница</small></div><span className="page-preset__check">{template===item.id?'✓':'○'}</span></button>)}</div>
-            <div className="page-presets__other"><button aria-pressed={template==='blank'} onClick={()=>setTemplate('blank')}><Plus size={16}/>Начать с чистого листа</button>{!article&&templates.length>0&&<label>Шаблоны команды<select aria-label="Шаблоны команды" value={templates.some(item=>item.slug===template)?template:''} onChange={event=>{if(event.target.value)setTemplate(event.target.value)}}><option value="">Выбрать шаблон</option>{templates.map(item=><option key={item.slug} value={item.slug}>{item.title.replace('Template — ','')}</option>)}</select></label>}</div>
+            <div className="page-presets__heading"><strong>С чего начнём?</strong><span>Любую структуру можно изменить в редакторе.</span></div>
+            <div className="page-presets__grid">{presets.map(item=><button type="button" key={item.id} className={'page-preset '+(template===item.id?'is-selected':'')} aria-pressed={template===item.id} onClick={()=>setTemplate(item.id)}><div className="page-preset__preview">{item.blocks.slice(0,4).map((block,index)=><BlockPreview key={index} slug={block.blockType}/>)}</div><div><strong>{item.title}</strong><p>{item.description}</p><small>{item.blocks.length} блоков · адаптивная страница</small></div><span className="page-preset__check">{template===item.id?'✓':'○'}</span></button>)}</div>
+            <div className="page-presets__other"><button type="button" aria-pressed={template==='blank'} onClick={()=>setTemplate('blank')}><Plus size={16}/>Начать с чистого листа</button>{!article&&templates.length>0&&<label>Шаблоны команды<select aria-label="Шаблоны команды" value={templates.some(item=>item.slug===template)?template:''} onChange={event=>{if(event.target.value)setTemplate(event.target.value)}}><option value="">Выбрать шаблон</option>{templates.map(item=><option key={item.slug} value={item.slug}>{item.title.replace('Template — ','')}</option>)}</select></label>}</div>
           </div>
-          <footer>{error&&<span role="alert">{error}</span>}<button disabled={busy} className="studio-button studio-button--soft" onClick={()=>setModal(false)}>Отмена</button><button className="studio-button" disabled={!title.trim()||busy} onClick={create}>{busy?'Создаём…':article?'Создать статью':'Создать кейс'}</button></footer>
+          <footer>{error&&<span role="alert">{error}</span>}<button type="button" disabled={busy} className="studio-button studio-button--soft" onClick={()=>setModal(false)}>Отмена</button><button className="studio-button" type="submit" disabled={!title.trim()||busy}>{busy?'Создаём…':article?'Создать статью':'Создать кейс'}</button></footer>
+          </form>
         </motion.section>
       </motion.div>}
     </AnimatePresence>

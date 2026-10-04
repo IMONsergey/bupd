@@ -57,7 +57,7 @@
 .builder-root--quiet .builder-inspector>header>strong{font-size:12px;font-weight:500}
 .builder-root--quiet .builder-inspector__fields{padding:12px 20px 24px;gap:20px}
 .builder-root--quiet .builder-inspector label>span,.builder-root--quiet .builder-media-field>span,.builder-root--quiet .builder-rich-field>span{font-size:11px;color:#9d9d9d;margin-bottom:7px}
-.builder-root--quiet .builder-inspector :is(input:not([type=range]):not([type=color]),select,textarea){background:#ffffff04;border:1px solid #ffffff09;border-radius:4px;color:#dedede;font-size:12px;min-height:34px;box-shadow:none;padding:8px 9px}
+.builder-root--quiet .builder-inspector :is(input:not([type=range]):not([type=color]):not([type=checkbox]),select,textarea){background:#ffffff04;border:1px solid #ffffff09;border-radius:4px;color:#dedede;font-size:12px;min-height:34px;box-shadow:none;padding:8px 9px}
 .builder-root--quiet .builder-inspector :is(input,select,textarea):focus{outline:1px solid #ffffff40;border-color:transparent}
 .builder-root--quiet .inspector-tabs{border-bottom:1px solid #ffffff09;margin:0 20px;padding:0;gap:20px}
 .builder-root--quiet .inspector-tabs button{font-size:11px;padding:9px 0;flex:none;border-bottom-width:1px}
@@ -110,3 +110,12 @@
 .builder-root--quiet .builder-more__menu .quiet-mobile-action{display:none}
 @media(max-width:760px){.builder-root--quiet .builder-more__menu .quiet-mobile-action{display:flex}}
 @media(max-width:760px){.builder-root--quiet .builder-layout>.builder-scenes,.builder-root--quiet .builder-layout>.builder-right{grid-area:auto;position:absolute!important;z-index:30}}
+.block-presentation{border:0;border-bottom:1px solid var(--s-line);margin:0;padding:4px 16px 16px;display:grid;gap:12px}
+.block-presentation legend{padding:0 0 12px;font-size:11px;color:var(--s-faint)}
+.block-presentation label{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--s-muted);cursor:pointer;min-height:24px}
+.block-presentation input{width:15px;height:15px;margin:0;accent-color:var(--s-text)}
+.builder-root--quiet .block-presentation{padding:4px 20px 16px;border-color:#ffffff0d}
+.builder-root--quiet .block-presentation input[type=checkbox]{appearance:auto;width:15px;height:15px;min-height:15px;padding:0;border-radius:3px;flex:none}
+.builder-root--quiet .block-presentation label>span{margin:0;font-size:11px}
+.builder-root--quiet .builder-inspector .block-presentation input[type=checkbox]{min-height:15px;height:15px;width:15px;padding:0}
+.builder-root--quiet .block-presentation{gap:7px}.builder-root--quiet .block-presentation label{min-height:25px}.builder-root--quiet .block-presentation label>span{font-size:12px}

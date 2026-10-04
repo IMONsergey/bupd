@@ -46,6 +46,7 @@ import type { EditorField } from './editorSchema'
 import { serializeDocument, copyScene, textToRichText } from './document'
 import { blockDefaults } from './presets'
 import './quiet-builder.css'
+import { BlockPresentation, blockPresentationKeys } from './BlockPresentation'
 import { PageAppearance } from './PageAppearance'
 import { BlockLibrary } from './BlockLibrary'
 import { BlockPreview } from './BlockPreview'
@@ -125,8 +126,8 @@ const designFields = new Set(['theme','layout','mode','size','align','height','f
 function Inspector({block,fields,title,media,projects,blobEnabled,onChange,revealField}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];blobEnabled:boolean;onChange:(next:AnyBlock)=>void;revealField?:string}){
   const [tab,setTab]=useState('content')
   useEffect(()=>{if(revealField)setTab(designFields.has(revealField)?'design':'content')},[revealField])
-  const visible=fields.filter(field=>tab==='design'?designFields.has(field.name):!designFields.has(field.name))
-  return <div className="builder-inspector"><header><strong>{title}</strong></header><div className="inspector-tabs" role="tablist" aria-label="Настройки блока"><button role="tab" aria-selected={tab==='content'} onClick={()=>setTab('content')}>Содержание</button><button role="tab" aria-selected={tab==='design'} onClick={()=>setTab('design')}>Оформление</button></div><div className="builder-inspector__fields">{visible.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}{!visible.length&&<p className="inspector-hint">Оформление этого блока уже настроено для BAEV.</p>}</div></div>
+  const visible=fields.filter(field=>!blockPresentationKeys.has(field.name as 'squareMedia'|'flushTop'|'flushBottom')).filter(field=>tab==='design'?designFields.has(field.name):!designFields.has(field.name))
+  return <div className="builder-inspector"><header><strong>{title}</strong></header><BlockPresentation block={block} onChange={(key,value)=>onChange({...block,[key]:value})}/><div className="inspector-tabs" role="tablist" aria-label="Настройки блока"><button role="tab" aria-selected={tab==='content'} onClick={()=>setTab('content')}>Содержание</button><button role="tab" aria-selected={tab==='design'} onClick={()=>setTab('design')}>Оформление</button></div><div className="builder-inspector__fields">{visible.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}{!visible.length&&<p className="inspector-hint">Оформление этого блока уже настроено для BAEV.</p>}</div></div>
 }
 
 export default function VisualCaseBuilder({kind='case',project,catalog,media=[],blobEnabled=false,schemas,projects=[],initialPublished=false,initialPublishedSignature}:{kind?:'case'|'article';project:any;catalog:BlockMeta[];media?:MediaItem[];blobEnabled?:boolean;schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean;initialPublishedSignature?:string}){
@@ -490,6 +491,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
       <button aria-label="Структура" title="Структура страницы" aria-pressed={workspaceTab==='blocks'} onClick={()=>setWorkspaceTab(tab=>tab==='blocks'?'canvas':'blocks')}><StudioIcon name="Layers" size={16}/><span>Структура</span></button>
       <button aria-label="Оформление страницы" title="Фон и скругление медиа" aria-pressed={workspaceTab==='design'} onClick={()=>setWorkspaceTab(tab=>tab==='design'?'canvas':'design')}><Settings2 size={16}/><span>Оформление</span></button>
       <button aria-label="Настройки страницы" title="Название, обложка и публикация" aria-pressed={workspaceTab==='settings'&&details} onClick={()=>{setDetails(true);setWorkspaceTab(tab=>tab==='settings'&&details?'canvas':'settings')}}><StudioIcon name="FileText" size={16}/><span>Страница</span></button>
+      {selectedBlock&&<button aria-label="Настройки выбранного блока" aria-pressed={workspaceTab==='settings'&&!details} onClick={()=>{setDetails(false);setWorkspaceTab(tab=>tab==='settings'&&!details?'canvas':'settings')}}><StudioIcon name="SlidersHorizontal" size={16}/><span>Блок</span></button>}
       <div className="quiet-tools__view"><div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на планшете" className={device==='tablet'?'is-active':''} onClick={()=>setDevice('tablet')}><StudioIcon name="PanelsTopLeft" size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div><select aria-label="Масштаб холста" value={zoom} onChange={event=>setZoom(event.target.value as typeof zoom)}><option value="fit">{Math.round(canvasScale*100)}%</option><option value="100">100%</option></select></div>
     </nav>
 

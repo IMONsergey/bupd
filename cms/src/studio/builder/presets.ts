@@ -27,12 +27,12 @@ export const blockDefaults:Record<string,Record<string,any>>={
 
 
 Object.assign(blockDefaults, {
-  editorialText: {blockType:'editorialText',eyebrow:'',title:'',body:textToRichText('Расскажите о задаче, идее или результате проекта.'),width:'reading',align:'left',spacing:'medium'},
-  mediaFrame: {blockType:'mediaFrame',caption:'',width:'wide',aspect:'auto',align:'center',spacing:'medium'},
+  editorialText: {blockType:'editorialText',eyebrow:'',title:'',body:textToRichText('Расскажите о задаче, идее или результате проекта.'),width:'reading',align:'left',spacing:'small'},
+  mediaFrame: {blockType:'mediaFrame',caption:'',width:'wide',aspect:'auto',align:'center',spacing:'small'},
   mediaGrid: {blockType:'mediaGrid',items:[{media:null,caption:''},{media:null,caption:''}],columns:'2',gap:16,width:'full',aspect:'square',spacing:'small'},
-  textColumns: {blockType:'textColumns',items:[{title:'Задача',body:'Что предстояло изменить.'},{title:'Решение',body:'Как мы к этому подошли.'}],width:'wide',spacing:'medium'},
-  projectFacts: {blockType:'projectFacts',items:[{label:'Услуги',value:'Брендинг, дизайн'},{label:'Год',value:'2026'}],width:'wide',spacing:'medium'},
-  sectionBreak: {blockType:'sectionBreak',eyebrow:'',title:'',line:false,height:80,width:'wide'},
+  textColumns: {blockType:'textColumns',items:[{title:'Задача',body:'Что предстояло изменить.'},{title:'Решение',body:'Как мы к этому подошли.'}],width:'wide',spacing:'small'},
+  projectFacts: {blockType:'projectFacts',items:[{label:'Услуги',value:'Брендинг, дизайн'},{label:'Год',value:'2026'}],width:'wide',spacing:'small'},
+  sectionBreak: {blockType:'sectionBreak',eyebrow:'',title:'',line:false,height:40,width:'wide'},
 })
 
 blockDefaults.articleText = { blockType: 'articleText', title: 'Название раздела', body: textToRichText('Раскройте одну мысль. Добавьте примеры, факты и выводы.'), width: 'reading', theme: 'light' }
@@ -88,7 +88,7 @@ Object.assign(blockVariants, {
   mediaFrame: [
     {id:'wide',title:'Изображение с полями',values:{width:'wide',aspect:'auto'}},
     {id:'reading',title:'Узкое изображение',values:{width:'reading',aspect:'auto'}},
-    {id:'full',title:'Во всю ширину',values:{width:'full',spacing:'none',aspect:'auto'}},
+    {id:'full',title:'Во всю ширину',values:{width:'full',spacing:'small',aspect:'auto'}},
     {id:'portrait',title:'Вертикальный кадр',values:{width:'reading',aspect:'portrait'}},
     {id:'square',title:'Квадратный кадр',values:{width:'wide',aspect:'square'}},
   ],
@@ -105,8 +105,8 @@ Object.assign(blockVariants, {
   ],
   projectFacts: [{id:'facts',title:'Детали проекта',values:{}}],
   sectionBreak: [
-    {id:'space',title:'Свободное пространство',values:{title:'',line:false,height:96}},
-    {id:'line',title:'Тонкая линия',values:{title:'',line:true,height:64}},
+    {id:'space',title:'Свободное пространство',values:{title:'',line:false,height:40}},
+    {id:'line',title:'Тонкая линия',values:{title:'',line:true,height:24}},
     {id:'heading',title:'Название раздела',values:{eyebrow:'02',title:'Новая глава',line:false,height:80}},
   ],
 })

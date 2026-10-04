@@ -3,7 +3,7 @@ import type { Block, Field } from 'payload'
 const media: Field = { name: 'media', label: 'Изображение или видео', type: 'upload', relationTo: 'media', required: true }
 const width: Field = { name: 'width', label: 'Ширина', type: 'select', defaultValue: 'wide', options: [{ label: 'Во всю ширину', value: 'full' }, { label: 'С полями', value: 'wide' }, { label: 'Узкая колонка', value: 'reading' }] }
 const align: Field = { name: 'align', label: 'Положение', type: 'select', defaultValue: 'left', options: ['left', 'center', 'right'] }
-const spacing: Field = { name: 'spacing', label: 'Отступы сверху и снизу', type: 'select', defaultValue: 'medium', options: [{ label: 'Без отступов', value: 'none' }, { label: 'Небольшие', value: 'small' }, { label: 'Средние', value: 'medium' }, { label: 'Большие', value: 'large' }] }
+const spacing: Field = { name: 'spacing', label: 'Отступы сверху и снизу', type: 'select', defaultValue: 'small', options: [{ label: 'Без отступов', value: 'none' }, { label: 'Автоматически · небольшой интервал', value: 'small' }, { label: 'Средние', value: 'medium' }, { label: 'Большие', value: 'large' }] }
 const aspect: Field = { name: 'aspect', label: 'Пропорции медиа', type: 'select', defaultValue: 'auto', options: [{ label: 'Исходные', value: 'auto' }, { label: '16:9', value: 'landscape' }, { label: '4:3', value: 'classic' }, { label: '1:1', value: 'square' }, { label: '3:4', value: 'portrait' }] }
 
 // Quiet editorial building blocks. They inherit the page palette and media radius.
@@ -35,6 +35,6 @@ export const MinimalBlocks: Block[] = [
   { slug: 'sectionBreak', fields: [
     { name: 'eyebrow', label: 'Метка раздела', type: 'text' }, { name: 'title', label: 'Заголовок', type: 'text' },
     { name: 'line', label: 'Разделительная линия', type: 'checkbox', defaultValue: false },
-    { name: 'height', label: 'Высота отступа, px', type: 'number', defaultValue: 80, min: 16, max: 320 }, width,
+    { name: 'height', label: 'Высота отступа, px', type: 'number', defaultValue: 40, min: 16, max: 320 }, width,
   ] },
 ]

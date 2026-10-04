@@ -3,7 +3,6 @@
 import {
   ArrowUpRight,
   BriefcaseBusiness,
-  ChevronRight,
   CircleHelp,
   Command,
   FolderKanban,
@@ -40,7 +39,7 @@ type NavItem = {
 }
 
 const nav: NavItem[] = [
-  { href:'/studio', label:'Обзор', description:'Главное за сегодня', icon:LayoutDashboard, roles:['admin','editor','sales'] },
+  { href:'/studio', label:'Рабочий стол', description:'Последние кейсы, статьи и задачи', icon:LayoutDashboard, roles:['admin','editor','sales'] },
   { href:'/studio/cases', label:'Кейсы', description:'Все истории и публикации', icon:PanelsTopLeft, roles:['admin','editor'] },
   { href:'/studio/blog', label:'Блог', description:'Статьи и новости студии', icon:FileText, roles:['admin','editor'] },
   { href:'/studio/crm', label:'CRM', description:'Лиды и следующие действия', icon:BriefcaseBusiness, roles:['admin','sales'] },
@@ -180,13 +179,13 @@ export default function StudioShell({
           <div className="studio-brand__mark">B</div>
           <div className="studio-brand__copy">
             <strong>BAEV Studio</strong>
-            <span>Рабочее пространство</span>
+            <span>Контент и проекты</span>
           </div>
           <button className="studio-mobile-close" onClick={()=>setMobileOpen(false)} aria-label="Закрыть меню"><X size={18}/></button>
         </div>
 
         <nav className="studio-nav" aria-label="Главное меню">
-          <span className="studio-nav__eyebrow">Рабочее пространство</span>
+
           {visibleNav.map((item)=>{
             const active=item.href==='/studio' ? pathname===item.href : pathname.startsWith(item.href)
             const Icon=item.icon
@@ -194,8 +193,8 @@ export default function StudioShell({
               <button key={item.href} aria-current={active?'page':undefined} className={['studio-nav__item',active?'is-active':''].join(' ')} onClick={()=>go(item.href)}>
                 {active && <motion.i layoutId="studio-nav-active" transition={spring}/>}
                 <Icon size={18} strokeWidth={1.8}/>
-                <div><strong>{item.label}</strong><span>{item.description}</span></div>
-                <ChevronRight size={15} strokeWidth={1.8}/>
+                <div><strong>{item.label}</strong></div>
+
               </button>
             )
           })}
@@ -256,7 +255,7 @@ export default function StudioShell({
                   const Icon=item.icon
                   return <React.Fragment key={item.href+item.label}>{(index===0||filteredCommands[index-1]?.type!==item.type)&&<div className="studio-command__group">{item.type==='case'?(query?'Материалы':'Последние материалы'):item.type==='action'?'Создать':'Разделы'}</div>}<button className={index===activeCommand?'is-selected':''} onMouseEnter={()=>setActiveCommand(index)} onClick={()=>go(item.href)}>
                     <span className="studio-command__icon"><Icon size={17}/></span>
-                    <div><strong>{item.label}</strong><span>{item.description}</span></div>
+                    <div><strong>{item.label}</strong></div>
                     <kbd>{index+1}</kbd>
                   </button></React.Fragment>
                 })}

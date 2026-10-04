@@ -48,4 +48,27 @@
 .case-preview[data-page-background] :is(.case-sticky__copy p,.case-quote cite,.case-cta p,.case-text-media__copy small,.case-type>small,.case-related p,.case-footer>p){color:var(--page-muted)}
 .case-preview[data-page-background] .case-scene .case-richtext{color:var(--page-muted)}
 
+/* A single rhythm in the canvas, private preview and published page.
+   Padding belongs to the scene so top and bottom can be disabled independently. */
+.case-preview .case-story{gap:0!important}
+.case-preview .case-scene{--block-space:12px;--block-top:var(--block-space);--block-bottom:var(--block-space);padding-block:var(--block-top) var(--block-bottom)}
+.case-preview .case-scene[data-block-spacing=none]{--block-space:0px}
+.case-preview .case-scene[data-block-spacing=medium]{--block-space:24px}
+.case-preview .case-scene[data-block-spacing=large]{--block-space:48px}
+.case-preview .case-scene>.case-section{padding-block:0}
+.case-preview .case-scene[data-flush-top=true]{--block-top:0px}
+.case-preview .case-scene[data-flush-bottom=true]{--block-bottom:0px}
+.case-preview .case-scene[data-flush-top=true]>.case-section{padding-top:0!important}
+.case-preview .case-scene[data-flush-bottom=true]>.case-section{padding-bottom:0!important}
+.case-preview .case-scene[data-square-media=true]{--media-radius:0px}
+.case-preview .case-scene[data-square-media=true] :is(img,video,.case-hero__media,.case-video__media,.case-before-after,.minimal-media,.canvas-media,figure){border-radius:0!important}
+@media(max-width:809px){
+  .case-preview .case-scene{--block-space:8px}
+  .case-preview .case-scene[data-block-spacing=medium]{--block-space:16px}
+  .case-preview .case-scene[data-block-spacing=large]{--block-space:32px}
+  .case-preview--source .case-scene{margin-block:0!important}
+}
+
 .case-preview .minimal-break{padding-block:0}.case-preview .minimal-break:has(h2){padding-block:24px}
+/* Keep a click on the image available for selecting its block. */
+.case-preview--canvas .canvas-media-edit:not(.is-empty){top:auto;left:auto;right:12px;bottom:12px;transform:none}
