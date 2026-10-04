@@ -16,6 +16,8 @@ import {
   Trash2,
   X,
   StudioIcon,
+  Search,
+  ArrowUpRight,
 } from '@/studio/ui/icons'
 import {
   DndContext,
@@ -42,6 +44,8 @@ import type { EditorField } from './editorSchema'
 import { serializeDocument, copyScene, richTextToText, textToRichText } from './document'
 import { BlockLibrary } from './BlockLibrary'
 import { BlockPreview } from './BlockPreview'
+import { PublishDialog } from './PublishDialog'
+import { publicationIssues, projectContentSignature, type PublicationIssue } from './publication'
 
 type BlockMeta={slug:string;number:string;title:string;description:string;group:string;modes:string[]}
 type AnyBlock=Record<string,any>&{blockType:string;id?:string}
@@ -76,15 +80,15 @@ function blockName(block:AnyBlock,meta?:BlockMeta){
   return {title:meta?.title||block.blockType,detail:String(detail).replace(/\s+/g,' ').slice(0,42)}
 }
 
-function SortableScene({block,index,meta,active,onSelect,onDuplicate,onDelete}:{block:AnyBlock;index:number;meta?:BlockMeta;active:boolean;onSelect:()=>void;onDuplicate:()=>void;onDelete:()=>void}){
+function SortableScene({block,index,meta,active,disabled=false,issueCount=0,onSelect,onDuplicate,onDelete}:{block:AnyBlock;index:number;meta?:BlockMeta;active:boolean;disabled?:boolean;issueCount?:number;onSelect:()=>void;onDuplicate:()=>void;onDelete:()=>void}){
   const id=block.id||'scene-'+index
-  const sortable=useSortable({id})
+  const sortable=useSortable({id,disabled})
   const style={transform:CSS.Transform.toString(sortable.transform),transition:sortable.transition}
   const name=blockName(block,meta)
   return <motion.div ref={sortable.setNodeRef} style={style} layout role="button" tabIndex={0} aria-label={'Сцена '+(index+1)+': '+name.title} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==='Enter'||e.key===' ')){e.preventDefault();onSelect()}}} className={['builder-scene',active?'is-active':''].join(' ')} onClick={onSelect}>
-    <button aria-label={'Переместить сцену '+(index+1)} className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
+    <button disabled={disabled} aria-label={'Переместить сцену '+(index+1)} className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
     <div className="builder-scene__thumb">{(block.media||block.video)?.mimeType?.startsWith('video/')?<video src={(block.media||block.video).url} muted preload="none"/>:<BlockPreview slug={block.blockType} imageURL={(block.media||block.video)?.sizes?.thumb?.url||(block.media||block.video)?.url}/>}</div>
-    <div className="builder-scene__copy"><span>{String(index+1).padStart(2,'0')}</span><strong>{name.title}</strong><i>{name.detail||meta?.description}</i></div>
+    <div className="builder-scene__copy"><span>{String(index+1).padStart(2,'0')}</span><strong>{name.title}</strong><i>{issueCount?<span className="builder-scene__issue">Заполните поля · {issueCount}</span>:name.detail||meta?.description}</i></div>
     <div className="builder-scene__menu"><button aria-label={'Дублировать сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDuplicate()}}><Copy size={13}/></button><button aria-label={'Удалить сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDelete()}}><Trash2 size={13}/></button></div>
   </motion.div>
 }
@@ -106,13 +110,14 @@ function resolveMedia(value:any,media:MediaItem[]){
 function MediaField({label,value,media,onSelect}:{label:string;value:any;media:MediaItem[];onSelect:(value:any)=>void}){
   const [open,setOpen]=useState(false)
   const [query,setQuery]=useState('')
+  const [failedURL,setFailedURL]=useState('')
   const dialogRef=useDialogFocus(open,()=>setOpen(false))
   const current=resolveMedia(value,media)
   const visible=media.filter((item)=>!query.trim()||[item.alt,item.filename].filter(Boolean).some((v)=>String(v).toLowerCase().includes(query.toLowerCase())))
   return <div className="builder-media-field">
     <span>{label}</span>
-    <button className="builder-media-field__preview" onClick={()=>setOpen(true)}>
-      {current?.url?(current.mimeType?.startsWith('video/')?<video src={current.url} muted/>:<img src={current.sizes?.thumb?.url||current.url} alt={current.alt||''}/>):<><Plus size={15}/><b>Выбрать медиа</b></>}
+    <button className="builder-media-field__preview" aria-label={(current?'Заменить ':'Выбрать ')+label.replace(' *','')} onClick={()=>setOpen(true)}>
+      {current?.url?(failedURL===current.url?<span className="builder-media-unavailable">Файл выбран, но превью не загрузилось. Нажмите, чтобы выбрать другой.</span>:current.mimeType?.startsWith('video/')?<video src={current.url} muted onError={()=>setFailedURL(current.url||'')}/>:<img src={current.sizes?.thumb?.url||current.url} alt={current.alt||''} onError={()=>setFailedURL(current.url||'')}/>):<><Plus size={15}/><b>Выбрать медиа</b></>}
       {current&&<i>{current.alt||current.filename}</i>}
     </button>
     {current&&<button className="builder-media-field__clear" onClick={()=>onSelect(null)}>Убрать</button>}
@@ -152,15 +157,15 @@ function defaultValues(fields:EditorField[]):Record<string,any>{
 }
 
 function Inspector({block,fields,title,media,projects,onChange}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];onChange:(next:AnyBlock)=>void}){
-  return <div className="builder-inspector"><header><span>Настройки блока</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><FieldEditor key={field.name} field={field} value={block[field.name]} media={media} projects={projects} onChange={value=>onChange({...block,[field.name]:value})}/>)}</div></div>
+  return <div className="builder-inspector"><header><span>Настройки блока</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field} value={block[field.name]} media={media} projects={projects} onChange={value=>onChange({...block,[field.name]:value})}/></div>)}</div></div>
 }
 
-export default function VisualCaseBuilder({project,catalog,media,schemas,projects=[],initialPublished=false}:{project:any;catalog:BlockMeta[];media:MediaItem[];schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean}){
+export default function VisualCaseBuilder({project,catalog,media,schemas,projects=[],initialPublished=false,initialPublishedSignature}:{project:any;catalog:BlockMeta[];media:MediaItem[];schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean;initialPublishedSignature?:string}){
   const router=useRouter()
   const [blocks,setBlocks]=useState<AnyBlock[]>(()=>((project.blocks||[]) as AnyBlock[]).map((b,index)=>({...b,id:b.id||'local-'+index+'-'+Date.now()})))
   const [selected,setSelected]=useState(0)
   const [details,setDetails]=useState(false)
-  const [metadata,setMetadata]=useState(()=>Object.fromEntries(['title','client','year','summary','categories','cover','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:key==='year'?null:key==='workflowStatus'?'draft':'')])))
+  const [metadata,setMetadata]=useState(()=>Object.fromEntries(['title','client','year','summary','categories','cover','ogImage','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:key==='year'?null:key==='workflowStatus'?'draft':'')])))
   const [error,setError]=useState('')
   const [undoStack,setUndoStack]=useState<any[]>([])
   const [redoStack,setRedoStack]=useState<any[]>([])
@@ -169,6 +174,29 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   const [saved,setSaved]=useState(true)
   const [published,setPublished]=useState(initialPublished)
   const [publishing,setPublishing]=useState(false)
+  const [publishAction,setPublishAction]=useState<'publish'|'unpublish'|null>(null)
+  const [publicationError,setPublicationError]=useState('')
+  const [publishedSignature,setPublishedSignature]=useState(initialPublishedSignature??(initialPublished?projectContentSignature(project):''))
+  const [notice,setNotice]=useState('')
+  const [sceneQuery,setSceneQuery]=useState('')
+  const [focusField,setFocusField]=useState('')
+  useEffect(()=>{if(!notice)return;const timer=setTimeout(()=>setNotice(''),7000);return()=>clearTimeout(timer)},[notice])
+  useEffect(()=>{
+    if(!focusField)return
+    let frame=0
+    const focus=()=>{
+      if(document.querySelector('.publish-dialog'))return
+      const field=document.querySelector(`.builder-right [data-editor-field="${focusField}"]`)
+      if(!field||field.closest('[inert]'))return
+      field.scrollIntoView({block:'center',behavior:'instant'})
+      ;(field.querySelector('input,textarea,select,button') as HTMLElement|null)?.focus({preventScroll:true})
+      setFocusField('')
+    }
+    const observer=new MutationObserver(()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(focus)})
+    observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['inert']})
+    frame=requestAnimationFrame(focus)
+    return()=>{observer.disconnect();cancelAnimationFrame(frame)}
+  },[focusField,selected,details])
   const [historyOpen,setHistoryOpen]=useState(false)
   const historyRef=useDialogFocus(historyOpen,()=>setHistoryOpen(false))
   const [workspaceTab,setWorkspaceTab]=useState<'canvas'|'blocks'|'settings'>('canvas')
@@ -209,6 +237,12 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
 
   const meta=useMemo(()=>Object.fromEntries(catalog.map((item)=>[item.slug,item])),[catalog])
   const selectedBlock=blocks[selected]
+  const issues=useMemo(()=>publicationIssues({...metadata,blocks},schemas),[metadata,blocks,schemas])
+  const hasUnpublishedChanges=published&&projectContentSignature({...metadata,blocks})!==publishedSignature
+  const visibleScenes=blocks.map((block,index)=>({block,index})).filter(({block})=>{
+    const name=blockName(block,meta[block.blockType])
+    return !sceneQuery.trim()||(name.title+' '+name.detail).toLowerCase().includes(sceneQuery.trim().toLowerCase())
+  })
 
   const sendPreview=(selection=selected)=>{
     previewRef.current?.contentWindow?.postMessage({type:'baev:canvas',data:{...project,...latest.current.metadata,blocks:latest.current.blocks},selected:selection},location.origin)
@@ -289,13 +323,25 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   useEffect(()=>{
     const keys=(event:KeyboardEvent)=>{
       if(event.key==='Escape'){setLibrary(false);setHistoryOpen(false);setMoreOpen(false)}
+      if(publishing||publishAction)return
       const editing=(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')
       if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();void save()}
       if(!editing&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();if(event.shiftKey)redo();else undo()}
     }
     window.addEventListener('keydown',keys)
     return()=>window.removeEventListener('keydown',keys)
-  },[undoStack,redoStack])
+  },[undoStack,redoStack,publishing,publishAction])
+
+  useEffect(()=>{
+    const navigate=(event:Event)=>{
+      const request=(event as CustomEvent<{href:string;handled:boolean}>).detail
+      request.handled=true
+      if(publishing||publishAction)return
+      void (async()=>{if(saved||await save())router.push(request.href)})()
+    }
+    window.addEventListener('studio:navigate',navigate)
+    return()=>window.removeEventListener('studio:navigate',navigate)
+  },[saved,publishing,publishAction,router])
 
   const loadVersions=async()=>{
     setHistoryOpen(true);setVersionsLoading(true);setHistoryError('')
@@ -319,17 +365,45 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
     } catch {setHistoryError('Нет связи. Восстановление не выполнено.');setRestoring(null)}
   }
 
-  const togglePublish=async()=>{
+  const publish=async()=>{
     if(publishing)return
+    const action=publishAction
+    if(!action)return
+    if(action==='publish'&&publicationIssues({...latest.current.metadata,blocks:latest.current.blocks},schemas).some(issue=>issue.severity==='error'))return
     setPublishing(true)
+    setPublicationError('')
     const savedOk=await save()
-    if(!savedOk){setPublishing(false);return}
-    const action=published?'unpublish':'publish'
+    if(!savedOk){setPublishing(false);setPublicationError('Черновик не сохранён. Проверьте соединение и повторите публикацию.');return}
     try {
     const response=await fetch('/api/studio/projects/'+project.id+'/publish',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})})
     const data=await response.json().catch(()=>({}))
-    if(response.ok){setPublished(data.status==='published');setError('')}else setError(data.error||'Не удалось опубликовать. Проверьте обязательные поля.')
-    } catch { setError('Нет связи. Не удалось изменить публикацию. Повторите попытку.') } finally { setPublishing(false) }
+    if(response.ok){
+      const isPublished=data.status==='published'
+      setPublished(isPublished);setError('');setPublishAction(null)
+      setPublishedSignature(isPublished?projectContentSignature({...latest.current.metadata,blocks:latest.current.blocks}):'')
+      const nextMetadata={...latest.current.metadata,workflowStatus:isPublished?'ready':'draft'}
+      latest.current={...latest.current,metadata:nextMetadata};setMetadata(nextMetadata)
+      setNotice(isPublished?'Кейс опубликован. Текущая версия доступна посетителям.':'Кейс снят с сайта. Вы можете продолжить редактирование.')
+    }else setPublicationError(data.error||'Не удалось опубликовать. Проверьте обязательные поля.')
+    } catch { setPublicationError('Нет связи. Не удалось изменить публикацию. Повторите попытку.') } finally { setPublishing(false) }
+  }
+
+  const fixIssue=(issue:PublicationIssue)=>{
+    setPublishAction(null);setSceneQuery('')
+    if(issue.field==='blocks'&&issue.blockIndex===undefined){setLibrary(true);return}
+    if(issue.blockIndex!==undefined){setSelected(issue.blockIndex);setDetails(false)}else setDetails(true)
+    setWorkspaceTab('settings');setFocusField(issue.field)
+  }
+  const preview=async(event?:React.MouseEvent)=>{
+    event?.preventDefault()
+    const tab=window.open('about:blank','_blank')
+    if(tab)tab.opener=null
+    if(!saved&&!await save()){tab?.close();if(publishAction)setPublicationError('Не удалось сохранить черновик для предпросмотра. Проверьте соединение.');return}
+    if(tab)tab.location.href='/preview/'+project.slug
+    else setNotice('Браузер заблокировал новое окно. Разрешите всплывающие окна для предпросмотра.')
+  }
+  const copyPublicLink=async()=>{
+    try{await navigator.clipboard.writeText(location.origin+'/work/'+project.slug);setNotice('Ссылка на опубликованный кейс скопирована.')}catch{setNotice('Не удалось скопировать ссылку. Откройте страницу на сайте и скопируйте её адрес.')}
   }
 
   const updateSelected=(next:AnyBlock)=>{
@@ -366,27 +440,29 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   }
 
   return <div className={'builder-root builder-root--'+workspaceTab}>
-    <header className="builder-topbar">
+    <header className="builder-topbar" inert={publishing?true:undefined}>
       <button className="builder-back" onClick={()=>void leave()}><ChevronLeft size={17}/> Кейсы</button>
-      <div className="builder-title"><strong>{metadata.title}</strong><span>{metadata.client||'Без клиента'} · {metadata.year||'—'}</span></div>
+      <div className="builder-title"><strong>{metadata.title}</strong><span>{published?(hasUnpublishedChanges?'На сайте · есть новые правки':'На сайте · актуальная версия'):'Черновик · не на сайте'}<em className="builder-save-mobile">{saving?'Сохраняем…':saved?'Черновик сохранён':'Есть несохранённые изменения'}</em></span></div>
       <div className="builder-save-state" role="status" aria-live="polite"><StudioIcon name={saving?'RefreshCcw':saved?'Check':'Save'} className={saving?'is-spin':''} size={14}/>{saving?'Сохраняем':saved?'Сохранено':'Есть изменения'}</div>
       <div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div>
       <button className="builder-icon-button" aria-label="Отменить" disabled={!undoStack.length} onClick={undo}><Undo2 size={16}/></button><button className="builder-icon-button" aria-label="Повторить" disabled={!redoStack.length} onClick={redo}><Redo2 size={16}/></button>
-      <a className="studio-button studio-button--soft builder-preview-action" href={'/preview/'+project.slug} target="_blank" rel="noopener noreferrer"><Eye size={14}/><span>Предпросмотр</span></a>
-      <div ref={moreRef} className="builder-more"><button className="studio-button studio-button--soft" aria-expanded={moreOpen} aria-label="Дополнительные действия" onClick={()=>setMoreOpen(v=>!v)}>Ещё <StudioIcon name={moreOpen?'X':'ChevronDown'} size={14}/></button>{moreOpen&&<div className="builder-more__menu"><button onClick={()=>{setMoreOpen(false);void loadVersions()}}><History size={15}/>История версий</button><button onClick={()=>{setMoreOpen(false);void save()}}><Save size={15}/>Сохранить сейчас</button></div>}</div>
-      <button className={['studio-button',published?'studio-button--published':''].join(' ')} disabled={publishing} onClick={()=>void togglePublish()}>{publishing?'Подождите…':published?'Снять с публикации':'Опубликовать'}</button>
+      <a className="studio-button studio-button--soft builder-preview-action" href={'/preview/'+project.slug} target="_blank" rel="noopener noreferrer" onClick={event=>void preview(event)}><Eye size={14}/><span>Предпросмотр</span></a>
+      <div ref={moreRef} className="builder-more"><button className="studio-button studio-button--soft" aria-expanded={moreOpen} aria-label="Дополнительные действия" onClick={()=>setMoreOpen(v=>!v)}>Ещё <StudioIcon name={moreOpen?'X':'ChevronDown'} size={14}/></button>{moreOpen&&<div className="builder-more__menu"><button onClick={()=>{setMoreOpen(false);void loadVersions()}}><History size={15}/>История версий</button><button onClick={()=>{setMoreOpen(false);void save()}}><Save size={15}/>Сохранить сейчас</button>{published&&<><a href={'/work/'+project.slug} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15}/>Открыть на сайте</a><button onClick={()=>{setMoreOpen(false);void copyPublicLink()}}><Copy size={15}/>Скопировать ссылку</button><button className="is-danger" onClick={()=>{setMoreOpen(false);setPublicationError('');setPublishAction('unpublish')}}><StudioIcon name="EyeOff" size={15}/>Снять с сайта</button></>}</div>}</div>
+      <button className="studio-button builder-publish-action" aria-label={published?'Опубликовать изменения':'Опубликовать'} disabled={publishing} onClick={()=>{setPublicationError('');setPublishAction('publish')}}><span className="builder-publish-label">{published?'Опубликовать изменения':'Опубликовать'}</span><span className="builder-publish-label--compact">{published?'Обновить':'Опубликовать'}</span></button>
     </header>
 
     <nav className="builder-workspace-tabs" aria-label="Панели редактора">{[['canvas','Холст'],['blocks','Блоки'],['settings','Настройки']].map(([id,label])=><button key={id} aria-pressed={workspaceTab===id} className={workspaceTab===id?'is-active':''} onClick={()=>setWorkspaceTab(id as typeof workspaceTab)}><StudioIcon name={id==='canvas'?'Monitor':id==='blocks'?'Layers':'SlidersHorizontal'} size={16}/>{label}</button>)}</nav>
 
     {error&&<div className="builder-error" role="alert">{error}<button onClick={()=>void save()}>Повторить сохранение</button></div>}
+    {notice&&<div className="builder-notice" role="status"><span>{notice}</span>{published&&<a href={'/work/'+project.slug} target="_blank" rel="noopener noreferrer">Открыть <ArrowUpRight size={13}/></a>}<button aria-label="Закрыть уведомление" onClick={()=>setNotice('')}><X size={14}/></button></div>}
     <div className="builder-layout" inert={publishing?true:undefined}>
       <aside className="builder-scenes">
         <button className={'builder-page-settings '+(details?'is-active':'')} onClick={()=>{setDetails(true);setWorkspaceTab('settings')}}><Settings2 size={16}/> Настройки кейса</button>
         <div className="builder-scenes__head"><div><strong>Блоки</strong><span>{blocks.length}</span></div><button aria-label="Добавить блок" onClick={()=>setLibrary(true)}><Plus size={14}/></button></div>
+        <label className="builder-scene-search"><Search size={14}/><input aria-label="Найти блок в кейсе" value={sceneQuery} onChange={event=>setSceneQuery(event.target.value)} placeholder="Найти блок в кейсе"/>{sceneQuery&&<button aria-label="Сбросить поиск блоков" onClick={()=>setSceneQuery('')}><X size={13}/></button>}</label>
         <DndContext id={'case-builder-'+project.id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnd}>
-          <SortableContext items={blocks.map((b,i)=>b.id||'scene-'+i)} strategy={verticalListSortingStrategy}>
-            <div className="builder-scenes__list">{blocks.map((block,index)=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} onSelect={()=>{setSelected(index);setDetails(false);setWorkspaceTab('settings')}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}</div>
+          <SortableContext items={visibleScenes.map(({block,index})=>block.id||'scene-'+index)} strategy={verticalListSortingStrategy}>
+            <div className="builder-scenes__list">{visibleScenes.map(({block,index})=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} disabled={Boolean(sceneQuery.trim())} issueCount={issues.filter(issue=>issue.severity==='error'&&issue.blockIndex===index).length} onSelect={()=>{setSelected(index);setDetails(false);setWorkspaceTab('settings')}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}{!visibleScenes.length&&<div className="studio-empty">Блоки не найдены.<button className="studio-button studio-button--soft" onClick={()=>setSceneQuery('')}>Сбросить поиск</button></div>}</div>
           </SortableContext>
         </DndContext>
         <button className="builder-add-scene" onClick={()=>setLibrary(true)}><Plus size={14}/> Добавить блок</button>
@@ -399,9 +475,11 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
       </main>
 
       <aside className="builder-right">
-        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><FieldEditor key={field.name} field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} onChange={value=>updateMetadata(field.name,value)}/>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
+        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} onChange={value=>updateMetadata(field.name,value)}/></div>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
       </aside>
     </div>
+
+    <AnimatePresence>{publishAction&&<PublishDialog project={{...metadata,slug:project.slug,blocks}} published={published} action={publishAction} busy={publishing} error={publicationError} issues={issues} onClose={()=>{if(!publishing)setPublishAction(null)}} onConfirm={()=>void publish()} onFix={fixIssue} onPreview={()=>void preview()}/>}</AnimatePresence>
 
     <AnimatePresence>
       {library&&<BlockLibrary catalog={catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={selectedBlock?meta[selectedBlock.blockType]?.title:undefined} onClose={()=>setLibrary(false)} onAdd={slug=>{add(slug);setWorkspaceTab('settings')}}/>}

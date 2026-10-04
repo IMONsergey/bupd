@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { slugify } from '@/lib/slug'
 import {copyDocument} from '@/studio/builder/document'
+import {studioError} from '@/studio/lib/apiError'
 
 export async function POST(request: Request) {
   const payload = await getPayload({ config })
@@ -19,7 +20,8 @@ export async function POST(request: Request) {
     ? body.categories.map((item) => String(item).trim().slice(0, 80)).filter(Boolean).slice(0, 6)
     : []
 
-  if (!title) return Response.json({ error: 'title_required' }, { status: 400 })
+  if (!title) return Response.json({ error: 'Укажите название кейса.' }, { status: 400 })
+  if(!Number.isFinite(year)||year<2000||year>2100)return Response.json({error:'Укажите год от 2000 до 2100.'},{status:400})
 
   const baseSlug = slugify(title) || 'case'
   let slug = baseSlug
@@ -43,7 +45,7 @@ export async function POST(request: Request) {
       where: { slug: { equals: templateSlug } },
     })
     const template = found.docs[0] as any
-    if (!template) return Response.json({ error: 'template_not_found' }, { status: 404 })
+    if (!template) return Response.json({ error: 'Эта структура больше недоступна. Выберите другую или начните с нуля.' }, { status: 404 })
     blocks = copyDocument(template.blocks || []) as any[]
     blocks = blocks.map((block) => block?.blockType === 'caseHero'
       ? {
@@ -61,6 +63,7 @@ export async function POST(request: Request) {
     ]
   }
 
+  try {
   const created = await payload.create({
     collection: 'projects',
     draft: true,
@@ -81,4 +84,5 @@ export async function POST(request: Request) {
   })
 
   return Response.json({ ok: true, id: created.id, slug }, { status: 201 })
+  }catch(error){return studioError(error)}
 }

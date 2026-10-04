@@ -8,6 +8,8 @@ import {
   BriefcaseBusiness as BriefcaseBusinessData,
   CalendarClock as CalendarClockData,
   Check as CheckData,
+  Clock3 as Clock3Data,
+  FileText as FileTextData,
   ChevronDown as ChevronDownData,
   ChevronLeft as ChevronLeftData,
   ChevronRight as ChevronRightData,
@@ -57,6 +59,8 @@ const icons = {
   BriefcaseBusiness: BriefcaseBusinessData,
   CalendarClock: CalendarClockData,
   Check: CheckData,
+  Clock3: Clock3Data,
+  FileText: FileTextData,
   ChevronDown: ChevronDownData,
   ChevronLeft: ChevronLeftData,
   ChevronRight: ChevronRightData,
@@ -112,6 +116,8 @@ export function ArrowUpRight(props: IconProps) { return <StudioIcon name="ArrowU
 export function BriefcaseBusiness(props: IconProps) { return <StudioIcon name="BriefcaseBusiness" {...props} /> }
 export function CalendarClock(props: IconProps) { return <StudioIcon name="CalendarClock" {...props} /> }
 export function Check(props: IconProps) { return <StudioIcon name="Check" {...props} /> }
+export function Clock3(props: IconProps) { return <StudioIcon name="Clock3" {...props} /> }
+export function FileText(props: IconProps) { return <StudioIcon name="FileText" {...props} /> }
 export function ChevronDown(props: IconProps) { return <StudioIcon name="ChevronDown" {...props} /> }
 export function ChevronLeft(props: IconProps) { return <StudioIcon name="ChevronLeft" {...props} /> }
 export function ChevronRight(props: IconProps) { return <StudioIcon name="ChevronRight" {...props} /> }

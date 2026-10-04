@@ -35,8 +35,9 @@ export function describeFields(fields: Field[]): EditorField[] {
   return fields.flatMap((field): EditorField[] => {
     if (!('name' in field)) return 'fields' in field ? describeFields(field.fields) : []
     const f = field as any
-    if (f.type === 'ui') return []
-    const label = typeof f.label === 'string' ? f.label : f.name === 'media' ? 'Медиа' : f.name
+    if (f.type === 'ui' || ['id', 'blockName', 'blockType'].includes(f.name) || f.admin?.hidden) return []
+    const fieldLabels:Record<string,string>={media:'Медиа',video:'Видео',left:'Медиа слева',right:'Медиа справа',before:'До',after:'После',poster:'Обложка видео'}
+    const label = typeof f.label === 'string' ? f.label : fieldLabels[f.name] || f.name
     const result: EditorField = { name:f.name, label, type:f.type }
     for (const key of ['required','min','max','minRows','maxRows','defaultValue'] as const) {
       if (f[key] !== undefined && typeof f[key] !== 'function') (result as any)[key] = f[key]

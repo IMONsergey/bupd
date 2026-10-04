@@ -66,6 +66,9 @@ export default function StudioShell({
   const [activeCommand,setActiveCommand]=useState(0)
   const [logoutError,setLogoutError]=useState('')
   const [loggingOut,setLoggingOut]=useState(false)
+  const [caseResults,setCaseResults]=useState<{id:string|number;title:string;client?:string;slug:string}[]>([])
+  const [searching,setSearching]=useState(false)
+  const [searchError,setSearchError]=useState('')
   const commandRef=useDialogFocus(commandOpen,()=>setCommandOpen(false))
 
   const visibleNav = useMemo(()=>nav.filter((item)=>item.roles.includes(role)),[role])
@@ -95,11 +98,32 @@ export default function StudioShell({
     return base
   },[visibleNav,role])
 
+  useEffect(()=>{
+    if(!commandOpen||!['admin','editor'].includes(role))return
+    const controller=new AbortController()
+    setCaseResults([]);setSearchError('');setSearching(true)
+    const timer=setTimeout(async()=>{
+      try{
+        const response=await fetch('/api/studio/search?q='+encodeURIComponent(query.trim()),{credentials:'include',signal:controller.signal})
+        const data=await response.json()
+        if(!response.ok)throw new Error(data.error||'Поиск недоступен')
+        if(!controller.signal.aborted)setCaseResults(Array.isArray(data.docs)?data.docs:[])
+      }catch(error){if(!controller.signal.aborted)setSearchError(error instanceof TypeError?'Нет связи. Разделы доступны ниже.':error instanceof Error?error.message:'Поиск недоступен.')}
+      finally{if(!controller.signal.aborted)setSearching(false)}
+    },query.trim()?200:0)
+    return()=>{clearTimeout(timer);controller.abort()}
+  },[commandOpen,query,role])
+
   const filteredCommands = useMemo(() => {
     const q=query.trim().toLowerCase()
-    if (!q) return commands
-    return commands.filter((item)=>(item.label+' '+item.description).toLowerCase().includes(q))
-  },[commands,query])
+    const pages=q?commands.filter((item)=>(item.label+' '+item.description).toLowerCase().includes(q)):commands
+    const cases=caseResults.map(item=>({href:'/studio/cases/'+item.id,label:item.title,description:item.client||'/'+item.slug,icon:PanelsTopLeft,roles:['admin','editor'],type:'case'}))
+    return [...cases,...pages]
+  },[commands,query,caseResults])
+  useEffect(()=>setActiveCommand(0),[query,caseResults,commandOpen])
+  useEffect(()=>{
+    commandRef.current?.querySelector('.studio-command__list button.is-selected')?.scrollIntoView({block:'nearest'})
+  },[activeCommand,commandOpen,commandRef])
 
   useEffect(()=>{
     const onKey=(e:KeyboardEvent)=>{
@@ -123,6 +147,11 @@ export default function StudioShell({
   const go=(href:string)=>{
     setCommandOpen(false)
     setQuery('')
+    if(isBuilderRoute){
+      const request={href,handled:false}
+      window.dispatchEvent(new CustomEvent('studio:navigate',{detail:request}))
+      if(request.handled)return
+    }
     router.push(href)
   }
 
@@ -159,7 +188,7 @@ export default function StudioShell({
             const active=item.href==='/studio' ? pathname===item.href : pathname.startsWith(item.href)
             const Icon=item.icon
             return (
-              <button key={item.href} aria-current={active?'page':undefined} className={['studio-nav__item',active?'is-active':''].join(' ')} onClick={()=>router.push(item.href)}>
+              <button key={item.href} aria-current={active?'page':undefined} className={['studio-nav__item',active?'is-active':''].join(' ')} onClick={()=>go(item.href)}>
                 {active && <motion.i layoutId="studio-nav-active" transition={spring}/>}
                 <Icon size={18} strokeWidth={1.8}/>
                 <div><strong>{item.label}</strong><span>{item.description}</span></div>
@@ -216,17 +245,19 @@ export default function StudioShell({
               exit={{opacity:0,scale:.97,y:-8}}
               transition={spring}
             >
-              <header><Search size={18}/><input value={query} onChange={(e)=>{setQuery(e.target.value);setActiveCommand(0)}} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setActiveCommand(i=>Math.min(i+1,filteredCommands.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setActiveCommand(i=>Math.max(0,i-1))}if(e.key==='Enter'&&filteredCommands[activeCommand]){e.preventDefault();go(filteredCommands[activeCommand].href)}}} placeholder="Куда перейти или что создать?"/><kbd>esc</kbd></header>
+              <header><Search size={18}/><input aria-label="Поиск в Studio" value={query} onChange={(e)=>{setQuery(e.target.value);setActiveCommand(0)}} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setActiveCommand(i=>Math.max(0,Math.min(i+1,filteredCommands.length-1)))}if(e.key==='ArrowUp'){e.preventDefault();setActiveCommand(i=>Math.max(0,i-1))}if(e.key==='Enter'&&filteredCommands[activeCommand]){e.preventDefault();go(filteredCommands[activeCommand].href)}}} placeholder="Найти кейс, клиента или раздел"/><kbd>esc</kbd></header>
               <div className="studio-command__list">
+                {searching&&<p className="studio-command__status" role="status">Ищем кейсы…</p>}
+                {searchError&&<p className="studio-command__status" role="alert">{searchError}</p>}
                 {filteredCommands.map((item,index)=>{
                   const Icon=item.icon
-                  return <button className={index===activeCommand?'is-selected':''} key={item.href+item.label} onMouseEnter={()=>setActiveCommand(index)} onClick={()=>go(item.href)}>
+                  return <React.Fragment key={item.href+item.label}>{(index===0||filteredCommands[index-1]?.type!==item.type)&&<div className="studio-command__group">{item.type==='case'?(query?'Кейсы':'Последние кейсы'):item.type==='action'?'Создать':'Разделы'}</div>}<button className={index===activeCommand?'is-selected':''} onMouseEnter={()=>setActiveCommand(index)} onClick={()=>go(item.href)}>
                     <span className="studio-command__icon"><Icon size={17}/></span>
                     <div><strong>{item.label}</strong><span>{item.description}</span></div>
                     <kbd>{index+1}</kbd>
-                  </button>
+                  </button></React.Fragment>
                 })}
-                {!filteredCommands.length&&<div className="studio-command__empty">Ничего не найдено</div>}
+                {!filteredCommands.length&&!searching&&<div className="studio-command__empty">Ничего не найдено. Попробуйте название кейса или клиента.</div>}
               </div>
               <footer><span>↑↓ выбрать</span><span>↵ открыть</span><span>esc закрыть</span></footer>
             </motion.section>

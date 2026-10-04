@@ -5,6 +5,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Menu, X, ArrowUpRight } from 'lucide-react'
 import sourcePalette from '@/content/framer-palette.json'
+import {caseSiteLink} from '@/lib/siteLinks'
 
 type MediaDoc = {
   url?: string | null
@@ -62,7 +63,7 @@ function BlockLabel({ index, title }: { index: number; title: string }) {
   return <div className="case-block-label">{String(index + 1).padStart(2, '0')} / {title}</div>
 }
 
-function CaseBlock({ block, index }: { block: any; index: number }) {
+function CaseBlock({ block, index,siteURL='' }: { block: any; index: number;siteURL?:string }) {
   const type = block.blockType
 
   if (String(block.blockName||'').startsWith('framer:') && type==='manifesto') return (
@@ -361,7 +362,7 @@ function CaseBlock({ block, index }: { block: any; index: number }) {
           <div className="case-cta__copy">
             <h3>{block.title}</h3>
             {block.body && <p>{block.body}</p>}
-            <a href={block.buttonURL || '/contact'}>{block.buttonLabel || 'Обсудить проект'} ↗</a>
+            <a href={caseSiteLink(block.buttonURL,siteURL)}>{block.buttonLabel || 'Обсудить проект'} ↗</a>
           </div>
         </section>
       )
@@ -451,7 +452,7 @@ export default function LiveCase({
               if(!inCanvas)return
               if((event.target as HTMLElement).closest('a'))event.preventDefault()
               window.parent.postMessage({type:'baev:select',index},location.origin)
-            }}><CaseBlock block={block} index={index}/></div>
+            }}><CaseBlock block={block} index={index} siteURL={siteURL}/></div>
           ))}
 
           {!data.blocks?.length && (

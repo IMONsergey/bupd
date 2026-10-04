@@ -1,10 +1,11 @@
 'use client'
 
-import { Copy, Eye, Plus, Search, Layers, X } from '@/studio/ui/icons'
+import { Copy, Eye, Plus, Search, Layers, X, LayoutGrid, Menu, ArrowUpRight } from '@/studio/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useMemo, useState } from 'react'
 import {useDialogFocus} from '@/studio/ui/useDialogFocus'
+import {caseStatuses,caseSorts,filterCases,matchesCaseStatus,onSite} from './caseViews'
 
 type CaseItem={
   cover?: {url?:string;alt?:string;sizes?:{card?:{url?:string}}}|null
@@ -18,6 +19,8 @@ type CaseItem={
   isPublished?:boolean
   deadline?:string|null
   updatedAt?:string|null
+  hasUnpublishedChanges?:boolean
+  issueCount?:number
 }
 
 type TemplateItem={
@@ -32,6 +35,7 @@ const statuses=[
   ['review','Проверка'],
   ['ready','Готово'],
   ['published','Опубликовано'],
+  ['paused','Пауза'],
 ] as const
 
 const label:Record<string,string>={draft:'В работе',review:'Проверка',ready:'Готов',paused:'Пауза',published:'Опубликован'}
@@ -39,8 +43,11 @@ const label:Record<string,string>={draft:'В работе',review:'Провер�
 export default function CasesClient({items,templates}:{items:CaseItem[];templates:TemplateItem[]}){
   const router=useRouter()
   const params=useSearchParams()
-  const [query,setQuery]=useState('')
-  const [status,setStatus]=useState<string>(params.get('status')||'all')
+  const [query,setQuery]=useState(params.get('q')||'')
+  const [status,setStatus]=useState<string>(caseStatuses.includes(params.get('status') as any)?params.get('status')||'all':'all')
+  const [sort,setSort]=useState(caseSorts.includes(params.get('sort') as any)?params.get('sort')||'updated':'updated')
+  const [view,setView]=useState(params.get('view')==='list'?'list':'grid')
+  const [failedCovers,setFailedCovers]=useState<string[]>([])
   const [modal,setModal]=useState(params.get('new')==='1')
   const [title,setTitle]=useState('')
   const [client,setClient]=useState('')
@@ -53,20 +60,37 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
   const [actionError,setActionError]=useState('')
   const modalRef=useDialogFocus(modal,()=>{if(!busy)setModal(false)})
 
-  useEffect(()=>{if(params.get('new')==='1')setModal(true)},[params])
+  useEffect(()=>{if(params.get('new')==='1'){
+    setModal(true)
+    const url=new URL(location.href);url.searchParams.delete('new')
+    window.history.replaceState(window.history.state,'',url.pathname+url.search)
+  }},[params])
+  const paramStatus=params.get('status'),paramQuery=params.get('q'),paramSort=params.get('sort'),paramView=params.get('view')
+  useEffect(()=>{
+    setStatus(caseStatuses.includes(paramStatus as any)?paramStatus||'all':'all')
+    setQuery(paramQuery||'')
+    setSort(caseSorts.includes(paramSort as any)?paramSort||'updated':'updated')
+    setView(paramView==='list'?'list':'grid')
+  },[paramStatus,paramQuery,paramSort,paramView])
+  const changeView=(updates:Record<string,string>)=>{
+    const url=new URL(location.href)
+    const defaults:Record<string,string>={q:'',status:'all',sort:'updated',view:'grid'}
+    for(const [key,value] of Object.entries(updates)){
+      if(value&&value!==defaults[key])url.searchParams.set(key,value)
+      else url.searchParams.delete(key)
+    }
+    window.history.replaceState(window.history.state,'',url.pathname+url.search)
+    if('q' in updates)setQuery(updates.q)
+    if('status' in updates)setStatus(updates.status)
+    if('sort' in updates)setSort(updates.sort)
+    if('view' in updates)setView(updates.view)
+  }
 
-  const visible=useMemo(()=>{
-    const q=query.trim().toLowerCase()
-    return items.filter((item)=>{
-      if(status==='published'&&!(item.isPublished??item._status==='published'))return false
-      if(status!=='all'&&status!=='published'&&item.workflowStatus!==status)return false
-      if(!q)return true
-      return [item.title,item.client,item.slug].filter(Boolean).some((v)=>String(v).toLowerCase().includes(q))
-    })
-  },[items,query,status])
+  const visible=useMemo(()=>filterCases(items,query,status,sort) as CaseItem[],[items,query,status,sort])
 
   const create=async()=>{
     if(!title.trim()||busy)return
+    if(year&&(!Number.isFinite(Number(year))||Number(year)<2000||Number(year)>2100)){setError('Укажите год от 2000 до 2100.');return}
     setBusy(true);setError('')
     try {
     const response=await fetch('/api/baev/create-case',{
@@ -101,22 +125,28 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
     <div className="studio-toolbar">
       <div style={{position:'relative',flex:1}}>
         <Search size={15} style={{position:'absolute',left:11,top:12,color:'#a1a1aa'}}/>
-        <input aria-label="Найти кейс" className="studio-input studio-input--search" style={{paddingLeft:34}} value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Найти кейс или клиента"/>
+        <input aria-label="Найти кейс" className="studio-input studio-input--search" style={{paddingLeft:34}} value={query} onChange={(e)=>changeView({q:e.target.value})} placeholder="Название, клиент или год"/>
       </div>
       <div className="studio-segmented">
-        {statuses.map(([value,text])=><button aria-pressed={status===value} key={value} onClick={()=>setStatus(value)}>
+        {statuses.map(([value,text])=><button aria-label={text} aria-pressed={status===value} key={value} onClick={()=>changeView({status:value})}>
           {status===value&&<motion.i layoutId="case-status-bg" transition={{type:'spring',stiffness:430,damping:35}}/>}
-          <span>{text}</span>
+          <span>{text} <small aria-hidden="true">{items.filter(item=>matchesCaseStatus(item,value)).length}</small></span>
         </button>)}
       </div>
       <button className="studio-button" onClick={()=>setModal(true)}><Plus size={14}/> Новый кейс</button>
     </div>
+    <div className="case-view-toolbar">
+      <span role="status">{visible.length} из {items.length} кейсов</span>
+      <div className="case-view-quick"><button aria-pressed={status==='changes'} onClick={()=>changeView({status:status==='changes'?'all':'changes'})}>Новые правки <small>{items.filter(item=>item.hasUnpublishedChanges).length}</small></button><button aria-pressed={status==='issues'} onClick={()=>changeView({status:status==='issues'?'all':'issues'})}>Незаполненные поля <small>{items.filter(item=>item.issueCount).length}</small></button></div>
+      <label><span className="studio-sr-only">Сортировать кейсы</span><select aria-label="Сортировать кейсы" value={sort} onChange={event=>changeView({sort:event.target.value})}><option value="updated">Сначала изменённые</option><option value="title">По названию</option><option value="year">Сначала новые проекты</option></select></label>
+      <div className="case-view-toggle"><button aria-label="Карточки кейсов" aria-pressed={view==='grid'} onClick={()=>changeView({view:'grid'})}><LayoutGrid size={16}/></button><button aria-label="Список кейсов" aria-pressed={view==='list'} onClick={()=>changeView({view:'list'})}><Menu size={16}/></button></div>
+    </div>
 
     {actionError&&<p role="alert" className="studio-inline-error">{actionError}</p>}
-    <motion.div className="studio-cases" layout>
+    <motion.div className={'studio-cases '+(view==='list'?'is-list':'')} layout>
       <AnimatePresence mode="popLayout">
         {visible.map((item,index)=>{
-          const state=(item.isPublished??item._status==='published')?'published':item.workflowStatus||'draft'
+          const state=onSite(item)?'published':item.workflowStatus||'draft'
           return <motion.article
             layout
             className="studio-case-card"
@@ -127,15 +157,16 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
             transition={{duration:.25,delay:Math.min(index*.025,.18)}}
           >
             <a className="studio-case-card__link" href={'/studio/cases/'+item.id} aria-label={'Редактировать '+item.title}>
-            {item.cover?.url?<img loading="lazy" className="studio-case-cover" src={item.cover.sizes?.card?.url||item.cover.url} alt={item.cover.alt||''}/>:<div className="studio-case-no-cover"><Layers size={28}/><span>Добавьте обложку</span></div>}
+            {item.cover?.url&&!failedCovers.includes(String(item.id))?<img loading="lazy" className="studio-case-cover" src={item.cover.sizes?.card?.url||item.cover.url} alt={item.cover.alt||''} onError={()=>setFailedCovers(ids=>[...ids,String(item.id)])}/>:<div className="studio-case-no-cover"><Layers size={28}/><span>{item.cover?.url?'Превью недоступно':'Добавьте обложку'}</span></div>}
             <div className="studio-case-card__top">
               <span className={['studio-chip',state==='published'||state==='ready'?'studio-chip--green':state==='review'?'studio-chip--amber':''].join(' ')}>{label[state]||state}</span>
-              <span style={{fontSize:12,color:'#a1a1aa'}}>{String(index+1).padStart(2,'0')}</span>
+              {onSite(item)&&item.hasUnpublishedChanges?<span className="case-draft-indicator">Новые правки</span>:<span className="case-workflow">{onSite(item)&&item.workflowStatus&&item.workflowStatus!=='ready'?label[item.workflowStatus]:String(index+1).padStart(2,'0')}</span>}
             </div>
             <div className="studio-case-card__body">
               <small>{item.client||'Без клиента'}{item.year?' · '+item.year:''}</small>
               <h3>{item.title}</h3>
               <p>/{item.slug}{item.deadline?' · дедлайн '+new Date(item.deadline).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):''}</p>
+              {Boolean(item.issueCount)&&<span className="case-completion-note">Незаполненные поля · {item.issueCount}</span>}
             </div>
             </a>
             <footer className="studio-case-card__footer">
@@ -143,6 +174,7 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
               <span style={{display:'flex',gap:10}}>
                 <button aria-label={'Создать копию '+item.title} disabled={duplicating!==null} title="Создать копию" onClick={(e)=>duplicate(item.id,e)} style={{border:0,background:'transparent',padding:0,cursor:'pointer',color:'inherit'}}><Copy size={16}/></button>
                 <a href={'/preview/'+item.slug} aria-label={'Предпросмотр '+item.title} target="_blank" rel="noopener noreferrer"><Eye size={16}/></a>
+                {onSite(item)&&<a href={'/work/'+item.slug} aria-label={'Открыть на сайте '+item.title} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16}/></a>}
               </span>
             </footer>
           </motion.article>
@@ -150,7 +182,7 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
       </AnimatePresence>
     </motion.div>
 
-    {!visible.length&&<div className="studio-card studio-empty">По этому фильтру кейсов нет.</div>}
+    {!visible.length&&<div className="studio-card studio-empty case-empty"><Search size={24}/><strong>{items.length?'Кейсы не найдены':'Добавьте первый кейс'}</strong><p>{items.length?'Измените запрос или сбросьте фильтры.':'Начните с готовой структуры и заполните её своими материалами.'}</p><button className="studio-button studio-button--soft" onClick={()=>items.length?changeView({q:'',status:'all'}):setModal(true)}>{items.length?'Сбросить фильтры':'Создать первый кейс'}</button></div>}
 
     <AnimatePresence>
       {modal&&<motion.div className="studio-new-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>{if(e.target===e.currentTarget&&!busy)setModal(false)}}>
@@ -158,7 +190,7 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
           <header><div><span>Кейсы</span><h2 id="new-case-title">Новый кейс</h2></div><button disabled={busy} aria-label="Закрыть создание кейса" onClick={()=>setModal(false)}><X size={17}/></button></header>
           <div className="studio-new-form">
             <label><span>Название *</span><input value={title} onChange={(e)=>setTitle(e.target.value)} placeholder="Авито — Высшая передача"/></label>
-            <div><label><span>Клиент</span><input value={client} onChange={(e)=>setClient(e.target.value)} placeholder="Авито"/></label><label><span>Год</span><input value={year} onChange={(e)=>setYear(e.target.value)}/></label></div>
+            <div><label><span>Клиент</span><input value={client} onChange={(e)=>setClient(e.target.value)} placeholder="Авито"/></label><label><span>Год</span><input type="number" min="2000" max="2100" value={year} onChange={(e)=>setYear(e.target.value)}/></label></div>
             <label><span>Категории</span><input value={categories} onChange={(e)=>setCategories(e.target.value)} placeholder="Презентация, Брендинг, Event"/></label>
           </div>
           <div className="studio-new-templates">
