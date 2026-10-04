@@ -422,3 +422,12 @@ button:disabled{opacity:.45;cursor:default}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 .studio-command__list button.is-selected{background:#eeecff;box-shadow:inset 3px 0 #8d7ce8}.studio-case-cover{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px 12px 0 0}
+
+/* Keep scene controls and the inspector usable at every editor width. */
+.builder-root{display:flex;flex-direction:column;height:100dvh}
+.builder-topbar,.builder-error{flex:none}
+.builder-layout{flex:1;min-height:0;height:auto!important}
+.builder-right{display:block;overflow:auto}.builder-scenes{display:flex;flex-direction:column;overflow:auto}
+.builder-preview-frame{max-height:none}.builder-canvas{min-height:0}
+@media(max-width:900px){.builder-root{height:auto;min-height:100dvh}.builder-canvas{height:75vh}.builder-right{display:block}.builder-scenes{display:flex}.builder-topbar>.studio-button--soft{display:inline-flex}.builder-device{display:flex}.builder-topbar .builder-save-state{display:flex;min-height:30px}}
+@media(max-width:600px){.builder-canvas{height:70vh}.builder-scenes{height:250px;max-height:250px}.builder-right{max-height:none}}
