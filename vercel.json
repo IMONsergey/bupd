@@ -1,1 +1,14 @@
-{"cleanUrls":true,"trailingSlash":false,"rewrites":[{"source":"/work/:slug","destination":"https://baev-cms.vercel.app/work/:slug"}]}
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/work/:slug",
+      "destination": "https://baev-cms.vercel.app/work/:slug"
+    },
+    {
+      "source": "/_next/static/:path*",
+      "destination": "https://baev-cms.vercel.app/_next/static/:path*"
+    }
+  ]
+}
