@@ -14,7 +14,7 @@ export default async function CasesPage(){
   const items=projects.docs.map(project=>({...project,isPublished:publishedIDs.has(String(project.id))}))
   return <>
     <section className="studio-page-head">
-      <div className="studio-page-head__copy"><span className="studio-eyebrow">BAEV / кейсы</span><h1>Истории, а не записи.</h1><p>Создание, поиск, проверка и публикация кейсов — в одном визуальном пространстве.</p></div>
+      <div className="studio-page-head__copy"><span className="studio-eyebrow">BAEV / кейсы</span><h1>Кейсы</h1><p>Редактируйте кейсы и управляйте публикациями.</p></div>
     </section>
     <CasesClient items={items as any} templates={templates.docs as any}/>
   </>

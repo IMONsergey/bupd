@@ -3,7 +3,7 @@ import {
   Clock3,
   FileText,
   FolderKanban,
-  Sparkles,
+  Plus,
   Users,
 } from 'lucide-react'
 import React from 'react'
@@ -32,17 +32,16 @@ export default async function StudioHomePage() {
   const newLeads=leads.docs.filter((item:any)=>item.status==='new').length
   const now=Date.now()
   const overdue=activities.docs.filter((item:any)=>item.dueAt&&new Date(item.dueAt).getTime()<now).length
-  const firstName=user && 'name' in user && user.name ? String(user.name).split(' ')[0] : ''
 
   return (
     <>
       <section className="studio-page-head">
         <div className="studio-page-head__copy">
           <span className="studio-eyebrow">BAEV / рабочее пространство</span>
-          <h1>Добрый день{firstName ? ', ' + firstName : ''}.</h1>
-          <p>Здесь только то, что требует внимания сейчас: кейсы, проверки, лиды, сделки и ближайшие действия.</p>
+          <h1>Обзор</h1>
+          <p>Последние кейсы и ближайшие задачи.</p>
         </div>
-        {content&&<Link className="studio-button" href="/studio/cases?new=1"><Sparkles size={15}/> Новый кейс</Link>}
+        {content&&<Link className="studio-button" href="/studio/cases?new=1"><Plus size={15}/> Новый кейс</Link>}
       </section>
 
       <section className="studio-grid studio-grid--4">

@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Eye, EyeOff } from 'lucide-react'
+import { ArrowRight, StudioIcon } from '@/studio/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -17,6 +17,7 @@ export default function StudioLogin() {
     e.preventDefault()
     if(busy)return
     setBusy(true);setError('')
+    try {
     const response=await fetch('/api/users/login',{
       method:'POST',
       credentials:'include',
@@ -31,6 +32,11 @@ export default function StudioLogin() {
     }
     router.replace('/studio')
     router.refresh()
+    } catch {
+      setError('Нет связи с сервером. Проверьте интернет и попробуйте ещё раз.')
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
@@ -38,20 +44,20 @@ export default function StudioLogin() {
       <motion.section className="studio-login__card" initial={{opacity:0,y:18,scale:.98}} animate={{opacity:1,y:0,scale:1}} transition={{duration:.45,ease:[.22,1,.36,1]}}>
         <header>
           <motion.div className="studio-login__logo" initial={{rotate:-8,scale:.8}} animate={{rotate:0,scale:1}} transition={{type:'spring',stiffness:380,damping:24}}>B</motion.div>
-          <div><strong>BAEV Studio</strong><span>Content + CRM workspace</span></div>
+          <div><strong>BAEV Studio</strong><span>Рабочее пространство</span></div>
         </header>
         <div className="studio-login__intro">
           <span>Вход в систему</span>
-          <h1>Всё важное<br/>в одном месте.</h1>
-          <p>Кейсы, визуальный конструктор, лиды и сделки — без интерфейса CMS.</p>
+          <h1>Войти в Studio</h1>
+          <p>Кейсы, материалы и работа с клиентами.</p>
         </div>
         <form onSubmit={submit}>
-          <label><span>Email</span><input autoFocus type="email" autoComplete="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="name@baev.agency"/></label>
-          <label><span>Пароль</span><div className="studio-password"><input type={show?'text':'password'} autoComplete="current-password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="••••••••"/><button type="button" onClick={()=>setShow((v)=>!v)}>{show?<EyeOff size={16}/>:<Eye size={16}/>}</button></div></label>
-          <AnimatePresence>{error&&<motion.p className="studio-login__error" initial={{opacity:0,y:-4}} animate={{opacity:1,y:0}} exit={{opacity:0}}>{error}</motion.p>}</AnimatePresence>
+          <label><span>Email</span><input autoFocus required type="email" autoComplete="username" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="name@baev.agency"/></label>
+          <label><span>Пароль</span><div className="studio-password"><input required type={show?'text':'password'} autoComplete="current-password" value={password} onChange={(e)=>setPassword(e.target.value)} placeholder="••••••••"/><button type="button" aria-label={show?'Скрыть пароль':'Показать пароль'} aria-pressed={show} onClick={()=>setShow((v)=>!v)}><StudioIcon name={show?'EyeOff':'Eye'} size={16}/></button></div></label>
+          <AnimatePresence>{error&&<motion.p role="alert" className="studio-login__error" initial={{opacity:0,y:-4}} animate={{opacity:1,y:0}} exit={{opacity:0}}>{error}</motion.p>}</AnimatePresence>
           <button className="studio-login__submit" disabled={busy||!email||!password}>{busy?'Входим…':<>Войти <ArrowRight size={16}/></>}</button>
         </form>
-        <footer><span>BAEV OS / 2026</span><span>Payload работает внутри</span></footer>
+        <footer><span>BAEV</span><span>Доступ для команды</span></footer>
       </motion.section>
       <div className="studio-login__ambient studio-login__ambient--one"/>
       <div className="studio-login__ambient studio-login__ambient--two"/>

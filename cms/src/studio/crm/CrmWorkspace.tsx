@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, CircleDollarSign, Plus, Search, UserPlus, X } from 'lucide-react'
+import { Check, CircleDollarSign, Plus, Search, UserPlus, X } from '@/studio/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import {useDialogFocus} from '../ui/useDialogFocus'

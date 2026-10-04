@@ -3,7 +3,7 @@
 import { DndContext, PointerSensor, useDraggable, useDroppable, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { motion } from 'motion/react'
-import { ArrowUpRight, CalendarClock, GripVertical, Plus } from 'lucide-react'
+import { ArrowUpRight, CalendarClock, GripVertical, Plus } from '@/studio/ui/icons'
 import React, { useMemo, useState } from 'react'
 import DealDrawer, { type StudioDeal } from './DealDrawer'
 

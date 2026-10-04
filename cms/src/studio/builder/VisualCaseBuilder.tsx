@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  Check,
   Undo2,
   Redo2,
   Settings2,
@@ -12,12 +11,12 @@ import {
   History,
   Monitor,
   Plus,
-  RefreshCcw,
   Save,
   Smartphone,
   Trash2,
   X,
-} from 'lucide-react'
+  StudioIcon,
+} from '@/studio/ui/icons'
 import {
   DndContext,
   PointerSensor,
@@ -41,6 +40,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {useDialogFocus} from '@/studio/ui/useDialogFocus'
 import type { EditorField } from './editorSchema'
 import { serializeDocument, copyScene, richTextToText, textToRichText } from './document'
+import { BlockLibrary } from './BlockLibrary'
+import { BlockPreview } from './BlockPreview'
 
 type BlockMeta={slug:string;number:string;title:string;description:string;group:string;modes:string[]}
 type AnyBlock=Record<string,any>&{blockType:string;id?:string}
@@ -82,7 +83,7 @@ function SortableScene({block,index,meta,active,onSelect,onDuplicate,onDelete}:{
   const name=blockName(block,meta)
   return <motion.div ref={sortable.setNodeRef} style={style} layout role="button" tabIndex={0} aria-label={'Сцена '+(index+1)+': '+name.title} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==='Enter'||e.key===' ')){e.preventDefault();onSelect()}}} className={['builder-scene',active?'is-active':''].join(' ')} onClick={onSelect}>
     <button aria-label={'Переместить сцену '+(index+1)} className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
-    <div className="builder-scene__thumb">{(block.media||block.video)?.url ? ((block.media||block.video).mimeType?.startsWith('video/')?<video src={(block.media||block.video).url} muted preload="none"/>:<img src={(block.media||block.video).sizes?.thumb?.url||(block.media||block.video).url} alt=""/>):<img src={'/block-thumbs/'+block.blockType+'.svg'} alt=""/>}</div>
+    <div className="builder-scene__thumb">{(block.media||block.video)?.mimeType?.startsWith('video/')?<video src={(block.media||block.video).url} muted preload="none"/>:<BlockPreview slug={block.blockType} imageURL={(block.media||block.video)?.sizes?.thumb?.url||(block.media||block.video)?.url}/>}</div>
     <div className="builder-scene__copy"><span>{String(index+1).padStart(2,'0')}</span><strong>{name.title}</strong><i>{name.detail||meta?.description}</i></div>
     <div className="builder-scene__menu"><button aria-label={'Дублировать сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDuplicate()}}><Copy size={13}/></button><button aria-label={'Удалить сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDelete()}}><Trash2 size={13}/></button></div>
   </motion.div>
@@ -118,10 +119,10 @@ function MediaField({label,value,media,onSelect}:{label:string;value:any;media:M
     <AnimatePresence>
       {open&&<motion.div className="builder-media-picker-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setOpen(false)}>
         <motion.section ref={dialogRef} role="dialog" aria-modal="true" aria-label="Выбор медиа" className="builder-media-picker" initial={{opacity:0,scale:.97,y:10}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.98}} transition={{type:'spring',stiffness:390,damping:32}}>
-          <header><div><span>Медиатека</span><strong>Выберите файл</strong></div><button onClick={()=>setOpen(false)}><X size={16}/></button></header>
-          <div className="builder-media-picker__search"><input autoFocus value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Поиск по названию"/></div>
+          <header><div><span>Медиатека</span><strong>Выберите файл</strong></div><button aria-label="Закрыть выбор файла" onClick={()=>setOpen(false)}><X size={16}/></button></header>
+          <div className="builder-media-picker__search"><input aria-label="Найти файл" value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Поиск по названию"/></div>
           <div className="builder-media-picker__grid">{visible.map((item)=><button key={item.id} onClick={()=>{onSelect(item);setOpen(false)}}>
-            {item.mimeType?.startsWith('video/')?<video src={item.url||''} muted/>:<img src={item.sizes?.thumb?.url||item.url||''} alt={item.alt||''}/>}
+            {item.mimeType?.startsWith('video/')?<video src={item.url||''} muted preload="none"/>:<img src={item.sizes?.thumb?.url||item.url||''} alt={item.alt||''}/>}
             <span>{item.alt||item.filename}</span>
           </button>)}</div>
         </motion.section>
@@ -151,7 +152,7 @@ function defaultValues(fields:EditorField[]):Record<string,any>{
 }
 
 function Inspector({block,fields,title,media,projects,onChange}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];onChange:(next:AnyBlock)=>void}){
-  return <div className="builder-inspector"><header><span>Настройки сцены</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><FieldEditor key={field.name} field={field} value={block[field.name]} media={media} projects={projects} onChange={value=>onChange({...block,[field.name]:value})}/>)}</div></div>
+  return <div className="builder-inspector"><header><span>Настройки блока</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><FieldEditor key={field.name} field={field} value={block[field.name]} media={media} projects={projects} onChange={value=>onChange({...block,[field.name]:value})}/>)}</div></div>
 }
 
 export default function VisualCaseBuilder({project,catalog,media,schemas,projects=[],initialPublished=false}:{project:any;catalog:BlockMeta[];media:MediaItem[];schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean}){
@@ -169,8 +170,17 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   const [published,setPublished]=useState(initialPublished)
   const [publishing,setPublishing]=useState(false)
   const [historyOpen,setHistoryOpen]=useState(false)
-  const libraryRef=useDialogFocus(library,()=>setLibrary(false))
   const historyRef=useDialogFocus(historyOpen,()=>setHistoryOpen(false))
+  const [workspaceTab,setWorkspaceTab]=useState<'canvas'|'blocks'|'settings'>('canvas')
+  const [moreOpen,setMoreOpen]=useState(false)
+  const moreRef=useRef<HTMLDivElement|null>(null)
+  useEffect(()=>{
+    if(!moreOpen)return
+    const outside=(event:Event)=>{if(!moreRef.current?.contains(event.target as Node))setMoreOpen(false)}
+    document.addEventListener('pointerdown',outside)
+    document.addEventListener('focusin',outside)
+    return()=>{document.removeEventListener('pointerdown',outside);document.removeEventListener('focusin',outside)}
+  },[moreOpen])
   const [versions,setVersions]=useState<any[]>([])
   const [versionsLoading,setVersionsLoading]=useState(false)
   const [historyError,setHistoryError]=useState('')
@@ -278,10 +288,10 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   useEffect(()=>()=>{if(saveTimer.current)clearTimeout(saveTimer.current);saveSequence.current+=1},[])
   useEffect(()=>{
     const keys=(event:KeyboardEvent)=>{
-      if(event.key==='Escape'){setLibrary(false);setHistoryOpen(false)}
+      if(event.key==='Escape'){setLibrary(false);setHistoryOpen(false);setMoreOpen(false)}
       const editing=(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')
       if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();void save()}
-      if(!editing&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();event.shiftKey?redo():undo()}
+      if(!editing&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();if(event.shiftKey)redo();else undo()}
     }
     window.addEventListener('keydown',keys)
     return()=>window.removeEventListener('keydown',keys)
@@ -355,30 +365,31 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
     setSelected(newIndex);scheduleSave(next)
   }
 
-  return <div className="builder-root">
+  return <div className={'builder-root builder-root--'+workspaceTab}>
     <header className="builder-topbar">
       <button className="builder-back" onClick={()=>void leave()}><ChevronLeft size={17}/> Кейсы</button>
       <div className="builder-title"><strong>{metadata.title}</strong><span>{metadata.client||'Без клиента'} · {metadata.year||'—'}</span></div>
-      <div className="builder-save-state">{saving?<><RefreshCcw className="is-spin" size={13}/> Сохраняем</>:saved?<><Check size={13}/> Сохранено</>:<>Есть изменения</>}</div>
+      <div className="builder-save-state" role="status" aria-live="polite"><StudioIcon name={saving?'RefreshCcw':saved?'Check':'Save'} className={saving?'is-spin':''} size={14}/>{saving?'Сохраняем':saved?'Сохранено':'Есть изменения'}</div>
       <div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div>
       <button className="builder-icon-button" aria-label="Отменить" disabled={!undoStack.length} onClick={undo}><Undo2 size={16}/></button><button className="builder-icon-button" aria-label="Повторить" disabled={!redoStack.length} onClick={redo}><Redo2 size={16}/></button>
-      <button className="studio-button studio-button--soft" onClick={()=>void loadVersions()}><History size={14}/> История</button>
-      <a className="studio-button studio-button--soft" href={'/preview/'+project.slug} target="_blank"><Eye size={14}/> Предпросмотр</a>
-      <button className="studio-button studio-button--soft" onClick={()=>void save()}><Save size={14}/> Сохранить</button>
+      <a className="studio-button studio-button--soft builder-preview-action" href={'/preview/'+project.slug} target="_blank" rel="noopener noreferrer"><Eye size={14}/><span>Предпросмотр</span></a>
+      <div ref={moreRef} className="builder-more"><button className="studio-button studio-button--soft" aria-expanded={moreOpen} aria-label="Дополнительные действия" onClick={()=>setMoreOpen(v=>!v)}>Ещё <StudioIcon name={moreOpen?'X':'ChevronDown'} size={14}/></button>{moreOpen&&<div className="builder-more__menu"><button onClick={()=>{setMoreOpen(false);void loadVersions()}}><History size={15}/>История версий</button><button onClick={()=>{setMoreOpen(false);void save()}}><Save size={15}/>Сохранить сейчас</button></div>}</div>
       <button className={['studio-button',published?'studio-button--published':''].join(' ')} disabled={publishing} onClick={()=>void togglePublish()}>{publishing?'Подождите…':published?'Снять с публикации':'Опубликовать'}</button>
     </header>
+
+    <nav className="builder-workspace-tabs" aria-label="Панели редактора">{[['canvas','Холст'],['blocks','Блоки'],['settings','Настройки']].map(([id,label])=><button key={id} aria-pressed={workspaceTab===id} className={workspaceTab===id?'is-active':''} onClick={()=>setWorkspaceTab(id as typeof workspaceTab)}><StudioIcon name={id==='canvas'?'Monitor':id==='blocks'?'Layers':'SlidersHorizontal'} size={16}/>{label}</button>)}</nav>
 
     {error&&<div className="builder-error" role="alert">{error}<button onClick={()=>void save()}>Повторить сохранение</button></div>}
     <div className="builder-layout" inert={publishing?true:undefined}>
       <aside className="builder-scenes">
-        <button className={'builder-page-settings '+(details?'is-active':'')} onClick={()=>setDetails(true)}><Settings2 size={16}/> Настройки кейса</button>
-        <div className="builder-scenes__head"><div><strong>Сцены</strong><span>{blocks.length}</span></div><button aria-label="Добавить сцену" onClick={()=>setLibrary(true)}><Plus size={14}/></button></div>
+        <button className={'builder-page-settings '+(details?'is-active':'')} onClick={()=>{setDetails(true);setWorkspaceTab('settings')}}><Settings2 size={16}/> Настройки кейса</button>
+        <div className="builder-scenes__head"><div><strong>Блоки</strong><span>{blocks.length}</span></div><button aria-label="Добавить блок" onClick={()=>setLibrary(true)}><Plus size={14}/></button></div>
         <DndContext id={'case-builder-'+project.id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnd}>
           <SortableContext items={blocks.map((b,i)=>b.id||'scene-'+i)} strategy={verticalListSortingStrategy}>
-            <div className="builder-scenes__list">{blocks.map((block,index)=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} onSelect={()=>{setSelected(index);setDetails(false)}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}</div>
+            <div className="builder-scenes__list">{blocks.map((block,index)=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} onSelect={()=>{setSelected(index);setDetails(false);setWorkspaceTab('settings')}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}</div>
           </SortableContext>
         </DndContext>
-        <button className="builder-add-scene" onClick={()=>setLibrary(true)}><Plus size={14}/> Добавить сцену</button>
+        <button className="builder-add-scene" onClick={()=>setLibrary(true)}><Plus size={14}/> Добавить блок</button>
       </aside>
 
       <main className="builder-canvas">
@@ -388,20 +399,12 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
       </main>
 
       <aside className="builder-right">
-        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><FieldEditor key={field.name} field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} onChange={value=>updateMetadata(field.name,value)}/>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первую сцену</div>}
+        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><FieldEditor key={field.name} field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} onChange={value=>updateMetadata(field.name,value)}/>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первый блок</div>}
       </aside>
     </div>
 
     <AnimatePresence>
-      {library&&<motion.div className="builder-library-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setLibrary(false)}>
-        <motion.section ref={libraryRef} role="dialog" aria-modal="true" aria-label="Добавить сцену" className="builder-library" initial={{opacity:0,y:24,scale:.98}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:12,scale:.99}} transition={{type:'spring',stiffness:380,damping:32}}>
-          <header><div><span>BAEV Case System</span><h2>Добавить сцену</h2></div><button onClick={()=>setLibrary(false)}><X size={17}/></button></header>
-          {['Narrative','Media','Data','Interaction','System'].map((group)=>{
-            const items=catalog.filter((item)=>item.group===group)
-            return <div className="builder-library__group" key={group}><span>{{Narrative:'История',Media:'Медиа',Data:'Данные',Interaction:'Интерактивные',System:'Завершение'}[group]}</span><div>{items.map((item)=><button key={item.slug} onClick={()=>add(item.slug)}><img src={'/block-thumbs/'+item.slug+'.svg'} alt=""/><div><small>{item.number}</small><strong>{item.title}</strong><p>{item.description}</p></div></button>)}</div></div>
-          })}
-        </motion.section>
-      </motion.div>}
+      {library&&<BlockLibrary catalog={catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={selectedBlock?meta[selectedBlock.blockType]?.title:undefined} onClose={()=>setLibrary(false)} onAdd={slug=>{add(slug);setWorkspaceTab('settings')}}/>}
     </AnimatePresence>
 
     <AnimatePresence>

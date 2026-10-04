@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, ChevronRight, Plus, Search, Sparkles } from 'lucide-react'
+import { Check, ChevronRight, Plus, Search, Sparkles } from '@/studio/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import React,{useState} from 'react'
 
@@ -22,7 +22,7 @@ export default function DesignSystemLab(){
           {[['Shared layout','Активные состояния мягко перетекают между табами и фильтрами.'],['Morph surfaces','Модалки и панели появляются из контекста, а не “прыгают” поверх интерфейса.'],['Stagger','Списки и карточки входят короткой последовательностью, сохраняя ощущение скорости.'],['Reduced motion','Все ключевые действия остаются понятными без анимации.']].map(([title,body],i)=><motion.article className="studio-card ds-motion-card" key={title} whileHover={{y:-4,scale:1.01}} transition={{type:'spring',stiffness:380,damping:28}}><motion.div animate={{rotate:[0,4,-3,0],scale:[1,1.06,1]}} transition={{duration:4+i*.4,repeat:Infinity,repeatDelay:1}}><Sparkles size={18}/></motion.div><strong>{title}</strong><p>{body}</p></motion.article>)}
         </div>}
         {tab==='tokens'&&<div className="ds-token-grid">{[
-          ['Surface','#FFFFFF','--s-panel'],['Canvas','#F5F5F4','--s-bg'],['Text','#18181B','--s-text'],['Muted','#71717A','--s-muted'],['Line','#E7E5E4','--s-line'],['Success','#22C55E','--s-green'],['Accent','#6366F1','--s-blue'],['Radius','14px','--s-radius']
+          ['Surface','#171819','--s-panel'],['Canvas','#101112','--s-bg'],['Text','#f2f2ef','--s-text'],['Muted','#b1b4b4','--s-muted'],['Line','#2c2f30','--s-line'],['Success','#a6d8b1','--s-green'],['Accent','#aebfda','--s-blue'],['Radius','14px','--s-radius']
         ].map(([name,value,token])=><article className="studio-card ds-token" key={token}><i style={{background:value.startsWith('#')?value:'#fff'}}/><div><strong>{name}</strong><span>{value}</span><code>{token}</code></div></article>)}</div>}
       </motion.div>
     </AnimatePresence>

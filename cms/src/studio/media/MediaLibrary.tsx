@@ -1,10 +1,11 @@
 'use client'
 
-import { ImagePlus, Search, Upload, X } from 'lucide-react'
+import { ImagePlus, Search, Upload, X } from '@/studio/ui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import React,{useMemo,useRef,useState} from 'react'
 import {upload as uploadBlob} from '@vercel/blob/client'
+import {useDialogFocus} from '@/studio/ui/useDialogFocus'
 
 type MediaItem=Record<string,any>
 
@@ -17,6 +18,7 @@ export default function MediaLibrary({items,blobEnabled=false}:{items:MediaItem[
   const [selected,setSelected]=useState<MediaItem|null>(null)
   const [error,setError]=useState('')
   const [progress,setProgress]=useState(0)
+  const viewerRef=useDialogFocus(Boolean(selected),()=>setSelected(null))
 
   const visible=useMemo(()=>{
     const q=query.trim().toLowerCase()
@@ -50,8 +52,8 @@ export default function MediaLibrary({items,blobEnabled=false}:{items:MediaItem[
 
   return <>
     <div className="studio-toolbar">
-      <div style={{position:'relative',flex:1}}><Search size={15} style={{position:'absolute',left:11,top:12,color:'#a1a1aa'}}/><input className="studio-input studio-input--search" style={{paddingLeft:34}} value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Поиск по названию и тегам"/></div>
-      <div className="studio-segmented">{[['all','Все'],['project','Проекты'],['cover','Обложки'],['brand','Бренд'],['motion','Видео']] .map(([id,label])=><button key={id} onClick={()=>setKind(id)}>{kind===id&&<motion.i layoutId="media-kind"/>}<span>{label}</span></button>)}</div>
+      <div style={{position:'relative',flex:1}}><Search size={15} style={{position:'absolute',left:11,top:12,color:'var(--s-muted)'}}/><input aria-label="Найти файл" className="studio-input studio-input--search" style={{paddingLeft:34}} value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Поиск по названию и тегам"/></div>
+      <div className="studio-segmented">{[['all','Все'],['project','Проекты'],['cover','Обложки'],['brand','Бренд'],['motion','Видео']] .map(([id,label])=><button aria-pressed={kind===id} key={id} onClick={()=>setKind(id)}>{kind===id&&<motion.i layoutId="media-kind"/>}<span>{label}</span></button>)}</div>
       <input ref={fileRef} hidden type="file" accept="image/*,video/*" onChange={(e)=>{const f=e.target.files?.[0];if(f)void upload(f);e.currentTarget.value=''}}/>
       <button className="studio-button" disabled={uploading} onClick={()=>fileRef.current?.click()}><Upload size={14}/>{uploading?'Загрузка '+progress+'%':'Загрузить'}</button>
     </div>
@@ -59,15 +61,15 @@ export default function MediaLibrary({items,blobEnabled=false}:{items:MediaItem[
     {error&&<div className="builder-error" role="alert">{error}</div>}
     <motion.div className="studio-media-grid" layout>
       <AnimatePresence mode="popLayout">{visible.map((item,index)=><motion.button className="studio-media-item" layout key={item.id} initial={{opacity:0,scale:.96}} animate={{opacity:1,scale:1}} exit={{opacity:0,scale:.96}} transition={{delay:Math.min(index*.02,.18)}} onClick={()=>setSelected(item)}>
-        {item.mimeType?.startsWith('video/')?<video src={item.url} muted/>:<img src={item.sizes?.card?.url||item.url} alt={item.alt||''}/>}
-        <footer><strong>{item.alt||item.filename}</strong><span>{item.kind||'project'} · {item.mimeType?.split('/')[1]||'file'}</span></footer>
+        {item.mimeType?.startsWith('video/')?<video src={item.url} muted preload="none"/>:<img loading="lazy" src={item.sizes?.card?.url||item.url} alt={item.alt||''}/>}
+        <footer><strong>{item.alt||item.filename}</strong><span>{{project:'Проект',cover:'Обложка',brand:'Бренд',motion:'Видео'}[item.kind as string]||'Файл'} · {item.mimeType?.split('/')[1]||'файл'}</span></footer>
       </motion.button>)}</AnimatePresence>
     </motion.div>
     {!visible.length&&<div className="studio-card studio-empty"><ImagePlus size={20}/> Ничего не найдено</div>}
 
     <AnimatePresence>{selected&&<motion.div className="media-viewer-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setSelected(null)}>
-      <motion.section className="media-viewer" layoutId={'media-'+selected.id} initial={{scale:.96,y:12}} animate={{scale:1,y:0}} exit={{scale:.97,y:6}}>
-        <button className="media-viewer__close" onClick={()=>setSelected(null)}><X size={17}/></button>
+      <motion.section ref={viewerRef} role="dialog" aria-modal="true" aria-label="Просмотр файла" className="media-viewer" initial={{scale:.985,y:12}} animate={{scale:1,y:0}} exit={{scale:.99,y:6}}>
+        <button aria-label="Закрыть просмотр файла" className="media-viewer__close" onClick={()=>setSelected(null)}><X size={17}/></button>
         <div className="media-viewer__asset">{selected.mimeType?.startsWith('video/')?<video src={selected.url} controls autoPlay/>:<img src={selected.url} alt={selected.alt||''}/>}</div>
         <div className="media-viewer__meta"><span>{selected.kind||'project'}</span><h2>{selected.alt||selected.filename}</h2><p>{selected.filename} · {selected.width&&selected.height?selected.width+'×'+selected.height:'video/file'}</p></div>
       </motion.section>

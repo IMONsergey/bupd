@@ -10,7 +10,7 @@ export default async function CRMPage(){
     payload.find({collection:'activities',limit:200,sort:'dueAt',depth:1,overrideAccess:true}),
   ])
   return <>
-    <section className="studio-page-head"><div className="studio-page-head__copy"><span className="studio-eyebrow">BAEV / CRM</span><h1>Продажи без таблиц.</h1><p>Лиды, pipeline и следующие действия собраны в одном спокойном интерфейсе.</p></div></section>
+    <section className="studio-page-head"><div className="studio-page-head__copy"><span className="studio-eyebrow">BAEV / CRM</span><h1>Клиенты</h1><p>Контакты, сделки и ближайшие задачи.</p></div></section>
     <CrmWorkspace leads={leads.docs as any} deals={deals.docs as any} activities={activities.docs as any}/>
   </>
 }

@@ -10,14 +10,14 @@ import {
   Image,
   LayoutDashboard,
   LogOut,
-  Menu,
   PanelsTopLeft,
   Plus,
   Search,
   Settings,
   Users,
   X,
-} from 'lucide-react'
+  StudioIcon,
+} from '@/studio/ui/icons'
 import { AnimatePresence, motion, MotionConfig } from 'motion/react'
 import { usePathname, useRouter } from 'next/navigation'
 import {useDialogFocus} from './useDialogFocus'
@@ -44,7 +44,7 @@ const nav: NavItem[] = [
   { href:'/studio/crm', label:'CRM', description:'Лиды и следующие действия', icon:BriefcaseBusiness, roles:['admin','sales'] },
   { href:'/studio/pipeline', label:'Сделки', description:'Сделки по этапам', icon:FolderKanban, roles:['admin','sales'] },
   { href:'/studio/media', label:'Медиа', description:'Изображения и видео', icon:Image, roles:['admin','editor'] },
-  { href:'/studio/system', label:'Система', description:'Настройки и доступы', icon:Settings, roles:['admin'] },
+  { href:'/studio/system', label:'Настройки', description:'Сайт и команда', icon:Settings, roles:['admin'] },
 ]
 
 const spring = { type:'spring' as const, stiffness:420, damping:34, mass:.75 }
@@ -64,6 +64,8 @@ export default function StudioShell({
   const [mobileOpen,setMobileOpen] = useState(false)
   const [query,setQuery] = useState('')
   const [activeCommand,setActiveCommand]=useState(0)
+  const [logoutError,setLogoutError]=useState('')
+  const [loggingOut,setLoggingOut]=useState(false)
   const commandRef=useDialogFocus(commandOpen,()=>setCommandOpen(false))
 
   const visibleNav = useMemo(()=>nav.filter((item)=>item.roles.includes(role)),[role])
@@ -125,9 +127,15 @@ export default function StudioShell({
   }
 
   const logout=async()=>{
-    await fetch('/api/users/logout',{method:'POST',credentials:'include'})
-    router.replace('/studio/login')
-    router.refresh()
+    if(loggingOut)return
+    setLoggingOut(true);setLogoutError('')
+    try {
+      const response=await fetch('/api/users/logout',{method:'POST',credentials:'include'})
+      if(!response.ok)throw new Error('logout')
+      router.replace('/studio/login')
+      router.refresh()
+    } catch {setLogoutError('Не удалось выйти. Повторите попытку.')}
+    finally {setLoggingOut(false)}
   }
 
   return (
@@ -140,18 +148,18 @@ export default function StudioShell({
           <div className="studio-brand__mark">B</div>
           <div className="studio-brand__copy">
             <strong>BAEV Studio</strong>
-            <span>Content + CRM</span>
+            <span>Рабочее пространство</span>
           </div>
           <button className="studio-mobile-close" onClick={()=>setMobileOpen(false)} aria-label="Закрыть меню"><X size={18}/></button>
         </div>
 
-        <nav className="studio-nav">
+        <nav className="studio-nav" aria-label="Главное меню">
           <span className="studio-nav__eyebrow">Рабочее пространство</span>
           {visibleNav.map((item)=>{
             const active=item.href==='/studio' ? pathname===item.href : pathname.startsWith(item.href)
             const Icon=item.icon
             return (
-              <button key={item.href} className={['studio-nav__item',active?'is-active':''].join(' ')} onClick={()=>router.push(item.href)}>
+              <button key={item.href} aria-current={active?'page':undefined} className={['studio-nav__item',active?'is-active':''].join(' ')} onClick={()=>router.push(item.href)}>
                 {active && <motion.i layoutId="studio-nav-active" transition={spring}/>}
                 <Icon size={18} strokeWidth={1.8}/>
                 <div><strong>{item.label}</strong><span>{item.description}</span></div>
@@ -171,19 +179,20 @@ export default function StudioShell({
           <div className="studio-user">
             <div className="studio-user__avatar">{String(user.name||user.email||'B').slice(0,1).toUpperCase()}</div>
             <div><strong>{user.name||user.email||'BAEV'}</strong><span>{role==='admin'?'Администратор':role==='editor'?'Редактор':'Продажи'}</span></div>
-            <button onClick={logout} aria-label="Выйти"><LogOut size={16}/></button>
+            <button onClick={logout} disabled={loggingOut} aria-label="Выйти"><LogOut size={16}/></button>
           </div>
+          {logoutError&&<p role="alert" className="studio-inline-error">{logoutError}</p>}
         </div>
       </motion.aside>
 
       <div className="studio-main">
         <header className="studio-topbar">
-          <button aria-label="Открыть меню" className="studio-mobile-menu" onClick={()=>setMobileOpen(true)}><Menu size={19}/></button>
+          <button aria-label={mobileOpen?'Закрыть меню':'Открыть меню'} aria-expanded={mobileOpen} className="studio-mobile-menu" onClick={()=>setMobileOpen(v=>!v)}><StudioIcon name={mobileOpen?'X':'Menu'} size={19}/></button>
           <button className="studio-search-trigger" onClick={()=>setCommandOpen(true)}>
             <Search size={16}/><span>Поиск и команды</span><kbd>⌘K</kbd>
           </button>
           <div className="studio-topbar__meta">
-            <span className="studio-status-dot"/><span>Система работает</span>
+            <a href={process.env.NEXT_PUBLIC_SITE_URL||'/work'} target="_blank" rel="noopener noreferrer">Открыть сайт <ArrowUpRight size={15}/></a>
           </div>
         </header>
         <motion.main
@@ -207,7 +216,7 @@ export default function StudioShell({
               exit={{opacity:0,scale:.97,y:-8}}
               transition={spring}
             >
-              <header><Search size={18}/><input autoFocus value={query} onChange={(e)=>{setQuery(e.target.value);setActiveCommand(0)}} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setActiveCommand(i=>Math.min(i+1,filteredCommands.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setActiveCommand(i=>Math.max(0,i-1))}if(e.key==='Enter'&&filteredCommands[activeCommand]){e.preventDefault();go(filteredCommands[activeCommand].href)}}} placeholder="Куда перейти или что создать?"/><kbd>esc</kbd></header>
+              <header><Search size={18}/><input value={query} onChange={(e)=>{setQuery(e.target.value);setActiveCommand(0)}} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setActiveCommand(i=>Math.min(i+1,filteredCommands.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setActiveCommand(i=>Math.max(0,i-1))}if(e.key==='Enter'&&filteredCommands[activeCommand]){e.preventDefault();go(filteredCommands[activeCommand].href)}}} placeholder="Куда перейти или что создать?"/><kbd>esc</kbd></header>
               <div className="studio-command__list">
                 {filteredCommands.map((item,index)=>{
                   const Icon=item.icon

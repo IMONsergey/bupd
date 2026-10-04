@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import { LoaderCircle, Save, X } from 'lucide-react'
+import { LoaderCircle, Save, X } from '@/studio/ui/icons'
 import React, { useEffect, useState } from 'react'
 import {useDialogFocus} from '../ui/useDialogFocus'
 

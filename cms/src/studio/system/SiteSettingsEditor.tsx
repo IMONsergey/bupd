@@ -1,6 +1,6 @@
 'use client'
 import {useState,type FormEvent} from 'react'
-import {Save,Check} from 'lucide-react'
+import {Save,Check} from '@/studio/ui/icons'
 const fields=[['siteName','Название','text'],['siteURL','Адрес сайта','url'],['email','Email','email'],['telegram','Telegram','text'],['phone','Телефон','tel'],['defaultDescription','Описание сайта','textarea'],['analyticsId','ID Метрики','text']] as const
 export default function SiteSettingsEditor({settings}:{settings:any}){
   const [values,setValues]=useState<Record<string,string>>(()=>Object.fromEntries(fields.map(([name])=>[name,settings[name]||''])))
@@ -13,5 +13,5 @@ export default function SiteSettingsEditor({settings}:{settings:any}){
       setDirty(false);setNotice('Настройки сохранены')
     } catch(error){setFailed(true);setNotice(error instanceof Error?error.message:'Не удалось сохранить настройки.')} finally {setBusy(false)}
   }
-  return <form className="studio-card site-settings-editor" onSubmit={save}><header className="studio-card__head"><strong>Сайт и контакты</strong></header><div className="site-settings-fields">{fields.map(([name,label,type])=><label key={name}><span>{label}</span>{type==='textarea'?<textarea className="studio-input" rows={3} value={values[name]} onChange={e=>{setValues({...values,[name]:e.target.value});setDirty(true)}}/>:<input className="studio-input" type={type} value={values[name]} onChange={e=>{setValues({...values,[name]:e.target.value});setDirty(true)}}/>}</label>)}</div><footer><button className="studio-button" disabled={busy||!dirty}><Save size={15}/>{busy?'Сохраняем…':'Сохранить'}</button>{notice&&<span role={failed?'alert':'status'} style={{color:failed?'#b42318':undefined}}>{!failed&&<Check size={14}/>} {notice}</span>}</footer></form>
+  return <form className="studio-card site-settings-editor" onSubmit={save}><header className="studio-card__head"><strong>Сайт и контакты</strong></header><div className="site-settings-fields">{fields.map(([name,label,type])=><label key={name}><span>{label}</span>{type==='textarea'?<textarea className="studio-input" rows={3} value={values[name]} onChange={e=>{setValues({...values,[name]:e.target.value});setDirty(true)}}/>:<input className="studio-input" type={type} value={values[name]} onChange={e=>{setValues({...values,[name]:e.target.value});setDirty(true)}}/>}</label>)}</div><footer><button className="studio-button" disabled={busy||!dirty}><Save size={15}/>{busy?'Сохраняем…':'Сохранить'}</button>{notice&&<span role={failed?'alert':'status'} style={{color:failed?'var(--s-red)':undefined}}>{!failed&&<Check size={14}/>} {notice}</span>}</footer></form>
 }
