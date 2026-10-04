@@ -1,5 +1,5 @@
 import type { GlobalConfig } from 'payload'
-import { adminHiddenUnless, contentAccess } from '../access/roles'
+import { adminHiddenUnless, contentFieldAccess, contentAccess } from '../access/roles'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
@@ -40,6 +40,7 @@ export const SiteSettings: GlobalConfig = {
               name: 'leadWebhookURL',
               label: 'Webhook после нового лида',
               type: 'text',
+              access:{read:contentFieldAccess},
               admin: { description: 'Опционально: n8n / Make / собственный endpoint. Секреты сюда не кладём.' },
             },
             { name: 'analyticsId', label: 'Analytics / Метрика ID', type: 'text' },

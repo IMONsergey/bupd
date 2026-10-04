@@ -182,6 +182,17 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   const saveSequence=useRef(0)
   const saveQueue=useRef<Promise<unknown>>(Promise.resolve())
   const previewRef=useRef<HTMLIFrameElement|null>(null)
+  const frameRef=useRef<HTMLDivElement|null>(null)
+  const [canvasSize,setCanvasSize]=useState({width:1440,height:900})
+  useEffect(()=>{
+    const frame=frameRef.current
+    if(!frame)return
+    const observer=new ResizeObserver(([entry])=>setCanvasSize({width:entry.contentRect.width,height:entry.contentRect.height}))
+    observer.observe(frame)
+    return()=>observer.disconnect()
+  },[])
+  const canvasWidth=device==='mobile'?390:1440
+  const canvasScale=Math.min(1,canvasSize.width/canvasWidth)||1
   const latest=useRef({blocks,metadata})
   latest.current={blocks,metadata}
   const sensors=useSensors(useSensor(PointerSensor,{activationConstraint:{distance:5}}),useSensor(KeyboardSensor,{coordinateGetter:sortableKeyboardCoordinates}))
@@ -233,7 +244,8 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   }
 
   const change=(next:{blocks:AnyBlock[];metadata:Record<string,any>},record=true)=>{
-    if(record){setUndoStack(stack=>[...stack.slice(-39),structuredClone(latest.current)]);setRedoStack([])}
+    const before=structuredClone(latest.current)
+    if(record){setUndoStack(stack=>[...stack.slice(-39),before]);setRedoStack([])}
     latest.current=next
     editRevision.current+=1
     const revision=editRevision.current
@@ -245,13 +257,15 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
   const updateMetadata=(key:string,value:any)=>change({...latest.current,metadata:{...latest.current.metadata,[key]:value}})
   const undo=()=>{
     if(!undoStack.length)return
-    setRedoStack(stack=>[...stack,structuredClone(latest.current)])
+    const current=structuredClone(latest.current)
+    setRedoStack(stack=>[...stack,current])
     const previous=undoStack[undoStack.length-1]
     setUndoStack(stack=>stack.slice(0,-1));change(previous,false);setSelected(index=>Math.max(0,Math.min(index,previous.blocks.length-1)))
   }
   const redo=()=>{
     if(!redoStack.length)return
-    setUndoStack(stack=>[...stack,structuredClone(latest.current)])
+    const current=structuredClone(latest.current)
+    setUndoStack(stack=>[...stack,current])
     const next=redoStack[redoStack.length-1]
     setRedoStack(stack=>stack.slice(0,-1));change(next,false);setSelected(index=>Math.max(0,Math.min(index,next.blocks.length-1)))
   }
@@ -367,8 +381,8 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
       </aside>
 
       <main className="builder-canvas">
-        <div className={['builder-preview-frame','is-'+device].join(' ')}>
-          <iframe ref={previewRef} src={'/preview/'+project.slug+'?canvas=1'} title="Предпросмотр кейса" onLoad={()=>{setPreviewKey(v=>v+1);sendPreview()}}/>
+        <div ref={frameRef} className={['builder-preview-frame','is-'+device].join(' ')}>
+          <iframe style={{width:canvasWidth,height:canvasSize.height/canvasScale,transform:`scale(${canvasScale})`,transformOrigin:'top left'}} ref={previewRef} src={'/preview/'+project.slug+'?canvas=1'} title="Предпросмотр кейса" onLoad={()=>{setPreviewKey(v=>v+1);sendPreview()}}/>
         </div>
       </main>
 

@@ -2,7 +2,7 @@
 export function serializeDocument(value: any): any {
   if (Array.isArray(value)) return value.map(serializeDocument)
   if (!value || typeof value !== 'object') return value
-  if ('id' in value && ('url' in value || 'filename' in value || 'slug' in value)) return value.id
+  if ('id' in value && ('url' in value || 'filename' in value || 'slug' in value || 'email' in value)) return value.id
   return Object.fromEntries(Object.entries(value)
     .filter(([key]) => !['createdAt','updatedAt'].includes(key))
     .map(([key, child]) => [key, serializeDocument(child)]))

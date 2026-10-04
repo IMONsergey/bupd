@@ -377,12 +377,14 @@ export default function LiveCase({
   preview = true,
   siteURL = '',
   related = [],
+  contactEmail='hello@baev.agency',
 }: {
   initialData: any
   serverURL: string
   preview?: boolean
   siteURL?: string
   related?: any[]
+  contactEmail?:string
 }) {
   const live = useLivePreview({ initialData, serverURL, depth: 2 })
   const [canvasData,setCanvasData]=useState<any>(null)
@@ -462,7 +464,7 @@ export default function LiveCase({
       </div>
 
       {!inCanvas&&related.length>0&&<section className="case-related"><h2>Другие проекты</h2><div>{related.map(project=><a key={project.id} href={'/work/'+project.slug}><Media value={project.cover}/><h3>{project.title}</h3><p>{(project.categories||[]).map((item:any)=>item.label).join(', ')}</p></a>)}</div></section>}
-      {!inCanvas&&<footer className="case-footer"><div><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/contact')}>Связь</a><a href="mailto:hello@baev.agency">hello@baev.agency</a></div><a href={href('/')} className="case-footer__logo">BAEV®</a><p>BAEV Agency / Агентство БАЕВ / {new Date().getFullYear()}. Все права защищены</p></footer>}
+      {!inCanvas&&<footer className="case-footer"><div><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/contact')}>Связь</a><a href={'mailto:'+contactEmail}>{contactEmail}</a></div><a href={href('/')} className="case-footer__logo">BAEV®</a><p>BAEV Agency / Агентство БАЕВ / {new Date().getFullYear()}. Все права защищены</p></footer>}
     </div>
   )
 }

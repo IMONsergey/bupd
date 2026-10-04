@@ -13,8 +13,12 @@ export const Users: CollectionConfig = {
   auth: true,
   access: {
     read: authenticated,
-    create: ({ req }) => !req.user || adminOnly({ req }),
-    update: authenticated,
+    create: async ({ req }) => {
+      if(req.user) return adminOnly({req})
+      // Allow the initial administrator setup, then close anonymous registration.
+      return (await req.payload.count({collection:'users',overrideAccess:true})).totalDocs===0
+    },
+    update: ({req}) => adminOnly({req}) || (req.user ? {id:{equals:req.user.id}} : false),
     delete: adminOnly,
   },
   fields: [

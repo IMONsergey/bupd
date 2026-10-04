@@ -13,13 +13,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   const { id } = await params
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
-  const action = body.action === 'unpublish' ? 'unpublish' : 'publish'
+  if(!['publish','unpublish'].includes(String(body.action)))return Response.json({error:'Выберите публикацию или снятие с публикации.'},{status:400})
+  const action = String(body.action)
 
   const data: Record<string, any> = {
     _status: action === 'publish' ? 'published' : 'draft',
     workflowStatus: action === 'publish' ? 'ready' : 'draft',
   }
 
+  try {
   if (action === 'publish') {
     const latest = await payload.findByID({
       collection: 'projects',
@@ -37,7 +39,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     data.workflowStatus = 'ready'
   }
 
-  try {
   const doc = await payload.update({
     collection: 'projects',
     id,

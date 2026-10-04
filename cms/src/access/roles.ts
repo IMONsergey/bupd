@@ -22,6 +22,7 @@ export const publicOrEditor: Access = ({ req }) => {
 }
 
 export const adminFieldOnly: FieldAccess = ({ req }) => isAdmin(req)
+export const contentFieldAccess: FieldAccess = ({req}) => isEditor(req)
 
 export const adminHiddenUnless = (allowed: BAEVRole[]) => ({ user }: { user?: unknown }) => {
   const role = user && typeof user === 'object' && 'role' in user ? String((user as { role?: unknown }).role) : ''

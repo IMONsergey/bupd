@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminHiddenUnless, contentAccess, isEditor } from '../access/roles'
+import { adminHiddenUnless, contentFieldAccess, contentAccess, isEditor } from '../access/roles'
 import { CaseBlocks } from '../blocks/caseBlocks'
 import { ensureSlug } from '../lib/slug'
 
@@ -80,12 +80,14 @@ export const Projects: CollectionConfig = {
       label: 'Ответственный',
       type: 'relationship',
       relationTo: 'users',
+      access:{read:contentFieldAccess},
       admin: { position: 'sidebar' },
     },
     {
       name: 'deadline',
       label: 'Дедлайн',
       type: 'date',
+      access:{read:contentFieldAccess},
       admin: {
         position: 'sidebar',
         date: { pickerAppearance: 'dayAndTime' },
@@ -194,11 +196,12 @@ export const Projects: CollectionConfig = {
         {
           label: 'Внутреннее',
           fields: [
-            { name: 'internalNotes', label: 'Заметки команды', type: 'textarea' },
+            { name: 'internalNotes', label: 'Заметки команды', type: 'textarea',access:{read:contentFieldAccess} },
             {
               name: 'sourceURL',
               label: 'Исходник / Figma / Notion',
               type: 'text',
+              access:{read:contentFieldAccess},
               admin: { description: 'Внутренняя ссылка, на публичный сайт не выводится.' },
             },
           ],
@@ -207,4 +210,3 @@ export const Projects: CollectionConfig = {
     },
   ],
 }
-

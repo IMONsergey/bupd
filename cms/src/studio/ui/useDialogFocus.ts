@@ -12,7 +12,7 @@ export function useDialogFocus(open:boolean,close:()=>void) {
     if(!dialog)return
     const selector='button:not(:disabled),a[href],input:not(:disabled),textarea,select,[tabindex="0"]'
     const focusable=()=>Array.from(dialog.querySelectorAll<HTMLElement>(selector)).filter(e=>e.offsetParent!==null)
-    const first=focusable()[0]
+    const first=dialog.querySelector<HTMLElement>('input:not(:disabled),textarea')||focusable()[0]
     first?.focus()
     const key=(event:KeyboardEvent)=>{
       if(event.key==='Escape'){event.preventDefault();event.stopImmediatePropagation();closeRef.current();return}

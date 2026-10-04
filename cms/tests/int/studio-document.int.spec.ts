@@ -19,7 +19,7 @@ describe('Studio document boundaries',()=>{
     expect(original.items[0].media.filename).toBe('art.png')
   })
   it('copies a full case without converting populated relationships into invalid objects',()=>{
-    expect(copyDocument({id:1,_status:'published',owner:3,cover:media,blocks:[{id:'old',media}]}))
+    expect(copyDocument({id:1,_status:'published',owner:{id:3,email:'editor@example.com',role:'editor'},cover:media,blocks:[{id:'old',media}]}))
       .toEqual({owner:3,cover:7,blocks:[{media:7}]})
   })
   it('round-trips paragraphs and explicit line breaks through Lexical',()=>{
