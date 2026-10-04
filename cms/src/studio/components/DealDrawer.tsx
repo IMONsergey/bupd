@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { LoaderCircle, Save, X } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import {useDialogFocus} from '../ui/useDialogFocus'
 
 export type StudioDeal = {
   id?: string|number
@@ -21,12 +22,12 @@ type Company={id:string|number;name:string}
 type User={id:string|number;name?:string|null;email?:string|null}
 
 const stages=[
-  ['discovery','Discovery'],['brief','Бриф'],['estimate','Оценка'],
+  ['discovery','Знакомство'],['brief','Бриф'],['estimate','Оценка'],
   ['proposal','Предложение'],['negotiation','Переговоры'],['won','Выиграно'],['lost','Проиграно'],
 ] as const
 const currencies=['RUB','USD','EUR','AED']
 const relId=(value:any)=>value&&typeof value==='object'?value.id:value
-const toLocal=(value?:string|null)=>value?new Date(value).toISOString().slice(0,16):''
+const toLocal=(value?:string|null)=>{if(!value)return '';const date=new Date(value);return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16)}
 
 export default function DealDrawer({
   deal,
@@ -50,6 +51,7 @@ export default function DealDrawer({
   const [form,setForm]=useState<StudioDeal>(deal||blank)
   const [busy,setBusy]=useState(false)
   const [error,setError]=useState('')
+  const dialogRef=useDialogFocus(Boolean(deal||creating),onClose)
 
   useEffect(()=>setForm(deal||blank),[deal,creating])
   if(!deal&&!creating)return null
@@ -77,7 +79,7 @@ export default function DealDrawer({
         }),
       })
       const data=await response.json()
-      if(!response.ok)throw new Error(data?.errors?.[0]?.message||'save_failed')
+      if(!response.ok)throw new Error(data?.errors?.[0]?.message||'Не удалось сохранить сделку. Проверьте данные и повторите.')
       onSaved((data.doc||data) as StudioDeal,creating)
       onClose()
     }catch(e){setError(e instanceof Error?e.message:'Не удалось сохранить')}
@@ -87,10 +89,10 @@ export default function DealDrawer({
   return (
     <AnimatePresence>
       <motion.div className="studio-drawer-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&onClose()}>
-        <motion.aside className="studio-detail-drawer" initial={{x:40,opacity:0}} animate={{x:0,opacity:1}} exit={{x:40,opacity:0}} transition={{type:'spring',bounce:.08,duration:.4}}>
+        <motion.aside ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="studio-deal-title" className="studio-detail-drawer" initial={{x:40,opacity:0}} animate={{x:0,opacity:1}} exit={{x:40,opacity:0}} transition={{type:'spring',bounce:.08,duration:.4}}>
           <header>
-            <div><span>{creating?'NEW DEAL':'DEAL / '+deal?.id}</span><strong>{creating?'Новая сделка':deal?.title}</strong></div>
-            <button onClick={onClose}><X size={16}/></button>
+            <div><span>{creating?'НОВАЯ СДЕЛКА':'СДЕЛКА / '+deal?.id}</span><strong id="studio-deal-title">{creating?'Новая сделка':deal?.title}</strong></div>
+            <button aria-label="Закрыть сделку" onClick={onClose}><X size={16}/></button>
           </header>
           <div className="studio-drawer-scroll">
             <section>
@@ -115,7 +117,7 @@ export default function DealDrawer({
             </section>
           </div>
           <footer>
-            {error&&<span>{error}</span>}
+            {error&&<span role="alert">{error}</span>}
             <button className="studio-secondary-button" onClick={onClose}>Отмена</button>
             <button className="studio-primary-button" disabled={busy||!form.title.trim()||!relId(form.company)} onClick={()=>void save()}>
               {busy?<LoaderCircle className="studio-spin" size={14}/>:<Save size={14}/>} {creating?'Создать':'Сохранить'}

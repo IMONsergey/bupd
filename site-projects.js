@@ -31,6 +31,7 @@
         return card
       })
       grid.replaceChildren(...cards)
+      document.querySelectorAll('h2').forEach(heading=>{if(/^\(\d+\)$/.test(heading.textContent.trim()))heading.textContent='('+docs.length+')'})
       const style=document.createElement('style')
       style.textContent='.baev-live-project img{transition:transform .5s cubic-bezier(.22,1,.36,1)}.baev-live-project:hover img{transform:scale(1.02)}.baev-live-project:focus-visible{outline:2px solid white;outline-offset:4px}@media(prefers-reduced-motion:reduce){.baev-live-project img{transition:none}}'
       document.head.append(style)

@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import assert from 'node:assert/strict'
-const base=process.env.BAEV_QA_URL||'https://baev-cms.vercel.app'
+const base=process.env.BAEV_QA_URL||'http://localhost:3017'
 const [email,password]=(await fs.readFile(process.env.BAEV_QA_CREDENTIALS||'/tmp/baev-qa-creds','utf8')).trim().split(/\r?\n/)
 const login=await fetch(base+'/api/users/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})})
 assert.equal(login.status,200,'Existing QA account login')

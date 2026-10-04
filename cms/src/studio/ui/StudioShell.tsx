@@ -42,7 +42,7 @@ const nav: NavItem[] = [
   { href:'/studio', label:'Обзор', description:'Главное за сегодня', icon:LayoutDashboard, roles:['admin','editor','sales'] },
   { href:'/studio/cases', label:'Кейсы', description:'Все истории и публикации', icon:PanelsTopLeft, roles:['admin','editor'] },
   { href:'/studio/crm', label:'CRM', description:'Лиды и следующие действия', icon:BriefcaseBusiness, roles:['admin','sales'] },
-  { href:'/studio/pipeline', label:'Pipeline', description:'Сделки по этапам', icon:FolderKanban, roles:['admin','sales'] },
+  { href:'/studio/pipeline', label:'Сделки', description:'Сделки по этапам', icon:FolderKanban, roles:['admin','sales'] },
   { href:'/studio/media', label:'Медиа', description:'Изображения и видео', icon:Image, roles:['admin','editor'] },
   { href:'/studio/system', label:'Система', description:'Настройки и доступы', icon:Settings, roles:['admin'] },
 ]

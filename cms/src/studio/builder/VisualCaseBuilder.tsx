@@ -254,7 +254,7 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
     saveTimer.current=setTimeout(()=>{saveTimer.current=null;void save(next,revision)},800)
   }
   const scheduleSave=(next:AnyBlock[])=>change({...latest.current,blocks:next})
-  const updateMetadata=(key:string,value:any)=>change({...latest.current,metadata:{...latest.current.metadata,[key]:value}})
+  const updateMetadata=(key:string,value:any)=>change({...latest.current,blocks:key==='title'&&latest.current.blocks[0]?.blockType==='caseHero'?latest.current.blocks.map((block,index)=>index===0?{...block,title:value}:block):latest.current.blocks,metadata:{...latest.current.metadata,[key]:value}})
   const undo=()=>{
     if(!undoStack.length)return
     const current=structuredClone(latest.current)
@@ -324,7 +324,8 @@ export default function VisualCaseBuilder({project,catalog,media,schemas,project
 
   const updateSelected=(next:AnyBlock)=>{
     const nextBlocks=blocks.map((item,index)=>index===selected?next:item)
-    scheduleSave(nextBlocks)
+    const metadata=selected===0&&next.blockType==='caseHero'&&next.title!==blocks[0]?.title?{...latest.current.metadata,title:next.title}:latest.current.metadata
+    change({blocks:nextBlocks,metadata})
   }
 
   const add=(slug:string)=>{

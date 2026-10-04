@@ -4,3 +4,6 @@ cms
 .git
 node_modules
 docs
+
+# Case source snapshots stay in Git; published case pages come from the CMS.
+work/*/

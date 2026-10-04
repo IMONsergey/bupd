@@ -3,11 +3,12 @@
 import { Check, CircleDollarSign, Plus, Search, UserPlus, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import React, { useEffect, useMemo, useState } from 'react'
+import {useDialogFocus} from '../ui/useDialogFocus'
 
 type Lead=Record<string,any>
 type Deal=Record<string,any>
 type Activity=Record<string,any>
-const stages=[['discovery','Discovery'],['brief','Бриф'],['estimate','Оценка'],['proposal','Предложение'],['negotiation','Переговоры'],['won','Выиграно']] as const
+const stages=[['discovery','Знакомство'],['brief','Бриф'],['estimate','Оценка'],['proposal','Предложение'],['negotiation','Переговоры'],['won','Выиграно'],['lost','Проиграно']] as const
 const money=(v:number)=>new Intl.NumberFormat('ru-RU',{notation:'compact',maximumFractionDigits:1}).format(v||0)
 
 export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,activities:initialActivities}:{leads:Lead[];deals:Deal[];activities:Activity[]}){
@@ -19,6 +20,9 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
   const [newLeadOpen,setNewLeadOpen]=useState(false)
   const [newLeadBusy,setNewLeadBusy]=useState(false)
   const [newLeadError,setNewLeadError]=useState('')
+  const [actionError,setActionError]=useState('')
+  const leadDialog=useDialogFocus(Boolean(selectedLead),()=>setSelectedLead(null))
+  const newLeadDialog=useDialogFocus(newLeadOpen,()=>setNewLeadOpen(false))
   const [newLead,setNewLead]=useState({name:'',email:'',phone:'',companyName:'',service:'other',budget:'',message:''})
   const [search,setSearch]=useState('')
   const [now]=useState(()=>Date.now())
@@ -33,22 +37,26 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
     }
   },[])
 
-  const move=async(id:string|number,stage:string)=>{
-    const before=deals
-    setDeals((x)=>x.map((d)=>d.id===id?{...d,stage}:d))
-    const response=await fetch('/api/deals/'+id,{method:'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({stage})})
-    if(!response.ok)setDeals(before)
-  }
-
-  const done=async(id:string|number)=>{
-    const response=await fetch('/api/baev/activity-done',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})})
-    if(response.ok)setActivities((x)=>x.map((a)=>a.id===id?{...a,done:true}:a))
-  }
-
-  const convert=async(lead:Lead)=>{
-    const response=await fetch('/api/baev/convert-lead',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:lead.id})})
+  const write=async(path:string,body:Record<string,unknown>,method='POST')=>{
+    setActionError('')
+    const response=await fetch(path,{method,credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
     const data=await response.json().catch(()=>({}))
-    if(response.ok){setSelectedLead(null);location.reload()}
+    if(!response.ok)throw new Error(data?.errors?.[0]?.message||'Не удалось сохранить. Проверьте связь и повторите.')
+    return data
+  }
+  const move=async(id:string|number,stage:string)=>{
+    const before=deals.find(d=>String(d.id)===String(id))?.stage
+    setDeals(x=>x.map(d=>String(d.id)===String(id)?{...d,stage}:d))
+    try{await write('/api/deals/'+id,{stage},'PATCH')}
+    catch{setDeals(x=>x.map(d=>String(d.id)===String(id)?{...d,stage:before}:d));setActionError('Этап не сохранён. Проверьте связь и повторите.')}
+  }
+  const done=async(id:string|number)=>{
+    try{await write('/api/baev/activity-done',{id});setActivities(x=>x.map(a=>a.id===id?{...a,done:true}:a))}
+    catch{setActionError('Задача не сохранена. Проверьте связь и повторите.')}
+  }
+  const convert=async(lead:Lead)=>{
+    try{await write('/api/baev/convert-lead',{id:lead.id});setSelectedLead(null);location.reload()}
+    catch{setActionError('Не удалось создать сделку. Проверьте связь и повторите.')}
   }
 
   const filteredLeads=useMemo(()=>{
@@ -59,15 +67,18 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
   const createLead=async()=>{
     if(!newLead.name.trim()||(!newLead.email.trim()&&!newLead.phone.trim())||newLeadBusy)return
     setNewLeadBusy(true);setNewLeadError('')
-    const response=await fetch('/api/leads',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({...newLead,budget:newLead.budget?Number(newLead.budget):null,source:'other',status:'new'})})
-    const data=await response.json().catch(()=>({}))
-    if(!response.ok){setNewLeadError(data?.errors?.[0]?.message||'Не удалось создать лид');setNewLeadBusy(false);return}
-    setLeads((current)=>[data.doc||data,...current]);setNewLeadOpen(false);setNewLeadBusy(false);setNewLead({name:'',email:'',phone:'',companyName:'',service:'other',budget:'',message:''})
+    try{
+      const data=await write('/api/leads',{...newLead,budget:newLead.budget?Number(newLead.budget):null,source:'other',status:'new'})
+      setLeads(current=>[data.doc||data,...current]);setNewLeadOpen(false)
+      setNewLead({name:'',email:'',phone:'',companyName:'',service:'other',budget:'',message:''})
+    }catch{setNewLeadError('Не удалось создать лид. Проверьте данные и связь, затем повторите.')}
+    finally{setNewLeadBusy(false)}
   }
 
   return <>
+    {actionError&&<div className="builder-error" role="alert">{actionError}</div>}
     <div className="crm-tabs">
-      {([['overview','Обзор'],['pipeline','Pipeline'],['leads','Лиды'],['tasks','Задачи']] as const).map(([id,label])=><button key={id} onClick={()=>setTab(id)}>{tab===id&&<motion.i layoutId="crm-tab" transition={{type:'spring',stiffness:430,damping:34}}/>}<span>{label}</span></button>)}
+      {([['overview','Обзор'],['pipeline','Сделки'],['leads','Лиды'],['tasks','Задачи']] as const).map(([id,label])=><button key={id} onClick={()=>setTab(id)}>{tab===id&&<motion.i layoutId="crm-tab" transition={{type:'spring',stiffness:430,damping:34}}/>}<span>{label}</span></button>)}
     </div>
 
     <AnimatePresence mode="wait">
@@ -91,6 +102,7 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
             <header className="studio-kanban__head"><strong>{label}</strong><span>{list.length} · {money(list.reduce((s,d)=>s+(Number(d.value)||0),0))} ₽</span></header>
             {list.map((deal)=><article className={['studio-deal',deal.nextActionAt&&new Date(deal.nextActionAt).getTime()<now?'is-overdue':''].join(' ')} draggable onDragStart={(e)=>e.dataTransfer.setData('deal',String(deal.id))} key={deal.id}>
               <span>{typeof deal.company==='object'&&deal.company?deal.company.name:'Без компании'}</span><h4>{deal.title}</h4><footer><strong>{money(deal.value)} {deal.currency||'RUB'}</strong><span>{deal.nextActionAt?new Date(deal.nextActionAt).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):'нет шага'}</span></footer>
+              <select className="studio-deal-stage" aria-label={"Этап сделки «"+deal.title+"»"} value={deal.stage} onChange={e=>void move(deal.id,e.target.value)}>{stages.map(([value,label])=><option key={value} value={value}>{label}</option>)}</select>
             </article>)}
           </section>
         })}</div>}
@@ -106,8 +118,8 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
 
     <AnimatePresence>
       {selectedLead&&<motion.div className="crm-drawer-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setSelectedLead(null)}>
-        <motion.aside className="crm-drawer" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
-          <header><div><span>Лид</span><h2>{selectedLead.name}</h2></div><button onClick={()=>setSelectedLead(null)}><X size={17}/></button></header>
+        <motion.aside ref={leadDialog} role="dialog" aria-modal="true" aria-label="Контакт" className="crm-drawer" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
+          <header><div><span>Лид</span><h2>{selectedLead.name}</h2></div><button aria-label="Закрыть контакт" onClick={()=>setSelectedLead(null)}><X size={17}/></button></header>
           <div className="crm-drawer__body">
             <dl><div><dt>Компания</dt><dd>{selectedLead.companyName||'—'}</dd></div><div><dt>Email</dt><dd>{selectedLead.email||'—'}</dd></div><div><dt>Телефон</dt><dd>{selectedLead.phone||'—'}</dd></div><div><dt>Направление</dt><dd>{selectedLead.service||'—'}</dd></div><div><dt>Бюджет</dt><dd>{selectedLead.budget?new Intl.NumberFormat('ru-RU').format(selectedLead.budget)+' ₽':'—'}</dd></div><div><dt>Источник</dt><dd>{selectedLead.source||'—'}</dd></div></dl>
             {selectedLead.message&&<section><span>Сообщение</span><p>{selectedLead.message}</p></section>}
@@ -120,8 +132,8 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
 
     <AnimatePresence>
       {newLeadOpen&&<motion.div className="crm-drawer-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setNewLeadOpen(false)}>
-        <motion.aside className="crm-drawer" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
-          <header><div><span>Новый лид</span><h2>Добавить контакт</h2></div><button onClick={()=>setNewLeadOpen(false)}><X size={17}/></button></header>
+        <motion.aside ref={newLeadDialog} role="dialog" aria-modal="true" aria-label="Добавить контакт" className="crm-drawer" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
+          <header><div><span>Новый лид</span><h2>Добавить контакт</h2></div><button aria-label="Закрыть новый контакт" onClick={()=>setNewLeadOpen(false)}><X size={17}/></button></header>
           <div className="crm-drawer__body crm-create-form">
             <label><span>Имя *</span><input autoFocus value={newLead.name} onChange={(e)=>setNewLead({...newLead,name:e.target.value})} placeholder="Имя или контактное лицо"/></label>
             <div><label><span>Email</span><input type="email" value={newLead.email} onChange={(e)=>setNewLead({...newLead,email:e.target.value})} placeholder="name@company.ru"/></label><label><span>Телефон</span><input value={newLead.phone} onChange={(e)=>setNewLead({...newLead,phone:e.target.value})} placeholder="+7"/></label></div>
@@ -129,7 +141,7 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
             <div><label><span>Направление</span><select value={newLead.service} onChange={(e)=>setNewLead({...newLead,service:e.target.value})}><option value="presentation">Презентации</option><option value="strategy">Стратегия</option><option value="branding">Брендинг</option><option value="web">Web / digital</option><option value="conference">Мероприятия</option><option value="other">Другое</option></select></label><label><span>Бюджет, ₽</span><input inputMode="numeric" value={newLead.budget} onChange={(e)=>setNewLead({...newLead,budget:e.target.value})} placeholder="500000"/></label></div>
             <label><span>Вводные</span><textarea rows={7} value={newLead.message} onChange={(e)=>setNewLead({...newLead,message:e.target.value})} placeholder="Что известно о запросе"/></label>
           </div>
-          <footer>{newLeadError&&<span className="baev-form-error">{newLeadError}</span>}<button className="studio-button studio-button--soft" onClick={()=>setNewLeadOpen(false)}>Отмена</button><button className="studio-button" disabled={newLeadBusy||!newLead.name.trim()||(!newLead.email.trim()&&!newLead.phone.trim())} onClick={createLead}>{newLeadBusy?'Создаём…':'Создать лид'}</button></footer>
+          <footer>{newLeadError&&<span className="baev-form-error" role="alert">{newLeadError}</span>}<button className="studio-button studio-button--soft" onClick={()=>setNewLeadOpen(false)}>Отмена</button><button className="studio-button" disabled={newLeadBusy||!newLead.name.trim()||(!newLead.email.trim()&&!newLead.phone.trim())} onClick={createLead}>{newLeadBusy?'Создаём…':'Создать лид'}</button></footer>
         </motion.aside>
       </motion.div>}
     </AnimatePresence>
