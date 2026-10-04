@@ -18,7 +18,9 @@ export function MediaThumbnail({ item }: { item: MediaItem }) {
   return <img loading="lazy" decoding="async" src={source} alt="" onError={() => setFailed(true)}/>
 }
 
-export default function MediaBrowser({ blobEnabled = false, selectedID, onActivate, onUploaded, onBusyChange }: {
+export default function MediaBrowser({ blobEnabled = false, selectedID, onActivate, onUploaded, onBusyChange, revision = 0, disabled = false }: {
+  disabled?: boolean
+  revision?: number
   blobEnabled?: boolean
   selectedID?: string | number
   onActivate: (item: MediaItem) => void
@@ -28,7 +30,7 @@ export default function MediaBrowser({ blobEnabled = false, selectedID, onActiva
   const [query, setQuery] = useState('')
   const [type, setType] = useState('all')
   const [kind, setKind] = useState('all')
-  const collection = useMediaCollection(query, type, kind)
+  const collection = useMediaCollection(query, type, kind, revision)
   const [dragging, setDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const uploads=useUploadQueue(blobEnabled,item=>onUploaded?.(item),()=>{setQuery('');setType('all');setKind('all');collection.reload()},onBusyChange)
@@ -46,7 +48,7 @@ export default function MediaBrowser({ blobEnabled = false, selectedID, onActiva
   }, [uploading])
 
   const filtered = Boolean(query || type !== 'all' || kind !== 'all')
-  return <div className={'media-browser' + (dragging ? ' is-dragging' : '')}
+  return <div inert={disabled?true:undefined} className={'media-browser' + (dragging ? ' is-dragging' : '')}
     onDragEnter={event => { if (event.dataTransfer.types.includes('Files')) { event.preventDefault(); dragDepth.current += 1; setDragging(true) } }}
     onDragLeave={event => { if (event.dataTransfer.types.includes('Files')) { dragDepth.current -= 1; if (dragDepth.current <= 0) setDragging(false) } }}
     onDragOver={event => { if (event.dataTransfer.types.includes('Files')) { event.preventDefault(); event.dataTransfer.dropEffect = uploading ? 'none' : 'copy' } }}

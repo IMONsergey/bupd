@@ -10,3 +10,10 @@ export function pageAppearance(background: unknown, radius: unknown) {
   const light = color ? .2126 * channel(1) + .7152 * channel(3) + .0722 * channel(5) > .179 : false
   return { color, radius: rounded, ink: light ? '#151515' : '#f5f5f5', muted: light ? '#151515b3' : '#f5f5f5b3', line: light ? '#15151526' : '#f5f5f526' }
 }
+
+export function normalizePageColor(value:string):string|null{
+  const hex=value.trim().replace(/^#/,'').toLowerCase()
+  if(!hex)return ''
+  if(/^[\da-f]{3}$/.test(hex))return '#'+hex.split('').map(char=>char+char).join('')
+  return /^[\da-f]{6}$/.test(hex)?'#'+hex:null
+}

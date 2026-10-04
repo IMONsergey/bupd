@@ -67,6 +67,12 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
     ...(project.kind==='article' ? [['author','Автор','Укажите автора статьи.']] : [['client','Клиент','Укажите, для кого сделан проект.']]),
   ]) if (!filled(project[field])) add({key:field,severity:'warning',label,detail,field})
   if (!filled(project.seoDescription) && !filled(project.summary)) add({key:'seoDescription',severity:'warning',label:'Описание в поиске',detail:'Без описания поисковик выберет текст страницы самостоятельно.',field:'seoDescription'})
+  for(const field of ['cover','ogImage']){
+    const image=project[field]
+    if(image&&typeof image==='object'&&image.mimeType&&!image.mimeType.startsWith('image/'))add({key:field+'-format',severity:'error',label:field==='cover'?'Обложка':'Изображение для ссылки',detail:'Здесь нужно изображение. Видео можно разместить в блоках страницы.',field})
+  }
+  if(String(project.seoTitle||project.title||'').length>70)add({key:'seo-title-length',severity:'warning',label:'Длинный заголовок в поиске',detail:'Заголовок может обрезаться. Проверьте вид ссылки или сократите текст.',field:'seoTitle'})
+  if(String(project.seoDescription||project.summary||'').length>180)add({key:'seo-description-length',severity:'warning',label:'Длинное описание в поиске',detail:'Часть описания может не поместиться в результатах поиска.',field:'seoDescription'})
   if (project.noIndex) add({key:'noIndex',severity:'warning',label:'Скрыт от поисковиков',detail:'Страница будет доступна по ссылке, но индексация отключена.',field:'noIndex'})
   return issues
 }

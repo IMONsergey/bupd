@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { MediaItem } from './types'
 
-export function useMediaCollection(query: string, type: string, kind: string) {
+export function useMediaCollection(query: string, type: string, kind: string, externalRevision=0) {
   const [items, setItems] = useState<MediaItem[]>([])
   const [total, setTotal] = useState<number | null>(null)
   const [nextPage, setNextPage] = useState<number | null>(null)
@@ -42,7 +42,7 @@ export function useMediaCollection(query: string, type: string, kind: string) {
     setLoading(true)
     const timer = setTimeout(() => void request(1, false), query ? 250 : 0)
     return () => { clearTimeout(timer); activeRequest.current?.abort() }
-  }, [request, revision, query])
+  }, [request, revision, query, externalRevision])
 
   return {
     items, total, nextPage, loading, error,

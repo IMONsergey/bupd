@@ -5,6 +5,8 @@ export type MediaItem = {
   url?: string | null
   mimeType?: string | null
   kind?: string | null
+  tags?: {label:string;id?:string|null}[] | null
+  credit?: string | null
   width?: number | null
   height?: number | null
   filesize?: number | null

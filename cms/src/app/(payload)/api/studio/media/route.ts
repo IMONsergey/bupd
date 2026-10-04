@@ -27,7 +27,7 @@ export async function GET(request: Request) {
   try {
     const result = await payload.find({
       collection: 'media', depth: 0, limit: 36, page, sort: '-createdAt', overrideAccess: true,
-      select: { alt: true, filename: true, url: true, mimeType: true, kind: true, width: true, height: true, filesize: true, sizes: true },
+      select: { alt: true, filename: true, url: true, mimeType: true, kind: true, tags: true, credit: true, width: true, height: true, filesize: true, sizes: true },
       ...(filters.length ? { where: { and: filters } } : {}),
     })
     return Response.json({ docs: result.docs, totalDocs: result.totalDocs, nextPage: result.nextPage ?? null }, { headers: responseHeaders })

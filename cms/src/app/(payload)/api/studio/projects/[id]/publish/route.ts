@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { withPublicationMedia } from '@/studio/lib/publicationMedia'
 import { studioError } from '@/studio/lib/apiError'
 import { publicationIssues } from '@/studio/builder/publication'
 import { editorSchemas } from '@/studio/builder/editorSchema'
@@ -33,7 +34,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       overrideAccess: true,
     }) as any
 
-    const issues=publicationIssues(latest,editorSchemas).filter(issue=>issue.severity==='error')
+    const checked=await withPublicationMedia(payload,latest)
+    const issues=publicationIssues(checked,editorSchemas).filter(issue=>issue.severity==='error')
     if(issues.length)return Response.json({error:'Исправьте обязательные поля перед публикацией.',issues,fields:issues.map(issue=>issue.blockIndex===undefined?issue.field:`blocks.${issue.blockIndex}.${issue.field}`)},{status:400})
 
     for (const [key, value] of Object.entries(latest)) {
