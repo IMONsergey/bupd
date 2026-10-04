@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { studioError } from '@/studio/lib/apiError'
 
 async function auth() {
   const payload = await getPayload({ config })
@@ -40,17 +41,19 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { payload, allowed } = await auth()
   if (!allowed) return Response.json({ error: 'forbidden' }, { status: 403 })
-  await params
+  const {id}=await params
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const versionId = body.versionId
   if (!versionId) return Response.json({ error: 'version_id_required' }, { status: 400 })
 
-  const restored = await payload.restoreVersion({
-    collection: 'projects',
-    id: String(versionId),
-    overrideAccess: true,
-    depth: 0,
-  })
-
-  return Response.json({ ok: true, id: restored.id })
+  try {
+    const version=await payload.findVersionByID({collection:'projects',id:String(versionId),depth:0,overrideAccess:true})
+    if(String(version.parent)!==String(id)) return Response.json({error:'Эта версия принадлежит другому кейсу.'},{status:400})
+    const data={...version.version,_status:'draft' as const,workflowStatus:'draft' as const}
+    delete (data as any).id
+    delete (data as any).createdAt
+    delete (data as any).updatedAt
+    const restored=await payload.update({collection:'projects',id,data,draft:true,overrideAccess:true})
+    return Response.json({ok:true,id:restored.id})
+  } catch(error) {return studioError(error)}
 }

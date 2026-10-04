@@ -2,12 +2,18 @@
 
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Menu, X, ArrowUpRight } from 'lucide-react'
+import sourcePalette from '@/content/framer-palette.json'
 
 type MediaDoc = {
   url?: string | null
   alt?: string | null
   mimeType?: string | null
+  width?: number | null
+  height?: number | null
+  focalX?: number | null
+  focalY?: number | null
 }
 
 const mediaDoc = (value: any): MediaDoc | null =>
@@ -22,10 +28,10 @@ function Media({ value, className = '', contain = false }: { value: any; classNa
   if (!url) return <div className={`case-media-placeholder ${className}`}>MEDIA</div>
 
   if (doc?.mimeType?.startsWith('video/')) {
-    return <video className={className} src={url} autoPlay muted loop playsInline />
+    return <video className={className} src={url} autoPlay muted loop playsInline preload="metadata" />
   }
 
-  return <img className={className} src={url} alt={mediaAlt(value)} style={{ objectFit: contain ? 'contain' : 'cover' }} />
+  return <img className={className} src={url} alt={mediaAlt(value)} width={doc?.width||undefined} height={doc?.height||undefined} style={{ objectFit: contain ? 'contain' : 'cover', objectPosition:`${doc?.focalX??50}% ${doc?.focalY??50}%` }} />
 }
 
 function BeforeAfter({ block }: { block: any }) {
@@ -35,7 +41,7 @@ function BeforeAfter({ block }: { block: any }) {
     <div className="case-before-after" style={{ '--split': `${split}%` } as React.CSSProperties}>
       <div className="case-ba-layer"><Media value={block.before} /></div>
       <div className="case-ba-layer case-ba-layer--after"><Media value={block.after} /></div>
-      <input
+      {block.mode!=='split'&&block.mode!=='toggle'&&<input
         aria-label="До и после"
         className="case-ba-range"
         min="4"
@@ -43,7 +49,8 @@ function BeforeAfter({ block }: { block: any }) {
         type="range"
         value={split}
         onChange={(event) => setSplit(Number(event.target.value))}
-      />
+      />}
+      {block.mode==='toggle'&&<button className="case-ba-toggle" onClick={()=>setSplit(v=>v===100?0:100)}>{split===100?'Показать до':'Показать после'}</button>}
       <div className="case-ba-divider"><span>↔</span></div>
       <div className="case-ba-label case-ba-label--before">{block.beforeLabel || 'До'}</div>
       <div className="case-ba-label case-ba-label--after">{block.afterLabel || 'После'}</div>
@@ -57,6 +64,12 @@ function BlockLabel({ index, title }: { index: number; title: string }) {
 
 function CaseBlock({ block, index }: { block: any; index: number }) {
   const type = block.blockType
+
+  if (String(block.blockName||'').startsWith('framer:') && type==='manifesto') return (
+    <section className={'case-section case-source-copy '+(block.size==='l'?'case-source-copy--intro':'')} data-align={block.align||'right'}>
+      <p>{block.text}</p>
+    </section>
+  )
 
   switch (type) {
     case 'caseHero':
@@ -227,7 +240,7 @@ function CaseBlock({ block, index }: { block: any; index: number }) {
         <section className="case-section case-next">
           <BlockLabel index={index} title="NEXT PROJECT" />
           <small>{block.label || 'Следующий проект'}</small>
-          <h3>{project?.title || 'Выберите следующий проект'}</h3>
+          {project?.slug ? <a href={'/work/'+project.slug}><h3>{project.title}<ArrowUpRight/></h3>{block.mode!=='minimal'&&project.cover&&<Media value={project.cover}/>}</a> : <h3>Выберите следующий проект</h3>}
         </section>
       )
     }
@@ -362,14 +375,45 @@ export default function LiveCase({
   initialData,
   serverURL,
   preview = true,
+  siteURL = '',
+  related = [],
 }: {
   initialData: any
   serverURL: string
   preview?: boolean
+  siteURL?: string
+  related?: any[]
 }) {
   const live = useLivePreview({ initialData, serverURL, depth: 2 })
-  const data = preview ? live.data : initialData
+  const [canvasData,setCanvasData]=useState<any>(null)
+  const [selected,setSelected]=useState(-1)
+  const [menuOpen,setMenuOpen]=useState(false)
+  const data = preview ? canvasData || live.data : initialData
   const isLoading = preview ? live.isLoading : false
+  const [inCanvas,setInCanvas]=useState(false)
+  useEffect(()=>{setInCanvas(preview&&window.parent!==window)},[preview])
+  const sourceCase=String(data.blocks?.[0]?.blockName||'').startsWith('framer:')
+  const href=(path:string)=>siteURL.replace(/\/$/,'')+path
+
+  useEffect(()=>{
+    if(!preview||window.parent===window)return
+    const receive=(event:MessageEvent)=>{
+      if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='baev:canvas')return
+      const next=event.data.data
+      if(!next||String(next.id)!==String(initialData.id)||!Array.isArray(next.blocks))return
+      setCanvasData(next)
+      const index=event.data.selected
+      if(Number.isInteger(index))setSelected(index)
+    }
+    window.addEventListener('message',receive)
+    window.parent.postMessage({type:'baev:ready'},location.origin)
+    return()=>window.removeEventListener('message',receive)
+  },[preview,initialData.id])
+  useEffect(()=>{
+    if(selected<0)return
+    const scene=document.querySelector(`[data-scene-index="${selected}"]`)
+    scene?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})
+  },[selected])
 
   const categories = useMemo(
     () => (data.categories || []).map((item: any) => item.label).filter(Boolean).join(', '),
@@ -377,12 +421,14 @@ export default function LiveCase({
   )
 
   return (
-    <div className={`case-preview case-preview--${data.pageTheme || 'dark'} ${preview ? 'case-preview--editor' : ''} ${isLoading ? 'is-syncing' : ''}`}>
+    <div style={{'--source-bg':sourceCase?(sourcePalette as Record<string,string>)[data.slug]||'#080808':'#080808'} as React.CSSProperties} className={`case-preview case-preview--${data.pageTheme || 'dark'} ${inCanvas ? 'case-preview--canvas' : ''} ${sourceCase?'case-preview--source':''} ${isLoading ? 'is-syncing' : ''}`}>
       <header className="case-site-nav">
-        <strong>BAEV</strong>
-        <nav><a href="/">Главная</a><a href="/work">Проекты</a><a href="/about">О нас</a><a href="/blog">Журнал</a></nav>
-        <a href="/contact">Связь</a>
+        <a className="case-logo" href={href('/')} aria-label="BAEV — главная">BAEV</a>
+        <nav><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/blog')}>Журнал</a></nav>
+        <a className="case-contact" href={href('/contact')}>Связь</a>
+        <button className="case-menu-button" onClick={()=>setMenuOpen(v=>!v)} aria-label={menuOpen?'Закрыть меню':'Открыть меню'} aria-expanded={menuOpen}>{menuOpen?<X/>:<Menu/>}</button>
       </header>
+      {menuOpen&&<nav className="case-mobile-nav"><a href={href('/')}>Главная</a><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/blog')}>Журнал</a><a href={href('/contact')}>Связь</a></nav>}
 
       <div className="case-layout">
         <aside className="case-project-rail">
@@ -399,7 +445,11 @@ export default function LiveCase({
 
         <main className="case-story">
           {(data.blocks || []).map((block: any, index: number) => (
-            <CaseBlock block={block} index={index} key={block.id || `${block.blockType}-${index}`} />
+            <div className="case-scene" data-theme={block.theme} data-mode={block.mode} data-align={block.align} data-size={block.size} data-gap={block.gap} data-style={block.style} data-pin={block.pin} data-scene-index={index} data-selected={inCanvas&&selected===index?'true':undefined} key={block.id || `${block.blockType}-${index}`} onClick={event=>{
+              if(!inCanvas)return
+              if((event.target as HTMLElement).closest('a'))event.preventDefault()
+              window.parent.postMessage({type:'baev:select',index},location.origin)
+            }}><CaseBlock block={block} index={index}/></div>
           ))}
 
           {!data.blocks?.length && (
@@ -411,8 +461,8 @@ export default function LiveCase({
         </main>
       </div>
 
-      {preview && <div className="case-live-indicator">{isLoading ? 'SYNC' : 'LIVE'}</div>}
+      {!inCanvas&&related.length>0&&<section className="case-related"><h2>Другие проекты</h2><div>{related.map(project=><a key={project.id} href={'/work/'+project.slug}><Media value={project.cover}/><h3>{project.title}</h3><p>{(project.categories||[]).map((item:any)=>item.label).join(', ')}</p></a>)}</div></section>}
+      {!inCanvas&&<footer className="case-footer"><div><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/contact')}>Связь</a><a href="mailto:hello@baev.agency">hello@baev.agency</a></div><a href={href('/')} className="case-footer__logo">BAEV®</a><p>BAEV Agency / Агентство БАЕВ / {new Date().getFullYear()}. Все права защищены</p></footer>}
     </div>
   )
 }
-

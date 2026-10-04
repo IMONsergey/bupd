@@ -7,6 +7,7 @@ import {
   Users,
 } from 'lucide-react'
 import React from 'react'
+import Link from 'next/link'
 
 import { canContent, canSales, requireStudioUser, studioRole } from '@/studio/lib/auth'
 
@@ -41,7 +42,7 @@ export default async function StudioHomePage() {
           <h1>Добрый день{firstName ? ', ' + firstName : ''}.</h1>
           <p>Здесь только то, что требует внимания сейчас: кейсы, проверки, лиды, сделки и ближайшие действия.</p>
         </div>
-        {content&&<a className="studio-button" href="/studio/cases?new=1"><Sparkles size={15}/> Новый кейс</a>}
+        {content&&<Link className="studio-button" href="/studio/cases?new=1"><Sparkles size={15}/> Новый кейс</Link>}
       </section>
 
       <section className="studio-grid studio-grid--4">
@@ -69,48 +70,48 @@ export default async function StudioHomePage() {
 
       <section className="studio-grid studio-grid--2 studio-section">
         {content&&<article className="studio-card">
-          <header className="studio-card__head"><strong>Последние кейсы</strong><a href="/studio/cases">Все кейсы <ArrowUpRight size={11}/></a></header>
+          <header className="studio-card__head"><strong>Последние кейсы</strong><Link href="/studio/cases">Все кейсы <ArrowUpRight size={11}/></Link></header>
           <div className="studio-list">
-            {projects.docs.map((project:any)=><a className="studio-list__row" key={project.id} href={'/studio/cases/'+project.id}>
+            {projects.docs.map((project:any)=><Link className="studio-list__row" key={project.id} href={'/studio/cases/'+project.id}>
               <strong>{project.title}</strong>
               <span>{project.client||'Без клиента'}{project.year?' · '+project.year:''}</span>
               <i className={['studio-chip',project._status==='published'?'studio-chip--green':''].join(' ')}>{project._status==='published'?'Опубликован':'Черновик'}</i>
-            </a>)}
+            </Link>)}
             {!projects.docs.length&&<div className="studio-empty">Кейсов пока нет</div>}
           </div>
         </article>}
 
         {content&&<article className="studio-card">
-          <header className="studio-card__head"><strong>Нужна проверка</strong><a href="/studio/cases?status=review">Открыть очередь <ArrowUpRight size={11}/></a></header>
+          <header className="studio-card__head"><strong>Нужна проверка</strong><Link href="/studio/cases?status=review">Открыть очередь <ArrowUpRight size={11}/></Link></header>
           <div className="studio-list">
-            {reviewProjects.docs.map((project:any)=><a className="studio-list__row" key={project.id} href={'/studio/cases/'+project.id}>
+            {reviewProjects.docs.map((project:any)=><Link className="studio-list__row" key={project.id} href={'/studio/cases/'+project.id}>
               <strong>{project.title}</strong>
               <span>{typeof project.owner==='object'&&project.owner ? project.owner.name||project.owner.email : 'Без ответственного'}</span>
               <i className={['studio-chip',project.workflowStatus==='ready'?'studio-chip--green':'studio-chip--amber'].join(' ')}>{project.workflowStatus==='ready'?'Готов':'Проверка'}</i>
-            </a>)}
+            </Link>)}
             {!reviewProjects.docs.length&&<div className="studio-empty">Очередь пуста</div>}
           </div>
         </article>}
 
         {sales&&<article className="studio-card">
-          <header className="studio-card__head"><strong>Свежие лиды</strong><a href="/studio/crm">CRM <ArrowUpRight size={11}/></a></header>
+          <header className="studio-card__head"><strong>Свежие лиды</strong><Link href="/studio/crm">CRM <ArrowUpRight size={11}/></Link></header>
           <div className="studio-list">
-            {leads.docs.slice(0,5).map((lead:any)=><a className="studio-list__row" key={lead.id} href="/studio/crm">
+            {leads.docs.slice(0,5).map((lead:any)=><Link className="studio-list__row" key={lead.id} href="/studio/crm">
               <strong>{lead.name}</strong><span>{lead.companyName||lead.email||'—'}</span><i className="studio-chip studio-chip--blue">{lead.status||'new'}</i>
-            </a>)}
+            </Link>)}
             {!leads.docs.length&&<div className="studio-empty">Новых лидов нет</div>}
           </div>
         </article>}
 
         {sales&&<article className="studio-card">
-          <header className="studio-card__head"><strong>Следующие действия</strong><a href="/studio/crm">Все задачи <ArrowUpRight size={11}/></a></header>
+          <header className="studio-card__head"><strong>Следующие действия</strong><Link href="/studio/crm">Все задачи <ArrowUpRight size={11}/></Link></header>
           <div className="studio-list">
             {activities.docs.slice(0,5).map((task:any)=>{
               const due=task.dueAt?new Date(task.dueAt):null
               const isOverdue=Boolean(due&&due.getTime()<now)
-              return <a className="studio-list__row" key={task.id} href="/studio/crm">
+              return <Link className="studio-list__row" key={task.id} href="/studio/crm">
                 <strong>{task.title}</strong><span>{typeof task.deal==='object'&&task.deal?task.deal.title:task.type}</span><i className={['studio-chip',isOverdue?'studio-chip--amber':''].join(' ')}>{due?due.toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):'Без даты'}</i>
-              </a>
+              </Link>
             })}
             {!activities.docs.length&&<div className="studio-empty">Нет ближайших задач</div>}
           </div>

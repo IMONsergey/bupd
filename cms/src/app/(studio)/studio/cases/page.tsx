@@ -6,7 +6,7 @@ import CasesClient from '@/studio/cases/CasesClient'
 export default async function CasesPage(){
   const {payload}=await requireContentUser()
   const [projects,templates]=await Promise.all([
-    payload.find({collection:'projects',limit:200,sort:'-updatedAt',depth:0,draft:true,overrideAccess:true}),
+    payload.find({collection:'projects',limit:200,sort:'-updatedAt',depth:1,draft:true,overrideAccess:true}),
     payload.find({collection:'case-templates',limit:20,sort:'title',depth:0,draft:true,overrideAccess:true}),
   ])
   return <>

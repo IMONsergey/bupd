@@ -4,11 +4,12 @@ import React from 'react'
 import { blockCatalog } from '@/blocks/catalog'
 import { requireContentUser } from '@/studio/lib/auth'
 import VisualCaseBuilder from '@/studio/builder/VisualCaseBuilder'
+import { editorSchemas } from '@/studio/builder/editorSchema'
 
 export default async function CaseBuilderPage({params}:{params:Promise<{id:string}>}){
   const {id}=await params
   const {payload}=await requireContentUser()
-  const [project,media]=await Promise.all([
+  const [project,media,projects,publicState]=await Promise.all([
     payload.findByID({
       collection:'projects',
       id,
@@ -18,14 +19,16 @@ export default async function CaseBuilderPage({params}:{params:Promise<{id:strin
     }).catch(()=>null),
     payload.find({
       collection:'media',
-      limit:250,
+      limit:1000,
       sort:'-createdAt',
       depth:0,
       overrideAccess:true,
     }),
+    payload.find({collection:'projects',depth:1,draft:true,limit:200,overrideAccess:true,select:{title:true,slug:true,cover:true}}),
+    payload.findByID({collection:'projects',id,depth:0,draft:false,overrideAccess:true,select:{_status:true}}).catch(()=>null),
   ])
 
   if(!project)notFound()
 
-  return <VisualCaseBuilder project={project as any} catalog={blockCatalog as any} media={media.docs as any}/>
+  return <VisualCaseBuilder initialPublished={publicState?._status==='published'} project={project as any} catalog={blockCatalog as any} media={media.docs as any} schemas={editorSchemas} projects={projects.docs.filter(p=>String(p.id)!==id)}/>
 }

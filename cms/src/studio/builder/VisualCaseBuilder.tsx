@@ -2,6 +2,9 @@
 
 import {
   Check,
+  Undo2,
+  Redo2,
+  Settings2,
   ChevronLeft,
   Copy,
   Eye,
@@ -18,6 +21,7 @@ import {
 import {
   DndContext,
   PointerSensor,
+  KeyboardSensor,
   closestCenter,
   useSensor,
   useSensors,
@@ -28,11 +32,15 @@ import {
   arrayMove,
   verticalListSortingStrategy,
   useSortable,
+  sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { AnimatePresence, motion } from 'motion/react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import {useDialogFocus} from '@/studio/ui/useDialogFocus'
+import type { EditorField } from './editorSchema'
+import { serializeDocument, copyScene, richTextToText, textToRichText } from './document'
 
 type BlockMeta={slug:string;number:string;title:string;description:string;group:string;modes:string[]}
 type AnyBlock=Record<string,any>&{blockType:string;id?:string}
@@ -62,27 +70,6 @@ const blockDefaults:Record<string,AnyBlock>={
   cta:{blockType:'cta',title:'Обсудим следующий проект?',body:'',buttonLabel:'Связаться',buttonURL:'/contact',mode:'statement',theme:'light'},
 }
 
-const primitiveLabels:Record<string,string>={
-  eyebrow:'Надзаголовок',title:'Заголовок',dek:'Описание',text:'Текст',body:'Текст',
-  chapter:'Глава',kicker:'Метка',caption:'Подпись',author:'Автор',role:'Роль',label:'Подпись',
-  layout:'Композиция',theme:'Тема',size:'Размер',align:'Выравнивание',height:'Высота',fit:'Масштаб',
-  ratio:'Пропорция',gap:'Отступ',pin:'Фиксация',style:'Стиль',mode:'Режим',device:'Устройство',
-  beforeLabel:'Подпись «до»',afterLabel:'Подпись «после»',buttonLabel:'Текст кнопки',buttonURL:'Ссылка кнопки',
-  autoplay:'Автовоспроизведение',loop:'Зациклить',float:'Парение',
-}
-
-function stripRelations(value:any):any{
-  if(Array.isArray(value))return value.map(stripRelations)
-  if(!value||typeof value!=='object')return value
-  if('id'in value&&('url'in value||'filename'in value||'email'in value))return value.id
-  const next:Record<string,any>={}
-  for(const [key,child] of Object.entries(value)){
-    if(key==='createdAt'||key==='updatedAt')continue
-    next[key]=stripRelations(child)
-  }
-  return next
-}
-
 function blockName(block:AnyBlock,meta?:BlockMeta){
   const detail=block.title||block.chapter||block.kicker||block.text||block.label||''
   return {title:meta?.title||block.blockType,detail:String(detail).replace(/\s+/g,' ').slice(0,42)}
@@ -93,11 +80,11 @@ function SortableScene({block,index,meta,active,onSelect,onDuplicate,onDelete}:{
   const sortable=useSortable({id})
   const style={transform:CSS.Transform.toString(sortable.transform),transition:sortable.transition}
   const name=blockName(block,meta)
-  return <motion.div ref={sortable.setNodeRef} style={style} layout className={['builder-scene',active?'is-active':''].join(' ')} onClick={onSelect}>
-    <button className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
-    <div className="builder-scene__thumb"><img src={'/block-thumbs/'+block.blockType+'.svg'} alt=""/></div>
+  return <motion.div ref={sortable.setNodeRef} style={style} layout role="button" tabIndex={0} aria-label={'Сцена '+(index+1)+': '+name.title} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==='Enter'||e.key===' ')){e.preventDefault();onSelect()}}} className={['builder-scene',active?'is-active':''].join(' ')} onClick={onSelect}>
+    <button aria-label={'Переместить сцену '+(index+1)} className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
+    <div className="builder-scene__thumb">{(block.media||block.video)?.url ? ((block.media||block.video).mimeType?.startsWith('video/')?<video src={(block.media||block.video).url} muted preload="none"/>:<img src={(block.media||block.video).sizes?.thumb?.url||(block.media||block.video).url} alt=""/>):<img src={'/block-thumbs/'+block.blockType+'.svg'} alt=""/>}</div>
     <div className="builder-scene__copy"><span>{String(index+1).padStart(2,'0')}</span><strong>{name.title}</strong><i>{name.detail||meta?.description}</i></div>
-    <div className="builder-scene__menu"><button onClick={(e)=>{e.stopPropagation();onDuplicate()}}><Copy size={13}/></button><button onClick={(e)=>{e.stopPropagation();onDelete()}}><Trash2 size={13}/></button></div>
+    <div className="builder-scene__menu"><button aria-label={'Дублировать сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDuplicate()}}><Copy size={13}/></button><button aria-label={'Удалить сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDelete()}}><Trash2 size={13}/></button></div>
   </motion.div>
 }
 
@@ -110,38 +97,6 @@ type MediaItem={
   sizes?:Record<string,{url?:string|null}|null>|null
 }
 
-const mediaFields:Record<string,string[]>={
-  caseHero:['media'],
-  fullBleedMedia:['media'],
-  splitMedia:['left','right'],
-  beforeAfter:['before','after'],
-  deviceShowcase:['media'],
-  videoChapter:['video','poster'],
-  textMedia:['media'],
-  cta:['media'],
-}
-
-const arraySchemas:Record<string,Record<string,string[]>>={
-  stickyStory:{frames:['media','caption']},
-  metrics:{items:['value','label','note']},
-  mediaMosaic:{items:['media','caption','span']},
-  process:{steps:['number','title','body','media']},
-  gallery:{items:['media','caption']},
-  credits:{items:['role','name']},
-  horizontalStory:{scenes:['media','title','caption']},
-  layeredMedia:{layers:['media','x','y','width','depth']},
-  comparison:{items:['title','value','body']},
-  artifactStack:{items:['media','label']},
-}
-
-const newRow:Record<string,Record<string,any>>={
-  frames:{media:null,caption:''},
-  items:{title:'',value:'',label:'',note:'',body:'',caption:'',span:'1',media:null,role:'',name:''},
-  steps:{number:'01',title:'Новый этап',body:'',media:null},
-  scenes:{media:null,title:'Новая сцена',caption:''},
-  layers:{media:null,x:50,y:50,width:60,depth:1},
-}
-
 function resolveMedia(value:any,media:MediaItem[]){
   if(value&&typeof value==='object')return value as MediaItem
   return media.find((item)=>String(item.id)===String(value))||null
@@ -150,6 +105,7 @@ function resolveMedia(value:any,media:MediaItem[]){
 function MediaField({label,value,media,onSelect}:{label:string;value:any;media:MediaItem[];onSelect:(value:any)=>void}){
   const [open,setOpen]=useState(false)
   const [query,setQuery]=useState('')
+  const dialogRef=useDialogFocus(open,()=>setOpen(false))
   const current=resolveMedia(value,media)
   const visible=media.filter((item)=>!query.trim()||[item.alt,item.filename].filter(Boolean).some((v)=>String(v).toLowerCase().includes(query.toLowerCase())))
   return <div className="builder-media-field">
@@ -161,7 +117,7 @@ function MediaField({label,value,media,onSelect}:{label:string;value:any;media:M
     {current&&<button className="builder-media-field__clear" onClick={()=>onSelect(null)}>Убрать</button>}
     <AnimatePresence>
       {open&&<motion.div className="builder-media-picker-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setOpen(false)}>
-        <motion.section className="builder-media-picker" initial={{opacity:0,scale:.97,y:10}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.98}} transition={{type:'spring',stiffness:390,damping:32}}>
+        <motion.section ref={dialogRef} role="dialog" aria-modal="true" aria-label="Выбор медиа" className="builder-media-picker" initial={{opacity:0,scale:.97,y:10}} animate={{opacity:1,scale:1,y:0}} exit={{opacity:0,scale:.98}} transition={{type:'spring',stiffness:390,damping:32}}>
           <header><div><span>Медиатека</span><strong>Выберите файл</strong></div><button onClick={()=>setOpen(false)}><X size={16}/></button></header>
           <div className="builder-media-picker__search"><input autoFocus value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Поиск по названию"/></div>
           <div className="builder-media-picker__grid">{visible.map((item)=><button key={item.id} onClick={()=>{onSelect(item);setOpen(false)}}>
@@ -174,72 +130,47 @@ function MediaField({label,value,media,onSelect}:{label:string;value:any;media:M
   </div>
 }
 
-function ArrayEditor({block,keyName,value,fields,media,onChange}:{block:AnyBlock;keyName:string;value:any[];fields:string[];media:MediaItem[];onChange:(next:AnyBlock)=>void}){
-  const setRows=(rows:any[])=>onChange({...block,[keyName]:rows})
-  const updateRow=(index:number,key:string,nextValue:any)=>setRows(value.map((row,i)=>i===index?{...row,[key]:nextValue}:row))
-  const removeRow=(index:number)=>setRows(value.filter((_,i)=>i!==index))
-  const addRow=()=>{
-    const base=structuredClone(newRow[keyName]||{})
-    const filtered=Object.fromEntries(fields.map((field)=>[field,base[field]??(field==='media'?null:'')]))
-    setRows([...value,{...filtered,id:'local-row-'+Date.now()}])
+function FieldEditor({field,value,media,projects,onChange}:{field:EditorField;value:any;media:MediaItem[];projects:any[];onChange:(value:any)=>void}){
+  const caption=field.label+(field.required?' *':'')
+  if(field.type==='upload')return <MediaField label={caption} value={value} media={media} onSelect={onChange}/>
+  if(field.type==='relationship')return <label><span>{caption}</span><select value={String(value?.id??value??'')} onChange={e=>onChange(projects.find(p=>String(p.id)===e.target.value)||null)}><option value="">Выберите проект</option>{projects.map(p=><option key={p.id} value={p.id}>{p.title}</option>)}</select></label>
+  if(field.type==='checkbox')return <label className="builder-toggle"><span>{caption}</span><button type="button" role="switch" aria-label={field.label} aria-checked={Boolean(value)} className={value?'is-on':''} onClick={()=>onChange(!value)}><i/></button></label>
+  if(field.type==='array'){
+    const rows=Array.isArray(value)?value:[]
+    return <div className="builder-array"><div className="builder-array__head"><span>{caption}</span><button disabled={field.maxRows!==undefined&&rows.length>=field.maxRows} onClick={()=>onChange([...rows,defaultValues(field.fields||[])])}><Plus size={14}/> Добавить</button></div>
+      {rows.map((row,index)=><div className="builder-array__row" key={row.id||index}><header><strong>{String(index+1).padStart(2,'0')}</strong><button aria-label={'Удалить элемент '+(index+1)} onClick={()=>onChange(rows.filter((_:any,i:number)=>i!==index))}><Trash2 size={14}/></button></header>{(field.fields||[]).map(f=><FieldEditor key={f.name} field={f} value={row[f.name]} media={media} projects={projects} onChange={next=>onChange(rows.map((r:any,i:number)=>i===index?{...r,[f.name]:next}:r))}/>)}</div>)}
+      {!rows.length&&<div className="builder-array__empty">Добавьте первый элемент.</div>}</div>
   }
-  return <div className="builder-array">
-    <div className="builder-array__head"><span>{primitiveLabels[keyName]||keyName}</span><button onClick={addRow}><Plus size={12}/> Добавить</button></div>
-    {value.map((row,index)=><div className="builder-array__row" key={row.id||index}>
-      <header><strong>{String(index+1).padStart(2,'0')}</strong><button onClick={()=>removeRow(index)}><Trash2 size={12}/></button></header>
-      {fields.map((field)=>{
-        if(field==='media')return <MediaField key={field} label="Медиа" value={row[field]} media={media} onSelect={(v)=>updateRow(index,field,v)}/>
-        const numeric=['x','y','width','depth'].includes(field)
-        const long=['body','caption','note'].includes(field)
-        return <label key={field}><span>{primitiveLabels[field]||field}</span>{long?<textarea rows={3} value={String(row[field]??'')} onChange={(e)=>updateRow(index,field,e.target.value)}/>:<input type={numeric?'number':'text'} value={String(row[field]??'')} onChange={(e)=>updateRow(index,field,numeric?Number(e.target.value):e.target.value)}/>}</label>
-      })}
-    </div>)}
-    {!value.length&&<div className="builder-array__empty">Пока пусто. Добавьте первый элемент.</div>}
-  </div>
+  if(field.options)return <label><span>{caption}</span><select value={String(value??field.defaultValue??'')} onChange={e=>onChange(e.target.value)}>{!value&&!field.defaultValue&&<option value="">Выберите</option>}{field.options.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>
+  if(field.type==='richText')return <label><span>{caption}</span><textarea rows={7} value={richTextToText(value)} onChange={e=>onChange(textToRichText(e.target.value))}/><small>Абзацы разделяются пустой строкой.</small></label>
+  return <label><span>{caption}</span>{field.type==='textarea'?<textarea rows={4} value={String(value??'')} onChange={e=>onChange(e.target.value)}/>:<input type={field.type==='number'?'number':'text'} min={field.min} max={field.max} value={String(value??'')} onChange={e=>onChange(field.type==='number'?(e.target.value===''?null:Number(e.target.value)):e.target.value)}/>}</label>
 }
 
-function Inspector({block,media,onChange}:{block:AnyBlock;media:MediaItem[];onChange:(next:AnyBlock)=>void}){
-  const relations=mediaFields[block.blockType]||[]
-  const fields=Object.entries(block).filter(([key,value])=>{
-    if(['id','blockType','blockName'].includes(key)||relations.includes(key)||Array.isArray(value))return false
-    return ['string','number','boolean'].includes(typeof value)||value===null
-  })
-  const schema=arraySchemas[block.blockType]||{}
-  return <div className="builder-inspector">
-    <header><span>Инспектор</span><strong>{block.blockType}</strong></header>
-    <div className="builder-inspector__fields">
-      {relations.map((key)=><MediaField key={key} label={primitiveLabels[key]||key} value={block[key]} media={media} onSelect={(value)=>onChange({...block,[key]:value})}/>)}
-      {fields.map(([key,value])=>{
-        const label=primitiveLabels[key]||key
-        if(typeof value==='boolean')return <label className="builder-toggle" key={key}><span>{label}</span><button className={value?'is-on':''} onClick={()=>onChange({...block,[key]:!value})}><i/></button></label>
-        const long=['text','body','dek','caption'].includes(key)
-        const options:keyof typeof selectOptions = key as keyof typeof selectOptions
-        if(selectOptions[options])return <label key={key}><span>{label}</span><select value={String(value??'')} onChange={(e)=>onChange({...block,[key]:e.target.value})}>{selectOptions[options].map((v)=><option key={v} value={v}>{v}</option>)}</select></label>
-        return <label key={key}><span>{label}</span>{long?<textarea rows={4} value={String(value??'')} onChange={(e)=>onChange({...block,[key]:e.target.value})}/>:<input value={String(value??'')} onChange={(e)=>onChange({...block,[key]:typeof value==='number'?Number(e.target.value):e.target.value})}/>}</label>
-      })}
-      {Object.entries(schema).map(([keyName,rowFields])=><ArrayEditor key={keyName} block={block} keyName={keyName} value={Array.isArray(block[keyName])?block[keyName]:[]} fields={rowFields} media={media} onChange={onChange}/>)}
-    </div>
-  </div>
+function defaultValues(fields:EditorField[]):Record<string,any>{
+  return Object.fromEntries(fields.map(f=>[f.name,f.defaultValue??(f.type==='array'?[]:f.type==='checkbox'?false:f.type==='upload'||f.type==='relationship'||f.type==='number'?null:f.type==='richText'?textToRichText(''):'')]))
 }
 
-const selectOptions={
-  theme:['dark','light','media'],layout:['editorial','media-first','fullscreen','text-left','text-right','balanced'],
-  size:['m','l','xl','display'],align:['left','center','right'],height:['auto','70vh','screen','120vh'],
-  fit:['cover','contain'],ratio:['1-1','1-2','2-1'],gap:['none','xs','s','m'],pin:['copy','media'],
-  style:['rail','cards','oversized'],mode:['drag','toggle','split','timeline','accordion','sticky','cursor','stack','filmstrip','snap','scrub','fan','spread','center','edge','marquee','inline','full','columns','table','cards','statement','minimal','media'],
-  device:['none','browser','phone','screen','print'],
-} as const
+function Inspector({block,fields,title,media,projects,onChange}:{block:AnyBlock;fields:EditorField[];title:string;media:MediaItem[];projects:any[];onChange:(next:AnyBlock)=>void}){
+  return <div className="builder-inspector"><header><span>Настройки сцены</span><strong>{title}</strong></header><div className="builder-inspector__fields">{fields.map(field=><FieldEditor key={field.name} field={field} value={block[field.name]} media={media} projects={projects} onChange={value=>onChange({...block,[field.name]:value})}/>)}</div></div>
+}
 
-export default function VisualCaseBuilder({project,catalog,media}:{project:any;catalog:BlockMeta[];media:MediaItem[]}){
+export default function VisualCaseBuilder({project,catalog,media,schemas,projects=[],initialPublished=false}:{project:any;catalog:BlockMeta[];media:MediaItem[];schemas:Record<string,EditorField[]>;projects?:any[];initialPublished?:boolean}){
   const router=useRouter()
   const [blocks,setBlocks]=useState<AnyBlock[]>(()=>((project.blocks||[]) as AnyBlock[]).map((b,index)=>({...b,id:b.id||'local-'+index+'-'+Date.now()})))
   const [selected,setSelected]=useState(0)
+  const [details,setDetails]=useState(false)
+  const [metadata,setMetadata]=useState(()=>Object.fromEntries(['title','client','year','summary','categories','cover','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:key==='year'?null:key==='workflowStatus'?'draft':'')])))
+  const [error,setError]=useState('')
+  const [undoStack,setUndoStack]=useState<any[]>([])
+  const [redoStack,setRedoStack]=useState<any[]>([])
   const [library,setLibrary]=useState(false)
   const [saving,setSaving]=useState(false)
   const [saved,setSaved]=useState(true)
-  const [published,setPublished]=useState(project._status==='published')
+  const [published,setPublished]=useState(initialPublished)
   const [publishing,setPublishing]=useState(false)
   const [historyOpen,setHistoryOpen]=useState(false)
+  const libraryRef=useDialogFocus(library,()=>setLibrary(false))
+  const historyRef=useDialogFocus(historyOpen,()=>setHistoryOpen(false))
   const [versions,setVersions]=useState<any[]>([])
   const [versionsLoading,setVersionsLoading]=useState(false)
   const [historyError,setHistoryError]=useState('')
@@ -250,37 +181,50 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
   const editRevision=useRef(0)
   const saveSequence=useRef(0)
   const saveQueue=useRef<Promise<unknown>>(Promise.resolve())
-  const sensors=useSensors(useSensor(PointerSensor,{activationConstraint:{distance:5}}))
+  const previewRef=useRef<HTMLIFrameElement|null>(null)
+  const latest=useRef({blocks,metadata})
+  latest.current={blocks,metadata}
+  const sensors=useSensors(useSensor(PointerSensor,{activationConstraint:{distance:5}}),useSensor(KeyboardSensor,{coordinateGetter:sortableKeyboardCoordinates}))
 
   const meta=useMemo(()=>Object.fromEntries(catalog.map((item)=>[item.slug,item])),[catalog])
   const selectedBlock=blocks[selected]
 
-  const save=async(nextBlocks=blocks,revisionAtSave=editRevision.current)=>{
+  const sendPreview=(selection=selected)=>{
+    previewRef.current?.contentWindow?.postMessage({type:'baev:canvas',data:{...project,...latest.current.metadata,blocks:latest.current.blocks},selected:selection},location.origin)
+  }
+
+  useEffect(()=>{sendPreview()},[blocks,metadata,selected,previewKey])
+  useEffect(()=>{
+    const select=(event:MessageEvent)=>{
+      if(event.origin!==location.origin||event.source!==previewRef.current?.contentWindow)return
+      if(event.data?.type==='baev:ready'){sendPreview();return}
+      if(event.data?.type!=='baev:select')return
+      if(Number.isInteger(event.data.index)&&event.data.index>=0&&event.data.index<latest.current.blocks.length){setSelected(event.data.index);setDetails(false)}
+    }
+    window.addEventListener('message',select)
+    return()=>window.removeEventListener('message',select)
+  },[])
+
+  const save=async(document=latest.current,revisionAtSave=editRevision.current)=>{
     if(saveTimer.current){clearTimeout(saveTimer.current);saveTimer.current=null}
+    const snapshot=structuredClone(document)
     const sequence=++saveSequence.current
+    setSaving(true)
     const run=saveQueue.current.catch(()=>undefined).then(async()=>{
-      setSaving(true)
       try{
         const response=await fetch('/api/studio/projects/'+project.id,{
           method:'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({blocks:stripRelations(nextBlocks)}),
+          body:JSON.stringify(serializeDocument({...snapshot.metadata,blocks:snapshot.blocks})),
         })
-        const isLatest=sequence===saveSequence.current
-        if(isLatest)setSaving(false)
-        if(response.ok){
-          if(isLatest){
-            setSaved(revisionAtSave===editRevision.current)
-            setPreviewKey((v)=>v+1)
-          }
-          return true
-        }
-        if(isLatest)setSaved(false)
-        return false
-      }catch{
+        const data=await response.json().catch(()=>({}))
         if(sequence===saveSequence.current){
           setSaving(false)
-          setSaved(false)
+          setSaved(response.ok&&revisionAtSave===editRevision.current)
+          setError(response.ok?'':data.error||'Не удалось сохранить. Повторите попытку.')
         }
+        return response.ok
+      }catch{
+        if(sequence===saveSequence.current){setSaving(false);setSaved(false);setError('Нет связи. Изменения остаются в редакторе. Нажмите «Сохранить» для повтора.')}
         return false
       }
     })
@@ -288,46 +232,80 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
     return run
   }
 
-  const scheduleSave=(next:AnyBlock[])=>{
+  const change=(next:{blocks:AnyBlock[];metadata:Record<string,any>},record=true)=>{
+    if(record){setUndoStack(stack=>[...stack.slice(-39),structuredClone(latest.current)]);setRedoStack([])}
+    latest.current=next
     editRevision.current+=1
-    const revisionAtSchedule=editRevision.current
-    setBlocks(next);setSaved(false)
+    const revision=editRevision.current
+    setBlocks(next.blocks);setMetadata(next.metadata);setSaved(false);setError('')
     if(saveTimer.current)clearTimeout(saveTimer.current)
-    saveTimer.current=setTimeout(()=>{
-      saveTimer.current=null
-      void save(next,revisionAtSchedule)
-    },650)
+    saveTimer.current=setTimeout(()=>{saveTimer.current=null;void save(next,revision)},800)
   }
-
+  const scheduleSave=(next:AnyBlock[])=>change({...latest.current,blocks:next})
+  const updateMetadata=(key:string,value:any)=>change({...latest.current,metadata:{...latest.current.metadata,[key]:value}})
+  const undo=()=>{
+    if(!undoStack.length)return
+    setRedoStack(stack=>[...stack,structuredClone(latest.current)])
+    const previous=undoStack[undoStack.length-1]
+    setUndoStack(stack=>stack.slice(0,-1));change(previous,false);setSelected(index=>Math.max(0,Math.min(index,previous.blocks.length-1)))
+  }
+  const redo=()=>{
+    if(!redoStack.length)return
+    setUndoStack(stack=>[...stack,structuredClone(latest.current)])
+    const next=redoStack[redoStack.length-1]
+    setRedoStack(stack=>stack.slice(0,-1));change(next,false);setSelected(index=>Math.max(0,Math.min(index,next.blocks.length-1)))
+  }
+  const leave=async()=>{if(saved||await save())router.push('/studio/cases')}
+  useEffect(()=>{
+    const beforeUnload=(event:BeforeUnloadEvent)=>{if(editRevision.current&&!saved){event.preventDefault();event.returnValue=''}}
+    window.addEventListener('beforeunload',beforeUnload)
+    return()=>window.removeEventListener('beforeunload',beforeUnload)
+  },[saved])
   useEffect(()=>()=>{if(saveTimer.current)clearTimeout(saveTimer.current);saveSequence.current+=1},[])
+  useEffect(()=>{
+    const keys=(event:KeyboardEvent)=>{
+      if(event.key==='Escape'){setLibrary(false);setHistoryOpen(false)}
+      const editing=(event.target as HTMLElement)?.closest('input,textarea,select,[contenteditable=true]')
+      if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();void save()}
+      if(!editing&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();event.shiftKey?redo():undo()}
+    }
+    window.addEventListener('keydown',keys)
+    return()=>window.removeEventListener('keydown',keys)
+  },[undoStack,redoStack])
 
   const loadVersions=async()=>{
     setHistoryOpen(true);setVersionsLoading(true);setHistoryError('')
+    try {
     const response=await fetch('/api/studio/projects/'+project.id+'/versions',{credentials:'include'})
     const data=await response.json().catch(()=>({docs:[]}))
     setVersionsLoading(false)
     if(!response.ok){setHistoryError(data?.error||'Не удалось загрузить историю');return}
     setVersions(Array.isArray(data.docs)?data.docs:[])
+    } catch {setHistoryError('Нет связи. Закройте историю и повторите попытку.')} finally {setVersionsLoading(false)}
   }
 
   const restoreVersion=async(versionId:string|number)=>{
     setRestoring(versionId);setHistoryError('')
+    if(!await save()){setRestoring(null);setHistoryError('Сначала сохраните текущие изменения.');return}
+    try {
     const response=await fetch('/api/studio/projects/'+project.id+'/versions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({versionId})})
     const data=await response.json().catch(()=>({}))
     if(!response.ok){setHistoryError(data?.error||'Не удалось восстановить версию');setRestoring(null);return}
     location.reload()
+    } catch {setHistoryError('Нет связи. Восстановление не выполнено.');setRestoring(null)}
   }
 
   const togglePublish=async()=>{
     if(publishing)return
     setPublishing(true)
-    const savedOk=await save(blocks)
+    const savedOk=await save()
     if(!savedOk){setPublishing(false);return}
     const action=published?'unpublish':'publish'
+    try {
     const response=await fetch('/api/studio/projects/'+project.id+'/publish',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})})
     const data=await response.json().catch(()=>({}))
-    if(response.ok)setPublished(data.status==='published')
-    setPublishing(false)
+    if(response.ok){setPublished(data.status==='published');setError('')}else setError(data.error||'Не удалось опубликовать. Проверьте обязательные поля.')
+    } catch { setError('Нет связи. Не удалось изменить публикацию. Повторите попытку.') } finally { setPublishing(false) }
   }
 
   const updateSelected=(next:AnyBlock)=>{
@@ -336,10 +314,10 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
   }
 
   const add=(slug:string)=>{
-    const base=blockDefaults[slug]||{blockType:slug}
-    const next={...structuredClone(base),id:'local-'+Date.now()}
+    const base={...defaultValues(schemas[slug]||[]),...(blockDefaults[slug]||{}),blockType:slug}
+    const next={...structuredClone(base),id:'local-'+crypto.randomUUID()}
     const nextBlocks=[...blocks.slice(0,selected+1),next,...blocks.slice(selected+1)]
-    setSelected(selected+1);setLibrary(false);scheduleSave(nextBlocks)
+    setSelected(Math.min(selected+1,nextBlocks.length-1));setDetails(false);setLibrary(false);scheduleSave(nextBlocks)
   }
 
   const remove=(index:number)=>{
@@ -348,7 +326,7 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
   }
 
   const duplicate=(index:number)=>{
-    const copy={...structuredClone(blocks[index]),id:'local-'+Date.now()}
+    const copy=copyScene(blocks[index])
     const next=[...blocks.slice(0,index+1),copy,...blocks.slice(index+1)]
     setSelected(index+1);scheduleSave(next)
   }
@@ -364,22 +342,25 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
 
   return <div className="builder-root">
     <header className="builder-topbar">
-      <button className="builder-back" onClick={()=>router.push('/studio/cases')}><ChevronLeft size={17}/> Кейсы</button>
-      <div className="builder-title"><strong>{project.title}</strong><span>{project.client||'Без клиента'} · {project.year||'—'}</span></div>
+      <button className="builder-back" onClick={()=>void leave()}><ChevronLeft size={17}/> Кейсы</button>
+      <div className="builder-title"><strong>{metadata.title}</strong><span>{metadata.client||'Без клиента'} · {metadata.year||'—'}</span></div>
       <div className="builder-save-state">{saving?<><RefreshCcw className="is-spin" size={13}/> Сохраняем</>:saved?<><Check size={13}/> Сохранено</>:<>Есть изменения</>}</div>
-      <div className="builder-device"><button className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div>
+      <div className="builder-device"><button aria-label="Предпросмотр на компьютере" className={device==='desktop'?'is-active':''} onClick={()=>setDevice('desktop')}><Monitor size={15}/></button><button aria-label="Предпросмотр на телефоне" className={device==='mobile'?'is-active':''} onClick={()=>setDevice('mobile')}><Smartphone size={15}/></button></div>
+      <button className="builder-icon-button" aria-label="Отменить" disabled={!undoStack.length} onClick={undo}><Undo2 size={16}/></button><button className="builder-icon-button" aria-label="Повторить" disabled={!redoStack.length} onClick={redo}><Redo2 size={16}/></button>
       <button className="studio-button studio-button--soft" onClick={()=>void loadVersions()}><History size={14}/> История</button>
-      <a className="studio-button studio-button--soft" href={'/preview/'+project.slug} target="_blank"><Eye size={14}/> Preview</a>
+      <a className="studio-button studio-button--soft" href={'/preview/'+project.slug} target="_blank"><Eye size={14}/> Предпросмотр</a>
       <button className="studio-button studio-button--soft" onClick={()=>void save()}><Save size={14}/> Сохранить</button>
       <button className={['studio-button',published?'studio-button--published':''].join(' ')} disabled={publishing} onClick={()=>void togglePublish()}>{publishing?'Подождите…':published?'Снять с публикации':'Опубликовать'}</button>
     </header>
 
-    <div className="builder-layout">
+    {error&&<div className="builder-error" role="alert">{error}<button onClick={()=>void save()}>Повторить сохранение</button></div>}
+    <div className="builder-layout" inert={publishing?true:undefined}>
       <aside className="builder-scenes">
-        <div className="builder-scenes__head"><div><strong>Сцены</strong><span>{blocks.length}</span></div><button onClick={()=>setLibrary(true)}><Plus size={14}/></button></div>
+        <button className={'builder-page-settings '+(details?'is-active':'')} onClick={()=>setDetails(true)}><Settings2 size={16}/> Настройки кейса</button>
+        <div className="builder-scenes__head"><div><strong>Сцены</strong><span>{blocks.length}</span></div><button aria-label="Добавить сцену" onClick={()=>setLibrary(true)}><Plus size={14}/></button></div>
         <DndContext id={'case-builder-'+project.id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnd}>
           <SortableContext items={blocks.map((b,i)=>b.id||'scene-'+i)} strategy={verticalListSortingStrategy}>
-            <div className="builder-scenes__list">{blocks.map((block,index)=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} onSelect={()=>setSelected(index)} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}</div>
+            <div className="builder-scenes__list">{blocks.map((block,index)=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} onSelect={()=>{setSelected(index);setDetails(false)}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}</div>
           </SortableContext>
         </DndContext>
         <button className="builder-add-scene" onClick={()=>setLibrary(true)}><Plus size={14}/> Добавить сцену</button>
@@ -387,22 +368,22 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
 
       <main className="builder-canvas">
         <div className={['builder-preview-frame','is-'+device].join(' ')}>
-          <iframe key={previewKey} src={'/preview/'+project.slug} title="Case preview"/>
+          <iframe ref={previewRef} src={'/preview/'+project.slug+'?canvas=1'} title="Предпросмотр кейса" onLoad={()=>{setPreviewKey(v=>v+1);sendPreview()}}/>
         </div>
       </main>
 
       <aside className="builder-right">
-        {selectedBlock?<Inspector block={selectedBlock} media={media} onChange={updateSelected}/>:<div className="studio-empty">Выберите сцену</div>}
+        {details?<div className="builder-inspector"><header><span>Страница</span><strong>Настройки кейса</strong></header><div className="builder-inspector__fields">{[{name:'title',label:'Название',type:'text',required:true},{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100},{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}].map(field=><FieldEditor key={field.name} field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} onChange={value=>updateMetadata(field.name,value)}/>)}</div></div>:selectedBlock?<Inspector block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} onChange={updateSelected}/>:<div className="studio-empty">Добавьте первую сцену</div>}
       </aside>
     </div>
 
     <AnimatePresence>
       {library&&<motion.div className="builder-library-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setLibrary(false)}>
-        <motion.section className="builder-library" initial={{opacity:0,y:24,scale:.98}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:12,scale:.99}} transition={{type:'spring',stiffness:380,damping:32}}>
+        <motion.section ref={libraryRef} role="dialog" aria-modal="true" aria-label="Добавить сцену" className="builder-library" initial={{opacity:0,y:24,scale:.98}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:12,scale:.99}} transition={{type:'spring',stiffness:380,damping:32}}>
           <header><div><span>BAEV Case System</span><h2>Добавить сцену</h2></div><button onClick={()=>setLibrary(false)}><X size={17}/></button></header>
           {['Narrative','Media','Data','Interaction','System'].map((group)=>{
             const items=catalog.filter((item)=>item.group===group)
-            return <div className="builder-library__group" key={group}><span>{group}</span><div>{items.map((item)=><button key={item.slug} onClick={()=>add(item.slug)}><img src={'/block-thumbs/'+item.slug+'.svg'} alt=""/><div><small>{item.number}</small><strong>{item.title}</strong><p>{item.description}</p></div></button>)}</div></div>
+            return <div className="builder-library__group" key={group}><span>{{Narrative:'История',Media:'Медиа',Data:'Данные',Interaction:'Интерактивные',System:'Завершение'}[group]}</span><div>{items.map((item)=><button key={item.slug} onClick={()=>add(item.slug)}><img src={'/block-thumbs/'+item.slug+'.svg'} alt=""/><div><small>{item.number}</small><strong>{item.title}</strong><p>{item.description}</p></div></button>)}</div></div>
           })}
         </motion.section>
       </motion.div>}
@@ -410,7 +391,7 @@ export default function VisualCaseBuilder({project,catalog,media}:{project:any;c
 
     <AnimatePresence>
       {historyOpen&&<motion.div className="builder-history-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setHistoryOpen(false)}>
-        <motion.aside className="builder-history" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
+        <motion.aside ref={historyRef} role="dialog" aria-modal="true" aria-label="История кейса" className="builder-history" initial={{x:'100%'}} animate={{x:0}} exit={{x:'100%'}} transition={{type:'spring',stiffness:380,damping:36}}>
           <header><div><span>История</span><strong>Версии кейса</strong></div><button onClick={()=>setHistoryOpen(false)}><X size={16}/></button></header>
           <div className="builder-history__list">
             {versionsLoading&&<div className="builder-history__empty">Загружаем версии…</div>}

@@ -45,5 +45,5 @@ export default async function CasePreviewPage({
 
   const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
 
-  return <LiveCase initialData={initialData as any} serverURL={serverURL} />
+  return <LiveCase initialData={initialData as any} serverURL={serverURL} siteURL={process.env.NEXT_PUBLIC_SITE_URL||'https://baev-case-lab.vercel.app'} />
 }

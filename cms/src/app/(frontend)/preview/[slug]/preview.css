@@ -1,3 +1,4 @@
+@import './source-fonts.css';
 :root {
   --case-bg:#090a0b;
   --case-fg:#f5f5f2;
@@ -803,3 +804,71 @@ body{overflow-x:hidden;background:var(--case-bg);font-family:Arial,Helvetica,san
 
 .case-preview:not(.case-preview--editor) .case-block-label{display:none}
 .case-preview:not(.case-preview--editor) .case-media-placeholder{font-size:0}
+
+/* Source typography and scene rhythm, shared by public pages and the Studio canvas. */
+.case-preview{font-family:'Inter Display',sans-serif;font-feature-settings:'cv09','cv03','cv04','cv11';letter-spacing:-.01em;background:#080808}
+.case-site-nav{grid-template-columns:340px 1fr auto;height:76px}
+.case-site-nav a{font-family:Inter,sans-serif;font-size:18px;letter-spacing:-.04em}
+.case-site-nav .case-logo{font-family:'Bebas Neue',sans-serif;font-size:54px;letter-spacing:-.04em}
+.case-menu-button{display:none;color:inherit;border:0;background:none;cursor:pointer}
+.case-project-rail{padding:100px 20px 60px;background:#080808}
+.case-project-rail h1{font-size:42px;line-height:.9;letter-spacing:-.05em;font-weight:600}
+.case-project-rail__bottom>p{font-family:Inter,sans-serif;font-size:12px;line-height:1.6;letter-spacing:-.04em;color:#eee}
+.case-project-rail dl{border-top:0}
+.case-project-rail dl div{font-size:14px;min-height:34px;align-items:start;padding:7px 0}
+.case-project-rail dt{color:#aaa}.case-story{background:#080808;border:0}
+.case-preview--source .case-story{display:flex;flex-direction:column;gap:50px}
+.case-preview--source .case-scene:not(:first-child){margin:0 16px}
+.case-preview--source .case-scene:nth-child(2){margin-top:0}
+.case-preview--source .case-full-media[data-height='auto']{min-height:0;height:auto;background:transparent}
+.case-preview--source .case-full-media>img{height:auto;padding:0;background:transparent;border-radius:10px}
+.case-preview--source .case-video--inline{padding:0;min-height:0}
+.case-preview--source .case-video--inline .case-video__media{height:auto;aspect-ratio:16/9;border-radius:10px;overflow:hidden}
+.case-preview--source .case-video video{aspect-ratio:16/9}
+.case-source-copy{display:flex;padding:0;min-height:0;justify-content:flex-end}
+.case-source-copy p{width:50%;margin:0;white-space:pre-line;font-weight:500;font-size:18px;line-height:1.2;letter-spacing:-.01em}
+.case-source-copy--intro{justify-content:flex-start}
+.case-source-copy--intro p{width:65%;font-size:35px;line-height:1.2}
+.case-source-copy[data-align='center']{justify-content:center}
+.case-preview--canvas .case-scene{cursor:pointer;position:relative}
+.case-preview--canvas .case-scene[data-selected='true']::after{content:'';position:absolute;inset:0;pointer-events:none;border:2px solid #8e7af7;z-index:40}
+.case-related{padding:100px 20px 70px}
+.case-related h2{font-size:50px;font-weight:500;line-height:1;letter-spacing:-.05em;margin:0 0 40px}
+.case-related>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.case-related a{text-decoration:none;min-width:0}
+.case-related img,.case-related video{height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:10px}
+.case-related h3{font-size:22px;line-height:1.05;font-weight:500;margin:14px 0 8px}
+.case-related p{font-family:Inter,sans-serif;font-size:12px;color:#aaa;margin:0}
+.case-footer{padding:50px 20px 24px;border-top:1px solid #333}
+.case-footer>div{display:flex;flex-wrap:wrap;gap:24px}.case-footer a{text-decoration:none}
+.case-footer__logo{display:block;font-family:'Bebas Neue',sans-serif;font-size:clamp(140px,30vw,480px);letter-spacing:-.06em;line-height:.9;margin-top:60px}
+.case-footer>p{font-size:12px;color:#aaa}
+.case-next a{display:block;text-decoration:none}.case-next img{height:auto;max-height:60vh;object-fit:cover}
+.case-full-media[data-height='auto']{min-height:0}.case-full-media[data-height='auto']>img{height:auto}
+.case-mobile-nav{position:fixed;z-index:60;inset:70px 0 0;background:#080808;display:flex;flex-direction:column;padding:32px 20px;gap:24px}.case-mobile-nav a{font-size:34px;text-decoration:none}
+@media (min-width:810px) and (max-width:1199px){.case-project-rail{width:280px}.case-layout{grid-template-columns:280px minmax(0,1fr)}.case-site-nav{grid-template-columns:280px 1fr auto}.case-project-rail h1{font-size:36px}.case-source-copy--intro p{width:85%}}
+@media(max-width:809px){
+ .case-site-nav{height:70px;grid-template-columns:1fr auto;padding:0 20px}.case-site-nav .case-logo{font-size:48px}.case-site-nav nav,.case-contact{display:none}.case-menu-button{display:block}
+ .case-layout{display:flex;flex-direction:column}.case-project-rail{position:relative;width:100%;height:auto;min-height:0;padding:90px 20px 40px;order:0}.case-project-rail h1{font-size:42px;max-width:500px;width:100%}.case-project-rail__bottom{margin-top:42px;gap:24px}.case-project-rail__bottom>p{max-width:100%}.case-story{width:100%;order:1}
+ .case-hero{min-height:65svh}.case-preview--source .case-story{gap:24px}.case-preview--source .case-scene:not(:first-child){margin:0 16px}.case-source-copy p,.case-source-copy--intro p{width:100%;font-size:18px;line-height:1.4}.case-source-copy--intro p{font-size:26px;line-height:1.2}.case-related{padding:60px 16px}.case-related>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px}.case-related h2{font-size:34px}.case-related h3{font-size:18px}.case-footer{padding:30px 16px}.case-footer>div{gap:16px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+.case-preview--source,.case-preview--source .case-project-rail,.case-preview--source .case-story{background:var(--source-bg)}
+
+@media(max-width:809px){.case-preview--source .case-story{display:contents}.case-preview--source .case-scene{order:2;width:calc(100% - 32px);margin:0 16px 24px!important}.case-preview--source .case-scene:first-child{order:0;width:100%;margin:0!important}.case-preview--source .case-project-rail{order:1;padding:32px 20px 40px}}
+.case-ba-toggle{position:absolute;z-index:9;bottom:24px;left:50%;transform:translateX(-50%);border:0;border-radius:99px;padding:14px 20px;background:white;color:black;cursor:pointer}
+.case-scene[data-align='right'] .case-manifesto>p,.case-scene[data-align='right'] .case-type>p{text-align:right;margin-left:auto}
+.case-scene[data-align='center'] .case-manifesto>p,.case-scene[data-align='center'] .case-type>p{text-align:center;margin-inline:auto}
+.case-scene[data-size='m'] .case-manifesto>p{font-size:clamp(30px,4vw,64px)}.case-scene[data-size='l'] .case-manifesto>p,.case-scene[data-size='l'] blockquote{font-size:clamp(40px,5vw,80px)}
+.case-scene[data-size='display'] blockquote{font-size:clamp(64px,9vw,150px)}
+.case-scene[data-gap='none'] .case-split{gap:0;padding:0}.case-scene[data-gap='xs'] .case-split{gap:4px;padding:4px}.case-scene[data-gap='s'] .case-split{gap:16px;padding:16px}.case-scene[data-gap='m'] .case-split{gap:32px;padding:32px}
+.case-scene[data-theme='light']>.case-section{background:#efefeb;color:#0b0c0d}.case-scene[data-theme='light'] .case-richtext,.case-scene[data-theme='light'] .case-caption{color:#343434}
+.case-scene[data-style='cards'] .case-metrics__grid{gap:16px;border:0}.case-scene[data-style='cards'] .case-metrics article{border:1px solid #444;border-radius:16px;padding:24px!important}
+.case-scene[data-style='oversized'] .case-metrics strong{font-size:clamp(100px,12vw,210px)}
+.case-scene[data-mode='table'] .case-comparison__grid{display:block}.case-scene[data-mode='table'] .case-comparison article{min-height:0;padding:24px;border-bottom:1px solid #555;display:grid;grid-template-columns:1fr 1fr 2fr;gap:24px;align-items:start}
+.case-scene[data-mode='cards'] .case-comparison__grid{gap:20px;border:0}.case-scene[data-mode='cards'] .case-comparison article{border:1px solid #444;border-radius:16px;padding:24px}
+.case-scene[data-mode='stack'] .case-gallery__track{display:grid;grid-template-columns:1fr}.case-scene[data-mode='stack'] .case-gallery figure{width:100%;height:auto}.case-scene[data-mode='stack'] .case-gallery img{height:auto}
+.case-mosaic--rail{display:flex;overflow:auto;scroll-snap-type:x mandatory}.case-mosaic--rail figure{flex:0 0 80%;height:60vh;scroll-snap-align:start}
+.case-scene[data-mode='minimal'] .case-cta{min-height:35vh}.case-scene[data-mode='minimal'] .case-cta h3{font-size:clamp(40px,6vw,80px)}
+@media(max-width:809px){.case-scene[data-mode='table'] .case-comparison article{grid-template-columns:1fr}}

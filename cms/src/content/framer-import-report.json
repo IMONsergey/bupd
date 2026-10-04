@@ -1,0 +1,34 @@
+{
+  "avito-auto-2024": {
+    "emptyText": 0,
+    "emptyVideo": 0
+  },
+  "linear-identity": {
+    "emptyText": 2,
+    "emptyVideo": 0
+  },
+  "future-archive": {
+    "emptyText": 12,
+    "emptyVideo": 8
+  },
+  "studio-atlas": {
+    "emptyText": 12,
+    "emptyVideo": 8
+  },
+  "parallel-forms": {
+    "emptyText": 12,
+    "emptyVideo": 8
+  },
+  "silent-motif": {
+    "emptyText": 12,
+    "emptyVideo": 8
+  },
+  "pattern-language": {
+    "emptyText": 12,
+    "emptyVideo": 8
+  },
+  "spectrum-project": {
+    "emptyText": 12,
+    "emptyVideo": 8
+  }
+}

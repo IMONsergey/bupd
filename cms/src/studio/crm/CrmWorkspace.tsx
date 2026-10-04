@@ -21,9 +21,10 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
   const [newLeadError,setNewLeadError]=useState('')
   const [newLead,setNewLead]=useState({name:'',email:'',phone:'',companyName:'',service:'other',budget:'',message:''})
   const [search,setSearch]=useState('')
+  const [now]=useState(()=>Date.now())
   const activeDeals=deals.filter((d)=>!['won','lost'].includes(d.stage))
   const pipeline=activeDeals.reduce((sum,d)=>sum+(Number(d.value)||0),0)
-  const overdue=activities.filter((a)=>!a.done&&a.dueAt&&new Date(a.dueAt).getTime()<Date.now()).length
+  const overdue=activities.filter((a)=>!a.done&&a.dueAt&&new Date(a.dueAt).getTime()<now).length
 
   useEffect(()=>{
     if(new URLSearchParams(location.search).get('newLead')==='1'){
@@ -88,7 +89,7 @@ export default function CrmWorkspace({leads:initialLeads,deals:initialDeals,acti
           const list=deals.filter((d)=>d.stage===stage)
           return <section className="studio-kanban__column" key={stage} onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>{const id=e.dataTransfer.getData('deal');const deal=deals.find((d)=>String(d.id)===id);if(deal)void move(deal.id,stage)}}>
             <header className="studio-kanban__head"><strong>{label}</strong><span>{list.length} · {money(list.reduce((s,d)=>s+(Number(d.value)||0),0))} ₽</span></header>
-            {list.map((deal)=><article className={['studio-deal',deal.nextActionAt&&new Date(deal.nextActionAt).getTime()<Date.now()?'is-overdue':''].join(' ')} draggable onDragStart={(e)=>e.dataTransfer.setData('deal',String(deal.id))} key={deal.id}>
+            {list.map((deal)=><article className={['studio-deal',deal.nextActionAt&&new Date(deal.nextActionAt).getTime()<now?'is-overdue':''].join(' ')} draggable onDragStart={(e)=>e.dataTransfer.setData('deal',String(deal.id))} key={deal.id}>
               <span>{typeof deal.company==='object'&&deal.company?deal.company.name:'Без компании'}</span><h4>{deal.title}</h4><footer><strong>{money(deal.value)} {deal.currency||'RUB'}</strong><span>{deal.nextActionAt?new Date(deal.nextActionAt).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'}):'нет шага'}</span></footer>
             </article>)}
           </section>

@@ -24,9 +24,10 @@ const money=(value:number)=>new Intl.NumberFormat('ru-RU',{notation:'compact',ma
 
 function DealCard({deal,onOpen}:{deal:Deal;onOpen:()=>void}){
   const {attributes,listeners,setNodeRef,transform,isDragging}=useDraggable({id:String(deal.id),data:{deal}})
+  const [now]=useState(()=>Date.now())
   const company=typeof deal.company==='object'&&deal.company?deal.company.name:'Без компании'
   const due=deal.nextActionAt?new Date(deal.nextActionAt):null
-  const overdue=Boolean(due&&due.getTime()<Date.now())
+  const overdue=Boolean(due&&due.getTime()<now)
   return (
     <motion.article
       ref={setNodeRef}

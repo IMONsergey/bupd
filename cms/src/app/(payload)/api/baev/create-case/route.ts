@@ -2,18 +2,7 @@ import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { slugify } from '@/lib/slug'
-
-const stripSystemFields = (value: unknown): unknown => {
-  if (Array.isArray(value)) return value.map(stripSystemFields)
-  if (!value || typeof value !== 'object') return value
-  const source = value as Record<string, unknown>
-  const next: Record<string, unknown> = {}
-  for (const [key, child] of Object.entries(source)) {
-    if (['id', 'createdAt', 'updatedAt', '_status'].includes(key)) continue
-    next[key] = stripSystemFields(child)
-  }
-  return next
-}
+import {copyDocument} from '@/studio/builder/document'
 
 export async function POST(request: Request) {
   const payload = await getPayload({ config })
@@ -55,7 +44,7 @@ export async function POST(request: Request) {
     })
     const template = found.docs[0] as any
     if (!template) return Response.json({ error: 'template_not_found' }, { status: 404 })
-    blocks = stripSystemFields(template.blocks || []) as any[]
+    blocks = copyDocument(template.blocks || []) as any[]
     blocks = blocks.map((block) => block?.blockType === 'caseHero'
       ? {
           ...block,

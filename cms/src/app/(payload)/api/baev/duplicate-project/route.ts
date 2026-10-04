@@ -2,18 +2,7 @@ import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { slugify } from '@/lib/slug'
-
-const stripSystemFields = (value: unknown): unknown => {
-  if (Array.isArray(value)) return value.map(stripSystemFields)
-  if (!value || typeof value !== 'object') return value
-  const source = value as Record<string, unknown>
-  const next: Record<string, unknown> = {}
-  for (const [key, child] of Object.entries(source)) {
-    if (['id', 'createdAt', 'updatedAt', '_status'].includes(key)) continue
-    next[key] = stripSystemFields(child)
-  }
-  return next
-}
+import {copyDocument} from '@/studio/builder/document'
 
 export async function POST(request: Request) {
   const payload = await getPayload({ config })
@@ -37,7 +26,7 @@ export async function POST(request: Request) {
     suffix += 1
   }
 
-  const data = stripSystemFields(source) as Record<string, any>
+  const data = copyDocument(source) as Record<string, any>
   delete data.slug
   delete data.kind
   delete data.featured

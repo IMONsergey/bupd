@@ -18,8 +18,9 @@ import {
   Users,
   X,
 } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, MotionConfig } from 'motion/react'
 import { usePathname, useRouter } from 'next/navigation'
+import {useDialogFocus} from './useDialogFocus'
 import React, { useEffect, useMemo, useState } from 'react'
 
 type StudioUser = {
@@ -62,6 +63,8 @@ export default function StudioShell({
   const [commandOpen,setCommandOpen] = useState(false)
   const [mobileOpen,setMobileOpen] = useState(false)
   const [query,setQuery] = useState('')
+  const [activeCommand,setActiveCommand]=useState(0)
+  const commandRef=useDialogFocus(commandOpen,()=>setCommandOpen(false))
 
   const visibleNav = useMemo(()=>nav.filter((item)=>item.roles.includes(role)),[role])
 
@@ -128,7 +131,7 @@ export default function StudioShell({
   }
 
   return (
-    <div className={['studio-shell',isBuilderRoute?'studio-shell--focus':''].filter(Boolean).join(' ')}>
+    <MotionConfig reducedMotion="user"><div className={['studio-shell',isBuilderRoute?'studio-shell--focus':''].filter(Boolean).join(' ')}>
       <motion.aside
         className={['studio-sidebar',mobileOpen?'is-mobile-open':''].join(' ')}
         initial={false}
@@ -175,7 +178,7 @@ export default function StudioShell({
 
       <div className="studio-main">
         <header className="studio-topbar">
-          <button className="studio-mobile-menu" onClick={()=>setMobileOpen(true)}><Menu size={19}/></button>
+          <button aria-label="Открыть меню" className="studio-mobile-menu" onClick={()=>setMobileOpen(true)}><Menu size={19}/></button>
           <button className="studio-search-trigger" onClick={()=>setCommandOpen(true)}>
             <Search size={16}/><span>Поиск и команды</span><kbd>⌘K</kbd>
           </button>
@@ -198,17 +201,17 @@ export default function StudioShell({
         {commandOpen && (
           <motion.div className="studio-command-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={(e)=>e.target===e.currentTarget&&setCommandOpen(false)}>
             <motion.section
-              className="studio-command"
+              ref={commandRef} className="studio-command" role="dialog" aria-modal="true" aria-label="Быстрый переход"
               initial={{opacity:0,scale:.96,y:-14}}
               animate={{opacity:1,scale:1,y:0}}
               exit={{opacity:0,scale:.97,y:-8}}
               transition={spring}
             >
-              <header><Search size={18}/><input autoFocus value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Куда перейти или что создать?"/><kbd>esc</kbd></header>
+              <header><Search size={18}/><input autoFocus value={query} onChange={(e)=>{setQuery(e.target.value);setActiveCommand(0)}} onKeyDown={e=>{if(e.key==='ArrowDown'){e.preventDefault();setActiveCommand(i=>Math.min(i+1,filteredCommands.length-1))}if(e.key==='ArrowUp'){e.preventDefault();setActiveCommand(i=>Math.max(0,i-1))}if(e.key==='Enter'&&filteredCommands[activeCommand]){e.preventDefault();go(filteredCommands[activeCommand].href)}}} placeholder="Куда перейти или что создать?"/><kbd>esc</kbd></header>
               <div className="studio-command__list">
                 {filteredCommands.map((item,index)=>{
                   const Icon=item.icon
-                  return <button key={item.href+item.label} onClick={()=>go(item.href)}>
+                  return <button className={index===activeCommand?'is-selected':''} key={item.href+item.label} onMouseEnter={()=>setActiveCommand(index)} onClick={()=>go(item.href)}>
                     <span className="studio-command__icon"><Icon size={17}/></span>
                     <div><strong>{item.label}</strong><span>{item.description}</span></div>
                     <kbd>{index+1}</kbd>
@@ -225,6 +228,6 @@ export default function StudioShell({
       <AnimatePresence>
         {mobileOpen&&<motion.div className="studio-mobile-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setMobileOpen(false)}/>}
       </AnimatePresence>
-    </div>
+    </div></MotionConfig>
   )
 }

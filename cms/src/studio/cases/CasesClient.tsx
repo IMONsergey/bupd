@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useMemo, useState } from 'react'
 
 type CaseItem={
+  cover?: {url?:string;alt?:string;sizes?:{card?:{url?:string}}}|null
   id:string|number
   title:string
   slug:string
@@ -111,9 +112,10 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
             exit={{opacity:0,scale:.97}}
             transition={{duration:.25,delay:Math.min(index*.025,.18)}}
           >
+            {item.cover?.url&&<img className="studio-case-cover" src={item.cover.sizes?.card?.url||item.cover.url} alt={item.cover.alt||''}/>}
             <div className="studio-case-card__top">
               <span className={['studio-chip',state==='published'||state==='ready'?'studio-chip--green':state==='review'?'studio-chip--amber':''].join(' ')}>{label[state]||state}</span>
-              <span style={{fontSize:9,color:'#a1a1aa'}}>{String(index+1).padStart(2,'0')}</span>
+              <span style={{fontSize:12,color:'#a1a1aa'}}>{String(index+1).padStart(2,'0')}</span>
             </div>
             <div className="studio-case-card__body">
               <small>{item.client||'Без клиента'}{item.year?' · '+item.year:''}</small>

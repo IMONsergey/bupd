@@ -32,5 +32,6 @@ export default async function PublicCasePage({
   if (!project) notFound()
 
   const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
-  return <LiveCase initialData={project as any} serverURL={serverURL} preview={false} />
+  const related=await payload.find({collection:'projects',depth:1,draft:false,limit:4,overrideAccess:true,where:{and:[{_status:{equals:'published'}},{id:{not_equals:project.id}}]}})
+  return <LiveCase initialData={project as any} serverURL={serverURL} siteURL={process.env.NEXT_PUBLIC_SITE_URL||'https://baev-case-lab.vercel.app'} related={related.docs} preview={false} />
 }

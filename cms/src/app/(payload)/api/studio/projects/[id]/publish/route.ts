@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { studioError } from '@/studio/lib/apiError'
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const payload = await getPayload({ config })
@@ -36,6 +37,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     data.workflowStatus = 'ready'
   }
 
+  try {
   const doc = await payload.update({
     collection: 'projects',
     id,
@@ -44,4 +46,5 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   })
 
   return Response.json({ ok: true, status: doc._status, id: doc.id })
+  } catch(error) {return studioError(error)}
 }

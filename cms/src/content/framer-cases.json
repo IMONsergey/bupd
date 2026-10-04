@@ -1,0 +1,955 @@
+[
+  {
+    "slug": "avito-auto-2024",
+    "title": "Авито Авто — Высшая передача",
+    "summary": "«Авито Авто» остается ведущей платформой по продаже автомобилей в России. Согласно данным за сентябрь 2024 года, каждый второй автомобиль в стране продается через «Авито Авто».",
+    "client": "Авито",
+    "year": 2024,
+    "categories": [
+      {
+        "label": "Презентация"
+      },
+      {
+        "label": "Брендинг"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/hcbL0ljxHd8FCixzynoW8sZo0c.jpg",
+      "mimeType": "image/jpeg"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/avito-auto-2024",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "Авито Авто — Высшая передача",
+        "media": {
+          "source": "https://framerusercontent.com/images/hcbL0ljxHd8FCixzynoW8sZo0c.jpg",
+          "mimeType": "image/jpeg"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "«Высшая передача» – ключевая конференция для профессионалов автобизнеса, направленная на укрепление лояльности B2B-клиентов к бренду «Авито Авто» в стратегически важных регионах.",
+        "size": "l",
+        "align": "left",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/0QiA6QpV4cUmfqp7z6tTGeKnNaA.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/PhqyIbPpOwmqL3p7zeIDqLjByM.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Key Visual конференции Авито Авто — «Высшая передача» отражает динамику, движение и технологичность автомобильного бизнеса. Общий визуальный стиль — футуристичный, технологичный и энергичный, идеально подходящий для B2B-аудитории и профессионалов автобизнеса.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/kmlwbvJjwpPh0TfzxbzGEphPLSo.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Тематические блоки конференции",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/5fsgWRHiQZSzr2q1pjL5CHzf4.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Мы сосредоточились на интерактивной подаче информации, концентрируясь на важных деталях, устраняя все лишнее.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/hwBVZD7yLoZrEKjvrurUxLohQ.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/4uNnl0GLQmUPINmiLWwLMclzFA.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Цифры и графики",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/LxoRftIPSybmTaLii5ozTfFrcqU.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Продуманная система стилистических решений, объединяющая минимализм и нативную анимацию, обеспечивает высокую вовлеченность аудитории. Такой подход не только удерживает внимание зрителя, но и трансформирует даже сложную или рутинную информацию в яркий, запоминающийся контент.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/3UX6jbJVL5Ln3RR6DAi2LcdhjlE.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/eIScR9KgzgQWGwbH8oUcy4QCpo.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/8LOx1gZHum2GuI4eATsEE4NCZwc.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/BYSN5mAI73v6lJY6g05v8DPL8.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/IKOhmWbVudozBkh6fNcSdr8Iklg.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Интерактинвая подача контента",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/giU8yaD9csN7UC0URd3Q1HaLBQ.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Продуманная система стилистических решений, объединяющая минимализм и нативную анимацию, обеспечивает высокую вовлеченность аудитории. Такой подход не только удерживает внимание зрителя, но и трансформирует даже сложную или рутинную информацию в яркий, запоминающийся контент.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/c7FPzZtLpqD4IzjFwpC3rVLebuY.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/W6HTquXExEJWrz72eHDoOhzKw.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/AQJeJtrmameiY8ms8GI3Vvgsg8.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/usRpbbl5mwfNdHhm4hX0dsxoeI.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Демонстрация новых продуктов и услуг",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/coWcWSfjcfzLvR7gKskZ8tv77U.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Инновационный раздел платформы, где пользователи могут вести историю владения автомобилем, получать персонализированные рекомендации и контролировать важные параметры авто.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/7axfFwWhwfUR2iK3dTX9LhJhyPs.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/0ZMsoqfizvEpuzyyNzePHYgcTc.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/LZrGcvGcFAtL1Oom6Rd2mhgjOvU.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Визуализация итоговых выводов",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/7liFG1HPW8zOxbbiuzq7m86FDw.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "В 2024 году «Авито» продолжает удерживать лидирующие позиции среди онлайн-классифайдов. Ежемесячная аудитория платформы превышает 70 миллионов уникальных пользователей.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/Mu6roZpAyEkibV8Etd71wCj9w.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "linear-identity",
+    "title": "Haval Dealer Conference",
+    "summary": "Оформление презентации и брендинга мероприятия Дилерской конференции Haval 2023",
+    "client": "Great Wall Motor",
+    "year": 2023,
+    "categories": [
+      {
+        "label": "Презентация"
+      },
+      {
+        "label": "Брендинг"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/5z9XAu2SaNqXmfCw7UKpprKfw.jpg",
+      "mimeType": "image/jpeg"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/linear-identity",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "Haval Dealer Conference",
+        "media": {
+          "source": "https://framerusercontent.com/images/5z9XAu2SaNqXmfCw7UKpprKfw.jpg",
+          "mimeType": "image/jpeg"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "В рамках кампании «Важен каждый день» HAVAL представляет свой манифест, в котором выражает ценности, объединяющие бренд и его аудиторию: «Каждый день в вашей жизни случается разное. Запланированное и неожиданное, удивительное и обыденное, реальное и нереальное».",
+        "size": "l",
+        "align": "left",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/Lb11B8Y6P7oUOw0Xl1KQTcl5c.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/eLofT0WNR8M2scOvblFI2Oh3G3M.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Ключевой слоган конференции",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/PH09TQjeGCfKlq5TDIkSrTHWumA.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "В основе философии бренда HAVAL лежат люди. Их эмоции, чувства и моменты.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/IySZUh2VG9mVdXOx6I1eC9NCNHs.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Мы сосредоточились на интерактивной подаче информации, концентрируясь на важных деталях и устраняя все лишнее.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/KpcGXmJLSWQWJh8UnvwsgvWahU.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/jflK9bFyqt6cgfY2o2B3l5P0CU.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Модельный ряд HAVAL",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/5ecjgTOvtGV6teshyBkLonHlWo.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Продуманная визуальная система графиков и диаграмм обеспечивает легкость восприятия информации, чтобы не упустить ни одной важной детали повествования и добиться нужного впечатления.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/gLkN9D3tTdbtEJFlecLSZuWDwQ.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/D3HbYxyJHKvDBnO9PXqlf4Zzd2k.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/oKESKaY3aiw97yOdLPTF9p8t0.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/gSar0dpbCTGmJPNqvC5Gn169HsQ.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/TYbOfaNq3kuBuGmPNpc0PDuMIUw.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Управление контекстом",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/UOe2A0JSEEZFOB46WtLXfxfH8mY.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Продуманная визуальная система графиков и диаграмм обеспечивает легкость восприятия информации, чтобы не упустить ни одной важной детали повествования и добиться нужного впечатления.",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/oVY0HJhBVTKkliPQXryV1jbX04.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/wCAyaWcYTX97uhnkIQCDqQfEKA.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/TB5d5vpixNBo6bZYOfBT12RqHuo.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/MXazyDJFkuAm6L0XKw3dVlTbhs.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/LQMyTdYOdvpI9SX1yYt91T5TY9o.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Брендирование мероприятия",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/erX0iy8P3xm7xZZqxTM0fjGvH3U.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/bJQwuzWX2HIh3ZKpSzBIBBS70.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "manifesto",
+        "blockName": "framer:copy",
+        "text": "Сопровождение публичных виступлений",
+        "size": "m",
+        "align": "right",
+        "theme": "dark"
+      },
+      {
+        "blockType": "videoChapter",
+        "video": {
+          "source": "https://framerusercontent.com/assets/oTZZjayzAnQn9a6M8y0kK0uDTM.mp4",
+          "mimeType": "video/mp4"
+        },
+        "autoplay": true,
+        "loop": true,
+        "mode": "inline",
+        "blockName": "framer:media",
+        "theme": "dark"
+      },
+      {
+        "blockType": "fullBleedMedia",
+        "media": {
+          "source": "https://framerusercontent.com/images/OmRK9bZFQtMWbSkTj6subpVZtU.png",
+          "mimeType": "image/png"
+        },
+        "height": "auto",
+        "fit": "contain",
+        "blockName": "framer:media",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "future-archive",
+    "title": "Альфа Конфа — Для Своих",
+    "summary": "",
+    "client": "Альфа Банк",
+    "year": 2024,
+    "categories": [
+      {
+        "label": "Стратегическая сессия"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/Y3RietI0sBkbb6C0oijJWCYvKGE.png",
+      "mimeType": "image/png"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/future-archive",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "Альфа Конфа — Для Своих",
+        "media": {
+          "source": "https://framerusercontent.com/images/Y3RietI0sBkbb6C0oijJWCYvKGE.png",
+          "mimeType": "image/png"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "studio-atlas",
+    "title": "Спортмастер — Будущее уже здесь",
+    "summary": "",
+    "client": "Спортмастер",
+    "year": 2022,
+    "categories": [
+      {
+        "label": "Стратегическая сессия"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/nXs2xHVq2As6dVUPdDuMqkX5o.jpg",
+      "mimeType": "image/jpeg"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/studio-atlas",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "Спортмастер — Будущее уже здесь",
+        "media": {
+          "source": "https://framerusercontent.com/images/nXs2xHVq2As6dVUPdDuMqkX5o.jpg",
+          "mimeType": "image/jpeg"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "parallel-forms",
+    "title": "ОМК — Итоги 2022",
+    "summary": "",
+    "client": "ОМК",
+    "year": 2022,
+    "categories": [
+      {
+        "label": "Стратегическая сессия"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/95fLSSiCWXSE7kTMVNv13hLk9Q.jpg",
+      "mimeType": "image/jpeg"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/parallel-forms",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "ОМК — Итоги 2022",
+        "media": {
+          "source": "https://framerusercontent.com/images/95fLSSiCWXSE7kTMVNv13hLk9Q.jpg",
+          "mimeType": "image/jpeg"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "silent-motif",
+    "title": "Teva Pharmaceutical",
+    "summary": "",
+    "client": "Teva",
+    "year": 2022,
+    "categories": [
+      {
+        "label": "Презентация"
+      },
+      {
+        "label": "Брендинг"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/sfbHEPbHnbxp2UHanXvNA8hDYo.jpg",
+      "mimeType": "image/jpeg"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/silent-motif",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "Teva Pharmaceutical",
+        "media": {
+          "source": "https://framerusercontent.com/images/sfbHEPbHnbxp2UHanXvNA8hDYo.jpg",
+          "mimeType": "image/jpeg"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "pattern-language",
+    "title": "ORLA — Dorchestr Collection",
+    "summary": "",
+    "client": "Dorchestr Collection",
+    "year": 2024,
+    "categories": [
+      {
+        "label": "Презентация"
+      },
+      {
+        "label": "Брендинг"
+      },
+      {
+        "label": "Веб"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/M9FxrN38iLcvOaS9j8SrnlfkejE.jpg",
+      "mimeType": "image/jpeg"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/pattern-language",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "ORLA — Dorchestr Collection",
+        "media": {
+          "source": "https://framerusercontent.com/images/M9FxrN38iLcvOaS9j8SrnlfkejE.jpg",
+          "mimeType": "image/jpeg"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      }
+    ]
+  },
+  {
+    "slug": "spectrum-project",
+    "title": "СтримМур — VK",
+    "summary": "The project began with a search for clarity in how the brand could communicate across different mediums. We developed a system that merges visual identity, digital presence, and editorial sensibility into one coherent framework. Our approach focused on building consistency without losing flexibility, ensuring that the identity could adapt to print, digital platforms, and spatial applications. The foundation of the work was driven by research into the client’s values and aspirations, allowing the design language to carry not only aesthetic weight but also cultural relevance.",
+    "client": "VK",
+    "year": 2025,
+    "categories": [
+      {
+        "label": "Брендинг"
+      },
+      {
+        "label": "Веб"
+      }
+    ],
+    "pageTheme": "dark",
+    "cover": {
+      "source": "https://framerusercontent.com/images/YMhUY3g4LWHkHa96rivgLor3M.png",
+      "mimeType": "image/png"
+    },
+    "sourceURL": "https://stale-darling-800892.framer.app/work/spectrum-project",
+    "blocks": [
+      {
+        "blockType": "caseHero",
+        "blockName": "framer:hero",
+        "title": "СтримМур — VK",
+        "media": {
+          "source": "https://framerusercontent.com/images/YMhUY3g4LWHkHa96rivgLor3M.png",
+          "mimeType": "image/png"
+        },
+        "layout": "editorial",
+        "theme": "dark"
+      }
+    ]
+  }
+]
