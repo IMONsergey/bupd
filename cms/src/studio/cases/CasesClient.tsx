@@ -14,6 +14,7 @@ type CaseItem={
   year?:number|null
   workflowStatus?:string|null
   _status?:string|null
+  isPublished?:boolean
   deadline?:string|null
   updatedAt?:string|null
 }
@@ -53,7 +54,7 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
   const visible=useMemo(()=>{
     const q=query.trim().toLowerCase()
     return items.filter((item)=>{
-      if(status==='published'&&item._status!=='published')return false
+      if(status==='published'&&!(item.isPublished??item._status==='published'))return false
       if(status!=='all'&&status!=='published'&&item.workflowStatus!==status)return false
       if(!q)return true
       return [item.title,item.client,item.slug].filter(Boolean).some((v)=>String(v).toLowerCase().includes(q))
@@ -101,7 +102,7 @@ export default function CasesClient({items,templates}:{items:CaseItem[];template
     <motion.div className="studio-cases" layout>
       <AnimatePresence mode="popLayout">
         {visible.map((item,index)=>{
-          const state=item._status==='published'?'published':item.workflowStatus||'draft'
+          const state=(item.isPublished??item._status==='published')?'published':item.workflowStatus||'draft'
           return <motion.a
             layout
             href={'/studio/cases/'+item.id}
