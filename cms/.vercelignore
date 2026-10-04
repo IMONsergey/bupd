@@ -3,3 +3,10 @@
 !.env.example
 .next
 node_modules
+*.db
+*.db-*
+.backups
+media
+coverage
+playwright-report
+test-results

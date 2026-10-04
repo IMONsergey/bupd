@@ -1,0 +1,6 @@
+cms
+.env
+.env.*
+.git
+node_modules
+docs
