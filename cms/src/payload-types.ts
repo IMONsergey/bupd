@@ -193,6 +193,11 @@ export interface Project {
   mediaRadius?: number | null;
   accent?: string | null;
   pageTheme?: ('dark' | 'light') | null;
+  bodyMode?: ('blocks' | 'embed') | null;
+  embedURL?: string | null;
+  embedHeight?: number | null;
+  embedMobileHeight?: number | null;
+  embedAutoHeight?: boolean | null;
   /**
    * Добавляйте сцены, меняйте порядок drag-and-drop. У каждого блока есть несколько режимов.
    */
@@ -1800,6 +1805,11 @@ export interface ProjectsSelect<T extends boolean = true> {
   mediaRadius?: T;
   accent?: T;
   pageTheme?: T;
+  bodyMode?: T;
+  embedURL?: T;
+  embedHeight?: T;
+  embedMobileHeight?: T;
+  embedAutoHeight?: T;
   blocks?:
     | T
     | {

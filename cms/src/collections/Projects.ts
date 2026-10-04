@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { caseEmbedFields } from '../fields/caseEmbed'
 import { pageAppearanceFields } from '../fields/pageAppearance'
 import { adminHiddenUnless, contentFieldAccess, contentAccess, isEditor } from '../access/roles'
 import { CaseBlocks } from '../blocks/caseBlocks'
@@ -173,6 +174,7 @@ export const Projects: CollectionConfig = {
         {
           label: 'Case builder',
           fields: [
+            ...caseEmbedFields,
             {
               name: 'blocks',
               label: 'Сцены кейса',

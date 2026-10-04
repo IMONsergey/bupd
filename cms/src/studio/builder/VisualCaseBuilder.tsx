@@ -49,6 +49,8 @@ import { serializeDocument, copyScene, textToRichText } from './document'
 import { blockDefaults } from './presets'
 import './quiet-builder.css'
 import { BlockPresentation, blockPresentationKeys } from './BlockPresentation'
+import {caseEmbedKeys} from '@/lib/caseEmbed'
+import {CaseBodySettings} from './CaseBodySettings'
 import { MobilePreviewControls } from './MobilePreviewControls'
 import { PageAppearance } from './PageAppearance'
 import { BlockLibrary } from './BlockLibrary'
@@ -69,16 +71,16 @@ function blockName(block:AnyBlock,meta?:BlockMeta){
   return {title:meta?.title||block.blockType,detail:(typeof detail==='object'?blockSearchText(detail):String(detail)).replace(/\s+/g,' ').slice(0,42)}
 }
 
-function SortableScene({block,index,meta,active,disabled=false,issueCount=0,onSelect,onDuplicate,onDelete}:{block:AnyBlock;index:number;meta?:BlockMeta;active:boolean;disabled?:boolean;issueCount?:number;onSelect:()=>void;onDuplicate:()=>void;onDelete:()=>void}){
+function SortableScene({block,index,meta,active,disabled=false,locked=false,issueCount=0,onSelect,onDuplicate,onDelete}:{block:AnyBlock;index:number;meta?:BlockMeta;active:boolean;disabled?:boolean;locked?:boolean;issueCount?:number;onSelect:()=>void;onDuplicate:()=>void;onDelete:()=>void}){
   const id=block.id||'scene-'+index
-  const sortable=useSortable({id,disabled})
+  const sortable=useSortable({id,disabled:disabled||locked})
   const style={transform:CSS.Transform.toString(sortable.transform),transition:sortable.transition}
   const name=blockName(block,meta)
   return <motion.div ref={sortable.setNodeRef} style={style} layout role="button" tabIndex={0} aria-label={'Сцена '+(index+1)+': '+name.title} onKeyDown={e=>{if(e.target===e.currentTarget&&(e.key==='Enter'||e.key===' ')){e.preventDefault();onSelect()}}} className={['builder-scene',active?'is-active':''].join(' ')} onClick={onSelect}>
-    <button disabled={disabled} aria-label={'Переместить сцену '+(index+1)} className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
+    <button disabled={disabled||locked} aria-label={'Переместить сцену '+(index+1)} className="builder-scene__drag" {...sortable.attributes} {...sortable.listeners}><GripVertical size={14}/></button>
     <div className="builder-scene__thumb">{(block.media||block.video)?.mimeType?.startsWith('video/')?<video src={(block.media||block.video).url} muted preload="none"/>:<BlockPreview slug={block.blockType} imageURL={(block.media||block.video)?.sizes?.thumb?.url||(block.media||block.video)?.url}/>}</div>
     <div className="builder-scene__copy"><span>{String(index+1).padStart(2,'0')}</span><strong>{name.title}</strong><i>{issueCount?<span className="builder-scene__issue">Заполните поля · {issueCount}</span>:name.detail||meta?.description}</i></div>
-    <div className="builder-scene__menu"><button aria-label={'Дублировать сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDuplicate()}}><Copy size={13}/></button><button aria-label={'Удалить сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDelete()}}><Trash2 size={13}/></button></div>
+    {!locked&&<div className="builder-scene__menu"><button aria-label={'Дублировать сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDuplicate()}}><Copy size={13}/></button><button aria-label={'Удалить сцену '+(index+1)} onClick={(e)=>{e.stopPropagation();onDelete()}}><Trash2 size={13}/></button></div>}
   </motion.div>
 }
 
@@ -150,7 +152,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   const [blocks,setBlocks]=useState<AnyBlock[]>(()=>((project.blocks||[]) as AnyBlock[]).map((b,index)=>({...b,id:b.id||'local-'+index+'-'+Date.now()})))
   const [selected,setSelected]=useState(-1)
   const [details,setDetails]=useState(false)
-  const [metadata,setMetadata]=useState(()=>Object.fromEntries(['title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:['year','mediaRadius'].includes(key)?null:key==='workflowStatus'?'draft':'')])))
+  const [metadata,setMetadata]=useState(()=>Object.fromEntries([...caseEmbedKeys,'title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:['year','mediaRadius'].includes(key)?null:key==='workflowStatus'?'draft':key==='bodyMode'?'blocks':key==='embedHeight'?6000:key==='embedMobileHeight'?9000:key==='embedAutoHeight'?false:'')])))
   const [error,setError]=useState('')
   const [undoStack,setUndoStack]=useState<any[]>([])
   const [redoStack,setRedoStack]=useState<any[]>([])
@@ -260,9 +262,17 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
 
   const meta=useMemo(()=>Object.fromEntries(catalog.map((item)=>[item.slug,item])),[catalog])
   const selectedBlock=blocks[selected]
+  const embedded=!article&&metadata.bodyMode==='embed'
+  const lockedCover=!article&&blocks[0]?.blockType==='caseHero'
+  useEffect(()=>{if(embedded){setSelected(lockedCover?0:-1);setLibrary(false)}},[embedded,lockedCover])
+  const openCover=()=>{
+    if(!lockedCover){const first={...blockDefaults.caseHero,blockType:'caseHero',title:metadata.title,media:metadata.cover||null,id:'local-'+crypto.randomUUID()} as AnyBlock;change({...latest.current,blocks:[first,...latest.current.blocks]})}
+    setSelected(0);setDetails(false);setWorkspaceTab('settings');canvasScroll.current=true
+  }
   const issues=useMemo(()=>publicationIssues({...metadata,blocks,kind},schemas),[metadata,blocks,schemas,kind])
   const hasUnpublishedChanges=published&&projectContentSignature({...metadata,blocks})!==publishedSignature
-  const visibleScenes=blocks.map((block,index)=>({block,index})).filter(({block})=>{
+  const visibleScenes=blocks.map((block,index)=>({block,index})).filter(({block,index})=>{
+    if(embedded&&!(lockedCover&&index===0))return false
     const name=blockName(block,meta[block.blockType])
     return !sceneQuery.trim()||(name.title+' '+blockSearchText(block)).toLowerCase().includes(sceneQuery.trim().toLowerCase())
   })
@@ -455,20 +465,23 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   }
 
   const add=(slug:string,variant:Record<string,any>={})=>{
+    if(embedded)return
     const base={...defaultValues(schemas[slug]||[]),...(blockDefaults[slug]||{}),...(article?{theme:'light'}:{}),...variant,blockType:slug}
     const next={...structuredClone(base),id:'local-'+crypto.randomUUID()}
-    const index=Math.max(0,Math.min(insertAt??(selected<0?blocks.length:selected+1),blocks.length))
+    const index=Math.max(lockedCover?1:0,Math.min(insertAt??(selected<0?blocks.length:selected+1),blocks.length))
     const nextBlocks=[...blocks.slice(0,index),next,...blocks.slice(index)]
     canvasScroll.current=true;setSelected(index);setDetails(false);setLibrary(false);setInsertAt(null);scheduleSave(nextBlocks)
   }
 
   const remove=(index:number)=>{
+    if(lockedCover&&index===0)return
     const next=blocks.filter((_,i)=>i!==index)
     setSelected(next.length?Math.max(0,Math.min(selected,index-1,next.length-1)):-1);scheduleSave(next)
     setDeletedNotice(true);setNotice('Блок удалён.')
   }
 
   const duplicate=(index:number)=>{
+    if(lockedCover&&index===0)return
     const copy=copyScene(blocks[index])
     const next=[...blocks.slice(0,index+1),copy,...blocks.slice(index+1)]
     canvasScroll.current=true;setSelected(index+1);scheduleSave(next)
@@ -479,6 +492,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     if(!over||active.id===over.id)return
     const oldIndex=blocks.findIndex((b,i)=>(b.id||'scene-'+i)===active.id)
     const newIndex=blocks.findIndex((b,i)=>(b.id||'scene-'+i)===over.id)
+    if(lockedCover&&(oldIndex===0||newIndex===0))return
     const next=arrayMove(blocks,oldIndex,newIndex)
     canvasScroll.current=true;setSelected(newIndex);scheduleSave(next)
   }
@@ -486,8 +500,10 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   useEffect(()=>{
   canvasActions.current=(data:any)=>{
     const type=data?.type
+    if(type==='baev:embed-settings'){setDetails(true);setWorkspaceTab('settings');setFocusField('bodyMode');return}
     if(type==='baev:retry'){if(!saved&&!recovery&&!publishing)void save();return}
     if(type==='baev:shortcut'){
+      if(embedded)return
       if(selected<0||publishing||publishAction||library||historyOpen||canvasMedia)return
       if(data.action==='previous'||data.action==='next'){
         const index=Math.max(0,Math.min(blocks.length-1,selected+(data.action==='next'?1:-1)))
@@ -500,7 +516,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     if(type==='baev:undo'){undo();return}
     if(type==='baev:redo'){redo();return}
     if(type==='baev:save'){void save();return}
-    if(type==='baev:insert'&&Number.isInteger(data.index)){setInsertAt(Math.max(0,Math.min(data.index,latest.current.blocks.length)));setLibrary(true);return}
+    if(type==='baev:insert'&&!embedded&&Number.isInteger(data.index)){setInsertAt(Math.max(0,Math.min(data.index,latest.current.blocks.length)));setLibrary(true);return}
     const index=data.index
     if(!Number.isInteger(index)||index < -1||index>=latest.current.blocks.length)return
     const current=index===-1?latest.current.metadata:latest.current.blocks[index]
@@ -510,8 +526,8 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
       if(data.action==='settings'){setFocusMode(false);setWorkspaceTab('settings')}
       if(data.action==='duplicate')duplicate(index)
       if(data.action==='delete')remove(index)
-      if(data.action==='up'&&index>0){setSelected(index-1);scheduleSave(arrayMove(blocks,index,index-1))}
-      if(data.action==='down'&&index<blocks.length-1){setSelected(index+1);scheduleSave(arrayMove(blocks,index,index+1))}
+      if(data.action==='up'&&index>(lockedCover?1:0)){setSelected(index-1);scheduleSave(arrayMove(blocks,index,index-1))}
+      if(data.action==='down'&&index<blocks.length-1&&!(lockedCover&&index===0)){setSelected(index+1);scheduleSave(arrayMove(blocks,index,index+1))}
       return
     }
     if(typeof data.path!=='string')return
@@ -552,7 +568,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     </header>
 
     <nav inert={recovery?true:undefined} className="quiet-tools" aria-label="Инструменты редактора">
-      <button aria-label="Добавить блок" onClick={()=>{setInsertAt(selected<0?blocks.length:selected+1);setLibrary(true)}}><Plus size={16}/><span>Добавить</span></button>
+      <button disabled={embedded} aria-label="Добавить блок" onClick={()=>{setInsertAt(selected<0?blocks.length:selected+1);setLibrary(true)}}><Plus size={16}/><span>Добавить</span></button>
       <button aria-label="Структура" title="Структура страницы" aria-pressed={workspaceTab==='blocks'} onClick={()=>setWorkspaceTab(tab=>tab==='blocks'?'canvas':'blocks')}><StudioIcon name="Layers" size={16}/><span>Структура</span></button>
       <button aria-label="Оформление страницы" title="Фон и скругление медиа" aria-pressed={workspaceTab==='design'} onClick={()=>setWorkspaceTab(tab=>tab==='design'?'canvas':'design')}><Settings2 size={16}/><span>Оформление</span></button>
       <button aria-label="Настройки страницы" title="Название, обложка и публикация" aria-pressed={workspaceTab==='settings'&&details} onClick={()=>{setDetails(true);setWorkspaceTab(tab=>tab==='settings'&&details?'canvas':'settings')}}><StudioIcon name="FileText" size={16}/><span>Страница</span></button>
@@ -572,10 +588,10 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
         <label className="builder-scene-search"><Search size={14}/><input aria-label="Найти блок или текст" value={sceneQuery} onChange={event=>setSceneQuery(event.target.value)} placeholder="Найти блок или текст"/>{sceneQuery&&<button aria-label="Сбросить поиск блоков" onClick={()=>setSceneQuery('')}><X size={13}/></button>}</label>
         <DndContext id={'case-builder-'+project.id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={dragEnd}>
           <SortableContext items={visibleScenes.map(({block,index})=>block.id||'scene-'+index)} strategy={verticalListSortingStrategy}>
-            <div className="builder-scenes__list">{visibleScenes.map(({block,index})=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} disabled={Boolean(sceneQuery.trim())} issueCount={issues.filter(issue=>issue.severity==='error'&&issue.blockIndex===index).length} onSelect={()=>{canvasScroll.current=true;setSelected(index);sendPreview(index);setDetails(false);if(window.innerWidth<=760)setWorkspaceTab('canvas')}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}{!visibleScenes.length&&<div className="studio-empty">Блоки не найдены.<button className="studio-button studio-button--soft" onClick={()=>setSceneQuery('')}>Сбросить поиск</button></div>}</div>
+            <div className="builder-scenes__list">{visibleScenes.map(({block,index})=><SortableScene key={block.id||index} block={block} index={index} meta={meta[block.blockType]} active={selected===index} disabled={Boolean(sceneQuery.trim())} locked={lockedCover&&index===0} issueCount={issues.filter(issue=>issue.severity==='error'&&issue.blockIndex===index).length} onSelect={()=>{canvasScroll.current=true;setSelected(index);sendPreview(index);setDetails(false);if(window.innerWidth<=760)setWorkspaceTab('canvas')}} onDuplicate={()=>duplicate(index)} onDelete={()=>remove(index)}/>)}{!visibleScenes.length&&<div className="studio-empty">Блоки не найдены.<button className="studio-button studio-button--soft" onClick={()=>setSceneQuery('')}>Сбросить поиск</button></div>}</div>
           </SortableContext>
         </DndContext>
-        <button className="builder-add-scene" onClick={()=>setLibrary(true)}><Plus size={14}/> Добавить блок</button>
+        {embedded&&<p className="inspector-hint">Тело кейса — внешняя страница. Блоки сохранены и вернутся после переключения режима.</p>}<button disabled={embedded} className="builder-add-scene" onClick={()=>setLibrary(true)}><Plus size={14}/> Добавить блок</button>
       </aside>
 
       <main inert={compact&&workspaceTab!=='canvas'?true:undefined} className="builder-canvas">
@@ -588,13 +604,13 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
       <aside ref={workspaceTab!=='blocks'?mobilePanelRef:undefined} className="builder-right" aria-label={workspaceTab==='design'?'Оформление страницы':'Настройки'}>
         <button className="quiet-panel-close" aria-label="Закрыть настройки" onClick={()=>setWorkspaceTab('canvas')}><X size={16}/></button>
         {workspaceTab==='design'?<div className="builder-inspector"><header><strong>Оформление страницы</strong></header><PageAppearance background={metadata.pageBackground||''} radius={metadata.mediaRadius===''?null:metadata.mediaRadius} onChange={updateMetadata}/></div>:<>
-        {details?<div className="builder-inspector"><header><strong>{article?'Настройки статьи':'Настройки кейса'}</strong></header><div className="builder-inspector__fields">{['main','media','publication'].map(section=>{
-          const fields=[{name:'title',label:'Название',type:'text',required:true},...(article?[{name:'author',label:'Автор',type:'text'},{name:'publishedAt',label:'Дата статьи',type:'date'}]:[{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100}]),{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:'Обложка',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}]
+        {details?<div className="builder-inspector"><header><strong>{article?'Настройки статьи':'Настройки кейса'}</strong></header><div className="builder-inspector__fields">{!article&&<CaseBodySettings value={metadata} onChange={updateMetadata} onCover={openCover}/>} {['main','media','publication'].map(section=>{
+          const fields=[{name:'title',label:'Название',type:'text',required:true},...(article?[{name:'author',label:'Автор',type:'text'},{name:'publishedAt',label:'Дата статьи',type:'date'}]:[{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100}]),{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:article?'Обложка':'Обложка в каталоге / постер видео',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}]
           const extra=new Set(['ogImage','seoTitle','seoDescription','noIndex','featured','workflowStatus'])
           const mediaFields=new Set(['cover','categories'])
           const content=fields.filter(field=>(extra.has(field.name)?'publication':mediaFields.has(field.name)?'media':'main')===section).map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>updateMetadata(field.name,value)}/></div>)
           return section!=='main'?<details key={section} className="quiet-page-section"><summary>{section==='media'?'Обложка и категории':'Публикация и поиск'}</summary><div>{content}</div></details>:<React.Fragment key="main">{content}</React.Fragment>
-        })}</div></div>:selectedBlock?<Inspector key={selectedBlock.id} block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} blobEnabled={blobEnabled} onChange={updateSelected} revealField={focusField}/>:<div className="studio-empty">Добавьте первый блок</div>}
+        })}</div></div>:selectedBlock&&lockedCover&&selected===0?<div className="builder-inspector"><header><strong>Обложка кейса</strong></header><p className="inspector-hint">Первый экран всегда заполняет правую часть страницы. Общие отступы и скругление действуют на тело кейса.</p><div className="builder-inspector__fields"><div data-editor-field="media"><FieldEditor field={{name:"media",label:"Изображение или видео",type:"upload",required:true}} value={selectedBlock.media} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>updateSelected({...selectedBlock,media:value})}/></div></div></div>:selectedBlock?<Inspector key={selectedBlock.id} block={selectedBlock} fields={schemas[selectedBlock.blockType]||[]} title={meta[selectedBlock.blockType]?.title||'Сцена'} media={media} projects={projects} blobEnabled={blobEnabled} onChange={updateSelected} revealField={focusField}/>:<div className="studio-empty">Добавьте первый блок</div>}
         </>}
       </aside>
     </div>
@@ -603,7 +619,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     <AnimatePresence>{publishAction&&<PublishDialog project={{...metadata,slug:project.slug,blocks,kind}} published={published} action={publishAction} busy={publishing} error={publicationError} issues={issues} onClose={()=>{if(!publishing)setPublishAction(null)}} onConfirm={()=>void publish()} onFix={fixIssue} onPreview={()=>void preview()}/>}</AnimatePresence>
 
     <AnimatePresence>
-      {library&&<BlockLibrary catalog={catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={(insertAt??(selected<0?blocks.length:selected+1))>0?meta[blocks[(insertAt??(selected<0?blocks.length:selected+1))-1]?.blockType]?.title:undefined} onClose={()=>{setLibrary(false);setInsertAt(null)}} onAdd={(slug,variant)=>{add(slug,variant);setWorkspaceTab('canvas')}}/>}
+      {library&&!embedded&&<BlockLibrary catalog={lockedCover?catalog.filter(item=>item.slug!=='caseHero'):catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={(insertAt??(selected<0?blocks.length:selected+1))>0?meta[blocks[(insertAt??(selected<0?blocks.length:selected+1))-1]?.blockType]?.title:undefined} onClose={()=>{setLibrary(false);setInsertAt(null)}} onAdd={(slug,variant)=>{add(slug,variant);setWorkspaceTab('canvas')}}/>}
     </AnimatePresence>
 
     <AnimatePresence>

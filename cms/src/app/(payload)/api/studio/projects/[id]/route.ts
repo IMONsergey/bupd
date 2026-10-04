@@ -1,9 +1,11 @@
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { caseEmbedKeys } from '@/lib/caseEmbed'
 import { studioError } from '@/studio/lib/apiError'
 
 const allowed = new Set([
+  ...caseEmbedKeys,
   'title','client','year','summary','workflowStatus','deadline',
   'pageBackground','mediaRadius','pageTheme','accent','featured','blocks','categories','cover','ogImage',
   'seoTitle','seoDescription','canonicalURL','noIndex','sourceURL','internalNotes',

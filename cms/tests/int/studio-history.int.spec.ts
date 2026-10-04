@@ -5,7 +5,7 @@ import VisualCaseBuilder from '@/studio/builder/VisualCaseBuilder'
 vi.mock('next/navigation',()=>({useRouter:()=>({push:vi.fn()})}))
 vi.stubGlobal('ResizeObserver',class{observe(){}disconnect(){}})
 vi.stubGlobal('fetch',vi.fn(async()=>Response.json({ok:true})))
-afterEach(cleanup)
+afterEach(()=>{cleanup();sessionStorage.clear();localStorage.clear()})
 describe('Studio history during batched selection and document changes',()=>{
   it('undoes and redoes a copied scene without overwriting the previous snapshot',()=>{
     const project={id:1,slug:'test',title:'Test',blocks:[{id:'first',blockType:'manifesto',text:'Original'}]}
@@ -24,12 +24,12 @@ describe('Studio history during batched selection and document changes',()=>{
   it('keeps the first-screen title and page title in sync with undo',()=>{
     const project={id:1,slug:'test',title:'Original',blocks:[{id:'hero',blockType:'caseHero',title:'Original'}]}
     render(React.createElement(VisualCaseBuilder,{project,catalog:[],media:[],schemas:{caseHero:[{name:'title',label:'Заголовок',type:'text'}]}}))
-    fireEvent.click(screen.getByRole('button',{name:'Сцена 1: caseHero'}))
-    fireEvent.change(screen.getByLabelText('Заголовок'),{target:{value:'Updated'}})
+    fireEvent.click(screen.getByRole('button',{name:'Original'}))
+    fireEvent.change(screen.getByLabelText(/^Название/),{target:{value:'Updated'}})
     expect(document.querySelector('.builder-title>button')?.textContent).toBe('Updated')
     fireEvent.click(screen.getByRole('button',{name:'Отменить'}))
     expect(document.querySelector('.builder-title>button')?.textContent).toBe('Original')
-    expect((screen.getByLabelText('Заголовок') as HTMLInputElement).value).toBe('Original')
+    expect((screen.getByLabelText(/^Название/) as HTMLInputElement).value).toBe('Original')
   })
 
 })

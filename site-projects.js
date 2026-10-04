@@ -47,13 +47,13 @@
         link.href='mailto:'+settings.email
         if(link.textContent.includes('@'))(link.querySelector('p')||link).textContent=settings.email
       })
-      if(settings.phone)document.querySelectorAll('a').forEach(link=>{
+      if(settings.phone&&!/^\+?79990000000$/.test(settings.phone.replace(/[^\d+]/g,'')))document.querySelectorAll('a').forEach(link=>{
         if(/^\+\d[\d()\-\s]+$/.test(link.textContent.trim())){
-          link.href='tel:'+settings.phone.replace(/[^\d+]/g,'')
+          link.href='tel:'+settings.phone.replace(/[^\d+]/g,'');link.hidden=false;link.style.display=''
           ;(link.querySelector('p')||link).textContent=settings.phone
         }
       })
-      if(settings.defaultDescription)document.querySelector('meta[name="description"]')?.setAttribute('content',settings.defaultDescription)
+      if(location.pathname==='/'&&settings.defaultDescription)document.querySelector('meta[name="description"]')?.setAttribute('content',settings.defaultDescription)
     } catch { /* Existing source contacts remain available offline. */ }
   }
   function refresh(){refreshProjects();refreshContacts()}

@@ -17,7 +17,7 @@ export function PageAppearance({ background, radius, onChange }: { background: s
       {error&&<p id={errorID} className="page-appearance__error" role="alert">{error}</p>}
       {background&&<button className="page-appearance__reset" onClick={()=>{setHex('');setError('');onChange('pageBackground',null)}}>Вернуть исходные фоны</button>}
     </section>
-    <section data-editor-field="mediaRadius"><h3>Скругление медиа</h3><p>Единое значение для изображений и видео.</p>
+    <section data-editor-field="mediaRadius"><h3>Скругление медиа</h3><p>Для изображений и видео в теле страницы. Обложка кейса всегда без скругления.</p>
       <div className="page-appearance__radius">{[0,8,16,24,40].map(value=><button key={value} aria-pressed={radius===value} onClick={()=>onChange('mediaRadius',value)}>{value}</button>)}</div>
       <div className="page-appearance__range"><input aria-label="Скругление медиа" type="range" min="0" max="80" value={radius??0} onPointerDown={()=>{rangeRecorded.current=false}} onPointerUp={()=>{rangeRecorded.current=false}} onPointerCancel={()=>{rangeRecorded.current=false}} onKeyDown={e=>{if(!e.repeat)rangeRecorded.current=false}} onBlur={()=>{rangeRecorded.current=false}} onChange={e=>{onChange('mediaRadius',Number(e.target.value),!rangeRecorded.current);rangeRecorded.current=true}}/><label><input aria-label="Скругление медиа, px" type="number" min="0" max="80" value={radius??''} placeholder="—" onChange={e=>onChange('mediaRadius',e.target.value===''?null:Math.max(0,Math.min(80,Number(e.target.value))))}/>px</label></div>
       {radius!==null&&<button className="page-appearance__reset" onClick={()=>onChange('mediaRadius',null)}>Вернуть исходное скругление</button>}

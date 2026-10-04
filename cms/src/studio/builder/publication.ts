@@ -1,3 +1,4 @@
+import {caseEmbedKeys,normalizeEmbedURL,isOwnCaseEmbed} from '@/lib/caseEmbed'
 import type { EditorField } from './editorSchema'
 import { serializeDocument, richTextToText } from './document'
 
@@ -10,7 +11,7 @@ export type PublicationIssue = {
   blockIndex?: number
 }
 
-const contentKeys = ['title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
+const contentKeys = [...caseEmbedKeys,'title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
 
 // Compare content, not version timestamps, row IDs or editorial workflow status.
 export function projectContentSignature(project: Record<string, any>): string {
@@ -18,7 +19,7 @@ export function projectContentSignature(project: Record<string, any>): string {
     : value && typeof value === 'object'
       ? Object.fromEntries(Object.keys(value).filter(key => key !== 'id').sort().map(key => [key, normalize(value[key])]))
       : value === undefined || value === null ? '' : value
-  const values = Object.fromEntries(contentKeys.map(key => [key, project[key] ?? (['blocks','categories'].includes(key) ? [] : ['featured','noIndex'].includes(key) ? false : '')]))
+  const values = Object.fromEntries(contentKeys.map(key => [key, project[key] ?? (({bodyMode:'blocks',embedHeight:6000,embedMobileHeight:9000,embedAutoHeight:false} as Record<string,unknown>)[key] ?? (['blocks','categories'].includes(key) ? [] : ['featured','noIndex'].includes(key) ? false : ''))]))
   return JSON.stringify(normalize(serializeDocument(values)))
 }
 
@@ -31,7 +32,14 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
   if (project.pageBackground && !/^#[\da-f]{6}$/i.test(project.pageBackground)) add({key:'pageBackground',severity:'error',label:'Фон страницы',detail:'Укажите цвет в формате #RRGGBB.',field:'pageBackground'})
   if (project.mediaRadius != null && project.mediaRadius !== '' && (!Number.isFinite(Number(project.mediaRadius)) || Number(project.mediaRadius)<0 || Number(project.mediaRadius)>80)) add({key:'mediaRadius',severity:'error',label:'Скругление медиа',detail:'Укажите значение от 0 до 80 px.',field:'mediaRadius'})
   const blocks = Array.isArray(project.blocks) ? project.blocks : []
-  if (!blocks.length) add({key:'blocks',severity:'error',label:'На странице нет блоков',detail:'Добавьте хотя бы один блок с содержимым.',field:'blocks'})
+  const embedded=project.kind!=='article'&&project.bodyMode==='embed'
+  if(embedded){
+    if(!normalizeEmbedURL(project.embedURL)||isOwnCaseEmbed(project.embedURL,project.slug,[process.env.NEXT_PUBLIC_SITE_URL||'https://baev-case-lab.vercel.app',process.env.NEXT_PUBLIC_SERVER_URL||'https://baev-cms.vercel.app']))add({key:'embedURL',severity:'error',label:'Внешний кейс',detail:'Укажите публичную HTTPS-ссылку на страницу кейса.',field:'embedURL'})
+    for(const field of ['embedHeight','embedMobileHeight'])if(project[field]!=null&&project[field]!==''&&(!Number.isFinite(Number(project[field]))||Number(project[field])<400||Number(project[field])>50000))add({key:field,severity:'error',label:'Высота внешнего кейса',detail:'Укажите высоту от 400 до 50 000 px.',field})
+    if(!blocks[0]?.media&&!project.cover)add({key:'hero-media',severity:'error',label:'Первый экран',detail:'Выберите изображение или видео для обложки кейса.',field:'cover'})
+    add({key:'embed-check',severity:'warning',label:'Проверьте внешний кейс',detail:'Откройте предпросмотр на компьютере и телефоне: исходный сайт должен разрешать iframe.',field:'embedURL'})
+  }
+  if (!embedded&&!blocks.length) add({key:'blocks',severity:'error',label:'На странице нет блоков',detail:'Добавьте хотя бы один блок с содержимым.',field:'blocks'})
   const inspect = (data: Record<string, any>, fields: EditorField[], blockIndex: number, path = '', topField?: string) => {
     for (const field of fields) {
       const value = data?.[field.name]
@@ -55,9 +63,10 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
     }
   }
   blocks.forEach((block, index) => {
+    if(embedded&&!(index===0&&block.blockType==='caseHero'))return
     if(block.blockType==='cta'&&block.buttonURL&&!/^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i.test(String(block.buttonURL).trim())) add({key:`blocks.${index}.buttonURL`,severity:'error',label:`Блок ${index+1} · Ссылка кнопки`,detail:'Используйте https://, mailto:, tel: или путь страницы, например /contact.',field:'buttonURL',blockIndex:index})
     if (!schemas[block.blockType]) add({key:`blocks.${index}`,severity:'error',label:`Блок ${index + 1}`,detail:'Тип блока не поддерживается. Замените его через каталог.',field:'blocks',blockIndex:index})
-    else inspect(block, schemas[block.blockType], index)
+    else inspect(index===0&&block.blockType==='caseHero'?{...block,media:block.media||project.cover}:block, schemas[block.blockType], index)
   })
   if ((project.categories || []).length > 6) add({key:'categories-count',severity:'error',label:'Категории',detail:'Оставьте не больше шести категорий.',field:'categories'})
   if ((project.categories || []).some((item: any) => !filled(item.label))) add({key:'categories',severity:'error',label:'Категории',detail:'Заполните названия категорий или удалите пустые строки.',field:'categories'})

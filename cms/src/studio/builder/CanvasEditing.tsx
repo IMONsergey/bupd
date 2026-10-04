@@ -39,15 +39,15 @@ export function CanvasInsert({ index }: { index: number }) {
   return <div className="canvas-insert"><button aria-label={'Добавить блок на позицию ' + (index + 1)} onClick={() => canvasMessage('insert', { index })}><Plus size={16}/><span>Добавить блок</span></button></div>
 }
 
-export function CanvasToolbar({ index, count, title }: { index: number; count: number; title: string }) {
+export function CanvasToolbar({ index, count, title, locked=false, floor=0 }: { index: number; count: number; title: string; locked?:boolean;floor?:number }) {
   const context = useContext(CanvasContext)
   const action = (action: string) => canvasMessage('action', { ...context, action })
   return <div className="canvas-toolbar" onClick={event => event.stopPropagation()}>
     <button className="canvas-toolbar__title" onClick={() => action('settings')}><Settings2 size={15}/>{String(index + 1).padStart(2, '0')} · {title}</button>
     <span/>
-    <button title="Переместить выше · Alt ↑" aria-label="Переместить блок выше" disabled={index === 0} onClick={() => action('up')}><ArrowUp size={16}/></button>
+    {!locked&&<><button title="Переместить выше · Alt ↑" aria-label="Переместить блок выше" disabled={index <= floor} onClick={() => action('up')}><ArrowUp size={16}/></button>
     <button title="Переместить ниже · Alt ↓" aria-label="Переместить блок ниже" disabled={index === count - 1} onClick={() => action('down')}><ArrowDown size={16}/></button>
     <button title="Дублировать · Ctrl/⌘ D" aria-label="Дублировать блок" onClick={() => action('duplicate')}><Copy size={15}/></button>
-    <button title="Удалить · Delete" aria-label="Удалить блок" onClick={() => action('delete')}><Trash2 size={15}/></button>
+    <button title="Удалить · Delete" aria-label="Удалить блок" onClick={() => action('delete')}><Trash2 size={15}/></button></>}
   </div>
 }

@@ -1,0 +1,11 @@
+/* Public export corrections. Keep source artwork and original navigation. */
+a.framer-text[href="https://www.framer.com?via=green13"],a.framer-text[href="https://framer.com/?via=green13"]{display:none!important}
+/* Unverified placeholder team cards are excluded until real roles and portraits are supplied. */
+.framer-kueih8[data-framer-name="Designers"]{display:none!important}
+.baev-form-status{margin:4px 0 0;color:#ddd;font:14px/1.55 Inter,sans-serif;white-space:normal;width:100%}
+.baev-form-status:empty{display:none}.baev-form-context{color:#aaa;font:13px/1.5 Inter,sans-serif;width:100%}
+.baev-form-status a{color:inherit;text-underline-offset:4px}
+:where(a,button,input,textarea,select):focus-visible{outline:2px solid currentColor;outline-offset:4px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+/* These three exported cards point to missing pages; show them again after publishing their content. */
+a[href$="/blog/pitch-deck-2026-ai"],a[href$="/blog/sales-deck-how"],a[href$="/blog/why-your-presentation-isnt-persuasive"]{display:none!important}
