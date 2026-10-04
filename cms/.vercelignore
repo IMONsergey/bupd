@@ -6,7 +6,8 @@ node_modules
 *.db
 *.db-*
 .backups
-media
+# Ignore uploaded files only; Studio has source folders named media too.
+/media/
 coverage
 playwright-report
 test-results
