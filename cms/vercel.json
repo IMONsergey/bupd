@@ -1,3 +1,6 @@
 {
-  "buildCommand": "npm run ci"
+  "buildCommand": "npm run ci",
+  "git": {
+    "deploymentEnabled": false
+  }
 }

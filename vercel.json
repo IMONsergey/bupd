@@ -10,5 +10,8 @@
       "source": "/_next/static/:path*",
       "destination": "https://baev-cms.vercel.app/_next/static/:path*"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": false
+  }
 }
