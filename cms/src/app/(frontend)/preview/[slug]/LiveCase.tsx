@@ -477,6 +477,8 @@ export default function LiveCase({
     [data.categories],
   )
 
+  const roleMatchesCategories=String(data.role||'').toLocaleLowerCase('ru').replace(/[·,\s]+/g,' ').trim()===categories.toLocaleLowerCase('ru').replace(/[·,\s]+/g,' ').trim()
+
   const articleSections=(data.blocks||[]).map((block:any,index:number)=>({title:block.title,index})).filter((item:any)=>item.title)
   const readingMinutes=Math.max(1,Math.ceil((data.blocks||[]).map((block:any)=>richTextToText(block.body)).join(' ').split(/\s+/).filter(Boolean).length/180))
   const embedded=!article&&data.bodyMode==='embed'
@@ -494,14 +496,14 @@ export default function LiveCase({
           <span className="article-rubric">{categories || 'Журнал'}</span>
           <CanvasText as="h1" path="title" value={data.title || 'Новая статья'}/>
           <CanvasText as="p" className="article-dek" path="summary" value={data.summary || (inCanvas?'Добавьте вступление к статье':'')}/>
-          <div className="article-byline"><CanvasText path="author" value={data.author || (inCanvas?'Имя автора':'BAEV')}/>{data.publishedAt && <time dateTime={data.publishedAt}>{new Date(data.publishedAt).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time>}<span>{readingMinutes} мин чтения</span></div>{!inCanvas&&articleSections.length>2&&<details className="article-toc"><summary>В этой статье · {articleSections.length} разделов</summary><ol>{articleSections.map((item:any)=><li key={item.index}><a href={'#section-'+(item.index+1)}>{item.title}</a></li>)}</ol></details>}
+          <div className="article-byline"><CanvasText path="author" value={data.author || (inCanvas?'Имя автора':'BAEV')}/>{data.publishedAt && <time dateTime={data.publishedAt}>{new Date(data.publishedAt).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'})}</time>}<span>{readingMinutes} мин чтения</span></div>{!inCanvas&&articleSections.length>2&&<details className="article-toc"><summary>Содержание · {articleSections.length}</summary><ol>{articleSections.map((item:any)=><li key={item.index}><a href={'#section-'+(item.index+1)}>{item.title}</a></li>)}</ol></details>}
           {(data.cover||inCanvas)&&<div className="article-cover"><Media value={data.cover} path="cover" priority/></div>}
         </header> : <aside className="case-project-rail">
           <CanvasText as="h1" path="title" value={data.title || 'Новый кейс'}/>
           <div className="case-project-rail__bottom">
             {(data.summary||inCanvas)&&<CanvasText as="p" path="summary" value={data.summary||'Добавьте описание проекта'}/>}
             <dl>
-              {data.role&&<div><dt>Роль BAEV</dt><dd>{data.role}</dd></div>}{data.audience&&<div><dt>Аудитория</dt><dd>{data.audience}</dd></div>}<div><dt>Категории</dt><dd>{categories || '—'}</dd></div>
+              {data.role&&<div><dt>Роль BAEV</dt><dd>{data.role}</dd></div>}{data.audience&&<div><dt>Аудитория</dt><dd>{data.audience}</dd></div>}{(!data.role||!roleMatchesCategories)&&<div><dt>Категории</dt><dd>{categories || '—'}</dd></div>}
               <div><dt>Клиент</dt><dd><CanvasText path="client" value={data.client||'—'}/></dd></div>
               <div><dt>Год</dt><dd>{data.year || '—'}</dd></div>
             </dl>
@@ -540,7 +542,7 @@ export default function LiveCase({
       {!inCanvas&&article&&<section className="case-next-step"><span>Посмотреть подход в деле</span><a href="/work" data-track="journal_to_case">Проекты BAEV <ArrowUpRight size={24}/></a></section>}
       {!inCanvas&&!article&&(embedded||!data.blocks?.some((block:any)=>block.blockType==='cta'))&&<section className="case-next-step"><span>Есть похожая задача?</span><a href={href('/contact')+'?project='+encodeURIComponent(data.title)}>Обсудить проект <ArrowUpRight size={24}/></a></section>}
       {!inCanvas&&!article&&related.length>0&&<section className="case-related"><h2>Другие проекты</h2><div>{related.map(project=><a key={project.id} href={'/work/'+project.slug}><Media value={project.cover}/><h3>{project.title}</h3><p>{(project.categories||[]).map((item:any)=>item.label).join(', ')}</p></a>)}</div></section>}
-      {!inCanvas&&<footer className="case-footer"><div><a href={href('/work')}>Проекты</a><a href={href('/about')}>О нас</a><a href={href('/contact')}>Связь</a><a href={'mailto:'+contactEmail}>{contactEmail}</a></div><a href={href('/')} className="case-footer__logo">BAEV®</a><p>BAEV Agency / Агентство БАЕВ / {new Date().getFullYear()}. Все права защищены</p></footer>}
+      {!inCanvas&&<footer className="case-footer"><div><a href={href('/work')}>Проекты</a><a href={href('/about')}>Агентство</a><a href={href('/contact')}>Обсудить задачу</a><a href={'mailto:'+contactEmail}>{contactEmail}</a></div><a href={href('/')} className="case-footer__logo">BAEV®</a><p>BAEV Agency / Агентство БАЕВ / {new Date().getFullYear()}. Все права защищены</p></footer>}
     </div>
   )
 }
