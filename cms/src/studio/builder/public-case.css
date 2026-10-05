@@ -50,3 +50,5 @@ body:has(.case-preview){overflow-x:clip}
 
 /* Journal follows a reading rhythm; case cover rules remain separate. */
 .article-toc{max-width:760px;margin:24px auto 32px;border-top:1px solid currentColor;border-bottom:1px solid currentColor;padding:16px 0;font-size:14px;text-align:left;opacity:.85}.article-toc summary{cursor:pointer;min-height:32px}.article-toc ol{padding-left:22px;display:grid;gap:10px}.article-toc a{color:inherit;text-underline-offset:4px}.case-preview--article .article-cover{max-height:440px;overflow:hidden}.case-preview--article .article-cover img{max-height:440px;object-fit:cover}.case-scene[id]{scroll-margin-top:96px}.case-preview--article .case-next-step{padding:70px 8%;background:var(--page-bg,#f1f0ed);color:var(--page-ink,#111)}
+/* Keep navigation readable over any cover without changing its full-bleed geometry. */
+.case-preview:not(.case-preview--article):not(.case-preview--canvas) .case-site-nav[data-scrolled=false]{mix-blend-mode:normal;color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.85),rgba(0,0,0,.72) 72%,rgba(0,0,0,0))}
