@@ -1,0 +1,2 @@
+'use client'
+export default function ErrorPage({reset}:{reset:()=>void}){return <div className="public-site"><main className="public-404"><span className="eyebrow">Не удалось загрузить страницу</span><h1>Попробуем<br/>ещё раз.</h1><p>Материалы временно недоступны. Ваши данные не потеряны.</p><button className="public-button" onClick={reset}>Повторить загрузку ↗</button><p><a href="/">На главную</a></p></main></div>}

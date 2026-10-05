@@ -13,6 +13,7 @@ export const SiteSettings: GlobalConfig = {
     update: contentAccess,
   },
   fields: [
+    {name:'publicContent',label:'Содержание публичных страниц',type:'json',access:{update:contentFieldAccess}},
     {
       type: 'tabs',
       tabs: [

@@ -1,3 +1,4 @@
+import {comparison,isolatedDatabaseURL,siteOrigin} from './lib/environment'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -21,7 +22,7 @@ import { SiteSettings } from './globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const postgresURLRaw = process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL
+const postgresURLRaw = isolatedDatabaseURL(process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL)
 const postgresURL = postgresURLRaw?.replace(/([?&])sslmode=require\b/, '$1sslmode=verify-full')
 const db = postgresURL
   ? postgresAdapter({
@@ -42,6 +43,7 @@ if (process.env.BLOB_READ_WRITE_TOKEN) {
   plugins.push(
     vercelBlobStorage({
       collections: { media: true },
+      addRandomSuffix: comparison,
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true,
     }),
@@ -49,6 +51,7 @@ if (process.env.BLOB_READ_WRITE_TOKEN) {
 }
 
 const allowedOrigins = [
+  siteOrigin(),
   process.env.NEXT_PUBLIC_SITE_URL,
   process.env.NEXT_PUBLIC_SERVER_URL,
   'http://localhost:3000',
@@ -186,7 +189,7 @@ export default buildConfig({
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'development-only-secret-change-me',
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001',
+  serverURL: comparison ? siteOrigin() : process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001',
   cors: allowedOrigins,
   csrf: allowedOrigins,
   typescript: {

@@ -1,5 +1,6 @@
+import {comparison} from '../lib/environment'
 import type { CollectionConfig } from 'payload'
-import { adminHiddenUnless, contentAccess } from '../access/roles'
+import { adminHiddenUnless, contentAccess, contentFieldAccess } from '../access/roles'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -16,7 +17,12 @@ export const Media: CollectionConfig = {
     update: contentAccess,
     delete: contentAccess,
   },
+  hooks: {
+    beforeDelete: [async ({req,id})=>{if(!comparison)return;const doc=await req.payload.findByID({collection:'media',id,req,depth:0,overrideAccess:true});if((doc as any).sourceProtected)throw new Error('Исходный файл используется текущим сайтом. В новой версии его нельзя удалить.');}],
+    beforeChange: [({req,originalDoc,operation})=>{if(comparison&&operation==='update'&&req.file&&originalDoc?.sourceProtected)throw new Error('Загрузите новый файл отдельно: исходный используется текущим сайтом.');}],
+  },
   fields: [
+    {name:'sourceProtected',label:'Исходный файл текущего сайта',type:'checkbox',defaultValue:false,access:{read:contentFieldAccess,create:()=>false,update:()=>false},admin:{readOnly:true}},
     {
       name: 'alt',
       label: 'Alt / описание',

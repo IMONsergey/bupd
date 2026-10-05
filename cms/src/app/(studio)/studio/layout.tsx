@@ -1,4 +1,5 @@
 import React from 'react'
+import {comparison} from '@/lib/environment'
 
 import { requireStudioUser } from '@/studio/lib/auth'
 import StudioShell from '@/studio/ui/StudioShell'
@@ -16,6 +17,7 @@ export default async function StudioLayout({ children }: { children: React.React
   return (
     <html lang="ru">
       <body>
+        {comparison&&<div className="studio-comparison-note">Новая версия · отдельные данные <a href="/">Открыть сайт ↗</a></div>}
         <StudioShell user={{
           id: user.id,
           email: 'email' in user ? String(user.email || '') : '',

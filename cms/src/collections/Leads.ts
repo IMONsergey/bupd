@@ -1,3 +1,5 @@
+import {createHash} from 'node:crypto'
+import {comparison} from '../lib/environment'
 import type { CollectionConfig } from 'payload'
 import { adminHiddenUnless, crmAccess } from '../access/roles'
 
@@ -53,7 +55,7 @@ export const Leads: CollectionConfig = {
 
         try {
           const settings = await req.payload.findGlobal({ slug: 'site-settings', req, overrideAccess: true })
-          if (settings.leadWebhookURL) {
+          if (settings.leadWebhookURL && !comparison) {
             await fetch(settings.leadWebhookURL, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -95,7 +97,19 @@ export const Leads: CollectionConfig = {
           return Response.json({ ok: false, error: 'name_and_contact_required' }, { status: 400 })
         }
 
-        const lead = await req.payload.create({
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !message) return Response.json({ok:false,error:'Укажите email и описание задачи.'},{status:400})
+        const submissionKey=clean(req.headers.get('Idempotency-Key')||body.submissionKey,80)
+        if(submissionKey&&!/^[a-zA-Z0-9-]{16,80}$/.test(submissionKey))return Response.json({ok:false,error:'invalid_submission_key'},{status:400})
+        const project=clean(body.project,200)
+        const submissionHash=createHash('sha256').update(JSON.stringify({name,email,phone,message,companyName,service,project})).digest('hex')
+        const duplicate=async()=>{
+          if(!submissionKey)return null
+          return (await req.payload.find({collection:'leads',overrideAccess:true,depth:0,limit:1,where:{submissionKey:{equals:submissionKey}}})).docs[0]
+        }
+        const existing=await duplicate()
+        if(existing)return Response.json({ok:existing.submissionHash===submissionHash},{status:existing.submissionHash===submissionHash?200:409})
+        try {
+        await req.payload.create({
           collection: 'leads',
           overrideAccess: true,
           data: {
@@ -103,7 +117,8 @@ export const Leads: CollectionConfig = {
             email,
             phone,
             companyName,
-            message,
+            message:project?message+'\n\nПроект на сайте: '+project:message,
+            submissionKey,submissionHash,
             source: 'site',
             service,
             status: 'new',
@@ -116,11 +131,14 @@ export const Leads: CollectionConfig = {
           },
         })
 
-        return Response.json({ ok: true, id: lead.id }, { status: 201 })
+        return Response.json({ ok: true }, { status: 201 })
+        } catch(error){const existing=await duplicate();if(existing)return Response.json({ok:existing.submissionHash===submissionHash},{status:existing.submissionHash===submissionHash?200:409});throw error}
       },
     },
   ],
   fields: [
+    {name:'submissionKey',type:'text',unique:true,index:true,admin:{hidden:true},access:{read:()=>false}},
+    {name:'submissionHash',type:'text',admin:{hidden:true},access:{read:()=>false}},
     {
       type: 'tabs',
       tabs: [

@@ -9,7 +9,7 @@ import { blockVariants, minimalBlockTypes } from './presets'
 import { BlockPreview } from './BlockPreview'
 
 type BlockMeta = { slug: string; title: string; description: string; group: string }
-const groups = [['minimal','Минималистичные'],['Media','Фото и видео'],['Narrative','Текст'],['Data','Детали'],['all','Все']] as const
+const groups = [['minimal','Основные'],['Media','Показать решение'],['Narrative','Дать контекст'],['Data','Подвести итог'],['all','Все']] as const
 
 export function BlockLibrary({ catalog, imageURL, afterLabel, onClose, onAdd }: {
   catalog: BlockMeta[]; imageURL?: string | null; afterLabel?: string

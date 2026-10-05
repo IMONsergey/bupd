@@ -75,6 +75,7 @@ export async function POST(request: Request) {
       title,
       slug,
       kind: 'project',
+      bodyMode:pagePresets.find(p=>p.id===templateSlug)?.bodyMode||'blocks',
       client: client || undefined,
       year,
       categories: categories.map((label) => ({ label })),

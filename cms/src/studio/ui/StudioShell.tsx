@@ -223,7 +223,7 @@ export default function StudioShell({
             <Search size={16}/><span>Поиск и команды</span><kbd>⌘K</kbd>
           </button>
           <div className="studio-topbar__meta">
-            <a href={process.env.NEXT_PUBLIC_SITE_URL||'/work'} target="_blank" rel="noopener noreferrer">Открыть сайт <ArrowUpRight size={15}/></a>
+            <a href="/" target="_blank" rel="noopener noreferrer">Открыть сайт <ArrowUpRight size={15}/></a>
           </div>
         </header>
         <motion.main

@@ -11,7 +11,7 @@ export type PublicationIssue = {
   blockIndex?: number
 }
 
-const contentKeys = [...caseEmbedKeys,'title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
+const contentKeys = [...caseEmbedKeys,'role','audience','portfolioOrder','title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','blocks']
 
 // Compare content, not version timestamps, row IDs or editorial workflow status.
 export function projectContentSignature(project: Record<string, any>): string {
@@ -73,7 +73,7 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
   for (const [field,label,detail] of [
     ['cover','Обложка','Добавьте обложку для карточки в портфолио.'],
     ['summary','Короткое описание','Объясните задачу и результат в нескольких предложениях.'],
-    ...(project.kind==='article' ? [['author','Автор','Укажите автора статьи.']] : [['client','Клиент','Укажите, для кого сделан проект.']]),
+    ...(project.kind==='article' ? [['author','Автор','Укажите автора статьи.']] : [['client','Клиент','Укажите, для кого сделан проект.'],['role','Роль BAEV','Коротко укажите вклад команды: посетителю важно понять, что сделали именно вы.']]),
   ]) if (!filled(project[field])) add({key:field,severity:'warning',label,detail,field})
   if (!filled(project.seoDescription) && !filled(project.summary)) add({key:'seoDescription',severity:'warning',label:'Описание в поиске',detail:'Без описания поисковик выберет текст страницы самостоятельно.',field:'seoDescription'})
   for(const field of ['cover','ogImage']){
@@ -84,4 +84,13 @@ export function publicationIssues(project: Record<string, any>, schemas: Record<
   if(String(project.seoDescription||project.summary||'').length>180)add({key:'seo-description-length',severity:'warning',label:'Длинное описание в поиске',detail:'Часть описания может не поместиться в результатах поиска.',field:'seoDescription'})
   if (project.noIndex) add({key:'noIndex',severity:'warning',label:'Скрыт от поисковиков',detail:'Страница будет доступна по ссылке, но индексация отключена.',field:'noIndex'})
   return issues
+}
+
+export function publicationChanges(previous:string,project:Record<string,any>):string[]{
+ let before:Record<string,any>;try{before=JSON.parse(previous)}catch{return []}
+ const after=JSON.parse(projectContentSignature(project)),labels:Record<string,string>={title:'Название',summary:'Описание',role:'Роль BAEV',audience:'Аудитория',client:'Клиент',year:'Год',author:'Автор',publishedAt:'Дата статьи',cover:'Обложка',ogImage:'Изображение для ссылки',categories:'Категории',featured:'Избранное',portfolioOrder:'Порядок в портфолио',pageBackground:'Фон',mediaRadius:'Скругление медиа',pageTheme:'Тема',bodyMode:'Способ показа кейса',embedURL:'Адрес внешнего кейса',embedHeight:'Высота iframe',embedMobileHeight:'Высота iframe на телефоне',embedAutoHeight:'Автоматическая высота',seoTitle:'SEO-заголовок',seoDescription:'SEO-описание',noIndex:'Индексация'}
+ return Object.keys(after).filter(key=>JSON.stringify(before[key])!==JSON.stringify(after[key])).map(key=>{
+  if(key==='blocks'){const a=before.blocks||[],b=after.blocks||[];const changed=b.filter((item:any,index:number)=>JSON.stringify(item)!==JSON.stringify(a[index])).length;return `Содержание: ${changed} изменённых блоков${b.length!==a.length?`, количество ${a.length} → ${b.length}`:''}`}
+  return labels[key]||key
+ })
 }

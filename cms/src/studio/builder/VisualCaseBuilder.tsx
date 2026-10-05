@@ -56,7 +56,7 @@ import { PageAppearance } from './PageAppearance'
 import { BlockLibrary } from './BlockLibrary'
 import { BlockPreview } from './BlockPreview'
 import { PublishDialog } from './PublishDialog'
-import { publicationIssues, projectContentSignature, type PublicationIssue } from './publication'
+import { publicationIssues, projectContentSignature,publicationChanges, type PublicationIssue } from './publication'
 import MediaPicker from '@/studio/media/MediaPicker'
 import type { MediaItem } from '@/studio/media/types'
 
@@ -152,7 +152,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
   const [blocks,setBlocks]=useState<AnyBlock[]>(()=>((project.blocks||[]) as AnyBlock[]).map((b,index)=>({...b,id:b.id||'local-'+index+'-'+Date.now()})))
   const [selected,setSelected]=useState(-1)
   const [details,setDetails]=useState(false)
-  const [metadata,setMetadata]=useState(()=>Object.fromEntries([...caseEmbedKeys,'title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:['year','mediaRadius'].includes(key)?null:key==='workflowStatus'?'draft':key==='bodyMode'?'blocks':key==='embedHeight'?6000:key==='embedMobileHeight'?9000:key==='embedAutoHeight'?false:'')])))
+  const [metadata,setMetadata]=useState(()=>Object.fromEntries([...caseEmbedKeys,'role','audience','portfolioOrder','title','author','publishedAt','client','year','summary','categories','cover','ogImage','pageBackground','mediaRadius','pageTheme','accent','featured','seoTitle','seoDescription','noIndex','workflowStatus'].map(key=>[key,project[key]??(key==='categories'?[]:['featured','noIndex'].includes(key)?false:['year','mediaRadius','portfolioOrder'].includes(key)?null:key==='workflowStatus'?'draft':key==='bodyMode'?'blocks':key==='embedHeight'?6000:key==='embedMobileHeight'?9000:key==='embedAutoHeight'?false:'')])))
   const [error,setError]=useState('')
   const [undoStack,setUndoStack]=useState<any[]>([])
   const [redoStack,setRedoStack]=useState<any[]>([])
@@ -304,7 +304,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
       try{
         const response=await fetch(apiBase+project.id,{
           method:'PATCH',credentials:'include',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(serializeDocument({...snapshot.metadata,blocks:snapshot.blocks})),
+          body:JSON.stringify({...serializeDocument({...snapshot.metadata,blocks:snapshot.blocks}),expectedUpdatedAt:serverUpdatedAt.current}),
         })
         const data=await response.json().catch(()=>({}))
         if(response.ok){
@@ -409,7 +409,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     setRestoring(versionId);setHistoryError('')
     if(!await save()){setRestoring(null);setHistoryError('Сначала сохраните текущие изменения.');return}
     try {
-    const response=await fetch(apiBase+project.id+'/versions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({versionId})})
+    const response=await fetch(apiBase+project.id+'/versions',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({versionId,expectedUpdatedAt:serverUpdatedAt.current})})
     const data=await response.json().catch(()=>({}))
     if(!response.ok){setHistoryError(data?.error||'Не удалось восстановить версию');setRestoring(null);return}
     location.reload()
@@ -426,9 +426,10 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     const savedOk=await save()
     if(!savedOk){setPublishing(false);setPublicationError('Черновик не сохранён. Проверьте соединение и повторите публикацию.');return}
     try {
-    const response=await fetch(apiBase+project.id+'/publish',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action})})
+    const response=await fetch(apiBase+project.id+'/publish',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,expectedUpdatedAt:serverUpdatedAt.current})})
     const data=await response.json().catch(()=>({}))
     if(response.ok){
+      serverUpdatedAt.current=data.updatedAt||serverUpdatedAt.current
       const isPublished=data.status==='published'
       setPublished(isPublished);setError('');setPublishAction(null)
       setPublishedSignature(isPublished?projectContentSignature({...latest.current.metadata,blocks:latest.current.blocks}):'')
@@ -605,7 +606,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
         <button className="quiet-panel-close" aria-label="Закрыть настройки" onClick={()=>setWorkspaceTab('canvas')}><X size={16}/></button>
         {workspaceTab==='design'?<div className="builder-inspector"><header><strong>Оформление страницы</strong></header><PageAppearance background={metadata.pageBackground||''} radius={metadata.mediaRadius===''?null:metadata.mediaRadius} onChange={updateMetadata}/></div>:<>
         {details?<div className="builder-inspector"><header><strong>{article?'Настройки статьи':'Настройки кейса'}</strong></header><div className="builder-inspector__fields">{!article&&<CaseBodySettings value={metadata} onChange={updateMetadata} onCover={openCover}/>} {['main','media','publication'].map(section=>{
-          const fields=[{name:'title',label:'Название',type:'text',required:true},...(article?[{name:'author',label:'Автор',type:'text'},{name:'publishedAt',label:'Дата статьи',type:'date'}]:[{name:'client',label:'Клиент',type:'text'},{name:'year',label:'Год',type:'number',min:2000,max:2100}]),{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:article?'Обложка':'Обложка в каталоге / постер видео',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}]
+          const fields=[{name:'title',label:'Название',type:'text',required:true},...(article?[{name:'author',label:'Автор',type:'text'},{name:'publishedAt',label:'Дата статьи',type:'date'}]:[{name:'client',label:'Клиент',type:'text'},{name:'role',label:'Роль BAEV',type:'text'},{name:'audience',label:'Аудитория',type:'text'},{name:'portfolioOrder',label:'Порядок в портфолио (меньше — раньше)',type:'number',min:0},{name:'year',label:'Год',type:'number',min:2000,max:2100}]),{name:'summary',label:'Описание',type:'textarea'},{name:'cover',label:article?'Обложка':'Обложка в каталоге / постер видео',type:'upload'},{name:'ogImage',label:'Изображение для ссылки (если отличается от обложки)',type:'upload'},{name:'categories',label:'Категории',type:'array',maxRows:6,fields:[{name:'label',label:'Название',type:'text',required:true}]},{name:'featured',label:'В избранном',type:'checkbox'},{name:'workflowStatus',label:'Этап работы',type:'select',options:[{value:'draft',label:'В работе'},{value:'review',label:'На проверке'},{value:'ready',label:'Готово'},{value:'paused',label:'На паузе'}]},{name:'seoTitle',label:'Заголовок в поиске',type:'text'},{name:'seoDescription',label:'Описание в поиске',type:'textarea'},{name:'noIndex',label:'Скрыть от поисковиков',type:'checkbox'}]
           const extra=new Set(['ogImage','seoTitle','seoDescription','noIndex','featured','workflowStatus'])
           const mediaFields=new Set(['cover','categories'])
           const content=fields.filter(field=>(extra.has(field.name)?'publication':mediaFields.has(field.name)?'media':'main')===section).map(field=><div key={field.name} data-editor-field={field.name}><FieldEditor field={field as EditorField} value={metadata[field.name]} media={media} projects={projects} blobEnabled={blobEnabled} onChange={value=>updateMetadata(field.name,value)}/></div>)
@@ -616,7 +617,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
     </div>
 
     <AnimatePresence>{canvasMedia&&<MediaPicker current={resolveMedia(canvasMediaValue,media)} blobEnabled={blobEnabled} label="Изображение на странице" onClose={()=>setCanvasMedia(null)} onChoose={chooseCanvasMedia}/>}</AnimatePresence>
-    <AnimatePresence>{publishAction&&<PublishDialog project={{...metadata,slug:project.slug,blocks,kind}} published={published} action={publishAction} busy={publishing} error={publicationError} issues={issues} onClose={()=>{if(!publishing)setPublishAction(null)}} onConfirm={()=>void publish()} onFix={fixIssue} onPreview={()=>void preview()}/>}</AnimatePresence>
+    <AnimatePresence>{publishAction&&<PublishDialog changes={published?publicationChanges(publishedSignature,{...metadata,blocks}):[]} project={{...metadata,slug:project.slug,blocks,kind}} published={published} action={publishAction} busy={publishing} error={publicationError} issues={issues} onClose={()=>{if(!publishing)setPublishAction(null)}} onConfirm={()=>void publish()} onFix={fixIssue} onPreview={()=>void preview()}/>}</AnimatePresence>
 
     <AnimatePresence>
       {library&&!embedded&&<BlockLibrary catalog={lockedCover?catalog.filter(item=>item.slug!=='caseHero'):catalog} imageURL={resolveMedia(selectedBlock?.media||metadata.cover,media)?.sizes?.card?.url||resolveMedia(selectedBlock?.media||metadata.cover,media)?.url} afterLabel={(insertAt??(selected<0?blocks.length:selected+1))>0?meta[blocks[(insertAt??(selected<0?blocks.length:selected+1))-1]?.blockType]?.title:undefined} onClose={()=>{setLibrary(false);setInsertAt(null)}} onAdd={(slug,variant)=>{add(slug,variant);setWorkspaceTab('canvas')}}/>}
@@ -631,7 +632,7 @@ export default function VisualCaseBuilder({kind='case',project,catalog,media=[],
             {!versionsLoading&&historyError&&<div className="builder-history__error">{historyError}</div>}
             {!versionsLoading&&!historyError&&!versions.length&&<div className="builder-history__empty">Сохранённых версий пока нет.</div>}
             {!versionsLoading&&versions.map((version,index)=><article key={version.id}>
-              <div><span>{String(index+1).padStart(2,'0')}</span><strong>{new Date(version.createdAt).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</strong><small>{version.latest?'Последняя · ':''}{version.autosave?'Автосохранение':'Сохранённая версия'}{version.status?' · '+version.status:''}</small></div>
+              <div><span>{String(index+1).padStart(2,'0')}</span><strong>{new Date(version.createdAt).toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</strong><small>{version.author?version.author+' · ':''}{version.latest?'Последняя · ':''}{version.autosave?'Автосохранение':'Сохранённая версия'}{version.status?' · '+version.status:''}</small></div>
               <button disabled={restoring===version.id} onClick={()=>void restoreVersion(version.id)}>{restoring===version.id?'Восстанавливаем…':'Восстановить'}</button>
             </article>)}
           </div>

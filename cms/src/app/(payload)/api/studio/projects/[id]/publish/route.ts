@@ -1,3 +1,4 @@
+import {withDocumentLock,conflict,versionMatches} from '@/studio/lib/documentLock'
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -25,6 +26,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   }
 
   try {
+  return await withDocumentLock(payload,'projects',id,async()=>{
+  const current=await payload.findByID({collection:'projects',id,draft:true,depth:0,overrideAccess:true})
+  if(!versionMatches(body.expectedUpdatedAt,current.updatedAt))return conflict()
+
   if (action === 'publish') {
     const latest = await payload.findByID({
       collection: 'projects',
@@ -46,6 +51,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     data.workflowStatus = 'ready'
   }
 
+  data.lastEditedBy=user?.name||user?.email||'Редактор'
   const doc = await payload.update({
     collection: 'projects',
     id,
@@ -53,6 +59,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     data: data as any,
   })
 
-  return Response.json({ ok: true, status: doc._status, id: doc.id })
+  return Response.json({ ok: true, status: doc._status, id: doc.id, updatedAt:doc.updatedAt })
+  })
   } catch(error) {return studioError(error)}
 }

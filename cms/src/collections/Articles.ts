@@ -19,6 +19,7 @@ export const Articles: CollectionConfig = {
   hooks: { beforeValidate: [({ data }) => data ? ensureSlug(data) : data] },
   versions: { maxPerDoc: 50, drafts: { autosave: { interval: 2500 }, validate: false } },
   fields: [
+    { name: 'lastEditedBy', label: 'Последний редактор', type: 'text', access: {read: contentFieldAccess}, admin: {readOnly:true} },
     { name: 'title', label: 'Название статьи', type: 'text', required: true },
     { name: 'slug', label: 'Адрес', type: 'text', required: true, unique: true, index: true },
     { name: 'author', label: 'Автор', type: 'text' },

@@ -159,6 +159,7 @@ export interface UserAuthOperations {
  */
 export interface Project {
   id: number;
+  lastEditedBy?: string | null;
   workflowStatus?: ('draft' | 'review' | 'ready' | 'paused') | null;
   owner?: (number | null) | User;
   deadline?: string | null;
@@ -169,6 +170,9 @@ export interface Project {
    */
   slug: string;
   featured?: boolean | null;
+  portfolioOrder?: number | null;
+  role?: string | null;
+  audience?: string | null;
   client?: string | null;
   year?: number | null;
   categories?:
@@ -716,6 +720,7 @@ export interface User {
  */
 export interface Media {
   id: number;
+  sourceProtected?: boolean | null;
   /**
    * Коротко опишите изображение — используется для accessibility и SEO.
    */
@@ -728,7 +733,6 @@ export interface Media {
       }[]
     | null;
   credit?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -781,6 +785,7 @@ export interface Media {
  */
 export interface Article {
   id: number;
+  lastEditedBy?: string | null;
   title: string;
   slug: string;
   author?: string | null;
@@ -1508,6 +1513,8 @@ export interface CaseTemplate {
  */
 export interface Lead {
   id: number;
+  submissionKey?: string | null;
+  submissionHash?: string | null;
   name: string;
   email?: string | null;
   phone?: string | null;
@@ -1783,6 +1790,7 @@ export interface PayloadMigration {
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
+  lastEditedBy?: T;
   workflowStatus?: T;
   owner?: T;
   deadline?: T;
@@ -1790,6 +1798,9 @@ export interface ProjectsSelect<T extends boolean = true> {
   kind?: T;
   slug?: T;
   featured?: T;
+  portfolioOrder?: T;
+  role?: T;
+  audience?: T;
   client?: T;
   year?: T;
   categories?:
@@ -2301,6 +2312,7 @@ export interface ProjectsSelect<T extends boolean = true> {
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
+  lastEditedBy?: T;
   title?: T;
   slug?: T;
   author?: T;
@@ -3008,6 +3020,7 @@ export interface CaseTemplatesSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  sourceProtected?: T;
   alt?: T;
   kind?: T;
   tags?:
@@ -3017,7 +3030,6 @@ export interface MediaSelect<T extends boolean = true> {
         id?: T;
       };
   credit?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -3079,6 +3091,8 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "leads_select".
  */
 export interface LeadsSelect<T extends boolean = true> {
+  submissionKey?: T;
+  submissionHash?: T;
   name?: T;
   email?: T;
   phone?: T;
@@ -3256,6 +3270,15 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface SiteSetting {
   id: number;
+  publicContent?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   siteName?: string | null;
   siteURL?: string | null;
   defaultDescription?: string | null;
@@ -3276,6 +3299,7 @@ export interface SiteSetting {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  publicContent?: T;
   siteName?: T;
   siteURL?: T;
   defaultDescription?: T;

@@ -1,3 +1,4 @@
+import * as migration_20261005_070000_baev_comparison_media from './20261005_070000_baev_comparison_media';
 import * as migration_20261001_060628_baev_initial_schema from './20261001_060628_baev_initial_schema';
 import * as migration_20261001_065757_baev_editorial_workflow from './20261001_065757_baev_editorial_workflow';
 import * as migration_20261001_071316_baev_templates_and_workflow_v2 from './20261001_071316_baev_templates_and_workflow_v2';
@@ -5,6 +6,7 @@ import * as migration_20261004_124623_baev_visual_blog from './20261004_124623_b
 import * as migration_20261004_133854_baev_quiet_builder from './20261004_133854_baev_quiet_builder';
 import * as migration_20261004_142135_baev_block_spacing from './20261004_142135_baev_block_spacing';
 import * as migration_20261004_180631_baev_external_case from './20261004_180631_baev_external_case';
+import * as migration_20261005_033347_baev_public_v3 from './20261005_033347_baev_public_v3';
 
 export const migrations = [
   {
@@ -40,6 +42,12 @@ export const migrations = [
   {
     up: migration_20261004_180631_baev_external_case.up,
     down: migration_20261004_180631_baev_external_case.down,
-    name: '20261004_180631_baev_external_case'
+    name: '20261004_180631_baev_external_case',
   },
+  {
+    up: migration_20261005_033347_baev_public_v3.up,
+    down: migration_20261005_033347_baev_public_v3.down,
+    name: '20261005_033347_baev_public_v3'
+  },
+  {up:migration_20261005_070000_baev_comparison_media.up,down:migration_20261005_070000_baev_comparison_media.down,name:'20261005_070000_baev_comparison_media'},
 ];

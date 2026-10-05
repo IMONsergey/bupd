@@ -56,6 +56,7 @@ export const Projects: CollectionConfig = {
     },
   },
   fields: [
+    { name: 'lastEditedBy', label: 'Последний редактор', type: 'text', access: {read: contentFieldAccess}, admin: {readOnly:true} },
     {
       name: 'readiness',
       type: 'ui',
@@ -123,11 +124,14 @@ export const Projects: CollectionConfig = {
                   admin: { description: 'Создаётся из названия автоматически, можно изменить вручную.' },
                 },
                 { name: 'featured', label: 'Показывать в избранных', type: 'checkbox', defaultValue: false },
+                { name: 'portfolioOrder', label: 'Порядок в портфолио', type: 'number', defaultValue: 100, min: 0 },
               ],
             },
             {
               type: 'row',
               fields: [
+                { name: 'role', label: 'Роль BAEV', type: 'text' },
+                { name: 'audience', label: 'Аудитория', type: 'text' },
                 { name: 'client', label: 'Клиент', type: 'text' },
                 { name: 'year', label: 'Год', type: 'number', min: 2000, max: 2100 },
               ],

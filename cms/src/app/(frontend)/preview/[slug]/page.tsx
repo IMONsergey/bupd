@@ -1,3 +1,4 @@
+import {siteOrigin} from '@/lib/environment'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
@@ -43,7 +44,7 @@ export default async function CasePreviewPage({
     blocks: [],
   }
 
-  const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001'
+  const serverURL = siteOrigin()
 
-  return <LiveCase initialData={initialData as any} serverURL={serverURL} siteURL={process.env.NEXT_PUBLIC_SITE_URL||'https://baev-case-lab.vercel.app'} />
+  return <LiveCase initialData={initialData as any} serverURL={serverURL} siteURL={''} />
 }

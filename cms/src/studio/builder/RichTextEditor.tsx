@@ -10,7 +10,7 @@ import { OnChangePlugin } from '@payloadcms/richtext-lexical/lexical/react/Lexic
 import { HistoryPlugin } from '@payloadcms/richtext-lexical/lexical/react/LexicalHistoryPlugin'
 import { ListPlugin } from '@payloadcms/richtext-lexical/lexical/react/LexicalListPlugin'
 import { LexicalErrorBoundary } from '@payloadcms/richtext-lexical/lexical/react/LexicalErrorBoundary'
-import { $getSelection, $isRangeSelection, $isTextNode, $createParagraphNode, FORMAT_TEXT_COMMAND, type TextFormatType } from '@payloadcms/richtext-lexical/lexical'
+import { $getSelection, $isRangeSelection, $isTextNode, $createParagraphNode, FORMAT_TEXT_COMMAND, PASTE_COMMAND, COMMAND_PRIORITY_HIGH, type TextFormatType } from '@payloadcms/richtext-lexical/lexical'
 import { HeadingNode, QuoteNode, $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@payloadcms/richtext-lexical/lexical/rich-text'
 import { ListNode, ListItemNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND } from '@payloadcms/richtext-lexical/lexical/list'
 import { $setBlocksType } from '@payloadcms/richtext-lexical/lexical/selection'
@@ -71,6 +71,16 @@ function Controls() {
   </div>
 }
 
+function CleanPaste(){
+ const [editor]=useLexicalComposerContext()
+ useEffect(()=>editor.registerCommand(PASTE_COMMAND,event=>{
+   const data=event&&'clipboardData' in event?event.clipboardData:null
+   if(!data)return false
+   const text=data.getData('text/plain');if(!text)return false
+   event.preventDefault();const selection=$getSelection();if($isRangeSelection(selection))selection.insertRawText(text);return true
+ },COMMAND_PRIORITY_HIGH),[editor]);return null
+}
+
 function Sync({ value, lastRef }: { value: any; lastRef: React.RefObject<string> }) {
   const [editor] = useLexicalComposerContext()
   useEffect(() => {
@@ -87,7 +97,7 @@ export default function RichTextEditor({ value, onChange, label = 'Текст', 
   const lastRef = useRef(initial.current)
   return <div className={'rich-editor ' + (inline ? 'rich-editor--inline' : '')}>
     <LexicalComposer initialConfig={{ namespace: 'BAEV', editorState: initial.current, nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, LinkNode, AutoLinkNode, HorizontalRuleNode], theme: { text: { bold: 'rich-bold', italic: 'rich-italic', underline: 'rich-underline', strikethrough: 'rich-strike' }, link: 'rich-link' }, onError: error => { throw error } }}>
-      <Controls/>
+      <Controls/><CleanPaste/>
       <RichTextPlugin contentEditable={<ContentEditable className="rich-editor__content" aria-label={label}/>} ErrorBoundary={LexicalErrorBoundary}/>
       <HistoryPlugin/><ListPlugin/>
       <Sync value={value} lastRef={lastRef}/>

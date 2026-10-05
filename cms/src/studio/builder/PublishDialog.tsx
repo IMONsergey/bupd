@@ -7,8 +7,8 @@ import { useDialogFocus } from '@/studio/ui/useDialogFocus'
 import { PublicationPreview } from './PublicationPreview'
 import type { PublicationIssue } from './publication'
 
-export function PublishDialog({project,published,action,busy,error,issues,onClose,onConfirm,onFix,onPreview}:{
-  project:Record<string,any>;published:boolean;action:'publish'|'unpublish';busy:boolean;error:string;issues:PublicationIssue[]
+export function PublishDialog({changes=[],project,published,action,busy,error,issues,onClose,onConfirm,onFix,onPreview}:{
+  changes?:string[];project:Record<string,any>;published:boolean;action:'publish'|'unpublish';busy:boolean;error:string;issues:PublicationIssue[]
   onClose:()=>void;onConfirm:()=>void;onFix:(issue:PublicationIssue)=>void;onPreview:()=>void
 }) {
   const ref=useDialogFocus(true,()=>{if(!busy)onClose()})
@@ -23,7 +23,7 @@ export function PublishDialog({project,published,action,busy,error,issues,onClos
           <div className="publish-status"><StudioIcon name={errors.length?'CircleHelp':'Check'} size={22}/><div><strong>{errors.length?'Нужно исправить перед публикацией':'Обязательные поля заполнены'}</strong><span>{errors.length?`${errors.length} замечаний. Нажмите на строку, чтобы исправить.`:published?'Посетители увидят текущую версию страницы после публикации.':'После публикации страница станет доступна посетителям.'}</span></div></div>
           {errors.length>0&&<div className="publish-issues" aria-label="Обязательные исправления">{errors.map(issue=><button key={issue.key} onClick={()=>onFix(issue)}><span className="publish-issue-mark is-error"><X size={13}/></span><div><strong>{issue.label}</strong><span>{issue.detail}</span></div><ChevronRight size={16}/></button>)}</div>}
           {warnings.length>0&&<details className="publish-recommendations"><summary>Рекомендации · {warnings.length}<span>Необязательно</span></summary><div className="publish-issues">{warnings.map(issue=><button key={issue.key} onClick={()=>onFix(issue)}><span className="publish-issue-mark"><StudioIcon name="CircleHelp" size={14}/></span><div><strong>{issue.label}</strong><span>{issue.detail}</span></div><ChevronRight size={16}/></button>)}</div></details>}
-          <PublicationPreview project={project} onFix={onFix}/>
+          <details className="publish-recommendations" open={changes.length>0}><summary>Что изменится · {changes.length}</summary><ul>{changes.map(change=><li key={change}>{change}</li>)}</ul>{!changes.length&&<p>Новая страница или нет отличий от опубликованной версии.</p>}</details><PublicationPreview project={project} onFix={onFix}/>
           <p className="publish-dialog__note"><Check size={14}/> Изменения сохраняются как черновик. Публикация обновляет страницу на сайте.</p>
         </>}
         {error&&<p className="studio-inline-error" role="alert">{error}</p>}

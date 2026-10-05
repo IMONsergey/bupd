@@ -1,3 +1,4 @@
+import {withDocumentLock,conflict,versionMatches} from '@/studio/lib/documentLock'
 import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
@@ -6,7 +7,7 @@ import { studioError } from '@/studio/lib/apiError'
 
 const allowed = new Set([
   ...caseEmbedKeys,
-  'title','client','year','summary','workflowStatus','deadline',
+  'role','audience','portfolioOrder','title','client','year','summary','workflowStatus','deadline',
   'pageBackground','mediaRadius','pageTheme','accent','featured','blocks','categories','cover','ogImage',
   'seoTitle','seoDescription','canonicalURL','noIndex','sourceURL','internalNotes',
 ])
@@ -27,6 +28,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 
   try {
+  return await withDocumentLock(payload,'projects',id,async()=>{
+  const latest=await payload.findByID({collection:'projects',id,draft:true,depth:0,overrideAccess:true})
+  if(!versionMatches(body.expectedUpdatedAt,latest.updatedAt))return conflict()
+  data.lastEditedBy=user?.name||user?.email||'Редактор'
   const doc = await payload.update({
     collection:'projects',
     id,
@@ -36,5 +41,6 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   })
 
   return Response.json({ ok:true, id:doc.id, updatedAt:doc.updatedAt })
+  })
   } catch(error) {return studioError(error)}
 }

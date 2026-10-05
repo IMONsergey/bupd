@@ -45,7 +45,7 @@ export default function CasesClient({items,templates,kind='case'}:{items:CaseIte
   const listURL=article?'/studio/blog/':'/studio/cases/'
   const previewPath=article?'/preview-blog/':'/preview/'
   const publicPath=article?'/blog/':'/work/'
-  const presets=pagePresets.filter(item=>item.kind===kind)
+  const presets=pagePresets.filter(item=>item.kind===kind&&(kind==='article'||['baev-conference','baev-presentation','baev-system','baev-external'].includes(item.id)))
   const router=useRouter()
   const preferenceKey='studio:catalog:'+kind
   const draftKey='studio:create:'+kind

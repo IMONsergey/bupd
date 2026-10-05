@@ -37,7 +37,7 @@ Object.assign(blockDefaults, {
 
 blockDefaults.articleText = { blockType: 'articleText', title: 'Название раздела', body: textToRichText('Раскройте одну мысль. Добавьте примеры, факты и выводы.'), width: 'reading', theme: 'light' }
 
-export type PagePreset = { id: string; kind: 'case' | 'article'; title: string; description: string; blocks: Record<string, any>[] }
+export type PagePreset = { id: string; kind: 'case' | 'article'; title: string; description: string; bodyMode?: 'blocks'|'embed'; blocks: Record<string, any>[] }
 const block = (type: string, values: Record<string, any> = {}) => ({ ...blockDefaults[type], ...values })
 const hero = () => block('caseHero', { title: '', dek: '' })
 const idea = (title: string) => block('manifesto', { kicker: title, text: 'Опишите '+title.toLowerCase()+' проекта.', size: 'l' })
@@ -46,6 +46,10 @@ const text = (title: string) => block('articleText', { title })
 const contact = () => block('cta')
 
 export const pagePresets: PagePreset[] = [
+ {id:'baev-conference',kind:'case',title:'Конференция',description:'Задача, визуальная идея, сцена и детали.',blocks:[hero(),block('textColumns',{items:[{title:'Задача',body:''},{title:'Роль BAEV',body:''}]}),photo(),block('mediaGrid'),block('editorialText',{title:'Решение'}),block('credits')]},
+ {id:'baev-presentation',kind:'case',title:'Презентация',description:'От ключевой мысли к структуре и слайдам.',blocks:[hero(),block('editorialText',{title:'Задача'}),block('textColumns',{items:[{title:'Ключевая мысль',body:''},{title:'Наш подход',body:''}]}),block('mediaFrame'),block('mediaGrid'),block('editorialText',{title:'Что создано'})]},
+ {id:'baev-system',kind:'case',title:'Визуальная система',description:'Идея, принципы, применение и команда.',blocks:[hero(),block('editorialText',{title:'Идея'}),photo(),block('mediaGrid'),block('textMedia',{title:'Как работает система'}),block('credits')]},
+ {id:'baev-external',kind:'case',title:'Готовый кейс по ссылке',description:'Наша обложка и информация. Внутри — внешняя страница.',bodyMode:'embed',blocks:[hero()]},
   {id:'baev-minimal',kind:'case',title:'Минималистичный',description:'Спокойный текст, большие изображения и ровная сетка.',blocks:[hero(),block('textColumns'),block('mediaFrame'),block('mediaGrid'),block('editorialText',{title:'Результат'}),block('projectFacts')]},
   { id: 'baev-brand', kind: 'case', title: 'Брендинг', description: 'От задачи и идеи — к системе и её применению.', blocks: [hero(), idea('Задачу'), idea('Идею'), photo(), block('splitMedia'), photo(), block('credits'), contact()] },
   { id: 'baev-digital', kind: 'case', title: 'Сайт / digital', description: 'Контекст, решение, экраны и результат.', blocks: [hero(), idea('Задачу'), block('textMedia', { title: 'Решение', body: textToRichText('Как устроен продукт и почему выбрано это решение.') }), block('deviceShowcase', { device: 'browser' }), block('splitMedia'), block('metrics', { items: [{ value: '', label: 'Результат', note: 'Добавьте подтверждённые данные' }] }), contact()] },

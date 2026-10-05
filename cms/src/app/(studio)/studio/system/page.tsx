@@ -1,4 +1,5 @@
 import React from 'react'
+import PublicContentEditor from '@/studio/system/PublicContentEditor'
 import { requireAdminUser } from '@/studio/lib/auth'
 import SiteSettingsEditor from '@/studio/system/SiteSettingsEditor'
 
@@ -10,7 +11,7 @@ export default async function SystemPage(){
   ])
   return <>
     <section className="studio-page-head"><div className="studio-page-head__copy"><span className="studio-eyebrow">BAEV / system</span><h1>Настройки</h1><p>Контакты, параметры сайта и доступ команды.</p></div></section>
-    <SiteSettingsEditor settings={settings}/>
+    <SiteSettingsEditor settings={settings}/><PublicContentEditor initial={settings.publicContent}/>
     <section className="studio-grid studio-grid--2">
       <article className="studio-card"><header className="studio-card__head"><strong>Проект</strong></header><div className="system-summary"><div><span>Название</span><strong>{settings.siteName||'BAEV'}</strong></div><div><span>Адрес сайта</span><strong>{settings.siteURL||'—'}</strong></div><div><span>Email</span><strong>{settings.email||'—'}</strong></div><div><span>Метрика</span><strong>{settings.analyticsId||'—'}</strong></div></div></article>
       <article className="studio-card"><header className="studio-card__head"><strong>Команда и роли</strong><span>{users.totalDocs}</span></header><div className="studio-list">{users.docs.map((user:any)=><div className="system-user" key={user.id}><div className="studio-user__avatar">{String(user.name||user.email||'B').slice(0,1).toUpperCase()}</div><div><strong>{user.name||user.email}</strong><span>{user.email}</span></div><i className="studio-chip">{{admin:'Администратор',editor:'Редактор',sales:'Продажи'}[String(user.role)]||user.role}</i></div>)}</div></article>

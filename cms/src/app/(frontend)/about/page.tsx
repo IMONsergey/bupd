@@ -1,0 +1,9 @@
+import {siteOrigin} from '@/lib/environment'
+import Link from 'next/link'
+import {SiteShell,SectionTitle} from '@/public/SiteChrome'
+import Process from '@/public/Process'
+import {siteSettings,publicContent,portfolio} from '@/lib/publicSite'
+import ProjectCard from '@/public/ProjectCard'
+export const dynamic='force-dynamic'
+export const metadata={alternates:{canonical:siteOrigin()+'/about'},title:'Агентство — BAEV',description:'Содержание, сценарий и дизайн. Как BAEV работает над визуальными коммуникациями.'}
+export default async function AboutPage(){const [settings,projects]=await Promise.all([siteSettings(),portfolio()]);const content=publicContent(settings);return <SiteShell email={settings.email||undefined}><main id="main"><header className="page-intro about-intro"><span className="eyebrow">О подходе BAEV</span><h1>Сначала смысл.<br/><span>Затем форма.</span></h1><p>{content.about}</p></header><section className="public-section"><SectionTitle number="01 / Процесс" title="Ясность на каждом этапе."/><Process items={content.process}/></section><section className="public-section about-responsibility"><span className="eyebrow">02 / Вместе с вашей командой</span><h2>Одна задача.<br/>Общий язык.</h2><div><p>Можем подключиться к отдельному этапу или пройти путь от исходного материала до готовой визуальной системы. Состав работы и форматы результата определяем по задаче.</p><p>В начале обсуждаем аудиторию, сроки, доступные материалы и участников согласования. По ходу проекта сверяем содержание и визуальное решение с этой рамкой.</p><Link className="public-text-link" href="/contact">Расскажите, что нужно вам ↗</Link></div></section>{projects.length>0&&<section className="public-section"><SectionTitle number="03 / В деле" title="Наш подход — в проектах."><Link href="/work">Все работы ↗</Link></SectionTitle><div className="portfolio-grid">{projects.slice(0,2).map(p=><ProjectCard key={p.id} project={p}/>)}</div></section>}</main></SiteShell>}
