@@ -1,86 +1,67 @@
 <!doctype html>
-<html lang="ru" class="no-js">
+<html lang="ru" class="js-pending">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080808">
-  <meta name="color-scheme" content="dark">
-  <meta name="description" content="Расскажите команде BAEV о своей задаче. Обсудим презентацию, публичную коммуникацию, конференцию, стратегический материал или брендинг.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ecdbd6">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Связаться с BAEV и обсудить презентацию, мероприятие или визуальную коммуникацию.">
   <meta property="og:type" content="website">
-  <meta property="og:locale" content="ru_RU">
-  <meta property="og:title" content="Связаться с BAEV — Обсудить проект">
-  <meta property="og:description" content="Собираем сложные идеи в ясную коммуникацию для бизнеса, руководителей и команд.">
+  <meta property="og:title" content="BAEV Studio — Обсудить проект">
+  <meta property="og:description" content="Связаться с BAEV и обсудить презентацию, мероприятие или визуальную коммуникацию.">
   <meta property="og:image" content="https://baev-case-lab.vercel.app/front/media/baev-stage.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <title>Связаться с BAEV — Обсудить проект</title>
-  <link rel="icon" href="https://framerusercontent.com/images/JLDD9dNOmDYDfoFQ04FztJ9PdDo.png">
+  <title>BAEV Studio — Обсудить проект</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23ecd9d5'/%3E%3Ctext x='32' y='43' font-size='33' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%231c1919'%3EB%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://baev-cms.vercel.app" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="/front/site.css">
-  <link rel="stylesheet" href="/front/sections.css">
-  <script src="/front/site.js" defer></script>
-  <script src="/contact/baev-contact.js" defer></script>
-</head>
-<body class="baev-front page-contact">
-  <a class="skip-link" href="#content">Перейти к содержимому</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
-  <header class="site-header" id="site-header">
-    <a class="site-logo" href="/" aria-label="BAEV — на главную">BAEV<span>®</span></a>
-    <nav class="desktop-nav" aria-label="Основная навигация">
-      <a href="/">Главная</a>
-      <a href="/work">Проекты</a>
-      <a href="/#approach">Подход</a>
-      <a href="/about">О нас</a>
-      <a href="/blog">Журнал</a>
-    </nav>
-    <div class="header-actions">
-      <a class="header-contact" href="#contact-form-title"><span>К форме</span><span class="diagonal-arrow" aria-hidden="true">↗</span></a>
-      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false">
-        <span></span><span></span>
-      </button>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/front/faithful/site.css">
+  <script type="importmap">{"imports":{"three":"/front/faithful/vendor/three.module.js"}}</script>
+  <script type="module" src="/front/faithful/world.js"></script>
+  <script src="/front/faithful/app.js" defer></script>
+</head><body class="page-contact"><a class="skip-link" href="#main">Перейти к содержимому</a>
+<header class="header" id="header">
+  <a href="/" class="brand" aria-label="BAEV — главная">baev<span>studio<sup>®</sup></span></a>
+  <nav class="header__links" aria-label="Навигация"><a href="/" >Главная</a><a href="/work/" >Проекты</a><a href="/contact/" aria-current="page">Контакт</a></nav>
+  <button class="menu-button" id="menu-toggle" type="button" aria-label="Открыть меню" aria-controls="menu" aria-expanded="false"><i></i><i></i></button>
+</header>
+<div class="menu" id="menu" hidden inert>
+  <nav class="menu__navigation" aria-label="Полная навигация"><a href="/"><span>01</span>Главная<span aria-hidden="true">↗</span></a><a href="/work/"><span>02</span>Проекты<span aria-hidden="true">↗</span></a><a href="/contact/"><span>03</span>Контакт<span aria-hidden="true">↗</span></a></nav>
+  <div class="menu__bottom"><span>СТУДИЯ ВИЗУАЛЬНЫХ КОММУНИКАЦИЙ</span><a href="mailto:hello@baev.agency">hello@baev.agency ↗</a></div>
+</div><main id="main"><section class="world world--contact" data-world="contact" aria-labelledby="hero-title">
+  <div class="world__fallback" aria-hidden="true"><span class="world__fallback-arch"></span></div>
+  <canvas class="world__canvas" tabindex="0" aria-label="Трёхмерное пространство. Стрелками или перетаскиванием можно менять ракурс." role="img"></canvas>
+  <div class="world__grain" aria-hidden="true"></div>
+  <div class="world__content world__content--contact">
+    <div class="world__title-wrap">
+      <p class="world__eyebrow">НОВАЯ ЗАДАЧА / НОВЫЙ ДИАЛОГ</p>
+      <h1 class="world__title world__title--contact" id="hero-title"><em>Давайте</em><span>обсудим.</span></h1>
+      <div class="world__contact-actions"><a href="#contact-form" class="pill pill--light">Обсудить проект ↘</a><a class="pill" href="mailto:hello@baev.agency">Написать напрямую ↗</a></div>
+      <p class="world__contact-email">hello@baev.agency</p>
     </div>
-  </header>
-
-  <nav class="mobile-menu" id="mobile-menu" aria-label="Мобильная навигация" hidden inert>
-    <div class="mobile-menu__inner">
-      <span class="mobile-menu__caption">НАВИГАЦИЯ / BAEV</span>
-      <a href="/">Главная <span>01</span></a>
-      <a href="/work">Проекты <span>02</span></a>
-      <a href="/#approach">Подход <span>03</span></a>
-      <a href="/about">О нас <span>04</span></a>
-      <a href="/blog">Журнал <span>05</span></a>
-      <a class="mobile-menu__contact" href="#contact-form-title">Обсудить задачу <span>↗</span></a>
-    </div>
-  </nav>
-
-  <main id="content">
-    <section class="contact-intro page-gutter" aria-labelledby="contact-heading">
-      <div class="section-marker"><span class="marker-number">01 /</span><span>Связь</span><span class="marker-line"></span><span>Новая задача</span></div>
-      <div class="contact-intro__body reveal"><h1 id="contact-heading">Начнём<br><span class="muted-copy">с задачи.</span></h1><p>Расскажите, какой материал нужно подготовить, для кого он предназначен и почему это важно сейчас. Мы изучим контекст, оценим объём работы и предложим формат взаимодействия.</p></div>
-    </section>
-    <section class="contact-workspace page-gutter" aria-labelledby="contact-form-title">
-      <div class="contact-workspace__aside"><span class="contact-workspace__index">02 / ОБСУДИТЬ ПРОЕКТ</span><h2 id="contact-form-title">Расскажите<br>о своей идее.</h2><a href="mailto:hello@baev.agency">hello@baev.agency <span aria-hidden="true">↗</span></a></div>
-      <form class="baev-contact-form" action="mailto:hello@baev.agency" method="post" enctype="text/plain" aria-label="Форма обсуждения проекта">
-        <div class="contact-form__row">
-          <label class="contact-field"><span>Ваше имя <b>*</b></span><input type="text" name="Name" placeholder="Как к вам обращаться" required minlength="2" maxlength="120" autocomplete="name"></label>
-          <label class="contact-field"><span>E-mail <b>*</b></span><input type="email" name="Email" placeholder="name@company.com" required maxlength="254" autocomplete="email"></label>
-        </div>
-        <label class="contact-field contact-field--message"><span>О задаче <b>*</b></span><textarea name="MessageEmail" placeholder="Что нужно сделать, какие сроки и для какой аудитории?" rows="5" required minlength="10" maxlength="10000"></textarea></label>
-        <div class="contact-honeypot" aria-hidden="true"><label>Не заполнять <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-        <div class="contact-form__bottom"><p>Все поля обязательны. Также можно написать нам напрямую на <a href="mailto:hello@baev.agency">hello@baev.agency</a>.</p><button type="submit"><span data-submit-label>Отправить запрос</span><span aria-hidden="true">↗</span></button></div>
-        <noscript><p>Для отправки формы включите JavaScript или напишите на hello@baev.agency.</p></noscript>
-      </form>
-    </section>
-  </main>
-  <footer class="footer page-gutter" id="contact">
-    <div class="footer__top"><span>BAEV / Есть задача?</span><span>Открыты к диалогу</span></div>
-    <a class="footer__proposal" href="mailto:hello@baev.agency"><span>Давайте<br>обсудим.</span><span aria-hidden="true">↗</span></a>
-    <div class="footer__meta"><a href="mailto:hello@baev.agency">hello@baev.agency</a><nav aria-label="Навигация в подвале"><a href="/work">Проекты</a><a href="/about">О нас</a><a href="/blog">Журнал</a><a href="/contact">Контакты</a></nav></div>
-    <div class="footer__wordmark" aria-hidden="true">BAEV</div>
-    <div class="footer__bottom"><span>© BAEV <span id="copyright-year">2026</span></span><span>Сложное — в ясное.</span><a href="#content">Наверх ↑</a></div>
-  </footer>
-</body>
-</html>
+  </div>
+</section><div class="fixed-controls" id="scene-controls">
+  <div class="fixed-controls__left">
+    <button class="sound-toggle" id="sound-toggle" type="button" aria-label="Включить звук" aria-pressed="false"><span aria-hidden="true">◖▏</span></button>
+    <a class="pill pill--outline" href="/work/">Избранные проекты ↘</a>
+  </div>
+  <a class="fixed-controls__center" href="/work/" aria-label="Смотреть проекты">◎</a>
+  <span class="fixed-controls__right">©2026</span>
+</div><section class="contact-form-section" id="contact-form" aria-labelledby="form-title">
+  <div class="contact-form-section__intro"><p>02 / ОБСУДИТЬ ПРОЕКТ</p><h2 id="form-title">Расскажите<br><em>о задаче.</em></h2><p>Какой материал нужен, кому он адресован и почему это важно сейчас? Мы изучим контекст и предложим формат работы.</p></div>
+  <form class="baev-contact-form" action="mailto:hello@baev.agency" method="post" enctype="text/plain" aria-label="Обсудить проект с BAEV">
+    <label class="field">Ваше имя <span>*</span><input name="Name" type="text" placeholder="Как к вам обращаться" autocomplete="name" minlength="2" maxlength="120" required></label>
+    <label class="field">Электронная почта <span>*</span><input name="Email" type="email" placeholder="name@company.com" autocomplete="email" maxlength="254" required></label>
+    <label class="field field--wide">Задача <span>*</span><textarea name="MessageEmail" placeholder="Что нужно сделать и какие сроки?" rows="4" minlength="10" maxlength="10000" required></textarea></label>
+    <div class="contact-honeypot" aria-hidden="true"><label>Не заполнять<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+    <p class="form-terms">Все поля обязательны. Можно написать напрямую на <a href="mailto:hello@baev.agency">hello@baev.agency</a>.</p>
+    <button type="submit" class="send-button"><span data-submit-label>Отправить запрос</span><span aria-hidden="true">↗</span></button>
+    <p class="baev-form-status" role="status" aria-live="polite"></p>
+    <noscript>Для работы формы требуется JavaScript. Напишите нам: hello@baev.agency.</noscript>
+  </form>
+</section></main><footer class="footer" id="footer">
+  <div class="footer__top"><span>BAEV STUDIO®</span><span>ЕСТЬ ЗАДАЧА?</span></div>
+  <div class="footer__statement"><p class="footer__serif">Начнём</p><a href="mailto:hello@baev.agency">разговор. <span aria-hidden="true">↗</span></a></div>
+  <div class="footer__mid"><div><p>НОВЫЙ ПРОЕКТ</p><a href="/contact/">Обсудить сотрудничество ↗</a></div><div><p>ОБЩИЕ ВОПРОСЫ</p><a href="mailto:hello@baev.agency">hello@baev.agency ↗</a></div><div><p>НАВИГАЦИЯ</p><a href="/">Главная</a><a href="/work/">Проекты</a><a href="/contact/">Контакты</a></div></div>
+  <div class="footer__bottom"><span>© BAEV 2026</span><span>Студия визуальных коммуникаций</span><a href="#main">Наверх ↑</a></div>
+</footer><script src="/contact/baev-contact.js" defer></script></body></html>

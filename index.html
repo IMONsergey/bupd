@@ -1,200 +1,107 @@
 <!doctype html>
-<html lang="ru" class="no-js">
+<html lang="ru" class="js-pending">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080808">
-  <meta name="color-scheme" content="dark">
-  <meta name="description" content="BAEV — студия публичной коммуникации. Презентации, конференции, стратегические материалы и брендинг. Собираем сложные идеи в ясную форму.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ecdbd6">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="BAEV — студия визуальных коммуникаций: презентации, события и брендинг.">
   <meta property="og:type" content="website">
-  <meta property="og:locale" content="ru_RU">
-  <meta property="og:title" content="BAEV — Сложное в ясное">
-  <meta property="og:description" content="Собираем сложные идеи в ясную коммуникацию для бизнеса, руководителей и команд.">
+  <meta property="og:title" content="BAEV Studio — Создаём впечатление">
+  <meta property="og:description" content="BAEV — студия визуальных коммуникаций: презентации, события и брендинг.">
   <meta property="og:image" content="https://baev-case-lab.vercel.app/front/media/baev-stage.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <title>BAEV — Сложное в ясное. Студия визуальных коммуникаций</title>
-  <link rel="icon" href="https://framerusercontent.com/images/JLDD9dNOmDYDfoFQ04FztJ9PdDo.png">
+  <title>BAEV Studio — Создаём впечатление</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23ecd9d5'/%3E%3Ctext x='32' y='43' font-size='33' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%231c1919'%3EB%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://baev-cms.vercel.app" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
-  <link rel="preload" href="/front/media/baev-stage.jpg" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="/front/site.css">
-  <script src="/front/site.js" defer></script>
-</head>
-<body class="baev-front">
-  <a class="skip-link" href="#content">Перейти к содержимому</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
-
-  <header class="site-header" id="site-header">
-    <a class="site-logo" href="/" aria-label="BAEV — на главную">BAEV<span>®</span></a>
-    <nav class="desktop-nav" aria-label="Основная навигация">
-      <a href="/" aria-current="page">Главная</a>
-      <a href="/work">Проекты</a>
-      <a href="#approach">Подход</a>
-      <a href="/about">О нас</a>
-      <a href="/blog">Журнал</a>
-    </nav>
-    <div class="header-actions">
-      <a class="header-contact" href="/contact"><span>Обсудить задачу</span><span class="diagonal-arrow" aria-hidden="true">↗</span></a>
-      <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false">
-        <span></span><span></span>
-      </button>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/front/faithful/site.css">
+  <script type="importmap">{"imports":{"three":"/front/faithful/vendor/three.module.js"}}</script>
+  <script type="module" src="/front/faithful/world.js"></script>
+  <script src="/front/faithful/app.js" defer></script>
+</head><body class="page-home"><a class="skip-link" href="#main">Перейти к содержимому</a>
+<header class="header" id="header">
+  <a href="/" class="brand" aria-label="BAEV — главная">baev<span>studio<sup>®</sup></span></a>
+  <nav class="header__links" aria-label="Навигация"><a href="/" aria-current="page">Главная</a><a href="/work/" >Проекты</a><a href="/contact/" >Контакт</a></nav>
+  <button class="menu-button" id="menu-toggle" type="button" aria-label="Открыть меню" aria-controls="menu" aria-expanded="false"><i></i><i></i></button>
+</header>
+<div class="menu" id="menu" hidden inert>
+  <nav class="menu__navigation" aria-label="Полная навигация"><a href="/"><span>01</span>Главная<span aria-hidden="true">↗</span></a><a href="/work/"><span>02</span>Проекты<span aria-hidden="true">↗</span></a><a href="/contact/"><span>03</span>Контакт<span aria-hidden="true">↗</span></a></nav>
+  <div class="menu__bottom"><span>СТУДИЯ ВИЗУАЛЬНЫХ КОММУНИКАЦИЙ</span><a href="mailto:hello@baev.agency">hello@baev.agency ↗</a></div>
+</div><div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="intro-name">
+  <div class="intro__inner">
+    <div class="intro__logo" aria-hidden="true"><span>B</span><span>A</span><span>E</span><span>V</span></div>
+    <p class="intro__name" id="intro-name">BAEV STUDIO<sup>®</sup></p>
+    <p class="intro__description">Студия визуальных коммуникаций.<br>Создаём впечатление, за которым стоит смысл.</p>
+    <button class="intro__button" type="button" id="enter">Войти <span aria-hidden="true">↘</span></button>
+  </div>
+  <button class="intro__skip" type="button" id="enter-muted">ВОЙТИ БЕЗ ЗВУКА</button>
+</div><main id="main"><section class="world" data-world="home" id="world" aria-labelledby="hero-title">
+  <div class="world__fallback" aria-hidden="true"><span class="world__fallback-arch"></span></div>
+  <canvas class="world__canvas" tabindex="0" aria-label="Трёхмерное пространство BAEV: арки, ступени, вода и скульптуры. Ракурс меняется перетаскиванием и клавишами-стрелками." role="img"></canvas>
+  <div class="world__grain" aria-hidden="true"></div>
+  <div class="world__content">
+    <div class="world__title-wrap">
+      <p class="world__eyebrow">КРЕАТИВНАЯ СТУДИЯ / САНКТ-ПЕТЕРБУРГ · МОСКВА</p>
+      <h1 class="world__title" id="hero-title"><em>Создаём</em><span>впечатление.</span></h1>
+      <a class="pill pill--light world__cta" href="#selected">Смотреть работы <span aria-hidden="true">↘</span></a>
     </div>
-  </header>
-
-  <nav class="mobile-menu" id="mobile-menu" aria-label="Мобильная навигация" hidden inert>
-    <div class="mobile-menu__inner">
-      <span class="mobile-menu__caption">НАВИГАЦИЯ / BAEV</span>
-      <a href="/">Главная <span>01</span></a>
-      <a href="/work">Проекты <span>02</span></a>
-      <a href="#approach">Подход <span>03</span></a>
-      <a href="/about">О нас <span>04</span></a>
-      <a href="/blog">Журнал <span>05</span></a>
-      <a class="mobile-menu__contact" href="/contact">Обсудить задачу <span>↗</span></a>
+    <p class="world__drag">ПЕРЕТАСКИВАЙТЕ, ЧТОБЫ ИССЛЕДОВАТЬ ПРОСТРАНСТВО</p>
+  </div>
+</section><div class="fixed-controls" id="scene-controls">
+  <div class="fixed-controls__left">
+    <button class="sound-toggle" id="sound-toggle" type="button" aria-label="Включить звук" aria-pressed="false"><span aria-hidden="true">◖▏</span></button>
+    <a class="pill pill--outline" href="/work/">Избранные проекты ↘</a>
+  </div>
+  <a class="fixed-controls__center" href="/work/" aria-label="Смотреть проекты">◎</a>
+  <span class="fixed-controls__right">©2026</span>
+</div><section class="projects" id="selected" aria-labelledby="selected-heading">
+  <div class="projects__heading"><p class="projects__index">01 /</p><h2 id="selected-heading">Избранные проекты</h2>
+    <div class="projects__filters" role="group" aria-label="Фильтр по типу проекта">
+      <button type="button" data-filter="all" aria-pressed="true">Все <small>08</small></button>
+      <button type="button" data-filter="presentation" aria-pressed="false">Презентации</button>
+      <button type="button" data-filter="event" aria-pressed="false">События</button>
+      <button type="button" data-filter="brand" aria-pressed="false">Брендинг</button>
+      <button type="button" data-filter="digital" aria-pressed="false">Digital</button>
     </div>
-  </nav>
-
-  <main id="content">
-    <section class="hero" id="hero" aria-labelledby="hero-title">
-      <div class="hero__picture" aria-hidden="true">
-        <video class="hero__video" autoplay muted loop playsinline poster="/front/media/baev-stage.jpg" preload="metadata">
-          <source src="/front/media/baev-stage.mp4" type="video/mp4">
-        </video>
-        <div class="hero__grain"></div>
-        <div class="hero__shade"></div>
-      </div>
-      <div class="hero__content page-gutter">
-        <div class="hero__topline">
-          <span>BAEV / Студия коммуникаций</span>
-          <span class="hero__topline-end">Презентации — события — брендинг</span>
-        </div>
-        <div class="hero__main">
-          <p class="eyebrow hero__overline"><span class="eyebrow__dash"></span>Форма имеет значение</p>
-          <h1 class="hero__title" id="hero-title">
-            <span class="hero__line"><span>Сложное</span></span>
-            <span class="hero__line"><span>в <em>ясное.</em></span></span>
-          </h1>
-          <div class="hero__bottom">
-            <p>Собираем сложные идеи в ясную коммуникацию для бизнеса, руководителей и команд.</p>
-            <a class="round-link hero__discover" href="#selected" aria-label="Смотреть избранные проекты">
-              <span>Смотреть работы</span>
-              <span class="round-link__icon" aria-hidden="true">↘</span>
-            </a>
-          </div>
-        </div>
-        <div class="hero__footerline" aria-hidden="true">
-          <span>SCROLL TO EXPLORE</span>
-          <span class="hero__footerline-track"></span>
-          <span>01 / 05</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="statement section-padding page-gutter" id="approach" aria-labelledby="statement-heading">
-      <div class="section-marker"><span class="marker-number">01 /</span><span>Подход</span><span class="marker-line"></span><span>Почему мы это делаем</span></div>
-      <div class="statement__body">
-        <div class="statement__side"><span class="tiny-star" aria-hidden="true">✳</span><span>Внимание<br>к сути.</span></div>
-        <div class="statement__text">
-          <h2 class="display-copy reveal" id="statement-heading">Хорошая коммуникация начинается <span class="muted-copy">не с красивого слайда,</span> а с <span class="underlined-copy">ясной задачи.</span></h2>
-          <div class="statement__foot reveal">
-            <p>Мы собираем материал в форму, которая работает для аудитории — от первого впечатления до принятого решения.</p>
-            <a class="text-link" href="/about">Что стоит за подходом <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="selected section-padding page-gutter" id="selected" aria-labelledby="selected-heading">
-      <div class="section-marker"><span class="marker-number">02 /</span><span>Избранные проекты</span><span class="marker-line"></span><span class="project-total" aria-live="polite">08 работ</span></div>
-      <div class="selected__heading reveal">
-        <h2 id="selected-heading">Работы, которые<br><span class="muted-copy">говорят сами.</span></h2>
-        <p>Задачи разные.<br>Подход один: смысл прежде формы.</p>
-      </div>
-
-      <div class="projects-grid" id="projects-grid" aria-label="Избранные проекты">
-        <a class="project-card reveal" data-slug="avito-auto-2024" href="/work/avito-auto-2024" aria-label="Смотреть проект Авито Авто — Высшая передача">
-          <div class="project-card__visual">
-            <img src="/front/media/avito-auto-2024.jpg" data-cover="https://baev-cms.vercel.app/api/media/file/framer-f775b9896e844787-960x720.jpg" width="960" height="720" alt="Авито Авто — визуальные материалы проекта" fetchpriority="high" decoding="async">
-            <span class="project-card__overlay-index" aria-hidden="true">BAEV / WORK 01</span>
-            <span class="project-card__view" aria-hidden="true">Смотреть проект <span>↗</span></span>
-          </div>
-          <div class="project-card__details"><span class="project-card__number">01</span><div><h3 class="project-card__title">Авито Авто — Высшая передача</h3><span class="project-card__meta" data-meta>Авито / Презентация, брендинг</span></div><span class="project-card__year" data-year>2024</span><span class="project-card__arrow" aria-hidden="true">↗</span></div>
-        </a>
-        <a class="project-card reveal" data-slug="linear-identity" href="/work/linear-identity" aria-label="Смотреть проект Haval Dealer Conference">
-          <div class="project-card__visual">
-            <img src="/front/media/linear-identity.jpg" data-cover="https://baev-cms.vercel.app/api/media/file/framer-f9960d3cae096d97-960x720.jpg" width="960" height="720" alt="Haval Dealer Conference — визуальные материалы проекта" loading="lazy" decoding="async">
-            <span class="project-card__overlay-index" aria-hidden="true">BAEV / WORK 02</span><span class="project-card__view" aria-hidden="true">Смотреть проект <span>↗</span></span>
-          </div>
-          <div class="project-card__details"><span class="project-card__number">02</span><div><h3 class="project-card__title">Haval Dealer Conference</h3><span class="project-card__meta" data-meta>Great Wall Motor / Презентация, брендинг</span></div><span class="project-card__year" data-year>2023</span><span class="project-card__arrow" aria-hidden="true">↗</span></div>
-        </a>
-        <a class="project-card reveal" data-slug="future-archive" href="/work/future-archive" aria-label="Смотреть проект Альфа Конфа — Для Своих">
-          <div class="project-card__visual">
-            <img src="/front/media/future-archive.png" data-cover="https://baev-cms.vercel.app/api/media/file/framer-0bdcbc066bdfd496-960x720.png" width="960" height="720" alt="Альфа Конфа — визуальные материалы проекта" loading="lazy" decoding="async">
-            <span class="project-card__overlay-index" aria-hidden="true">BAEV / WORK 03</span><span class="project-card__view" aria-hidden="true">Смотреть проект <span>↗</span></span>
-          </div>
-          <div class="project-card__details"><span class="project-card__number">03</span><div><h3 class="project-card__title">Альфа Конфа — Для Своих</h3><span class="project-card__meta" data-meta>Альфа Банк / Стратегическая сессия</span></div><span class="project-card__year" data-year>2024</span><span class="project-card__arrow" aria-hidden="true">↗</span></div>
-        </a>
-        <a class="project-card reveal" data-slug="studio-atlas" href="/work/studio-atlas" aria-label="Смотреть проект Спортмастер — Будущее уже здесь">
-          <div class="project-card__visual">
-            <img src="/front/media/studio-atlas.jpg" data-cover="https://baev-cms.vercel.app/api/media/file/framer-cde3bb8cecc1cedb-960x720.jpg" width="960" height="720" alt="Спортмастер — визуальные материалы проекта" loading="lazy" decoding="async">
-            <span class="project-card__overlay-index" aria-hidden="true">BAEV / WORK 04</span><span class="project-card__view" aria-hidden="true">Смотреть проект <span>↗</span></span>
-          </div>
-          <div class="project-card__details"><span class="project-card__number">04</span><div><h3 class="project-card__title">Спортмастер — Будущее уже здесь</h3><span class="project-card__meta" data-meta>Спортмастер / Стратегическая сессия</span></div><span class="project-card__year" data-year>2022</span><span class="project-card__arrow" aria-hidden="true">↗</span></div>
-        </a>
-        <a class="project-card reveal" data-slug="parallel-forms" href="/work/parallel-forms" aria-label="Смотреть проект ОМК — Итоги 2022">
-          <div class="project-card__visual">
-            <img src="/front/media/parallel-forms.jpg" data-cover="https://baev-cms.vercel.app/api/media/file/framer-789151c3b0cdfc6c-960x720.jpg" width="960" height="720" alt="ОМК — визуальные материалы проекта" loading="lazy" decoding="async">
-            <span class="project-card__overlay-index" aria-hidden="true">BAEV / WORK 05</span><span class="project-card__view" aria-hidden="true">Смотреть проект <span>↗</span></span>
-          </div>
-          <div class="project-card__details"><span class="project-card__number">05</span><div><h3 class="project-card__title">ОМК — Итоги 2022</h3><span class="project-card__meta" data-meta>ОМК / Стратегическая сессия</span></div><span class="project-card__year" data-year>2022</span><span class="project-card__arrow" aria-hidden="true">↗</span></div>
-        </a>
-        <a class="project-card reveal" data-slug="silent-motif" href="/work/silent-motif" aria-label="Смотреть проект Teva Pharmaceutical">
-          <div class="project-card__visual">
-            <img src="/front/media/silent-motif.jpg" data-cover="https://baev-cms.vercel.app/api/media/file/framer-e54b7bff006ac1ba-960x720.jpg" width="960" height="720" alt="Teva Pharmaceutical — визуальные материалы проекта" loading="lazy" decoding="async">
-            <span class="project-card__overlay-index" aria-hidden="true">BAEV / WORK 06</span><span class="project-card__view" aria-hidden="true">Смотреть проект <span>↗</span></span>
-          </div>
-          <div class="project-card__details"><span class="project-card__number">06</span><div><h3 class="project-card__title">Teva Pharmaceutical</h3><span class="project-card__meta" data-meta>Teva / Презентация, брендинг</span></div><span class="project-card__year" data-year>2022</span><span class="project-card__arrow" aria-hidden="true">↗</span></div>
-        </a>
-      </div>
-      <a href="/work" class="all-works reveal"><span>Все проекты <span class="all-works__count" id="all-works-count">(08)</span></span><span aria-hidden="true">↗</span></a>
-    </section>
-
-    <section class="disciplines section-padding page-gutter" id="expertise" aria-labelledby="expertise-heading">
-      <div class="section-marker"><span class="marker-number">03 /</span><span>Что делаем</span><span class="marker-line"></span><span>От замысла до реализации</span></div>
-      <div class="disciplines__header reveal">
-        <h2 id="expertise-heading">Форма под задачу.<br><span class="muted-copy">Не наоборот.</span></h2>
-        <p>Проектируем коммуникацию под аудиторию, контекст и момент, в котором необходимо быть понятым.</p>
-      </div>
-      <div class="disciplines__list">
-        <a class="discipline reveal" href="/work/avito-auto-2024"><span class="discipline__number">01</span><span class="discipline__name">Конференции<span class="discipline__kind">/ События</span></span><span class="discipline__arrow" aria-hidden="true">↗</span></a>
-        <a class="discipline reveal" href="/work/linear-identity"><span class="discipline__number">02</span><span class="discipline__name">Презентации<span class="discipline__kind">/ Материалы</span></span><span class="discipline__arrow" aria-hidden="true">↗</span></a>
-        <a class="discipline reveal" href="/work/future-archive"><span class="discipline__number">03</span><span class="discipline__name">Стратегия<span class="discipline__kind">/ Сессии</span></span><span class="discipline__arrow" aria-hidden="true">↗</span></a>
-        <a class="discipline reveal" href="/work/studio-atlas"><span class="discipline__number">04</span><span class="discipline__name">Визуальная форма<span class="discipline__kind">/ Брендинг</span></span><span class="discipline__arrow" aria-hidden="true">↗</span></a>
-      </div>
-    </section>
-
-    <section class="principle page-gutter" aria-labelledby="principle-heading">
-      <div class="section-marker section-marker--dark"><span class="marker-number">04 /</span><span>Наша позиция</span><span class="marker-line"></span><span>Вместо лишних слов</span></div>
-      <div class="principle__body reveal">
-        <span class="principle__symbol" aria-hidden="true">↘</span>
-        <h2 id="principle-heading">Не просто<br>показать.<br><em>Донести.</em></h2>
-        <div class="principle__bottom"><span>BAEV / Суть прежде формы</span><p>Самый сильный визуальный приём — тот, который помогает разобраться, запомнить и принять решение.</p></div>
-      </div>
-    </section>
-
-    <section class="journal section-padding page-gutter" aria-labelledby="journal-heading">
-      <div class="section-marker"><span class="marker-number">05 /</span><span>Журнал</span><span class="marker-line"></span><span>Идеи и наблюдения</span></div>
-      <a class="journal__link reveal" href="/blog"><span class="journal__kicker">Мысли о коммуникации и визуальном языке</span><h2 id="journal-heading">Тексты и<br>наблюдения<span aria-hidden="true">↗</span></h2></a>
-    </section>
-  </main>
-
-  <footer class="footer page-gutter" id="contact">
-    <div class="footer__top"><span>BAEV / Есть задача?</span><span>Открыты к диалогу</span></div>
-    <a class="footer__proposal" href="mailto:hello@baev.agency"><span>Давайте<br>обсудим.</span><span aria-hidden="true">↗</span></a>
-    <div class="footer__meta"><a href="mailto:hello@baev.agency">hello@baev.agency</a><nav aria-label="Навигация в подвале"><a href="/work">Проекты</a><a href="/about">О нас</a><a href="/blog">Журнал</a><a href="/contact">Контакты</a></nav></div>
-    <div class="footer__wordmark" aria-hidden="true">BAEV</div>
-    <div class="footer__bottom"><span>© BAEV <span id="copyright-year">2026</span></span><span>Сложное — в ясное.</span><a href="#hero">Наверх ↑</a></div>
-  </footer>
-</body>
-</html>
+  </div>
+  <div class="projects__grid" id="projects-grid"><a class="project-card" href="/work/avito-auto-2024" data-slug="avito-auto-2024" data-category="presentation brand" aria-label="Кейс Авито Авто">
+  <div class="project-card__media"><img src="/front/media/avito-auto-2024.jpg" alt="Авито Авто — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>Авито Авто</strong><span>Высшая передача / Презентация, брендинг</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/linear-identity" data-slug="linear-identity" data-category="presentation event" aria-label="Кейс Haval">
+  <div class="project-card__media"><img src="/front/media/linear-identity.jpg" alt="Haval — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>Haval</strong><span>Dealer Conference / Событие</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/future-archive" data-slug="future-archive" data-category="event brand" aria-label="Кейс Альфа Конфа">
+  <div class="project-card__media"><img src="/front/media/future-archive.png" alt="Альфа Конфа — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>Альфа Конфа</strong><span>Для своих / Событие</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/studio-atlas" data-slug="studio-atlas" data-category="event presentation" aria-label="Кейс Спортмастер">
+  <div class="project-card__media"><img src="/front/media/studio-atlas.jpg" alt="Спортмастер — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>Спортмастер</strong><span>Будущее уже здесь / Сессия</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/parallel-forms" data-slug="parallel-forms" data-category="presentation event" aria-label="Кейс ОМК">
+  <div class="project-card__media"><img src="/front/media/parallel-forms.jpg" alt="ОМК — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>ОМК</strong><span>Итоги 2022 / Сессия</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/silent-motif" data-slug="silent-motif" data-category="brand presentation" aria-label="Кейс Teva Pharmaceutical">
+  <div class="project-card__media"><img src="/front/media/silent-motif.jpg" alt="Teva Pharmaceutical — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>Teva Pharmaceutical</strong><span>Визуальные коммуникации</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/pattern-language" data-slug="pattern-language" data-category="digital brand" aria-label="Кейс ORLA">
+  <div class="project-card__media"><img src="/front/media/pattern-language.jpg" alt="ORLA — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>ORLA</strong><span>Цифровой проект</span></div><span aria-hidden="true">↘</span></div>
+</a>
+<a class="project-card" href="/work/spectrum-project" data-slug="spectrum-project" data-category="digital" aria-label="Кейс СтримМур">
+  <div class="project-card__media"><img src="/front/media/spectrum-project.png" alt="СтримМур — визуальные материалы проекта" loading="lazy"><span class="project-card__hover">Смотреть кейс ↗</span></div>
+  <div class="project-card__meta"><div><strong>СтримМур</strong><span>Цифровой проект</span></div><span aria-hidden="true">↘</span></div>
+</a></div>
+  <p class="projects__empty" id="projects-empty" hidden>В этой категории пока нет проектов.</p>
+  <a href="/work/" class="more-work">Все работы <span aria-hidden="true">↗</span></a>
+</section></main><footer class="footer" id="footer">
+  <div class="footer__top"><span>BAEV STUDIO®</span><span>ЕСТЬ ЗАДАЧА?</span></div>
+  <div class="footer__statement"><p class="footer__serif">Начнём</p><a href="mailto:hello@baev.agency">разговор. <span aria-hidden="true">↗</span></a></div>
+  <div class="footer__mid"><div><p>НОВЫЙ ПРОЕКТ</p><a href="/contact/">Обсудить сотрудничество ↗</a></div><div><p>ОБЩИЕ ВОПРОСЫ</p><a href="mailto:hello@baev.agency">hello@baev.agency ↗</a></div><div><p>НАВИГАЦИЯ</p><a href="/">Главная</a><a href="/work/">Проекты</a><a href="/contact/">Контакты</a></div></div>
+  <div class="footer__bottom"><span>© BAEV 2026</span><span>Студия визуальных коммуникаций</span><a href="#main">Наверх ↑</a></div>
+</footer></body></html>
