@@ -22,6 +22,7 @@ if(root){
   const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
   const ease=x=>1-Math.pow(1-clamp(x,0,1),4);
   const pose={pos:new THREE.Vector3(...stops[0].pos),look:new THREE.Vector3(...stops[0].look)};
+  from={pos:pose.pos.clone(),look:pose.look.clone()};
   const ambientBars=[];
   const volumetrics=[];
   let to=stops[0];
@@ -48,6 +49,21 @@ if(root){
     ctx.font='600 115px Arial,sans-serif';ctx.fillText(text,512,256,970);
     const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
   }
+  function towerGraphic(title){
+    const c=document.createElement('canvas');c.width=512;c.height=1024;
+    const ctx=c.getContext('2d');
+    const g=ctx.createLinearGradient(0,0,400,1024);
+    g.addColorStop(0,'#10292e');g.addColorStop(.7,'#07141f');g.addColorStop(1,'#082522');
+    ctx.fillStyle=g;ctx.fillRect(0,0,512,1024);
+    ctx.strokeStyle='#78ebc9';ctx.lineWidth=8;ctx.strokeRect(22,22,468,980);
+    ctx.fillStyle='#a7d9cd';ctx.font='500 35px Arial';ctx.fillText('BAEV® / LIVE',50,99);
+    ctx.fillStyle='#e7fff7';ctx.font='700 96px Arial';
+    ctx.fillText(title==='BAEV / LIVE'?'BAEV':'EVENT',49,515);
+    ctx.font='500 40px Arial';ctx.fillText('EXPERIENCE',50,583);
+    ctx.fillStyle='#8fe4c4';ctx.fillRect(50,642,210,9);
+    ctx.fillStyle='#c1dbd6';ctx.font='500 27px Arial';ctx.fillText('VISUAL COMMUNICATIONS',49,920);
+    const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
+  }
   function build(){
     scene.background=new THREE.Color('#090e17');scene.fog=new THREE.FogExp2('#090e17',.009);
     scene.add(new THREE.HemisphereLight(0x9db5d0,0x080b11,2.2));
@@ -62,11 +78,20 @@ if(root){
     // Long axial floor and 3D audience seating, with an unobstructed central aisle.
     box(46,.08,74,black,0,-.08,-4);
     for(const x of [-1.92,1.92])bar(.06,.04,43,x,-.02,4,0x7bdfc2);
-    for(let row=0;row<10;row++)for(const side of [-1,1])for(let col=0;col<6;col++){
-      const x=side*(3.3+col*2.55),z=-9.3+row*2.5;
-      box(1.65,.22,1,chairMat,x,.52,z);
-      box(1.65,1.12,.21,chairBack,x,1.09,z+.41);
-    }
+    // Two instanced draws instead of 240 individual chairs.
+    const places=[];
+    for(let row=0;row<10;row++)for(const side of [-1,1])for(let col=0;col<6;col++)
+      places.push([side*(3.3+col*2.55),-9.3+row*2.5]);
+    const seats=new THREE.InstancedMesh(new THREE.BoxGeometry(1.65,.22,1),chairMat,places.length);
+    const backs=new THREE.InstancedMesh(new THREE.BoxGeometry(1.65,1.12,.21),chairBack,places.length);
+    const dummy=new THREE.Object3D();
+    places.forEach(([x,z],i)=>{
+      dummy.position.set(x,.52,z);dummy.updateMatrix();seats.setMatrixAt(i,dummy.matrix);
+      dummy.position.set(x,1.09,z+.41);dummy.updateMatrix();backs.setMatrixAt(i,dummy.matrix);
+    });
+    seats.instanceMatrix.needsUpdate=true;backs.instanceMatrix.needsUpdate=true;
+    seats.frustumCulled=false;backs.frustumCulled=false;
+    scene.add(seats,backs);
     // Real conference stage: elevated platform, illuminated runway and LED wings.
     box(28,.9,10,black,0,.36,-21.4);
     box(27,.09,9.6,metal('#778a89',.32),0,.86,-21.4);
@@ -92,7 +117,7 @@ if(root){
     wings.forEach(({x,text})=>{
       box(3.85,9.15,.27,steel,x,6.7,-24.6);
       const screen=create(new THREE.PlaneGeometry(3.58,8.8),new THREE.MeshBasicMaterial({
-        map:graphic(text),toneMapped:false,side:THREE.DoubleSide
+        map:towerGraphic(text),toneMapped:false,side:THREE.DoubleSide
       }),x,6.7,-24.43);
       screen.rotation.y=(x<0?.11:-.11);
       for(const edge of [-1,1])bar(.065,9,.1,x+edge*1.94,6.7,-24.32,0x78e5bc);
