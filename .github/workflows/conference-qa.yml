@@ -1,0 +1,22 @@
+name: BAEV Conference Experience
+on:
+  push:
+    branches:
+      - feat/baev-event-journey-2026-10-14
+  workflow_dispatch:
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check 3D scene module syntax
+        run: node --check front/conference/scene.js
+      - name: Check public interaction syntax
+        run: node --check front/faithful/app.js
+      - name: Verify static assets, links and interactive conference contract
+        run: node scripts/check-public.mjs
