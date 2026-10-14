@@ -20,7 +20,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
   <link rel="preload" href="/front/media/baev-stage.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="/front/site.css">
+  <link rel="stylesheet" href="/front/immersive/world.css">
   <script src="/front/site.js" defer></script>
+  <script src="/front/immersive/world.js" defer></script>
 </head>
 <body class="baev-front">
   <a class="skip-link" href="#content">Перейти к содержимому</a>
@@ -56,39 +58,41 @@
   </nav>
 
   <main id="content">
-    <section class="hero" id="hero" aria-labelledby="hero-title">
-      <div class="hero__picture" aria-hidden="true">
-        <video class="hero__video" autoplay muted loop playsinline poster="/front/media/baev-stage.jpg" preload="metadata">
-          <source src="/front/media/baev-stage.mp4" type="video/mp4">
-        </video>
-        <div class="hero__grain"></div>
-        <div class="hero__shade"></div>
+    <section class="world" id="hero" aria-labelledby="hero-title">
+      <div class="world__backdrop" aria-hidden="true"></div>
+      <div class="world__stage" id="world-stage" tabindex="0" role="group" aria-label="Интерактивная галерея работ. Перетаскивайте или используйте клавиши со стрелками.">
+        <div class="world__horizon" aria-hidden="true"></div>
+        <div class="world__orbit" aria-hidden="true"></div>
+        <a class="world__object world__object--one" href="/work/avito-auto-2024" data-depth=".8" style="--x:-53;--y:-13;--rot:-10;--w:clamp(180px,24vw,430px)" aria-label="Кейс Авито Авто">
+          <img src="/front/media/avito-auto-2024.jpg" width="1200" height="900" alt="Авито Авто — визуальный фрагмент проекта" fetchpriority="high"><span>01 — АВИТО АВТО ↗</span>
+        </a>
+        <a class="world__object world__object--two" href="/work/future-archive" data-depth="1" style="--x:45;--y:-26;--rot:8;--w:clamp(180px,22vw,390px)" aria-label="Кейс Альфа Конфа">
+          <img src="/front/media/future-archive.png" width="1200" height="900" alt="Графика события Альфа Конфа"><span>02 — АЛЬФА КОНФА ↗</span>
+        </a>
+        <a class="world__object world__object--three" href="/work/linear-identity" data-depth=".55" style="--x:-78;--y:62;--rot:5;--w:clamp(150px,16vw,300px)" aria-label="Кейс Haval">
+          <img src="/front/media/linear-identity.jpg" width="1000" height="750" alt="Презентация Haval"><span>03 — HAVAL ↗</span>
+        </a>
+        <a class="world__object world__object--four" href="/work/studio-atlas" data-depth=".6" style="--x:73;--y:62;--rot:-7;--w:clamp(150px,18vw,320px)" aria-label="Кейс Спортмастер">
+          <img src="/front/media/studio-atlas.jpg" width="1000" height="750" alt="Событие Спортмастер"><span>04 — СПОРТМАСТЕР ↗</span>
+        </a>
+        <a class="world__object world__object--five" href="/work/spectrum-project" data-depth=".35" style="--x:8;--y:83;--rot:11;--w:clamp(140px,15vw,260px)" aria-label="Кейс Spectrum">
+          <img src="/front/media/spectrum-project.png" width="1000" height="750" alt="Дизайн-материалы проекта"><span>05 — ПРОЕКТ ↗</span>
+        </a>
       </div>
-      <div class="hero__content page-gutter">
-        <div class="hero__topline">
-          <span>BAEV / Студия коммуникаций</span>
-          <span class="hero__topline-end">Презентации — события — брендинг</span>
+      <div class="world__interface page-gutter">
+        <div class="world__meta"><span>BAEV® / СТУДИЯ ВИЗУАЛЬНЫХ КОММУНИКАЦИЙ</span><span>НЕСТАНДАРТНОЕ — В ЯСНОЕ</span></div>
+        <div class="world__headline">
+          <p class="world__eyebrow">Здесь идеи обретают форму</p>
+          <h1 id="hero-title">Создаём<br><em>впечатление.</em></h1>
+          <p class="world__description">Делаем сложные идеи понятными, а важные решения — заметными. Презентации, события, визуальные системы.</p>
         </div>
-        <div class="hero__main">
-          <p class="eyebrow hero__overline"><span class="eyebrow__dash"></span>Форма имеет значение</p>
-          <h1 class="hero__title" id="hero-title">
-            <span class="hero__line"><span>Сложное</span></span>
-            <span class="hero__line"><span>в <em>ясное.</em></span></span>
-          </h1>
-          <div class="hero__bottom">
-            <p>Собираем сложные идеи в ясную коммуникацию для бизнеса, руководителей и команд.</p>
-            <a class="round-link hero__discover" href="#selected" aria-label="Смотреть избранные проекты">
-              <span>Смотреть работы</span>
-              <span class="round-link__icon" aria-hidden="true">↘</span>
-            </a>
-          </div>
-        </div>
-        <div class="hero__footerline" aria-hidden="true">
-          <span>SCROLL TO EXPLORE</span>
-          <span class="hero__footerline-track"></span>
-          <span>01 / 05</span>
+        <div class="world__controls">
+          <span class="world__hint">↔&nbsp; ПЕРЕТАСКИВАЙТЕ, ЧТОБЫ ИССЛЕДОВАТЬ</span>
+          <a class="world__enter" href="#selected">СМОТРЕТЬ РАБОТЫ <span aria-hidden="true">↘</span></a>
+          <span class="world__counter">01 / 05</span>
         </div>
       </div>
+      <a class="world__skip" href="#selected" aria-label="Перейти к избранным работам">↓</a>
     </section>
 
     <section class="statement section-padding page-gutter" id="approach" aria-labelledby="statement-heading">
