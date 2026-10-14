@@ -1,0 +1,81 @@
+/* BAEV / Conference Experience. Isolated to experimental public homepage. */
+.page-home{--conference-accent:#10e59c;background:#090c12;color:#f5f5f3}
+.page-home .header{color:#fff;z-index:75}
+.page-home .header.is-scrolled{background:rgba(9,13,18,.89);color:#fff;border-bottom:1px solid rgba(255,255,255,.15)}
+.page-home .header__links a::after{background:#fff}
+.page-home .menu-button{color:#fff}
+.page-home .intro{background:#ecdad5;color:#2b2523}
+.page-home .intro__description{line-height:1.35;max-width:370px}
+.world--conference{height:100svh;min-height:670px;overflow:hidden;position:relative;background:#070c13;color:#f9faf8}
+.world--conference .world__canvas{touch-action:pan-y;position:absolute;inset:0;z-index:1}
+.world--conference .world__fallback{background:#080c13 url('/front/media/baev-stage.jpg') center/cover}
+.world--conference .world__fallback::before,.world--conference .world__fallback::after{display:none}
+.world--conference .world__grain{z-index:2;opacity:.11;mix-blend-mode:overlay}
+.world--conference::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(90deg,rgba(5,8,13,.64),transparent 65%),linear-gradient(0deg,rgba(5,8,13,.42),transparent 24%);mix-blend-mode:normal}
+.world--conference .world__content{inset:0;display:block;padding:0 var(--gutter);z-index:5;pointer-events:none}
+.world--conference .world__title-wrap{position:absolute;top:29%;left:var(--gutter);width:min(610px,60vw);align-items:flex-start;text-align:left;transition:opacity .8s,transform 1s cubic-bezier(.16,1,.3,1)}
+.world--conference .world__eyebrow{font-size:11px;letter-spacing:.15em;color:#e2f0ee;margin-bottom:23px}
+.world--conference .world__title{font:500 clamp(75px,8.4vw,143px)/.84 'DM Sans',Arial,sans-serif;letter-spacing:-.088em;text-shadow:0 3px 24px rgba(0,0,0,.25)}
+.world--conference .world__title em{font:italic 400 1.1em/1 'Instrument Serif',Georgia,serif;letter-spacing:-.035em}
+.world--conference .world__title span{margin-top:0}
+.world--conference .world__cta{margin-top:25px;background:#fff;color:#15191d;border:1px solid rgba(255,255,255,.6);pointer-events:auto;cursor:pointer}
+.world--conference .world__cta:hover{transform:translateY(-2px)}
+.world--conference.is-in-hall .world__title-wrap{opacity:0;transform:translateX(-50px);pointer-events:none}
+.conference-meta{position:absolute;top:110px;left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;gap:20px;color:#f2f5f3;font-size:10px;letter-spacing:.16em;font-weight:600;text-shadow:0 1px 16px #05090b}
+.conference-subtitle{font-size:clamp(14px,1.2vw,18px);line-height:1.5;max-width:400px;color:#e6efed;text-wrap:balance;margin-top:24px;text-shadow:0 1px 15px #080c10}
+.conference-info{position:absolute;bottom:119px;left:var(--gutter);display:flex;flex-direction:column;gap:7px}
+.conference-info__index{font-size:11px;color:#b9c9c7;letter-spacing:.12em}
+.conference-info strong{font-size:clamp(22px,2vw,32px);font-weight:500;letter-spacing:-.05em}
+.conference-info p{font-size:12px;color:#c1cdcc;line-height:1.5}
+.conference-stops{position:absolute;right:var(--gutter);bottom:115px;display:flex;align-items:center;gap:25px;pointer-events:auto}
+.conference-stops button{position:relative;display:flex;gap:8px;align-items:center;background:none;border:0;color:rgba(230,241,238,.68);font:500 12px/1.5 'DM Sans',Arial,sans-serif;padding:12px 0;cursor:pointer;transition:color .3s}
+.conference-stops button span{font-size:10px}
+.conference-stops button:hover,.conference-stops button.is-active{color:#fff}
+.conference-stops button::after{content:'';position:absolute;bottom:4px;left:0;right:100%;height:1px;background:#fff;transition:right .35s}
+.conference-stops button.is-active::after{right:0}
+.conference-stops__line{position:absolute;bottom:-9px;left:0;right:0;height:2px;background:rgba(255,255,255,.23)}
+.conference-stops__line span{height:100%;display:block;background:var(--conference-accent);transform:scaleX(.333);transform-origin:left;transition:transform .8s}
+.conference-card{position:absolute;right:var(--gutter);bottom:193px;width:min(515px,44vw);border:1px solid rgba(255,255,255,.25);background:rgba(7,13,19,.79);backdrop-filter:blur(24px);padding:20px 22px;opacity:0;transform:translateY(26px);transition:opacity .7s,transform .75s;pointer-events:none}
+.world--conference.is-at-stage .conference-card{opacity:1;transform:none;pointer-events:auto}
+.conference-card__meta{font-size:10px;color:#b8c9c8;letter-spacing:.15em}
+.conference-card__row{display:flex;align-items:center;gap:13px;margin-top:14px;flex-wrap:wrap}
+.conference-card__row button{width:34px;height:34px;border:1px solid rgba(255,255,255,.46);border-radius:50%;display:grid;place-items:center;cursor:pointer;background:none;color:#fff}
+.conference-card__row button:hover{background:#fff;color:#111}
+.conference-card__title{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.conference-card__title strong{font-size:21px;font-weight:500;letter-spacing:-.045em}
+.conference-card__title small{font-size:11px;color:#c7d2d0}
+.conference-card__link{font-size:12px;white-space:nowrap;border-bottom:1px solid #fff;padding-bottom:4px}
+.world--conference .world__drag{bottom:51px;left:50%;font-size:9px;letter-spacing:.1em;color:rgba(240,245,244,.7)}
+.page-home .fixed-controls__center,.page-home .fixed-controls__left .pill--outline{display:none}
+.page-home .fixed-controls__right{opacity:.8}
+@media(max-width:900px){
+ .world--conference .world__title{font-size:clamp(61px,8.9vw,105px)}
+ .world--conference .world__title-wrap{top:32%}
+ .conference-card{width:440px}
+}
+@media(max-width:700px){
+ .world--conference{min-height:620px;height:100svh}
+ .world--conference .world__content{padding:0 20px}
+ .conference-meta{top:101px;left:20px;right:20px;font-size:9px;letter-spacing:.09em}
+ .conference-meta span:last-child{display:none}
+ .world--conference .world__title-wrap{top:29%;left:20px;right:20px;width:calc(100% - 40px);max-width:none}
+ .world--conference .world__eyebrow{font-size:9px;margin-bottom:16px}
+ .world--conference .world__title{font-size:clamp(51px,12vw,84px)}
+ .conference-subtitle{font-size:13px;max-width:275px;margin-top:20px}
+ .conference-info{bottom:205px;left:20px}
+ .conference-info strong{font-size:23px}
+ .conference-info p{display:none}
+ .conference-stops{left:20px;right:20px;bottom:111px;justify-content:space-between;gap:9px}
+ .conference-stops button{font-size:11px;gap:6px}
+ .world--conference .world__drag{left:20px;right:20px;bottom:72px;transform:none;white-space:normal;max-width:none;font-size:9px;text-align:left}
+ .conference-card{left:20px;right:20px;width:auto;bottom:197px;padding:17px}
+ .world--conference.is-at-stage .conference-info{opacity:0}
+ .conference-card__title strong{font-size:17px}
+ .conference-card__row{gap:7px}
+ .conference-card__link{width:100%;margin-top:7px}
+ .page-home .fixed-controls__right{display:none}
+}
+@media(max-width:370px){.world--conference .world__title{font-size:45px}.conference-stops{bottom:116px}}
+@media(prefers-reduced-motion:reduce){
+ .world--conference .world__title-wrap,.conference-card,.conference-stops__line span{transition:none}
+}
