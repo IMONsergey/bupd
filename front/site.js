@@ -74,7 +74,7 @@
       menu.classList.remove('is-open');
       menu.inert = true;
       const delay = reducedMotion.matches ? 0 : 340;
-      menuTimer = setTimeout(() => { menu.hidden = true; }, delay);
+      menuTimer = setTimeout(() => { if (menuToggle.getAttribute('aria-expanded') === 'false') menu.hidden = true; }, delay);
     }
   };
   menuToggle?.addEventListener('click', () => setMenu(menuToggle.getAttribute('aria-expanded') !== 'true'));
@@ -205,6 +205,46 @@
   }
   applyWorkFilter();
   hydrateProjects();
+
+  // Subtle cursor-reactive lighting on original work, never on touch or reduced motion.
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+  if (canAnimate && finePointer.matches && !navigator.connection?.saveData) {
+    const hero = document.querySelector('.hero');
+    let frame = 0;
+    hero?.addEventListener('pointermove', event => {
+      if (frame) return;
+      const x = event.clientX, y = event.clientY;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const b = hero.getBoundingClientRect();
+        hero.style.setProperty('--pointer-x', ((x-b.left)/b.width*100).toFixed(1)+'%');
+        hero.style.setProperty('--pointer-y', ((y-b.top)/b.height*100).toFixed(1)+'%');
+      });
+    }, { passive: true });
+    let active = null, cardFrame = 0;
+    grid?.addEventListener('pointermove', event => {
+      const visual = event.target.closest('.project-card')?.querySelector('.project-card__visual');
+      if (!visual) return;
+      if (active !== visual) {
+        active?.style.removeProperty('--card-x');
+        active?.style.removeProperty('--card-y');
+        active = visual;
+      }
+      if (cardFrame) return;
+      const x = event.clientX, y = event.clientY;
+      cardFrame = requestAnimationFrame(() => {
+        cardFrame = 0;
+        const b = visual.getBoundingClientRect();
+        visual.style.setProperty('--card-x', ((x-b.left)/b.width*100).toFixed(1)+'%');
+        visual.style.setProperty('--card-y', ((y-b.top)/b.height*100).toFixed(1)+'%');
+      });
+    }, { passive: true });
+    grid?.addEventListener('pointerleave', () => {
+      active?.style.removeProperty('--card-x');
+      active?.style.removeProperty('--card-y');
+      active = null;
+    });
+  }
 
   const copyright = document.getElementById('copyright-year');
   if (copyright) copyright.textContent = new Date().getFullYear();

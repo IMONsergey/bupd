@@ -299,3 +299,25 @@ body.motion-on.is-ready .hero__bottom { transition-delay: .5s; }
   body.motion-on .hero__line > span { transform: none!important; }
   .hero__picture { transform: none!important; }
 }
+
+
+/* Subtle light response to pointer over original project imagery. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 50% 55% at var(--pointer-x, 52%) var(--pointer-y, 46%),
+      rgba(255,255,255,.065), transparent 75%);
+  }
+  .project-card:hover .project-card__visual::after {
+    background: radial-gradient(circle at var(--card-x,50%) var(--card-y,50%),rgba(255,255,255,.12),transparent 62%),
+      linear-gradient(180deg,rgba(0,0,0,.28),transparent 30%,transparent 58%,rgba(0,0,0,.34));
+  }
+}
+@media (prefers-contrast: more) {
+  :root { --muted: #d1d0cc; --rule: rgba(255,255,255,.6); }
+  .desktop-nav a { color: #fff; }
+}
