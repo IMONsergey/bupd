@@ -1,0 +1,45 @@
+name: Public frontend checks
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'work/index.html'
+      - 'about/index.html'
+      - 'blog/index.html'
+      - 'contact/index.html'
+      - 'contact/baev-contact.js'
+      - 'front/**'
+      - 'scripts/check-public.mjs'
+      - '.github/workflows/public-frontend.yml'
+  push:
+    branches:
+      - 'feat/front-experience-2026-10-14'
+    paths:
+      - 'index.html'
+      - 'work/index.html'
+      - 'about/index.html'
+      - 'blog/index.html'
+      - 'contact/index.html'
+      - 'contact/baev-contact.js'
+      - 'front/**'
+      - 'scripts/check-public.mjs'
+permissions:
+  contents: read
+jobs:
+  static-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check public route structure and assets
+        run: node scripts/check-public.mjs
+      - name: Syntax checks
+        run: |
+          node --check front/site.js
+          node --check contact/baev-contact.js
+      - name: Diff whitespace
+        run: git diff --check HEAD~1 HEAD
