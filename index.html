@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#ecdbd6">
-  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#090e17">
+  <meta name="color-scheme" content="dark">
   <meta name="description" content="BAEV — студия визуальных коммуникаций: презентации, события и брендинг.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="BAEV Studio — Создаём впечатление">
@@ -16,8 +16,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/front/faithful/site.css">
+  <link rel="stylesheet" href="/front/conference/experience.css">
   <script type="importmap">{"imports":{"three":"/front/faithful/vendor/three.module.js"}}</script>
-  <script type="module" src="/front/faithful/world.js"></script>
+  <script type="module" src="/front/conference/scene.js"></script>
   <script src="/front/faithful/app.js" defer></script>
 </head><body class="page-home"><a class="skip-link" href="#main">Перейти к содержимому</a>
 <header class="header" id="header">
@@ -32,21 +33,42 @@
   <div class="intro__inner">
     <div class="intro__logo" aria-hidden="true"><span>B</span><span>A</span><span>E</span><span>V</span></div>
     <p class="intro__name" id="intro-name">BAEV STUDIO<sup>®</sup></p>
-    <p class="intro__description">Студия визуальных коммуникаций.<br>Создаём впечатление, за которым стоит смысл.</p>
-    <button class="intro__button" type="button" id="enter">Войти <span aria-hidden="true">↘</span></button>
+    <p class="intro__description">Окажитесь внутри события.<br>Пройдите к сцене, где идеи становятся впечатлением.</p>
+    <button class="intro__button" type="button" id="enter">Войти в пространство <span aria-hidden="true">↘</span></button>
   </div>
   <button class="intro__skip" type="button" id="enter-muted">ВОЙТИ БЕЗ ЗВУКА</button>
-</div><main id="main"><section class="world" data-world="home" id="world" aria-labelledby="hero-title">
-  <div class="world__fallback" aria-hidden="true"><span class="world__fallback-arch"></span></div>
-  <canvas class="world__canvas" tabindex="0" aria-label="Трёхмерное пространство BAEV: арки, ступени, вода и скульптуры. Ракурс меняется перетаскиванием и клавишами-стрелками." role="img"></canvas>
+</div><main id="main"><section class="world world--conference" data-world="conference" id="world" aria-labelledby="hero-title">
+  <div class="world__fallback" aria-hidden="true"></div>
+  <canvas class="world__canvas" tabindex="0" aria-label="Интерактивный трёхмерный зал конференции BAEV. Кнопки переключают точки маршрута, стрелки управляют камерой." role="img"></canvas>
   <div class="world__grain" aria-hidden="true"></div>
   <div class="world__content">
+    <div class="conference-meta"><span>BAEV® / ПРОСТРАНСТВО СОБЫТИЯ</span><span>EVENT EXPERIENCES · 2026</span></div>
     <div class="world__title-wrap">
-      <p class="world__eyebrow">КРЕАТИВНАЯ СТУДИЯ / САНКТ-ПЕТЕРБУРГ · МОСКВА</p>
-      <h1 class="world__title" id="hero-title"><em>Создаём</em><span>впечатление.</span></h1>
-      <a class="pill pill--light world__cta" href="#selected">Смотреть работы <span aria-hidden="true">↘</span></a>
+      <p class="world__eyebrow">ВСЁ НАЧИНАЕТСЯ С ИДЕИ</p>
+      <h1 class="world__title" id="hero-title"><em>Войти</em><span>в событие.</span></h1>
+      <p class="conference-subtitle">Пройдите через зал к главной сцене. Исследуйте реальные визуальные истории BAEV внутри пространства конференции.</p>
+      <button class="pill pill--light world__cta" type="button" id="tour-enter">Войти в зал <span aria-hidden="true">↗</span></button>
     </div>
-    <p class="world__drag">ПЕРЕТАСКИВАЙТЕ, ЧТОБЫ ИССЛЕДОВАТЬ ПРОСТРАНСТВО</p>
+    <div class="conference-info" id="experience-scene-info" aria-live="polite">
+      <span class="experience-scene-info__index conference-info__index">01 / 03</span>
+      <strong>Точка входа</strong><p>Двигайтесь к главной сцене.</p>
+    </div>
+    <nav class="conference-stops" aria-label="Маршрут через 3D-конференцию">
+      <button type="button" class="is-active" data-stop="0" aria-pressed="true"><span>01</span> Вход</button>
+      <button type="button" data-stop="1" aria-pressed="false"><span>02</span> Зал</button>
+      <button type="button" data-stop="2" aria-pressed="false"><span>03</span> Сцена</button>
+      <span class="conference-stops__line" aria-hidden="true"><span id="experience-progress"></span></span>
+    </nav>
+    <div class="conference-card" id="experience-case-panel">
+      <span class="conference-card__meta">LED-ЭКРАН СЦЕНЫ / РЕАЛЬНЫЕ ПРОЕКТЫ BAEV</span>
+      <div class="conference-card__row">
+        <button id="case-prev" type="button" aria-label="Предыдущий проект">←</button>
+        <div class="conference-card__title"><strong id="case-name">Авито Авто</strong><small id="case-type">Высшая передача</small></div>
+        <button id="case-next" type="button" aria-label="Следующий проект">→</button>
+        <a class="conference-card__link" href="/work/avito-auto-2024" id="case-open">Смотреть кейс ↗</a>
+      </div>
+    </div>
+    <p class="world__drag">ПРОКРУЧИВАЙТЕ ИЛИ ВЫБЕРИТЕ ТОЧКУ ПРОСМОТРА · КАМЕРУ МОЖНО ПОВОРАЧИВАТЬ</p>
   </div>
 </section><div class="fixed-controls" id="scene-controls">
   <div class="fixed-controls__left">
