@@ -63,7 +63,7 @@ for(const path of introduced){
 }
 verify(home.includes('id="intro"')&&home.includes('id="enter-muted"'),'home: entry sequence');
 verify(home.indexOf('id="intro"') < home.indexOf('<main id="main">'),'home: entry dialog must be outside inert main');
-verify(home.includes('data-world="home"'),'home: interactive WebGL stage');
+verify(home.includes('data-world="conference"'),'home: 3D conference venue');
 verify(home.includes('id="selected"'),'home: work anchor');
 verify(home.includes('class="fixed-controls"'),'home: scene controls');
 verify(projects.includes('class="projects"'),'work: grid');
@@ -91,13 +91,17 @@ verify(js.includes('/api/baev/projects'),'published-projects connector');
 verify(js.includes('sessionStorage'),'entry state');
 verify(js.includes('aria-expanded'),'menu accessible state');
 verify(js.includes('aria-pressed'),'filter accessible state');
-const scene=textFile('front/faithful/world.js');
-verify(scene.includes('Reflector'),'water reflection');
-verify(scene.includes('archWall'),'3D arches');
-verify(scene.includes('stairs'),'3D staircase');
-verify(scene.includes('iridescence'),'pearl material');
-verify(scene.includes('addWater'),'water shader');
-verify(scene.includes('keydown'),'keyboard camera interaction');
+const scene=textFile('front/conference/scene.js');
+verify(scene.includes('Reflector'),'conference floor reflection');
+verify(scene.includes('InstancedMesh'),'optimized 3D audience seating');
+verify(scene.includes('3D audience seating'),'3D auditorium architecture');
+verify(scene.includes('volumetrics'),'animated stage spotlights');
+verify(scene.includes('LED')&&scene.includes('CanvasTexture'),'real project LED stage screens');
+verify(scene.includes('keydown'),'accessible keyboard camera interaction');
+verify(scene.includes('choose(index)'),'3D camera waypoint navigation');
+verify(home.includes('id="case-next"'),'interactive stage case carousel');
+verify(home.includes('id="tour-enter"'),'guided conference entry');
+verify(home.includes('data-stop="2"'),'stage navigation');
 verify(existsSync(join(root,'front/faithful/vendor/THREE-LICENSE.txt')),'Three.js license');
 verify(!home.includes('framer.com'),'No Framer dependency');
 if(errors.length){
