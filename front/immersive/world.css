@@ -1,53 +1,40 @@
-/* Experimental BAEV spatial gallery. Original BAEV assets; no external 3D engine. */
-.world{--world-ink:#f4f0e8;position:relative;isolation:isolate;min-height:740px;height:100svh;overflow:hidden;background:#22251f;color:var(--world-ink)}
-.world__backdrop{position:absolute;inset:-20%;background:radial-gradient(ellipse 56% 57% at 48% 52%,#5b6757 0%,#3d4a40 31%,#1d2521 68%,#101713 100%);pointer-events:none}
-.world__backdrop::after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");opacity:.13;mix-blend-mode:soft-light}
-.world__stage{position:absolute;inset:0;z-index:1;perspective:1200px;cursor:grab;touch-action:pan-y;outline-offset:-12px}
-.world__stage:active{cursor:grabbing}
-.world__horizon{position:absolute;left:50%;top:55%;width:min(130vw,1700px);height:min(130vw,1700px);border:1px solid rgba(242,240,222,.15);border-radius:50%;transform:translate(-50%,-50%) rotateX(68deg);box-shadow:0 0 0 15vw rgba(218,224,197,.018),0 0 0 33vw rgba(218,224,197,.015);pointer-events:none}
-.world__orbit{position:absolute;left:50%;top:50%;width:min(86vw,1000px);height:min(86vw,1000px);border:1px solid rgba(242,240,222,.13);border-radius:50%;transform:translate(-50%,-50%) rotate(18deg);pointer-events:none}
-.world__object{position:absolute;top:50%;left:50%;display:block;width:var(--w);border:1px solid rgba(248,247,239,.45);padding:6px 6px 10px;background:#e7e3d9;color:#17201c;box-shadow:0 30px 55px rgba(0,0,0,.33);transform:translate3d(calc(-50% + var(--x)*.39vw),calc(-50% + var(--y)*.37vh),0) rotate(calc(var(--rot)*1deg));transition:box-shadow .35s,filter .35s,outline-color .35s;will-change:transform;user-select:none}
-.world__object img{width:100%;aspect-ratio:1.36;object-fit:cover;pointer-events:none}
-.world__object span{display:block;padding:12px 5px 0;font-size:10px;font-weight:600;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
-.world__object:hover,.world__object:focus-visible{z-index:6;box-shadow:0 40px 100px rgba(0,0,0,.55);filter:brightness(1.07)}
-.world__object--one{z-index:2}.world__object--two{z-index:3}.world__object--three{z-index:1}.world__object--four{z-index:2}.world__object--five{z-index:1}
-.world__interface{position:relative;z-index:4;display:flex;flex-direction:column;justify-content:space-between;min-height:100%;pointer-events:none;padding-top:calc(var(--header-height) + 42px);padding-bottom:32px}
-.world__interface a{pointer-events:auto}
-.world__meta,.world__controls{display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
-.world__meta{text-shadow:0 1px 20px rgba(0,0,0,.8)}
-.world__headline{align-self:center;text-align:center;display:flex;align-items:center;flex-direction:column;margin-top:8vh;text-shadow:0 3px 40px rgba(0,0,0,.24)}
-.world__eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:24px}
-.world__headline h1{font-size:clamp(80px,13vw,225px);line-height:.78;letter-spacing:-.105em;font-weight:600;text-transform:uppercase;white-space:nowrap}
-.world__headline h1 em{font-style:normal;color:#e6e8c7}
-.world__description{font-size:clamp(14px,1.2vw,18px);line-height:1.5;max-width:500px;margin-top:34px;text-wrap:balance}
-.world__enter{display:flex;gap:25px;align-items:center;border:1px solid rgba(255,255,255,.74);border-radius:99px;padding:17px 23px;background:rgba(20,25,22,.3);backdrop-filter:blur(20px);transition:background .3s,color .3s}
-.world__enter:hover{background:#f4f0e8;color:#1b211d}
-.world__enter span{font-size:21px;line-height:.5}
-.world__controls{align-items:end}
-.world__hint{max-width:180px;line-height:1.5}
-.world__skip{position:absolute;bottom:125px;right:var(--gutter);z-index:4;border:1px solid rgba(255,255,255,.5);border-radius:50%;width:46px;height:46px;display:grid;place-items:center;font-size:21px;transition:background .3s,color .3s}
-.world__skip:hover{background:#fff;color:#111}
-.site-header{z-index:30}
-@media (max-width:1050px){.world__meta span:last-child{display:none}.world__headline h1{font-size:clamp(64px,12.5vw,133px)}.world__object{width:calc(var(--w)*.85)}}
-@media (max-width:700px){
-.world{min-height:680px;height:100svh}
-.world__interface{padding-top:calc(var(--header-height) + 27px);padding-bottom:24px}
-.world__meta{font-size:9px;max-width:220px}
-.world__headline{margin-top:0;align-self:center}
-.world__eyebrow{font-size:9px;letter-spacing:.14em;margin-bottom:18px}
-.world__headline h1{font-size:clamp(46px,12.1vw,82px);line-height:.89;letter-spacing:-.09em}
-.world__description{font-size:13px;margin-top:21px;max-width:290px}
-.world__object{width:min(210px,47vw);padding:4px 4px 7px}
-.world__object span{font-size:8px;padding:8px 3px 0}
-.world__object--one{--x:-30!important;--y:-66!important}
-.world__object--two{--x:40!important;--y:-63!important}
-.world__object--three{--x:-34!important;--y:72!important}
-.world__object--four{--x:38!important;--y:79!important}
-.world__object--five{display:none}
-.world__controls{font-size:9px;gap:14px}
-.world__hint{max-width:88px}
-.world__counter{display:none}
-.world__enter{padding:15px 16px;gap:13px}
-.world__skip{display:none}
-}
-@media (prefers-reduced-motion:reduce){.world__object{will-change:auto;transition:none}.world__stage{cursor:default}}
+/* BAEV immersive study: spatial architecture, water and editorial typographic overlay. */
+:root{--unseen-pink:#ebdad4;--unseen-ink:#231f1e}
+body:has(.unseen-stage){background:var(--unseen-pink)}
+body:has(.unseen-stage) .site-header{background:none;box-shadow:none;color:#292423}
+body:has(.unseen-stage) .site-logo{font-family:Inter,Arial,sans-serif;font-size:26px;font-weight:550;line-height:1;letter-spacing:-.075em;text-transform:lowercase}
+body:has(.unseen-stage) .site-logo span{font-size:10px;right:-12px}
+body:has(.unseen-stage) .desktop-nav a{color:#2b2929}
+body:has(.unseen-stage) .desktop-nav a::after{background:#2b2929}
+body:has(.unseen-stage) .header-contact{border:1px solid #333;background:rgba(255,255,255,.7)}
+body:has(.unseen-stage) .menu-toggle{color:#202020}
+body:has(.unseen-stage) .site-header.is-open{background:#161616;color:#fff}
+body:has(.unseen-stage) .site-header.is-open .menu-toggle{color:#fff}
+body:has(.unseen-stage) .site-header.is-scrolled:not(.is-open){background:rgba(235,218,212,.84);backdrop-filter:blur(20px)}
+.unseen-stage{position:relative;isolation:isolate;height:100svh;min-height:660px;overflow:hidden;background:#dec5be;color:#26211e}
+.unseen-stage__canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+.unseen-stage__fallback{position:absolute;inset:0;background:linear-gradient(125deg,rgba(248,226,224,.9),rgba(172,150,160,.55)),url('/front/media/baev-stage.jpg') center/cover;z-index:0}
+.unseen-stage__copy{position:absolute;top:40%;left:50%;width:min(90%,1000px);transform:translate(-50%,-20%);text-align:center;z-index:3;pointer-events:none}
+.unseen-stage__copy p{font-size:clamp(9px,1vw,14px);font-weight:500;letter-spacing:.05em;margin-bottom:21px;text-shadow:0 1px 18px #f5dcd1}
+.unseen-stage__copy h1{display:flex;flex-direction:column;align-items:center;line-height:.83;letter-spacing:-.072em;color:#292322;text-shadow:0 4px 24px rgba(244,224,222,.12)}
+.unseen-stage__copy h1 em{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(70px,8vw,133px);font-style:italic;line-height:1.1;letter-spacing:-.065em}
+.unseen-stage__copy h1 span{font-size:clamp(72px,8.5vw,148px);font-weight:500;letter-spacing:-.092em;white-space:nowrap}
+.unseen-pill{pointer-events:auto;display:inline-flex;gap:18px;align-items:center;margin-top:34px;padding:13px 21px 14px;border-radius:30px;background:white;color:#292423;font-size:13px;font-weight:550;letter-spacing:0;transition:transform .3s,background .3s}
+.unseen-pill:hover{transform:translateY(-3px);background:#f1ebe5}
+.unseen-stage__bottom{position:absolute;z-index:3;bottom:26px;left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;align-items:center;gap:15px;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.unseen-stage__sound{padding:10px 15px;border-radius:99px;border:1px solid rgba(40,30,30,.7);backdrop-filter:blur(20px)}
+.unseen-stage__explore{margin:auto;opacity:.75;font-size:10px}
+.unseen-gate{position:fixed;inset:0;background:#eedfda;color:#241e1c;z-index:250;display:grid;place-items:center;opacity:1;transition:opacity 1s cubic-bezier(.2,.8,.2,1),visibility 1s}
+.unseen-gate.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.unseen-gate__center{display:flex;flex-direction:column;align-items:center;text-align:center;width:min(94%,500px)}
+.unseen-gate__mark{height:116px;display:flex;align-items:center;justify-content:center;gap:-4px;font-weight:500;font-size:68px;letter-spacing:-.18em;line-height:1}
+.unseen-gate__mark span:nth-child(2){font-family:Georgia,serif;font-style:italic}
+.unseen-gate__brand{font-size:15px;font-weight:550;letter-spacing:-.025em;margin:10px 0}
+.unseen-gate__intro{font-size:14px;line-height:1.22;letter-spacing:-.035em}
+.unseen-gate__button{margin-top:27px;padding:10px 24px;border:0;border-radius:30px;background:white;color:#222;font-size:14px;display:flex;align-items:center;gap:12px;transition:transform .25s}
+.unseen-gate__button:hover{transform:scale(1.05)}
+.unseen-gate__skip{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);border:0;border-bottom:1px solid #222;padding:4px 0;background:none;color:#222;font-size:10px}
+body.unseen-locked{overflow:hidden}
+body.unseen-locked .site-header{visibility:hidden}
+@media(max-width:700px){.unseen-stage__copy{top:43%;width:100%;padding:0 15px}.unseen-stage__copy h1 em{font-size:clamp(53px,14vw,105px)}.unseen-stage__copy h1 span{font-size:clamp(50px,13.1vw,100px)}.unseen-stage__copy p{font-size:9px}.unseen-stage__explore{display:none}.unseen-stage__bottom{bottom:21px}.unseen-stage__copy .unseen-pill{margin-top:26px}.unseen-gate__mark{font-size:60px}}
+@media(prefers-reduced-motion:reduce){.unseen-gate{transition:none}.unseen-pill{transition:none}}
