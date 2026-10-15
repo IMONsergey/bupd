@@ -1,6 +1,7 @@
 import * as THREE from '../faithful/vendor/three.module.js';
 import { titleGraphic } from './materials.js';
 import { CASES } from './chapters.js';
+import { buildTypeSculpture } from './typography.js';
 
 function room(kit, name, warm = false) {
   const group = new THREE.Group(); group.name = name; kit.floor(group, [65, .25, 67]); const slats = [];
@@ -23,16 +24,11 @@ export function buildLayers(kit) {
   dimension(kit, group, [-9.5, .18, -8], [-9.5, .18, 4]); for (let i = 0; i < 4; i++) dimension(kit, group, [-9.8, .18, z[i]], [-9.1, .18, z[i]]);
   return { group, update(t, detail) { parts.forEach((part, i) => { part.position.z = THREE.MathUtils.lerp(z[i], -1 + i * .08, detail); frames[i].position.z = part.position.z; }); } };
 }
+
 export function buildMeaning(kit) {
-  const group = room(kit, 'meaning'), letters = [], word = 'ПОНЯТНО';
-  for (let i = 0; i < word.length; i++) {
-    const depth = [2, -3.5, 1, -5, -1, -4, 2][i], ratio = (24 - depth) / 24, part = new THREE.Group(); part.position.set((i - 3) * 1.94 * ratio, 4.1, depth); group.add(part);
-    const body = kit.block(part, [1.68 * ratio, 3.6 * ratio, .56], kit.solid('#bdc7ad', .63, .05), [0, 0, 0], .08); body.castShadow = true;
-    const letter = kit.text(word[i], { width: 320, height: 560, background: '#bdc7ad', color: '#253020', size: 325, weight: 600, align: 'center', padding: 20 }); kit.plane(part, 1.65 * ratio, 3.55 * ratio, letter.texture, [0, 0, .29]); letters.push(part); dimension(kit, group, [part.position.x, .02, -9], [part.position.x, .02, 10]);
-  }
-  const focus = kit.text('ОДНА МЫСЛЬ. ТОЧНЫЙ ФОКУС.', { width: 1400, height: 140, size: 46, align: 'center', color: '#a8b49a' }); kit.plane(group, 15, 1.5, focus.texture, [0, .04, 5], true, [-Math.PI / 2, 0, 0]);
-  return { group, update(t, detail) { letters.forEach((letter, i) => { letter.rotation.y = (1 - detail) * (i % 2 ? -.035 : .04); }); } };
+  return buildTypeSculpture(kit, room(kit, 'meaning'));
 }
+
 export function buildStructure(kit) {
   const group = room(kit, 'structure'), panels = [], positions = [[-9, 3.7, 7], [3, 4.2, -2], [-4, 5.0, -12], [7, 5.8, -22]], titles = ['Контекст', 'Аргумент', 'Решение', 'Следующий\nшаг'], labels = ['Что происходит', 'Почему это важно', 'Что предлагаем', 'К чему приходим'];
   const points = [[-11, .2, 14], ...positions.map(([x, y, z]) => [x, .8, z + 1]), [10, .2, -29]].map(p => new THREE.Vector3(...p)), curve = new THREE.CatmullRomCurve3(points, false, 'centripetal');

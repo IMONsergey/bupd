@@ -64,6 +64,11 @@ try:
                 if index in [1, 2, 3, 4, 6]:
                     page.locator('#scene-detail').click()
                     check(page.locator('#scene-detail').get_attribute('aria-pressed') == 'true', f'chapter {index + 1}: working detail interaction')
+                if index == 2:
+                    glyphs = page.evaluate("window.__BAEV_JOURNEY__.engine.registry.get(2).group.children.filter(o => o.name.startsWith('glyph-')).map(o => o.geometry.type)")
+                    check(len(glyphs) == 7 and all(g == 'ExtrudeGeometry' for g in glyphs), 'meaning uses seven volumetric glyphs, not textured boards')
+                    page.wait_for_function('window.__BAEV_JOURNEY__.engine.detail > .98', timeout=30000)
+                    page.screenshot(path=str(OUT / 'desktop-03-focused.png'))
                 if index == 5:
                     page.locator('#case-next').click()
                     check(page.locator('#case-title').inner_text() == 'HAVAL', 'project selector updates title')
@@ -112,7 +117,7 @@ try:
             if mp.evaluate("document.body.dataset.ready === 'true'"):
                 wait_ready(mp)
                 check(mp.evaluate('window.__BAEV_JOURNEY__.stats().reduced'), f'{label}: system reduced-motion preference is respected')
-                for index in [0, 3, 5, 6, 7]:
+                for index in range(8):
                     if index:
                         go(mp, index)
                     no_overflow(mp, f'{label}, chapter {index + 1}: no overflow')
