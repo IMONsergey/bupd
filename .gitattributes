@@ -1,0 +1,8 @@
+# Generated shader strings and upstream license texts retain upstream formatting.
+# Source files remain subject to normal whitespace checks.
+cinema/assets/*.js linguist-generated=true -whitespace
+cinema/assets/*.css linguist-generated=true
+cinema/licenses/* linguist-vendored=true -whitespace
+scene-lab/public/licenses/* linguist-vendored=true -whitespace
+*.glb binary
+*.blend binary

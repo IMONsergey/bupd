@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#080b11" />
+    <meta name="robots" content="noindex" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080b11'/%3E%3Ctext x='7' y='24' font-family='Arial' font-size='23' fill='white'%3EB%3C/text%3E%3C/svg%3E"
+    />
+    <title>BAEV — по ту сторону выступления</title>
+    <meta
+      name="description"
+      content="Из зрительного зала — внутрь презентации. Содержание, сценарий и визуальная форма в работах BAEV."
+    />
+    <script type="module" src="/src/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#plain">К версии без 3D</a>
+    <main>
+      <picture class="poster"
+        ><img
+          src="/media/first-light-reference.jpg"
+          alt="Зал BAEV перед началом выступления."
+      /></picture>
+      <canvas id="viewport" aria-hidden="true"></canvas>
+      <div class="shade" aria-hidden="true"></div>
+      <div id="passage" aria-hidden="true"></div>
+      <header>
+        <a class="logo" href="/" aria-label="BAEV — главная"
+          >BAEV<sup>®</sup></a
+        ><span class="edition">ПО ТУ СТОРОНУ ВЫСТУПЛЕНИЯ</span>
+        <nav aria-label="Основная навигация">
+          <a href="/work/">Проекты ↗</a><a href="/contact/">Контакт ↗</a>
+        </nav>
+      </header>
+      <section class="caption" aria-labelledby="title">
+        <p class="kicker" id="chapter-label">01 / ОТКРЫТИЕ</p>
+        <h1 id="title">Сначала —<br />внимание.</h1>
+        <p class="description" id="description">
+          Зал собирается. Свет меняется. История начинается.
+        </p>
+        <div class="primary-actions">
+          <button id="advance" type="button">
+            Внутрь истории <span aria-hidden="true">↗</span></button
+          ><a id="contact-cta" href="/contact/" hidden>Обсудить задачу ↗</a>
+        </div>
+      </section>
+      <aside id="notice" role="status">
+        Подготавливаем пространство и зрителей…
+      </aside>
+      <aside
+        class="case-panel"
+        id="case-panel"
+        hidden
+        aria-label="Избранные проекты"
+      >
+        <p class="kicker">
+          ИЗБРАННЫЙ ПРОЕКТ <span id="case-number">01 / 03</span>
+        </p>
+        <h2 id="case-title">Авито Авто</h2>
+        <p id="case-subtitle">Высшая передача</p>
+        <div>
+          <button id="case-prev" aria-label="Предыдущий проект">←</button
+          ><button id="case-next" aria-label="Следующий проект">→</button
+          ><a id="case-link" href="/work/avito-auto-2024">Открыть кейс ↗</a>
+        </div>
+        <p id="case-error" hidden>
+          Изображение не загрузилось. Полный кейс доступен по ссылке.
+        </p>
+      </aside>
+      <div class="controls" hidden>
+        <div class="transport">
+          <button id="back" type="button" aria-label="Предыдущая глава">
+            ←</button
+          ><button
+            id="play"
+            type="button"
+            aria-label="Проиграть всю историю"
+            aria-pressed="false"
+          >
+            <span id="play-symbol" aria-hidden="true">▶</span
+            ><span id="play-text">Смотреть историю</span></button
+          ><span id="position" aria-live="off">01 / 08</span>
+        </div>
+        <nav class="shots" id="chapters" aria-label="Главы истории"></nav>
+        <div class="timeline">
+          <label class="sr" for="timeline">Положение в истории</label
+          ><input
+            id="timeline"
+            type="range"
+            min="0"
+            max="1"
+            step="0.001"
+            value="0"
+          />
+        </div>
+        <div class="options">
+          <button id="motion" type="button" aria-pressed="true">
+            Движение: вкл.</button
+          ><button id="static" type="button">Без 3D</button
+          ><button id="editor-link" type="button" hidden>Настройка кадра</button
+          ><span class="navigation-hint">Колесо, свайп или стрелки</span>
+        </div>
+      </div>
+      <p class="sr" id="announcement" role="status" aria-live="polite"></p>
+    </main>
+    <section id="plain" class="plain" hidden aria-label="BAEV — история без 3D">
+      <h2>От мысли к впечатлению.</h2>
+      <p>BAEV — публичная коммуникация и презентации для бизнеса.</p>
+      <button id="return" hidden>Вернуться в пространство ↗</button>
+      <div class="plain-grid">
+        <article>
+          <span>01 / Открытие</span>
+          <h3>Сначала — внимание.</h3>
+          <p>История начинается перед живой аудиторией.</p>
+        </article>
+        <article>
+          <span>02 / Среди зрителей</span>
+          <h3>Не наблюдать. Быть внутри.</h3>
+          <p>Коммуникация начинается с понимания тех, кому мы говорим.</p>
+        </article>
+        <article>
+          <span>03 / Первое слово</span>
+          <h3>У каждой идеи есть аудитория.</h3>
+          <p>За сильным выступлением — ясная мысль.</p>
+        </article>
+        <article>
+          <span>04 / За экраном</span>
+          <h3>Увидеть больше кадра.</h3>
+          <p>Исследуем содержание, сценарий и визуальный язык.</p>
+        </article>
+        <article>
+          <span>05 / Внутри мысли</span>
+          <h3>Из сложного — в понятное.</h3>
+          <p>Выделяем главное. Остальное выстраивается вокруг него.</p>
+        </article>
+        <article>
+          <span>06 / История</span>
+          <h3>Мысль обретает последовательность.</h3>
+          <p>Содержание, структура и форма работают вместе.</p>
+        </article>
+        <article>
+          <span>07 / Реальные проекты</span>
+          <h3>Работы BAEV.</h3>
+          <a href="/work/avito-auto-2024">Авито Авто ↗</a
+          ><a href="/work/linear-identity">HAVAL ↗</a
+          ><a href="/work/future-archive">Альфа Конфа ↗</a>
+        </article>
+        <article>
+          <span>08 / Ваша история</span>
+          <h3>Что важно объяснить вам?</h3>
+          <p>Расскажите о своей задаче.</p>
+          <a href="/contact/">Обсудить задачу ↗</a>
+        </article>
+      </div>
+    </section>
+    <noscript
+      ><style>
+        #plain[hidden] {
+          display: block !important;
+        }
+        main {
+          position: relative;
+          height: 65vh;
+        }
+        .controls,
+        .primary-actions,
+        #notice,
+        .skip {
+          display: none !important;
+        }
+        body {
+          overflow: auto;
+        }
+      </style></noscript
+    >
+  </body>
+</html>

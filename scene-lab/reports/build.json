@@ -1,0 +1,97 @@
+{
+  "modelBytes": 1291604,
+  "gzipJsBytes": 288506,
+  "totalStaticBytes": 2704503,
+  "files": [
+    {
+      "file": "assets/index-BsvphKG5.js",
+      "bytes": 13131,
+      "gzipBytes": 5760
+    },
+    {
+      "file": "assets/index-C0G1XLhd.css",
+      "bytes": 8015,
+      "gzipBytes": 2493
+    },
+    {
+      "file": "assets/scene-ChIE4q3H.js",
+      "bytes": 958399,
+      "gzipBytes": 282746
+    },
+    {
+      "file": "index.html",
+      "bytes": 7833,
+      "gzipBytes": 2883
+    },
+    {
+      "file": "licenses/characters.json",
+      "bytes": 1205,
+      "gzipBytes": 602
+    },
+    {
+      "file": "licenses/characters.txt",
+      "bytes": 301,
+      "gzipBytes": null
+    },
+    {
+      "file": "licenses/meshoptimizer.txt",
+      "bytes": 1079,
+      "gzipBytes": null
+    },
+    {
+      "file": "licenses/three.txt",
+      "bytes": 1081,
+      "gzipBytes": null
+    },
+    {
+      "file": "licenses/vite.txt",
+      "bytes": 108786,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/first-light-reference.jpg",
+      "bytes": 165480,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/projects/alfa.webp",
+      "bytes": 21058,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/projects/avito.webp",
+      "bytes": 54830,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/projects/haval.webp",
+      "bytes": 70972,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/first-light.glb",
+      "bytes": 185240,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/people/business-man.glb",
+      "bytes": 501140,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/people/seated.glb",
+      "bytes": 96900,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/people/woman.glb",
+      "bytes": 508324,
+      "gzipBytes": null
+    },
+    {
+      "file": "shots.json",
+      "bytes": 729,
+      "gzipBytes": 277
+    }
+  ]
+}

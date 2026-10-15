@@ -1,0 +1,39 @@
+name: BAEV lightweight scene lab
+on:
+  push:
+    branches: [feat/baev-cinematic-lab-2026-10-15]
+    paths: ['scene-lab/**', 'cinema/**', '.github/workflows/scene-lab.yml', '.vercelignore']
+  pull_request:
+    paths: ['scene-lab/**', 'cinema/**', '.github/workflows/scene-lab.yml', '.vercelignore']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: scene-lab-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: scene-lab/package-lock.json
+      - run: npm ci
+        working-directory: scene-lab
+      - run: npm test
+        working-directory: scene-lab
+      - run: npm run build
+        working-directory: scene-lab
+      - name: Preserve existing public site and CMS
+        run: git diff --exit-code dcb6e23d6753cf13f53b9d6e38846f8342644d3f HEAD -- index.html front/journey cms work contact about blog front/media
+      - name: Check whitespace
+        run: git diff --check dcb6e23d6753cf13f53b9d6e38846f8342644d3f HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scene-lab-budgets
+          path: scene-lab/reports/*.json
+          retention-days: 14

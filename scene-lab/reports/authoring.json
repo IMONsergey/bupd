@@ -1,0 +1,14 @@
+{
+  "bakedFloor": true,
+  "blender": "4.5.14 LTS",
+  "source": "authoring/first-light.blend",
+  "meshes": 1063,
+  "rawBytes": 2208652,
+  "cameras": [
+    "arrival",
+    "reveal",
+    "stage"
+  ],
+  "renderer": "Cycles CPU / 4 threads",
+  "assets": "Original authored geometry; Blender bundled font converted to meshes"
+}
