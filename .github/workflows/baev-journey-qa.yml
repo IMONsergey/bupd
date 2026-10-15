@@ -1,0 +1,61 @@
+name: BAEV eight-scene journey
+on:
+  push:
+    branches: [feat/baev-eight-scene-journey-2026-10-15]
+    paths: ['index.html', 'front/journey/**', 'scripts/*journey*', '.github/workflows/baev-journey-qa.yml']
+  pull_request:
+    paths: ['index.html', 'front/journey/**', 'scripts/*journey*', '.github/workflows/baev-journey-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: baev-journey-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: |
+          for file in front/journey/*.js; do node --check "$file"; done
+          node scripts/test-journey.mjs
+      - name: Protect CMS, case routes and original assets
+        run: |
+          test -z "$(git diff --name-only 75703ab801b2fa7d6584787233417a6472196ff3 HEAD -- cms work about blog contact front/media front/faithful front/conference)"
+      - name: Package exact source for reproducible review
+        run: git archive --format=zip --output=/tmp/baev-source.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: journey-source
+          path: /tmp/baev-source.zip
+          retention-days: 14
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps ${{ matrix.browser }}
+      - name: Start static preview
+        run: python -m http.server 4173 > /tmp/baev-http.log 2>&1 &
+      - name: Browser and responsive acceptance
+        env:
+          BAEV_BROWSER: ${{ matrix.browser }}
+          BAEV_QA_OUTPUT: journey-qa-${{ matrix.browser }}
+        run: python scripts/journey-browser.py
+      - name: Retain visual evidence and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journey-${{ matrix.browser }}
+          path: journey-qa-${{ matrix.browser }}
+          retention-days: 14
