@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright
 BASE = os.getenv('BAEV_QA_URL', 'http://127.0.0.1:4173')
 OUT = pathlib.Path(os.getenv('BAEV_QA_OUTPUT', 'journey-qa'))
 OUT.mkdir(exist_ok=True)
-report = {'checks': [], 'scenes': [], 'errors': []}
+report = {'checks': [], 'scenes': [], 'errors': [], 'renderer_coverage': {}}
 
 def check(condition, label):
     if not condition:
@@ -24,6 +24,24 @@ def go(page, index):
     page.locator(f'#chapter-track [data-chapter="{index}"]').click()
     page.wait_for_function('(i) => window.__BAEV_JOURNEY__.current === i && !window.__BAEV_JOURNEY__.stats().travelling', arg=index, timeout=60000)
     page.wait_for_timeout(400)
+
+def capture(page, filename, full_page=False):
+    """Freeze the actual rendered frame for capture, then restore its scheduler.
+
+    CSS can settle independently; screenshots do not disable runtime motion tests.
+    Software renderers need time to drain their command queue before PNG capture.
+    """
+    live = page.evaluate("Boolean(window.__BAEV_JOURNEY__?.engine && document.body.dataset.ready === 'true')")
+    was_running = False
+    if live:
+        was_running = page.evaluate("window.__BAEV_JOURNEY__.stats().running")
+        page.evaluate("window.__BAEV_JOURNEY__.engine.stop()")
+    try:
+        page.screenshot(path=str(OUT / filename), full_page=full_page,
+                        animations='disabled', timeout=90000)
+    finally:
+        if live and was_running:
+            page.evaluate("window.__BAEV_JOURNEY__.engine.start()")
 
 def no_overflow(page, label):
     d = page.evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})')
@@ -44,15 +62,18 @@ try:
         page.goto(BASE + '/?debug=1', wait_until='domcontentloaded')
         page.wait_for_function("['true','fallback'].includes(document.body.dataset.ready)", timeout=90000)
         is_fallback = page.evaluate("document.body.dataset.ready === 'fallback'")
+        report['renderer_coverage']['desktop'] = 'fallback' if is_fallback else 'webgl'
         if is_fallback and browser_name != 'chromium':
             check(page.locator('#plain').is_visible(), f'{browser_name}: readable graphics fallback')
             check(page.locator('#plain article').count() == 8, f'{browser_name}: all chapters survive fallback')
-            page.screenshot(path=str(OUT / f'{browser_name}-fallback.png'), full_page=True)
+            capture(page, f'{browser_name}-fallback.png', full_page=True)
         else:
             wait_ready(page)
             page.add_style_tag(content='.debug-stats{display:none!important}')
             stats = page.evaluate('window.__BAEV_JOURNEY__.stats()')
             check(stats['drawCalls'] > 0 and stats['triangles'] > 1000, 'real WebGL geometry renders on the opening frame')
+            page.wait_for_function("window.__BAEV_JOURNEY__.engine.sceneTime >= 2.6", timeout=90000)
+            check(page.evaluate("window.__BAEV_JOURNEY__.engine.registry.get(0).group.getObjectByName('main-screen').material.uniforms.uProgress.value") == 1, 'opening keynote reveal completes without an entry gate')
             for index in range(8):
                 if index:
                     go(page, index)
@@ -60,10 +81,10 @@ try:
                 no_overflow(page, f'chapter {index + 1}: no horizontal or vertical document scroll')
                 stats = page.evaluate('window.__BAEV_JOURNEY__.stats()')
                 check(stats['drawCalls'] > 0, f'chapter {index + 1}: rendered scene')
-                check(stats['drawCalls'] <= 90 and stats['triangles'] < 450000, f'chapter {index + 1}: render budget')
+                check(stats['drawCalls'] <= 90 and stats['triangles'] < 270000, f'chapter {index + 1}: render budget')
                 check(page.evaluate('Array.from(window.__BAEV_JOURNEY__.engine.registry.values()).filter(s => s.group.visible).length') == 1, f'chapter {index + 1}: only the active set is visible')
                 report['scenes'].append(stats)
-                page.screenshot(path=str(OUT / f'desktop-{index + 1:02}.png'))
+                capture(page, f'desktop-{index + 1:02}.png')
                 if index in [1, 2, 3, 4, 6]:
                     page.locator('#scene-detail').click()
                     check(page.locator('#scene-detail').get_attribute('aria-pressed') == 'true', f'chapter {index + 1}: working detail interaction')
@@ -71,17 +92,23 @@ try:
                     glyphs = page.evaluate("window.__BAEV_JOURNEY__.engine.registry.get(2).group.children.filter(o => o.name.startsWith('glyph-')).map(o => o.geometry.type)")
                     check(len(glyphs) == 7 and all(g == 'ExtrudeGeometry' for g in glyphs), 'meaning uses seven volumetric glyphs, not textured boards')
                     page.wait_for_function('window.__BAEV_JOURNEY__.engine.detail > .98', timeout=30000)
-                    page.screenshot(path=str(OUT / 'desktop-03-focused.png'))
+                    capture(page, 'desktop-03-focused.png')
                 if index == 5:
                     page.locator('#case-next').click()
                     check(page.locator('#case-title').inner_text() == 'HAVAL', 'project selector updates title')
                     check(page.locator('#case-link').get_attribute('href').endswith('/work/linear-identity'), 'project selector preserves correct case route')
                     check(page.request.get(BASE + '/work/linear-identity').ok, 'existing full case URL resolves')
+                    page.reload(wait_until='domcontentloaded')
+                    wait_ready(page)
+                    page.add_style_tag(content='.debug-stats{display:none!important}')
+                    check(page.locator('#case-title').inner_text() == 'HAVAL', 'reloading a project chapter restores the selected project')
+                    check(page.evaluate('window.__BAEV_JOURNEY__.engine.selectedCase') == 1, 'restored project and 3D camera target stay in sync')
                 if index == 7:
                     page.locator('#project-title').fill('Проверка презентации')
                     page.locator('#project-title').press('ArrowLeft')
                     check(page.evaluate('window.__BAEV_JOURNEY__.current') == 7, 'typing and arrow keys in the brief do not navigate')
                     check(page.locator('#scene-contact').get_attribute('href') == '/contact/', 'final CTA uses the existing contact route')
+                    check('Проверка презентации' not in page.evaluate('JSON.stringify(history.state) + location.href'), 'draft title is not stored in history or URL')
             page.locator('#project-title').blur()
             page.locator('#map-open').click()
             check(page.locator('#chapter-dialog').is_visible(), 'chapter map opens as a native dialog')
@@ -120,10 +147,12 @@ try:
             mobile = browser.new_context(viewport={'width': width, 'height': height}, is_mobile=browser_name != 'firefox', has_touch=True, reduced_motion='reduce')
             mp = mobile.new_page()
             watch_errors(mp)
-            mp.goto(BASE + '/', wait_until='domcontentloaded')
+            mp.goto(BASE + '/?debug=1', wait_until='domcontentloaded')
             mp.wait_for_function("['true','fallback'].includes(document.body.dataset.ready)", timeout=90000)
+            report['renderer_coverage'][label] = 'webgl' if mp.evaluate("document.body.dataset.ready === 'true'") else 'fallback'
             if mp.evaluate("document.body.dataset.ready === 'true'"):
                 wait_ready(mp)
+                mp.add_style_tag(content='.debug-stats{display:none!important}')
                 check(mp.evaluate('window.__BAEV_JOURNEY__.stats().reduced'), f'{label}: system reduced-motion preference is respected')
                 for index in range(8):
                     if index:
@@ -131,9 +160,9 @@ try:
                     no_overflow(mp, f'{label}, chapter {index + 1}: no overflow')
                     box = mp.locator('.scene-copy').bounding_box()
                     check(box['y'] >= 65 and box['y'] + box['height'] <= height - 70, f'{label}, chapter {index + 1}: title/actions inside safe area')
-                mp.screenshot(path=str(OUT / f'{label}-final.png'))
+                capture(mp, f'{label}-final.png')
                 go(mp, 0)
-                mp.screenshot(path=str(OUT / f'{label}-opening.png'))
+                capture(mp, f'{label}-opening.png')
             else:
                 check(mp.locator('#plain').is_visible(), f'{label}: usable fallback')
             mobile.close()

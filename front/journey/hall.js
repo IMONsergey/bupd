@@ -1,5 +1,7 @@
 import * as THREE from '../faithful/vendor/three.module.js';
 import { rng, titleGraphic } from './materials.js';
+import { installOpening } from './opening.js';
+import { seatHardware } from './seating.js';
 
 /** A reusable theatre set. The final chapter reverses the visitor's point of view. */
 export function buildHall(kit, { final = false } = {}) {
@@ -100,8 +102,8 @@ export function buildHall(kit, { final = false } = {}) {
     backs,
     true,
   );
-  kit.instances(group, kit.box(0.12, 0.1, 0.7, 0.025), steel, arms);
-  kit.instances(group, kit.box(0.07, 0.59, 0.55, 0.015), steel, legs);
+  kit.instances(group, seatHardware(kit, 0.12, 0.1, 0.7, 0.025), steel, arms);
+  kit.instances(group, seatHardware(kit, 0.07, 0.59, 0.55, 0.015), steel, legs);
   const bodyGeometry = kit.geometry(
     'audience-body',
     () => new THREE.SphereGeometry(1, 10, 8),
@@ -141,6 +143,7 @@ export function buildHall(kit, { final = false } = {}) {
   const graphic = titleGraphic(kit),
     screen = kit.plane(group, 20.8, 8.4, graphic.texture, [0, 6.55, -25.85]);
   screen.name = 'main-screen';
+  const keynote = final ? null : installOpening(kit, screen);
   kit.frame(group, 20.83, 8.43, 0.13, [0, 6.55, -25.8], black);
   const sideGraphic = kit.text('BAEV\n/ LIVE', {
     width: 384,
@@ -301,7 +304,7 @@ export function buildHall(kit, { final = false } = {}) {
     update(t, detail, reduced) {
       const opening = final ? 1 : Math.min(1, 0.35 + t / 2.4);
       glow.intensity = 580 * opening;
-      screen.material.color.setScalar(0.8 + 0.2 * opening);
+      keynote?.update(t, reduced);
       beams.forEach((beam, i) => {
         beam.material.uniforms.uStrength.value =
           (0.27 + (reduced ? 0 : Math.sin(t * 0.21 + i) * 0.013)) * opening;

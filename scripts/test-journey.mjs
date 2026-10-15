@@ -1,3 +1,6 @@
+import { readView, historyEntry } from '../front/journey/history.js';
+import { seatHardware } from '../front/journey/seating.js';
+import { Materials } from '../front/journey/materials.js';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import {
@@ -179,5 +182,29 @@ test('non-adjacent chapters use a bounded cut, never a long empty fly-through', 
   assert.equal(sampleTravel(travel, 0.25).index, 0);
   assert.equal(sampleTravel(travel, 0.75).index, 5);
   assert.equal(sampleTravel(travel, 0.5).mask, 1);
+});
+test('navigation state survives a reload without retaining a draft title', () => {
+  const entry = historyEntry({ unrelated: 'preserved' }, 5, 1);
+  assert.deepEqual(readView(entry, '#projects'), { chapter: 5, caseIndex: 1 });
+  assert.equal(entry.unrelated, 'preserved');
+  assert.deepEqual(Object.keys(entry.baevJourney).sort(), ['caseIndex', 'chapter', 'version']);
+});
+test('malformed navigation state does not select a nonexistent project', () => {
+  for (const caseIndex of [-1, 99, NaN, '1', null]) {
+    assert.equal(readView({ baevJourney: { caseIndex } }, '#projects').caseIndex, 0);
+  }
+  assert.equal(readView(null, '#missing').chapter, 0);
+});
+test('chair hardware preserves bounds with fewer than half the triangles', () => {
+  const kit = new Materials();
+  for (const dimensions of [[.12, .1, .7, .025], [.07, .59, .55, .015]]) {
+    const original = kit.box(...dimensions), optimized = seatHardware(kit, ...dimensions);
+    original.computeBoundingBox(); optimized.computeBoundingBox();
+    assert.ok(optimized.attributes.position.count < original.attributes.position.count * .5);
+    assert.ok(original.boundingBox.min.distanceTo(optimized.boundingBox.min) < .000001);
+    assert.ok(original.boundingBox.max.distanceTo(optimized.boundingBox.max) < .000001);
+    assert.equal(seatHardware(kit, ...dimensions), optimized);
+  }
+  kit.dispose();
 });
 console.log(`BAEV journey: ${passed} unit/contract checks passed.`);

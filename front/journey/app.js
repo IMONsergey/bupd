@@ -5,6 +5,7 @@ import {
   indexFromHash,
   clamp,
 } from './chapters.js';
+import { readView, historyEntry } from './history.js';
 
 const $ = (id) => document.getElementById(id);
 const body = document.body,
@@ -22,7 +23,7 @@ const state = {
   ready: false,
   plain: params.get('view') === 'plain',
   travelling: false,
-  caseIndex: 0,
+  caseIndex: readView(history.state, location.hash).caseIndex,
   assets: new Map(),
   returnFocus: null,
 };
@@ -47,6 +48,9 @@ function titleLines(element, text) {
   });
   element.replaceChildren(...nodes);
 }
+function saveView() {
+  history.replaceState(historyEntry(history.state, state.current, state.caseIndex), '', location.href);
+}
 function updateCase(index) {
   state.caseIndex = (index + CASES.length) % CASES.length;
   state.engine?.selectCase(state.caseIndex);
@@ -57,6 +61,7 @@ function updateCase(index) {
   $('case-count').textContent =
     `${String(state.caseIndex + 1).padStart(2, '0')} / 03`;
   $('asset-notice').hidden = state.assets.get(state.caseIndex) !== false;
+  if (state.ready) saveView();
 }
 function updateChapter(announce = true) {
   const chapter = CHAPTERS[state.current],
@@ -106,13 +111,13 @@ function go(index, { historyMode = 'push' } = {}) {
     return;
   }
   state.current = index;
-  updateChapter();
   if (historyMode !== 'none')
     history[historyMode === 'replace' ? 'replaceState' : 'pushState'](
-      { chapter: index },
+      historyEntry(history.state, index, state.caseIndex),
       '',
       `#${CHAPTERS[index].id}`,
     );
+  updateChapter();
 }
 function motionLabel() {
   body.dataset.motion = state.reduced ? 'reduce' : 'full';
@@ -253,6 +258,8 @@ listen(dialog, 'click', (event) => {
   if (event.target === dialog) closeMap();
 });
 listen(window, 'popstate', () => {
+  state.caseIndex = readView(history.state, location.hash).caseIndex;
+  state.engine?.selectCase(state.caseIndex);
   if (state.ready) go(indexFromHash(location.hash), { historyMode: 'none' });
 });
 listen(window, 'hashchange', () => {
@@ -441,6 +448,7 @@ async function boot() {
         $('transition-mask').style.opacity = String(opacity);
       },
     });
+    state.engine.selectCase(state.caseIndex);
     await state.engine.init(state.current);
     if (state.engine.failed) return;
     state.ready = true;
@@ -452,7 +460,7 @@ async function boot() {
       $('return-3d').hidden = false;
     } else if (document.hidden) state.engine.stop();
     if (!location.hash)
-      history.replaceState({ chapter: state.current }, '', '#opening');
+      history.replaceState(historyEntry(history.state, state.current, state.caseIndex), '', '#opening');
     updateChapter(false);
     Object.defineProperty(window, '__BAEV_JOURNEY__', {
       configurable: true,
