@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - run: python -m pip install playwright==1.55.0
+      - run: python -m pip install playwright==1.57.0
       - run: python -m playwright install --with-deps ${{ matrix.browser }}
       - name: Start static preview
         run: python -m http.server 4173 > /tmp/baev-http.log 2>&1 &
