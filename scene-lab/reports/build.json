@@ -1,0 +1,56 @@
+{
+  "gzipJsBytes": 275169,
+  "totalStaticBytes": 1397992,
+  "files": [
+    {
+      "file": "assets/index-CNIGrkgt.js",
+      "bytes": 6661,
+      "gzipBytes": 3095
+    },
+    {
+      "file": "assets/index-DQSFmijd.css",
+      "bytes": 4691,
+      "gzipBytes": 1664
+    },
+    {
+      "file": "assets/scene-BJ0cmhwT.js",
+      "bytes": 920368,
+      "gzipBytes": 272074
+    },
+    {
+      "file": "index.html",
+      "bytes": 3877,
+      "gzipBytes": 1715
+    },
+    {
+      "file": "licenses/meshoptimizer.txt",
+      "bytes": 1079,
+      "gzipBytes": null
+    },
+    {
+      "file": "licenses/three.txt",
+      "bytes": 1081,
+      "gzipBytes": null
+    },
+    {
+      "file": "licenses/vite.txt",
+      "bytes": 108786,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/first-light-reference.jpg",
+      "bytes": 165480,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/first-light.glb",
+      "bytes": 185240,
+      "gzipBytes": null
+    },
+    {
+      "file": "shots.json",
+      "bytes": 729,
+      "gzipBytes": 277
+    }
+  ]
+}

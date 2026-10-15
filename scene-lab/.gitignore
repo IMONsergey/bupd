@@ -1,0 +1,9 @@
+node_modules/
+authoring/cache/
+authoring/*.blend1
+reports/*.log
+reports/*.png
+reports/*.jpg
+
+__pycache__/
+*.pyc

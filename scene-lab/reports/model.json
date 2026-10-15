@@ -1,0 +1,10 @@
+{
+  "rawBytes": 2208652,
+  "optimizedBytes": 185240,
+  "reductionPercent": 91.6,
+  "rawValidationErrors": 0,
+  "rawValidationWarnings": 0,
+  "meshes": 38,
+  "materials": 11,
+  "textures": 2
+}

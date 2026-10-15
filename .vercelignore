@@ -7,3 +7,6 @@ docs
 
 # Case source snapshots stay in Git; published case pages come from the CMS.
 work/*/
+
+# Authoring tools and source assets are never served to visitors.
+scene-lab/

@@ -1,0 +1,402 @@
+:root {
+  font-family: Inter, 'Helvetica Neue', Arial, sans-serif;
+  color: #f3f0e9;
+  background: #080b11;
+  color-scheme: dark;
+  --pad: clamp(22px, 3.8vw, 76px);
+  --line: #f3f0e947;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #f3f0e9;
+  outline-offset: 5px;
+}
+[hidden] {
+  display: none !important;
+}
+main {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+.poster,
+#viewport,
+.shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.poster {
+  opacity: 0.58;
+}
+#viewport {
+  opacity: 0;
+  touch-action: pinch-zoom;
+  transition: opacity 0.45s;
+}
+.ready #viewport {
+  opacity: 1;
+}
+.shade {
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    #03050a55,
+    transparent 23%,
+    transparent 44%,
+    #05060bea 100%
+  );
+}
+header {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 45px;
+}
+.logo {
+  font-size: 31px;
+  font-weight: 800;
+  letter-spacing: -2.5px;
+  line-height: 1;
+}
+.logo sup {
+  font-size: 9px;
+  letter-spacing: 0;
+  vertical-align: top;
+  margin-left: 5px;
+}
+.edition {
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  color: #deded7b3;
+}
+header nav {
+  margin-left: auto;
+  display: flex;
+  gap: 36px;
+  font-size: 11px;
+}
+header a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.caption {
+  position: absolute;
+  bottom: 160px;
+  left: var(--pad);
+  pointer-events: none;
+}
+.kicker {
+  font-size: 9px;
+  letter-spacing: 0.23em;
+  margin: 0 0 18px;
+  color: #deded7b3;
+}
+.caption h1 {
+  font-size: clamp(38px, 4.3vw, 76px);
+  font-weight: 450;
+  letter-spacing: -0.055em;
+  line-height: 1.01;
+  margin: 0;
+}
+.description {
+  font-size: 11px;
+  color: #deded7bd;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+#notice {
+  position: absolute;
+  bottom: 110px;
+  left: var(--pad);
+  font-size: 12px;
+  max-width: 370px;
+  line-height: 1.6;
+}
+.controls {
+  position: absolute;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  left: var(--pad);
+  right: var(--pad);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px 36px;
+}
+#play {
+  display: flex;
+  align-items: center;
+  justify-self: start;
+  gap: 16px;
+  min-height: 44px;
+  font-size: 11px;
+  padding: 0;
+}
+#play-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 11px;
+}
+.shots {
+  display: flex;
+  gap: 26px;
+}
+.shots button {
+  font-size: 10px;
+  min-height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #babcb9;
+}
+.shots button[aria-current='step'] {
+  color: #fff;
+}
+.shots button span {
+  font-size: 10px;
+}
+.timeline {
+  grid-column: 1/-1;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+.timeline input {
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: #e7e5db50;
+  cursor: pointer;
+  margin: 0;
+}
+.timeline input::-webkit-slider-thumb {
+  appearance: none;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background: #f3f0e9;
+}
+.timeline input::-moz-range-thumb {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background: #f3f0e9;
+  border: none;
+}
+.options {
+  grid-column: 1/-1;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  color: #acb0b0;
+  font-size: 9px;
+  min-height: 32px;
+}
+.options button {
+  padding: 6px 0;
+  font-size: 9px;
+  min-height: 32px;
+}
+#position {
+  margin-left: auto;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.nojs {
+  position: absolute;
+  bottom: 32px;
+  left: var(--pad);
+  font-size: 12px;
+}
+.tp-dfwv {
+  z-index: 30 !important;
+  top: 90px !important;
+  right: var(--pad) !important;
+  max-height: 75vh;
+  overflow: auto;
+}
+.editor-open .caption {
+  opacity: 0.2;
+}
+.editor-open .controls {
+  opacity: 0.3;
+}
+.editor-status {
+  position: fixed;
+  right: var(--pad);
+  top: 72px;
+  font-size: 10px;
+  z-index: 35;
+}
+.fallback #viewport {
+  display: none;
+}
+@media (max-width: 700px) {
+  header {
+    top: 20px;
+    gap: 16px;
+  }
+  .logo {
+    font-size: 27px;
+  }
+  .edition {
+    display: none;
+  }
+  header nav {
+    gap: 20px;
+    font-size: 10px;
+  }
+  .caption {
+    bottom: 196px;
+  }
+  .caption h1 {
+    font-size: clamp(35px, 10vw, 52px);
+  }
+  .description {
+    font-size: 11px;
+    max-width: 210px;
+  }
+  .kicker {
+    font-size: 8px;
+    margin-bottom: 12px;
+  }
+  .controls {
+    gap: 7px 18px;
+    grid-template-columns: 1fr;
+  }
+  .shots {
+    grid-row: 2;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .shots button {
+    gap: 8px;
+  }
+  .shots button span {
+    font-size: 9px;
+  }
+  #play {
+    grid-row: 1;
+    font-size: 10px;
+  }
+  .options {
+    gap: 18px;
+  }
+  .shade {
+    background: linear-gradient(
+      180deg,
+      #03050a66,
+      transparent 30%,
+      #05060b35 43%,
+      #05060bef 100%
+    );
+  }
+  .poster img {
+    object-position: 55% center;
+  }
+  .tp-dfwv {
+    width: 280px !important;
+    max-height: 65vh;
+  }
+  #notice {
+    bottom: 150px;
+  }
+}
+@media (max-height: 530px) {
+  .caption {
+    bottom: 155px;
+  }
+  .caption h1 {
+    font-size: 30px;
+  }
+  .description {
+    display: none;
+  }
+  .kicker {
+    margin-bottom: 10px;
+  }
+  header {
+    top: 14px;
+  }
+  .controls {
+    gap: 2px 20px;
+  }
+  .shots button span {
+    display: none;
+  }
+  .shots {
+    grid-row: 1;
+    grid-column: 2;
+  }
+  .controls {
+    grid-template-columns: 1fr auto;
+  }
+  #play {
+    grid-row: 1;
+  }
+  .timeline {
+    height: 13px;
+  }
+  .options {
+    min-height: 32px;
+  }
+  .tp-dfwv {
+    top: 70px !important;
+    max-height: 65vh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
