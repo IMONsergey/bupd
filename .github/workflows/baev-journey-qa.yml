@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: baev-journey-${{ github.ref }}
+  group: baev-journey-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: true
 jobs:
   contracts:
@@ -25,6 +25,13 @@ jobs:
       - name: Protect CMS, case routes and original assets
         run: |
           test -z "$(git diff --name-only 75703ab801b2fa7d6584787233417a6472196ff3 HEAD -- cms work about blog contact front/media front/faithful front/conference)"
+      - name: Package exact source for reproducible review
+        run: git archive --format=zip --output=/tmp/baev-source.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: journey-source
+          path: /tmp/baev-source.zip
+          retention-days: 14
   browser:
     runs-on: ubuntu-latest
     timeout-minutes: 20
