@@ -1,0 +1,4 @@
+Character assets: Business Man and Animated Woman by Quaternius.
+CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Sources: https://poly.pizza/m/JFrLIKqvCH and https://poly.pizza/m/qJ2gsTUBHL
+Derived work: muted materials, clip pruning, seated poses, instancing and Meshopt optimization.

@@ -7,3 +7,8 @@ reports/*.jpg
 
 __pycache__/
 *.pyc
+
+reports/**/*.jpg
+reports/**/*.png
+reports/**/*.log
+reports/**/*.webm

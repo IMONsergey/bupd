@@ -1,9 +1,10 @@
 # BAEV / Scene Lab
 
-A small authoring-to-web workflow, independent of the rejected eight-chapter prototype.
-The new study is **First Light**: one conference venue with three camera takes. This is a scene-development workspace, not an approved replacement for the public homepage.
+**По ту сторону выступления** — восемь связанных глав: открытие перед живой аудиторией, приближение к выступлению, проход внутрь экрана, пространственная графика, реальные проекты и возвращение на сцену со стороны выступающего. Постановка и границы проекта описаны в [STORY.md](STORY.md).
 
-## Use
+Это изолированная разработка на `/cinema/`. Основная главная, CMS, формы, страницы кейсов и прежние исходные медиа не заменяются.
+
+## Запуск
 
 ```sh
 cd scene-lab
@@ -11,63 +12,65 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:4186/cinema/`. Append `?edit=1` for the development-only camera/lighting inspector. The inspector supports exposure, lighting, bloom, timeline, free camera and JSON export. No account, cloud editor, database or Blender addon is required.
+Локальный адрес: `http://127.0.0.1:4186/cinema/`. Кнопка «Настройка кадра» открывает Tweakpane с выбором главы, свободной камерой, экспозицией, источниками света и экспортом настроек. Панель существует только при разработке; в публичную сборку не включается.
 
-`authoring/first-light.blend` is the editable source. Geometry, materials, lights and camera keyframes are present in the file. The source render is available in `reports/blender-arrival.png` after a render.
+Навигация: кнопка продолжения, выбор главы, колесо, вертикальный свайп, стрелки, Home/End, ползунок истории. «Смотреть историю» запускает весь маршрут. Адреса глав сохраняются в URL. Системное уменьшение движения и ручное отключение анимации поддерживаются. При сбое WebGL и без JavaScript доступны все восемь глав и настоящие ссылки на кейсы и контакты.
 
-## Rebuild models
+## Источники сцены
 
-Blender 4.5 LTS is the authoring baseline. Set `BLENDER_BIN` when installed outside the launcher script's conventional locations.
+`authoring/first-light.blend` — редактируемый исходник **архитектуры зала и света**, а не файл со всей новой режиссурой. Восемь глав, переходы и поведение персонажей описаны в сценовых модулях. Источники персонажей находятся в `authoring/people/`, их происхождение, лицензия CC0 и SHA-256 — в `sources.json`.
+
+Blender 4.5 LTS используется только для подготовки. `BLENDER_BIN` позволяет задать путь к исполняемому файлу.
 
 ```sh
 npm run model:build -- --render
 npm run model:optimize
-npm test
-npm run build
+npm run cast:build
 ```
 
-The source build runs in an isolated Blender process with factory settings, automatic script execution disabled, CPU rendering limited to four threads, and no changes to the user's Blender preferences. It builds the original set, bakes static floor illumination, saves the editable `.blend`, exports the mesh source and optionally renders a still. It intentionally regenerates this study's `.blend`; save manual artistic edits under another filename before regenerating.
+Первый шаг заново создаёт `first-light.blend`: перед регенерацией сохраните ручные правки под другим именем. Blender запускается с заводскими настройками в отдельном процессе, без автоматического исполнения вложенных скриптов и с ограничением CPU на четыре потока. Подготовка зала включает запекание диффузного освещения пола. Оптимизация сжимает непрозрачную текстуру пола, устраняет дубли и использует Meshopt.
 
-The optimizer validates the raw glTF, converts **only the opaque baked-floor image** to quality-86 JPEG, deduplicates shared geometry, creates GPU instances, prunes unused resources and applies Meshopt compression. There is no blanket geometry simplification. A native glTF Transform CLI is not installed: the smaller SDK avoids unnecessary CLI dependencies.
+Подготовка персонажей сохраняет только Idle, Idle_Neutral, Walk и Interact, корректирует металлические материалы исходников и сжимает ресурсы. Четыре сидящих позы рассчитываются один раз вне браузера и упрощаются с ограничением ошибки. В зале 134 зрителя через четыре инстансированных набора и пять отдельных персонажей со скелетной анимацией. Это стилизованные люди, не фотореалистичная массовка.
 
-## Deployment boundary
+## Основные модули
 
-`npm run build` writes `../cinema/`, a static standalone route. Vite, Tweakpane, Blender, source scripts and `.blend` files do not ship to visitors. `.vercelignore` excludes the entire source workspace; only the generated route is served. Existing homepage, CMS/Studio, cases, contact integration and original assets are not modified.
+| Файл | Ответственность |
+|---|---|
+| `src/story.js` | Главы, камера, переходы между пространствами, навигационные контракты |
+| `src/people.js` | Позы, инстансированная аудитория и действия персонажей |
+| `src/thought-world.js` | Экранная графика, её пространственное продолжение и проекты |
+| `src/scene.js` | Загрузка, один renderer, свет, общий тайминг и жизненный цикл |
+| `src/app.js` | HTML-интерфейс, адреса глав, ввод и запасные режимы |
+| `src/editor.js` | Панель постановки кадра, только для разработки |
+| `scripts/prepare-cast.mjs` | Подготовка двух исходных персонажей и фотографий кейсов |
+| `scripts/prepare-seating.mjs` | Подготовка четырёх компактных сидящих поз |
 
-## Small ownership map
+Three.js остаётся единственной production-зависимостью npm. Версии и lockfile закреплены. Отдельного игрового движка, сервера видеопотока, базы данных и аккаунта облачного редактора нет.
 
-- `authoring/`: the editable scene, deterministic geometry builder and floor bake.
-- `public/models/`: one optimized GLB, including its two material images.
-- `public/shots.json`: cameras exported from Blender in glTF coordinates.
-- `src/scene.js`: model loader, authored light rig, camera movement, renderer and lifecycle.
-- `src/app.js`: accessible HTML controls, visibility, reduced motion and static fallback.
-- `src/editor.js`: Tweakpane + OrbitControls, imported only in development.
-- `scripts/`: launcher, optimizer, budgets, unit and browser checks.
-- `reports/`: measured JSON results; local screenshots/logs are not committed by default.
-
-Three.js is the only production npm dependency. All versions are exact and the lockfile is committed. Meshopt's browser decoder is taken from the Three.js addon tree; there is no second runtime engine. Only one WebGL renderer and one scene are live. The renderer sleeps on idle and pauses in hidden tabs/static mode. DOM text is independent of render resolution.
-
-The standard desktop render buffer is limited to 2.6 megapixels at DPR <= 1.5; mobile/low is limited to 1.2 megapixels at DPR <= 1. MSAA is capped at four samples, two on low. Bloom is modest and disabled on low. These are design budgets, not an FPS guarantee.
-
-## Validation
+## Проверка и сборка
 
 ```sh
 npm test
 npm run build
-node scripts/browser-check.mjs
+npm run test:browser
 ```
 
-The browser script uses a separate temporary Chrome profile on macOS, not the user's logged-in browser profile. `LAB_URL` can target a production preview. On other operating systems, install Playwright Chromium first. The checks cover real GLB rendering, draw-call limits, all three camera positions at 1440×900, 390×844 and 320×568, UI bounds, idle rendering, fallback, camera playback, development inspector and no-JavaScript access. No contact form is submitted.
+Сборка записывается в `../cinema/`. `.vercelignore` исключает весь `scene-lab/`: `.blend`, исходные персонажи, редактор и инструменты подготовки не раздаются посетителям. Бюджет JavaScript — 420 КБ gzip, всех GLB вместе — 2 МБ. Бюджеты проверяются после сборки; фактические размеры находятся в `reports/build.json`.
 
-CI runs unit, model and build-budget checks; it does not stand in for artistic acceptance. Browser screenshots and functional checks cannot prove that a shot is visually approved. The current venue is original authored scenery, not a documentary reconstruction. There is no photorealistic animated audience, and the complete eight-scene journey has not been restaged here.
+На десктопе буфер ограничен 2.6 мегапикселями и DPR 1.5, в лёгком/мобильном режиме — 1.2 мегапикселями и DPR 1. Это не обещание конкретного FPS. Движения зрителей после взаимодействия работают ограниченное время с пониженной частотой обновления, затем сцена засыпает. В reduced-motion нет фонового цикла. Скрытая вкладка, текстовая версия и потеря контекста останавливают рендер.
 
-## Upstream projects
+Браузерные проверки запускают отдельный профиль Chrome, не затрагивая пользовательский. На другой платформе нужен Playwright Chromium. `LAB_URL` указывает адрес опубликованного превью, `LAB_OUTPUT` — отдельную папку отчётов. Проверяются все главы на пяти размерах экрана, реальные геометрия и аудитория, управление, проход через экран, кейсы, запасные режимы и доступность без JavaScript. Формы заявок не отправляются. Старый `scripts/browser-check.mjs` сохранён как вход в расширенный набор проверок.
 
-- Three.js: https://github.com/mrdoob/three.js — renderer, glTF loader, area lights, composer and camera controls.
-- Tweakpane: https://github.com/cocopon/tweakpane — development inspector only.
-- glTF Transform: https://github.com/donmccurdy/glTF-Transform — offline model validation/optimization.
-- Meshoptimizer: https://github.com/zeux/meshoptimizer — geometry compression and instancing support.
-- Vite: https://github.com/vitejs/vite — local server and production bundling only.
-- Blender: https://www.blender.org/ — offline modeling, lighting and rendering; official Intel macOS 4.5 LTS build.
+CI проверяет установку зависимостей, модульные контракты, бюджет сборки, неизменность защищённых разделов и форматирование исходников. Браузерные отчёты имеют собственное место запуска и не выдаются за результат CI. Успешный тест не является художественной приёмкой.
 
-Packages are installed from their published releases rather than copying entire upstream repositories or demo assets. Distributed runtime license texts are in `public/licenses/`. Geometry and the keynote study are original; bundled Blender type was converted to geometry, and no font files are distributed.
+## Открытые проекты и лицензии
+
+- Three.js: https://github.com/mrdoob/three.js
+- Tweakpane: https://github.com/cocopon/tweakpane
+- glTF Transform: https://github.com/donmccurdy/glTF-Transform
+- Meshoptimizer: https://github.com/zeux/meshoptimizer
+- Vite: https://github.com/vitejs/vite
+- Blender: https://www.blender.org/
+- Персонажи Quaternius: https://poly.pizza/m/JFrLIKqvCH и https://poly.pizza/m/qJ2gsTUBHL
+
+Тексты лицензий опубликованы в `public/licenses/`. Архитектура и демонстрационная графика разработаны для BAEV. Фотографии кейсов взяты из уже существовавших медиа проекта, без изменения оригиналов. Файлы шрифтов не распространяются.

@@ -1,0 +1,36 @@
+{
+  "creator": "Quaternius",
+  "license": "CC0 1.0",
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "assets": [
+    {
+      "file": "business-man",
+      "name": "Business Man",
+      "source": "https://poly.pizza/m/JFrLIKqvCH",
+      "download": "https://static.poly.pizza/e599abbe-7d73-488c-9d7e-3ead281e705c.glb",
+      "sourceSHA256": "82b81257c1e94cd9ee48cb1dcbe5ff506e81c9ce67cd0c5af542d8712dca546e",
+      "webBytes": 501140,
+      "clips": [
+        "Idle",
+        "Idle_Neutral",
+        "Interact",
+        "Walk"
+      ]
+    },
+    {
+      "file": "woman",
+      "name": "Animated Woman",
+      "source": "https://poly.pizza/m/qJ2gsTUBHL",
+      "download": "https://static.poly.pizza/ba7a1955-ea51-4cb9-a561-188bdef0a6c7.glb",
+      "sourceSHA256": "a2212729826b718e59e698211ed3951c22459b48733b1ee6a24fac0abf74dca8",
+      "webBytes": 508324,
+      "clips": [
+        "Idle",
+        "Idle_Neutral",
+        "Interact",
+        "Walk"
+      ]
+    }
+  ],
+  "modifications": "Keep only idle, walking and conversational animations; muted clothing palette; nonmetallic skin/fabric; Meshopt compression. Runtime seated poses and instances are derived from these meshes."
+}

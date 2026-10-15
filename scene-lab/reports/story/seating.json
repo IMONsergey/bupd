@@ -1,0 +1,13 @@
+{
+  "seated": 134,
+  "animated": 5,
+  "bytes": 96900,
+  "meshes": 4,
+  "trianglesPerTemplate": [
+    2650,
+    2569,
+    2652,
+    2568
+  ],
+  "simplification": "Offline error-constrained reduction. Animated foreground rigs are not simplified."
+}

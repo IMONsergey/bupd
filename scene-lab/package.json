@@ -9,7 +9,9 @@
     "preview": "vite preview --host 127.0.0.1 --port 4187 --strictPort",
     "test": "node --test scripts/*.test.mjs",
     "model:build": "node scripts/blender.mjs",
-    "model:optimize": "node scripts/optimize.mjs"
+    "model:optimize": "node scripts/optimize.mjs",
+    "test:browser": "node scripts/story-browser.mjs",
+    "cast:build": "node scripts/prepare-cast.mjs && node scripts/prepare-seating.mjs"
   },
   "dependencies": {
     "three": "0.186.1"

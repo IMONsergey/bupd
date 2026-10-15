@@ -1,26 +1,37 @@
 {
-  "gzipJsBytes": 275169,
-  "totalStaticBytes": 1397992,
+  "modelBytes": 1291604,
+  "gzipJsBytes": 288506,
+  "totalStaticBytes": 2704503,
   "files": [
     {
-      "file": "assets/index-CNIGrkgt.js",
-      "bytes": 6661,
-      "gzipBytes": 3095
+      "file": "assets/index-BsvphKG5.js",
+      "bytes": 13131,
+      "gzipBytes": 5760
     },
     {
-      "file": "assets/index-DQSFmijd.css",
-      "bytes": 4691,
-      "gzipBytes": 1664
+      "file": "assets/index-C0G1XLhd.css",
+      "bytes": 8015,
+      "gzipBytes": 2493
     },
     {
-      "file": "assets/scene-BJ0cmhwT.js",
-      "bytes": 920368,
-      "gzipBytes": 272074
+      "file": "assets/scene-ChIE4q3H.js",
+      "bytes": 958399,
+      "gzipBytes": 282746
     },
     {
       "file": "index.html",
-      "bytes": 3877,
-      "gzipBytes": 1715
+      "bytes": 7833,
+      "gzipBytes": 2883
+    },
+    {
+      "file": "licenses/characters.json",
+      "bytes": 1205,
+      "gzipBytes": 602
+    },
+    {
+      "file": "licenses/characters.txt",
+      "bytes": 301,
+      "gzipBytes": null
     },
     {
       "file": "licenses/meshoptimizer.txt",
@@ -43,8 +54,38 @@
       "gzipBytes": null
     },
     {
+      "file": "media/projects/alfa.webp",
+      "bytes": 21058,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/projects/avito.webp",
+      "bytes": 54830,
+      "gzipBytes": null
+    },
+    {
+      "file": "media/projects/haval.webp",
+      "bytes": 70972,
+      "gzipBytes": null
+    },
+    {
       "file": "models/first-light.glb",
       "bytes": 185240,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/people/business-man.glb",
+      "bytes": 501140,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/people/seated.glb",
+      "bytes": 96900,
+      "gzipBytes": null
+    },
+    {
+      "file": "models/people/woman.glb",
+      "bytes": 508324,
       "gzipBytes": null
     },
     {

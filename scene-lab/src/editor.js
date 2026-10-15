@@ -1,3 +1,4 @@
+import { CHAPTERS } from './story.js';
 import { Pane } from 'tweakpane';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 /** Development-only controls; Vite removes the caller and this chunk in production. */
@@ -13,11 +14,12 @@ export function createEditor(scene) {
   camera
     .addBinding(state, 'shot', {
       label: 'Кадр',
-      options: {
-        '01 / Внутри события': 0,
-        '02 / Первый свет': 0.5,
-        '03 / Ближе к мысли': 1,
-      },
+      options: Object.fromEntries(
+        CHAPTERS.map((chapter, i) => [
+          `${i + 1} / ${chapter.label}`,
+          chapter.at,
+        ]),
+      ),
     })
     .on('change', (e) => {
       state.orbit = false;

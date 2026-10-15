@@ -29,7 +29,13 @@ if (
   )
 )
   throw new Error('Authoring resources leaked into the website.');
+const modelBytes = entries
+  .filter((f) => f.file.endsWith('.glb'))
+  .reduce((n, f) => n + f.bytes, 0);
+if (modelBytes > 2000000)
+  throw new Error(`Geometry payload exceeds 2 MB: ${modelBytes}`);
 const report = {
+  modelBytes,
   gzipJsBytes: gzipJs,
   totalStaticBytes: entries.reduce((a, f) => a + f.bytes, 0),
   files: entries,
