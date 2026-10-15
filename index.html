@@ -1,57 +1,325 @@
 <!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#121311">
-  <meta name="color-scheme" content="dark">
-  <title>BAEV — по ту сторону экрана</title>
-  <meta name="description" content="Публичная коммуникация и презентации для бизнеса. От содержания и сценария до визуальной системы и выступления. Восемь глав внутри BAEV.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="BAEV — по ту сторону экрана">
-  <meta property="og:description" content="От мысли к впечатлению. Публичная коммуникация и презентации для бизнеса.">
-  <meta property="og:image" content="https://baev-case-lab.vercel.app/front/media/baev-stage.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="https://framerusercontent.com/images/JLDD9dNOmDYDfoFQ04FztJ9PdDo.png">
-  <link rel="stylesheet" href="/front/journey/journey.css">
-  <script type="module" src="/front/journey/app.js"></script>
-</head>
-<body>
-  <a class="skip" href="#plain">К текстовой версии</a>
-  <header class="header">
-    <a class="wordmark" href="/" aria-label="BAEV — главная">BAEV<sup>®</sup></a>
-    <span class="header-caption">Публичная коммуникация<br>и презентации для бизнеса</span>
-    <nav class="site-nav" aria-label="Основная навигация"><a href="/work/">Проекты<span aria-hidden="true">↗</span></a><a href="/about/">О нас</a><a class="contact-link" href="/contact/">Обсудить задачу<span aria-hidden="true">↗</span></a></nav>
-    <button class="map-button enhanced-only" type="button" id="map-open" aria-label="Открыть главы" aria-haspopup="dialog"><span></span><span></span></button>
-  </header>
-  <main id="experience" class="experience" aria-label="По ту сторону экрана — восемь глав BAEV" hidden>
-    <canvas id="world" aria-hidden="true"></canvas><div class="scene-shade" aria-hidden="true"></div><div class="transition-mask" id="transition-mask" aria-hidden="true"></div>
-    <div class="scene-meta"><span><i aria-hidden="true"></i>По ту сторону экрана</span><span id="chapter-top">01 / Открытие</span></div>
-    <div class="loading" id="loading" role="status">Подготавливаем пространство<span></span></div>
-    <section class="scene-copy" aria-labelledby="scene-title">
-      <p class="eyebrow" id="chapter-label">01 — Открытие</p><h1 id="scene-title">Всё начинается<br>с внимания.</h1><p id="scene-description">Публичная коммуникация и презентации для бизнеса. Окажитесь по ту сторону экрана.</p>
-      <div class="scene-actions"><button class="next-link" id="scene-next" type="button"><span id="next-label">Внутрь истории</span><span class="arrow-circle" aria-hidden="true">↗</span></button><button class="detail-link" id="scene-detail" type="button" hidden aria-pressed="false">Собрать кадр</button><a class="next-link" id="scene-contact" href="/contact/" hidden>Обсудить задачу<span class="arrow-circle" aria-hidden="true">↗</span></a></div>
-    </section>
-    <aside id="case-panel" class="context-panel" aria-label="Выбор проекта" hidden><span class="micro">Избранный проект <span id="case-count">01 / 03</span></span><strong id="case-title">Авито Авто</strong><p id="case-subtitle">Высшая передача</p><div class="case-actions"><button id="case-prev" class="icon-button" type="button" aria-label="Предыдущий проект">←</button><button id="case-next" class="icon-button" type="button" aria-label="Следующий проект">→</button><a id="case-link" href="/work/avito-auto-2024">Смотреть кейс ↗</a></div><p class="asset-notice" id="asset-notice" hidden>Изображение не загрузилось. Полный кейс доступен по ссылке.</p></aside>
-    <aside id="brief-panel" class="context-panel" hidden><label class="micro" for="project-title">Название вашей истории</label><input id="project-title" type="text" maxlength="48" autocomplete="off" placeholder="Например, запуск нового продукта"><p class="privacy-note">Появится на мониторе сцены. Ничего не отправляется и не сохраняется.</p></aside>
-    <div class="scene-note" id="scene-note">Колесо, свайп или стрелки — следующая глава</div>
-    <div class="journey-bottom"><div class="utility"><button id="motion-toggle" type="button" aria-pressed="true">Движение <span>вкл.</span></button><label class="quality-label" for="quality">Качество<select id="quality"><option value="auto">Авто</option><option value="low">Лёгкое</option><option value="high">Высокое</option></select></label><button id="plain-toggle" type="button">Без 3D ↗</button></div><div class="chapter-controls"><button id="chapter-prev" class="icon-button" type="button" aria-label="Предыдущая глава" disabled>←</button><button id="chapter-map" type="button" aria-haspopup="dialog"><span id="chapter-counter">01</span><span class="muted"> / 08</span></button><button id="chapter-next" class="icon-button" type="button" aria-label="Следующая глава">→</button></div></div>
-    <nav id="chapter-track" class="chapter-track" aria-label="Главы путешествия"></nav><p class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="scene-announcement"></p>
-  </main>
-  <section id="plain" class="plain" aria-labelledby="plain-title">
-    <div class="plain-intro"><p class="eyebrow">BAEV / По ту сторону экрана</p><h1 id="plain-title">От мысли<br>к впечатлению.</h1><p>Публичная коммуникация и презентации для бизнеса. Мы работаем с содержанием, структурой, визуальной формой и восприятием выступления.</p><p id="fallback-reason" role="status"></p><button class="text-button" id="return-3d" type="button" hidden>Вернуться в пространство ↗</button></div>
-    <div class="plain-chapters">
-      <article><span>01 / Открытие</span><h2>Всё начинается с внимания.</h2><p>Большой зал, свет, первый кадр на сцене. Конференция становится входом в работу BAEV, а не каталогом сценического оборудования.</p></article>
-      <article><span>02 / За экраном</span><h2>У впечатления есть глубина.</h2><p>За убедительным кадром — содержание, сценарий и визуальная система. Раскрываем их по отдельности.</p></article>
-      <article><span>03 / Главная мысль</span><h2>Сначала — смысл.</h2><p>Кому говорим, что необходимо объяснить и какой вывод должен остаться. Сложное становится понятным, когда найден фокус.</p></article>
-      <article><span>04 / Сценарий</span><h2>Не слайды. Последовательность.</h2><p>Контекст, аргумент, решение, следующий шаг. Каждый кадр подготавливает следующий и работает на общий вывод.</p></article>
-      <article><span>05 / Визуальная система</span><h2>Внимание — к главному.</h2><p>Типографика, композиция и движение расставляют акценты. Форма помогает прочитать содержание, а не заслоняет его.</p></article>
-      <article><span>06 / Реальные проекты</span><h2>Из идеи — в реальный мир.</h2><nav class="plain-projects" aria-label="Избранные проекты"><a href="/work/avito-auto-2024">Авито Авто — Высшая передача ↗</a><a href="/work/linear-identity">HAVAL — Dealer Conference ↗</a><a href="/work/future-archive">Альфа Конфа — Для своих ↗</a><a href="/work/">Все проекты ↗</a></nav></article>
-      <article><span>07 / За кадром</span><h2>На экране — результат. За экраном — работа.</h2><p>Содержание, структура, визуальная система и подготовка к показу. Узнайте больше о нашем <a href="/about/">подходе</a>.</p></article>
-      <article><span>08 / Ваша история</span><h2>Что важно объяснить вам?</h2><p>Расскажите о задаче — найдём для неё точную и убедительную форму.</p><a class="plain-cta" href="/contact/">Обсудить задачу ↗</a><a href="mailto:hello@baev.agency">hello@baev.agency</a></article>
-    </div>
-  </section>
-  <dialog id="chapter-dialog" aria-labelledby="map-title"><div class="dialog-top"><span class="wordmark" aria-hidden="true">BAEV<sup>®</sup></span><button id="map-close" class="icon-button" type="button" aria-label="Закрыть главы">×</button></div><div class="dialog-heading"><span class="eyebrow">По ту сторону экрана</span><h2 id="map-title">Выберите главу.</h2><p>Путешествие можно начать с любого места.</p></div><nav id="map-items" aria-label="Карта путешествия"></nav><div class="dialog-bottom"><a href="/work/">Все проекты ↗</a><a href="/about/">О BAEV ↗</a><a href="/contact/">Обсудить задачу ↗</a></div></dialog>
-  <noscript><style>.enhanced-only{display:none!important}</style></noscript>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#121311" />
+    <meta name="color-scheme" content="dark" />
+    <title>BAEV — по ту сторону экрана</title>
+    <meta
+      name="description"
+      content="Публичная коммуникация и презентации для бизнеса. От содержания и сценария до визуальной системы и выступления. Восемь глав внутри BAEV."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BAEV — по ту сторону экрана" />
+    <meta
+      property="og:description"
+      content="От мысли к впечатлению. Публичная коммуникация и презентации для бизнеса."
+    />
+    <meta
+      property="og:image"
+      content="https://baev-case-lab.vercel.app/front/media/baev-stage.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link
+      rel="icon"
+      href="https://framerusercontent.com/images/JLDD9dNOmDYDfoFQ04FztJ9PdDo.png"
+    />
+    <link rel="stylesheet" href="/front/journey/journey.css" />
+    <script type="module" src="/front/journey/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#plain">К текстовой версии</a>
+    <header class="header">
+      <a class="wordmark" href="/" aria-label="BAEV — главная"
+        >BAEV<sup>®</sup></a
+      >
+      <span class="header-caption"
+        >Публичная коммуникация<br />и презентации для бизнеса</span
+      >
+      <nav class="site-nav" aria-label="Основная навигация">
+        <a href="/work/">Проекты<span aria-hidden="true">↗</span></a
+        ><a href="/about/">О нас</a
+        ><a class="contact-link" href="/contact/"
+          >Контакт<span aria-hidden="true">↗</span></a
+        >
+      </nav>
+      <button
+        class="map-button enhanced-only"
+        type="button"
+        id="map-open"
+        aria-label="Открыть главы"
+        aria-haspopup="dialog"
+      >
+        <span></span><span></span>
+      </button>
+    </header>
+    <main id="main">
+      <h1 class="sr-only">
+        BAEV — публичная коммуникация и презентации для бизнеса
+      </h1>
+      <section
+        id="experience"
+        class="experience"
+        aria-label="По ту сторону экрана — восемь глав BAEV"
+        aria-busy="true"
+        hidden
+      >
+        <canvas id="world" aria-hidden="true"></canvas>
+        <div class="scene-shade" aria-hidden="true"></div>
+        <div
+          class="transition-mask"
+          id="transition-mask"
+          aria-hidden="true"
+        ></div>
+        <div class="scene-meta">
+          <span><i aria-hidden="true"></i>По ту сторону экрана</span
+          ><span id="chapter-top">01 / Открытие</span>
+        </div>
+        <div class="loading" id="loading" role="status">
+          Подготавливаем пространство<span></span>
+        </div>
+        <section class="scene-copy" aria-labelledby="scene-title">
+          <p class="eyebrow" id="chapter-label">01 — Открытие</p>
+          <h2 id="scene-title">Всё начинается<br />с внимания.</h2>
+          <p id="scene-description">
+            Публичная коммуникация и презентации для бизнеса. Окажитесь по ту
+            сторону экрана.
+          </p>
+          <div class="scene-actions">
+            <button class="next-link" id="scene-next" type="button">
+              <span id="next-label">Внутрь истории</span
+              ><span class="arrow-circle" aria-hidden="true">↗</span></button
+            ><button
+              class="detail-link"
+              id="scene-detail"
+              type="button"
+              hidden
+              aria-pressed="false"
+            >
+              Собрать кадр</button
+            ><a class="next-link" id="scene-contact" href="/contact/" hidden
+              >Обсудить задачу<span class="arrow-circle" aria-hidden="true"
+                >↗</span
+              ></a
+            >
+          </div>
+        </section>
+        <aside
+          id="case-panel"
+          class="context-panel"
+          aria-label="Выбор проекта"
+          hidden
+        >
+          <span class="micro"
+            >Избранный проект <span id="case-count">01 / 03</span></span
+          ><strong id="case-title">Авито Авто</strong>
+          <p id="case-subtitle">Высшая передача</p>
+          <div class="case-actions">
+            <button
+              id="case-prev"
+              class="icon-button"
+              type="button"
+              aria-label="Предыдущий проект"
+            >
+              ←</button
+            ><button
+              id="case-next"
+              class="icon-button"
+              type="button"
+              aria-label="Следующий проект"
+            >
+              →</button
+            ><a id="case-link" href="/work/avito-auto-2024">Смотреть кейс ↗</a>
+          </div>
+          <p class="asset-notice" id="asset-notice" hidden>
+            Изображение не загрузилось. Полный кейс доступен по ссылке.
+          </p>
+        </aside>
+        <aside id="brief-panel" class="context-panel" hidden>
+          <label class="micro" for="project-title">Название вашей истории</label
+          ><input
+            id="project-title"
+            type="text"
+            maxlength="48"
+            autocomplete="off"
+            placeholder="Например, запуск нового продукта"
+          />
+          <p class="privacy-note">
+            Появится на мониторе сцены. Ничего не отправляется и не сохраняется.
+          </p>
+        </aside>
+        <div class="scene-note" id="scene-note">
+          Колесо, свайп или стрелки — следующая глава
+        </div>
+        <div class="journey-bottom">
+          <div class="utility">
+            <button id="motion-toggle" type="button" aria-pressed="true">
+              Движение <span>вкл.</span></button
+            ><label class="quality-label" for="quality"
+              >Качество<select id="quality">
+                <option value="auto">Авто</option>
+                <option value="low">Лёгкое</option>
+                <option value="high">Высокое</option>
+              </select></label
+            ><button id="plain-toggle" type="button">Без 3D ↗</button>
+          </div>
+          <div class="chapter-controls">
+            <button
+              id="chapter-prev"
+              class="icon-button"
+              type="button"
+              aria-label="Предыдущая глава"
+              disabled
+            >
+              ←</button
+            ><button id="chapter-map" type="button" aria-haspopup="dialog">
+              <span id="chapter-counter">01</span
+              ><span class="muted"> / 08</span></button
+            ><button
+              id="chapter-next"
+              class="icon-button"
+              type="button"
+              aria-label="Следующая глава"
+            >
+              →
+            </button>
+          </div>
+        </div>
+        <nav
+          id="chapter-track"
+          class="chapter-track"
+          aria-label="Главы путешествия"
+        ></nav>
+        <p
+          class="sr-only"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          id="scene-announcement"
+        ></p>
+      </section>
+      <section id="plain" class="plain" aria-labelledby="plain-title">
+        <div class="plain-intro">
+          <p class="eyebrow">BAEV / По ту сторону экрана</p>
+          <h2 id="plain-title">От мысли<br />к впечатлению.</h2>
+          <p>
+            Публичная коммуникация и презентации для бизнеса. Мы работаем с
+            содержанием, структурой, визуальной формой и восприятием
+            выступления.
+          </p>
+          <p id="fallback-reason" role="status"></p>
+          <button class="text-button" id="return-3d" type="button" hidden>
+            Вернуться в пространство ↗
+          </button>
+        </div>
+        <div class="plain-chapters">
+          <article>
+            <span>01 / Открытие</span>
+            <h2>Всё начинается с внимания.</h2>
+            <p>
+              Большой зал, свет, первый кадр на сцене. Конференция становится
+              входом в работу BAEV, а не каталогом сценического оборудования.
+            </p>
+          </article>
+          <article>
+            <span>02 / За экраном</span>
+            <h2>У впечатления есть глубина.</h2>
+            <p>
+              За убедительным кадром — содержание, сценарий и визуальная
+              система. Раскрываем их по отдельности.
+            </p>
+          </article>
+          <article>
+            <span>03 / Главная мысль</span>
+            <h2>Сначала — смысл.</h2>
+            <p>
+              Кому говорим, что необходимо объяснить и какой вывод должен
+              остаться. Сложное становится понятным, когда найден фокус.
+            </p>
+          </article>
+          <article>
+            <span>04 / Сценарий</span>
+            <h2>Не слайды. Последовательность.</h2>
+            <p>
+              Контекст, аргумент, решение, следующий шаг. Каждый кадр
+              подготавливает следующий и работает на общий вывод.
+            </p>
+          </article>
+          <article>
+            <span>05 / Визуальная система</span>
+            <h2>Внимание — к главному.</h2>
+            <p>
+              Типографика, композиция и движение расставляют акценты. Форма
+              помогает прочитать содержание, а не заслоняет его.
+            </p>
+          </article>
+          <article>
+            <span>06 / Реальные проекты</span>
+            <h2>Из идеи — в реальный мир.</h2>
+            <nav class="plain-projects" aria-label="Избранные проекты">
+              <a href="/work/avito-auto-2024">Авито Авто — Высшая передача ↗</a
+              ><a href="/work/linear-identity">HAVAL — Dealer Conference ↗</a
+              ><a href="/work/future-archive">Альфа Конфа — Для своих ↗</a
+              ><a href="/work/">Все проекты ↗</a>
+            </nav>
+          </article>
+          <article>
+            <span>07 / За кадром</span>
+            <h2>На экране — результат. За экраном — работа.</h2>
+            <p>
+              Содержание, структура, визуальная система и подготовка к показу.
+              Узнайте больше о нашем <a href="/about/">подходе</a>.
+            </p>
+          </article>
+          <article>
+            <span>08 / Ваша история</span>
+            <h2>Что важно объяснить вам?</h2>
+            <p>
+              Расскажите о задаче — найдём для неё точную и убедительную форму.
+            </p>
+            <a class="plain-cta" href="/contact/">Обсудить задачу ↗</a
+            ><a href="mailto:hello@baev.agency">hello@baev.agency</a>
+          </article>
+        </div>
+        <footer class="plain-footer">
+          <a href="/work/">Проекты ↗</a><a href="/about/">О BAEV ↗</a
+          ><a href="/blog/">Журнал ↗</a><a href="/contact/">Контакты ↗</a>
+        </footer>
+      </section>
+    </main>
+    <dialog id="chapter-dialog" aria-labelledby="map-title">
+      <div class="dialog-top">
+        <span class="wordmark" aria-hidden="true">BAEV<sup>®</sup></span
+        ><button
+          id="map-close"
+          class="icon-button"
+          type="button"
+          aria-label="Закрыть главы"
+        >
+          ×
+        </button>
+      </div>
+      <div class="dialog-heading">
+        <span class="eyebrow">По ту сторону экрана</span>
+        <h2 id="map-title">Выберите главу.</h2>
+        <p>Путешествие можно начать с любого места.</p>
+      </div>
+      <nav id="map-items" aria-label="Карта путешествия"></nav>
+      <div class="dialog-bottom">
+        <a href="/work/">Все проекты ↗</a><a href="/about/">О BAEV ↗</a
+        ><a href="/contact/">Обсудить задачу ↗</a>
+      </div>
+    </dialog>
+    <noscript
+      ><style>
+        .enhanced-only {
+          display: none !important;
+        }
+      </style></noscript
+    >
+  </body>
 </html>

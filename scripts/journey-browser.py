@@ -23,7 +23,7 @@ def wait_ready(page):
 def go(page, index):
     page.locator(f'#chapter-track [data-chapter="{index}"]').click()
     page.wait_for_function('(i) => window.__BAEV_JOURNEY__.current === i && !window.__BAEV_JOURNEY__.stats().travelling', arg=index, timeout=60000)
-    page.wait_for_timeout(150)
+    page.wait_for_timeout(400)
 
 def no_overflow(page, label):
     d = page.evaluate('({w:innerWidth,h:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight})')
@@ -37,7 +37,7 @@ try:
     with sync_playwright() as p:
         browser_name = os.getenv('BAEV_BROWSER', 'chromium')
         args = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--enable-webgl'] if browser_name == 'chromium' else []
-        browser = getattr(p, browser_name).launch(headless=True, args=args)
+        browser = getattr(p, browser_name).launch(headless=os.getenv('BAEV_HEADLESS','true')!='false', args=args, **({'executable_path':os.environ['BAEV_EXECUTABLE']} if os.getenv('BAEV_EXECUTABLE') else {}))
         context = browser.new_context(viewport={'width': 1440, 'height': 900}, reduced_motion='no-preference')
         page = context.new_page()
         watch_errors(page)
@@ -50,6 +50,7 @@ try:
             page.screenshot(path=str(OUT / f'{browser_name}-fallback.png'), full_page=True)
         else:
             wait_ready(page)
+            page.add_style_tag(content='.debug-stats{display:none!important}')
             stats = page.evaluate('window.__BAEV_JOURNEY__.stats()')
             check(stats['drawCalls'] > 0 and stats['triangles'] > 1000, 'real WebGL geometry renders on the opening frame')
             for index in range(8):
@@ -59,6 +60,8 @@ try:
                 no_overflow(page, f'chapter {index + 1}: no horizontal or vertical document scroll')
                 stats = page.evaluate('window.__BAEV_JOURNEY__.stats()')
                 check(stats['drawCalls'] > 0, f'chapter {index + 1}: rendered scene')
+                check(stats['drawCalls'] <= 90 and stats['triangles'] < 450000, f'chapter {index + 1}: render budget')
+                check(page.evaluate('Array.from(window.__BAEV_JOURNEY__.engine.registry.values()).filter(s => s.group.visible).length') == 1, f'chapter {index + 1}: only the active set is visible')
                 report['scenes'].append(stats)
                 page.screenshot(path=str(OUT / f'desktop-{index + 1:02}.png'))
                 if index in [1, 2, 3, 4, 6]:
@@ -105,10 +108,15 @@ try:
             page.locator('#return-3d').click()
             wait_ready(page)
             check(page.locator('#experience').is_visible(), 'returning from text mode restores the experience')
+            page.locator('#motion-toggle').click()
+            page.wait_for_timeout(1000)
+            frozen = page.evaluate('window.__BAEV_JOURNEY__.stats().framesRendered')
+            page.wait_for_timeout(500)
+            check(page.evaluate('window.__BAEV_JOURNEY__.stats().framesRendered') == frozen, 'reduced-motion mode does not spend GPU frames while idle')
             page.evaluate("window.__BAEV_JOURNEY__.engine.renderer.getContext().getExtension('WEBGL_lose_context').loseContext()")
             page.wait_for_selector('#plain', state='visible')
             check(page.locator('#plain article').count() == 8, 'WebGL context loss retains all content')
-        for width, height, label in [(390, 844, 'mobile'), (390, 667, 'compact-mobile'), (820, 1180, 'tablet'), (667, 375, 'landscape')]:
+        for width, height, label in [(320, 568, 'small-mobile'), (390, 844, 'mobile'), (390, 667, 'compact-mobile'), (820, 1180, 'tablet'), (667, 375, 'landscape')]:
             mobile = browser.new_context(viewport={'width': width, 'height': height}, is_mobile=browser_name != 'firefox', has_touch=True, reduced_motion='reduce')
             mp = mobile.new_page()
             watch_errors(mp)
