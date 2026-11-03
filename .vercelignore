@@ -1,11 +1,13 @@
 .git
 .github
 evidence
+content
 CHECKPOINT.md
 design-qa.md
 README.md
 scripts/*.py
 scripts/*.cjs
+qa-cases.cjs
 __pycache__
 .env
 .env.*

@@ -1,0 +1,5404 @@
+{
+  "cases": [
+    {
+      "slug": "orla",
+      "nodeId": "216:131",
+      "title": "Orla, Dorchester Collection Dubai",
+      "description": "Промо-сайт для проекта элитной недвижимости, созданного компанией OMNIYAT и расположенного на знаменитом острове Пальма Джумейра в Дубае. Мы разработали атмосферный проект, пропитанный изысканным стилем жизни, который привлекает новых резидентов.",
+      "cover": "/assets/cases/orla/1f551ce79688ab78.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 28814.3515625
+      },
+      "scenes": [
+        {
+          "nodeId": "216:178",
+          "name": "Обложка · Видео и логотип",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 379.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [
+            "216:179",
+            "216:181"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:183",
+          "name": "Текстовая вставка · concept-text",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1600.0,
+            "height": 92.0,
+            "pageX": 0.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": "Мы создали сбалансированный и элегантный гайд по миру роскоши Dorchester Collection. Благодаря привлекательному и удобному интерфейсу, наполненному уникальным контентом от застройщика, мы позволяем потенциальным клиентам ощутить атмосферу объекта и изучить все его преимущества.",
+          "childIds": [
+            "216:184"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:187",
+          "name": "Композиция · Концепция ORLA",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 2751.02197265625,
+            "pageX": 0.0,
+            "pageY": 1226.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:188"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:200",
+          "name": "Композиция · Palm Jumeirah",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1600.0,
+            "height": 1551.4993896484375,
+            "pageX": 0.0,
+            "pageY": 4177.02197265625
+          },
+          "precedingGap": 200.0,
+          "text": null,
+          "childIds": [
+            "216:201"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:206",
+          "name": "Текстовая вставка · location-text",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1751.4993896484375,
+            "width": 1600.0,
+            "height": 92.0,
+            "pageX": 0.0,
+            "pageY": 5828.5213623046875
+          },
+          "precedingGap": 100.0,
+          "text": "Иконический роскошный полуостров с уникальным расположением у моря, Palm Jumeirah - это место, которому нет равных. Рядом находятся лучшие рестораны, клубы и пляжные курорты Дубая, а все остальные чудеса города - в пределах легкой досягаемости.",
+          "childIds": [
+            "216:207"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:209",
+          "name": "Видео · Интерактивная локация",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1943.4993896484375,
+            "width": 1600.0,
+            "height": 773.5662841796875,
+            "pageX": 0.0,
+            "pageY": 6020.5213623046875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:210"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:214",
+          "name": "Композиция · Мобильная адаптация",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1848.6036376953125,
+            "pageX": 0.0,
+            "pageY": 6894.087890625
+          },
+          "precedingGap": 100.000244140625,
+          "text": null,
+          "childIds": [
+            "216:215"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:220",
+          "name": "Текстовая вставка · adaptive-text",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1948.6036376953125,
+            "width": 1600.0,
+            "height": 52.0,
+            "pageX": 0.0,
+            "pageY": 8842.691528320312
+          },
+          "precedingGap": 100.0,
+          "text": "На любом устройстве Сайт адаптирован под любые устройства, чтобы максимально увеличить конверсию среди ценителей высокого стиля жизни, которые решают свои задачи в любое время и в любом месте.",
+          "childIds": [
+            "216:221"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:225",
+          "name": "Композиция и видео · In Harmony With Nature",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1531.5537109375,
+            "pageX": 0.0,
+            "pageY": 8994.69140625
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [
+            "216:226"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:231",
+          "name": "Фотография буклета и видео архитектуры",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1581.5662841796875,
+            "pageX": 0.0,
+            "pageY": 10626.2451171875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:232"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:237",
+          "name": "Экран · Архитектура / Входная группа",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1681.5662841796875,
+            "width": 1600.0,
+            "height": 602.0530395507812,
+            "pageX": 0.0,
+            "pageY": 12307.811401367188
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:238"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:240",
+          "name": "Экран · Галерея преимуществ",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2383.619384765625,
+            "width": 1600.0,
+            "height": 279.557861328125,
+            "pageX": 0.0,
+            "pageY": 13009.864501953125
+          },
+          "precedingGap": 100.00006103515625,
+          "text": null,
+          "childIds": [
+            "216:241"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:243",
+          "name": "Экран · Интерактивная навигация по преимуществам",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2763.17724609375,
+            "width": 1600.0,
+            "height": 602.0530395507812,
+            "pageX": 0.0,
+            "pageY": 13389.42236328125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:244"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:247",
+          "name": "Текстовая вставка · navigation-text",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 92.0,
+            "pageX": 0.0,
+            "pageY": 14091.4755859375
+          },
+          "precedingGap": 100.00018310546875,
+          "text": "Интерактивная навигация Интуитивно понятная навигация по преимуществам недвижимости помогает пользователю принять окончательное решение. В разделе с преимуществами мы использовали интерактивную двухуровневую презентацию ключевых характеристик объекта.",
+          "childIds": [
+            "216:248"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:251",
+          "name": "Композиция · Интерьеры",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 192.0,
+            "width": 1600.0,
+            "height": 1534.5545654296875,
+            "pageX": 0.0,
+            "pageY": 14283.4755859375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:252"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:256",
+          "name": "Видео · Интерактивные интерьеры",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1826.5545654296875,
+            "width": 1600.0,
+            "height": 773.5662841796875,
+            "pageX": 0.0,
+            "pageY": 15918.030151367188
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:257"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:260",
+          "name": "Текстовая вставка · omniyat-text",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2700.120849609375,
+            "width": 1600.0,
+            "height": 72.0,
+            "pageX": 0.0,
+            "pageY": 16791.596435546875
+          },
+          "precedingGap": 100.0,
+          "text": "OMNIYAT представляет ORLA - результат неустанного стремления к совершенству, которое возможно только при объединении великих креативных умов для достижения общей цели.",
+          "childIds": [
+            "216:261"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:264",
+          "name": "Видеофон и статичный экран",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1205.7125244140625,
+            "pageX": 0.0,
+            "pageY": 16963.595703125
+          },
+          "precedingGap": 99.999267578125,
+          "text": null,
+          "childIds": [
+            "216:265"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:269",
+          "name": "Экран · Типы резиденций",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1305.7125244140625,
+            "width": 1600.0,
+            "height": 602.0530395507812,
+            "pageX": 0.0,
+            "pageY": 18269.308227539062
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:270"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:272",
+          "name": "Экран · Локация / Palm Jumeirah",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2007.765625,
+            "width": 1600.0,
+            "height": 602.0530395507812,
+            "pageX": 0.0,
+            "pageY": 18971.361328125
+          },
+          "precedingGap": 100.00006103515625,
+          "text": null,
+          "childIds": [
+            "216:273"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:275",
+          "name": "Экран · Застройщик и партнеры",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2709.818603515625,
+            "width": 1600.0,
+            "height": 602.0530395507812,
+            "pageX": 0.0,
+            "pageY": 19673.414306640625
+          },
+          "precedingGap": 99.99993896484375,
+          "text": null,
+          "childIds": [
+            "216:276"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:279",
+          "name": "Композиция · Локация на мобильных",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1098.5220947265625,
+            "pageX": 0.0,
+            "pageY": 20375.466796875
+          },
+          "precedingGap": 99.99945068359375,
+          "text": null,
+          "childIds": [
+            "216:280"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:286",
+          "name": "Мокап MacBook и видео выбора резиденций",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1671.5662841796875,
+            "pageX": 0.0,
+            "pageY": 21573.98828125
+          },
+          "precedingGap": 99.9993896484375,
+          "text": null,
+          "childIds": [
+            "216:287"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:291",
+          "name": "Текстовая вставка · residences-text",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1771.5662841796875,
+            "width": 1600.0,
+            "height": 92.0,
+            "pageX": 0.0,
+            "pageY": 23345.554565429688
+          },
+          "precedingGap": 100.0,
+          "text": "Выбор резиденции Удобный интерактивный интерфейс выбора резиденций позволяет пользователю увидеть всю необходимую информацию о выбранной опции, сравнить резиденции между собой, получить план оплаты и оставить свои контактные данные.",
+          "childIds": [
+            "216:292"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:295",
+          "name": "Композиция · Планировка, информационная карточка и стеклянный цветок",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1963.5662841796875,
+            "width": 1600.0,
+            "height": 1087.699462890625,
+            "pageX": 0.0,
+            "pageY": 23537.554565429688
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:296"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:300",
+          "name": "Экран · Форма заявки",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3151.265625,
+            "width": 1600.0,
+            "height": 602.0530395507812,
+            "pageX": 0.0,
+            "pageY": 24725.25390625
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [
+            "216:301"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:304",
+          "name": "Композиция · Мобильные экраны",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 1610.5352783203125,
+            "pageX": 0.0,
+            "pageY": 25427.306640625
+          },
+          "precedingGap": 99.99969482421875,
+          "text": null,
+          "childIds": [
+            "216:305"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:311",
+          "name": "Композиция · Цветы и интерфейс",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1600.0,
+            "height": 709.6034545898438,
+            "pageX": 0.0,
+            "pageY": 27137.841796875
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [
+            "216:312"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "216:314",
+          "name": "Экран · История названия ORLA",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 809.6034545898438,
+            "width": 1600.0,
+            "height": 766.905029296875,
+            "pageX": 0.0,
+            "pageY": 27947.445251464844
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "216:315"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": false,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 13,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": []
+    },
+    {
+      "slug": "gm8",
+      "nodeId": "166:5",
+      "title": "GM8 Luxury Van Promotion",
+      "description": "GAC Group - пятый по величине автопроизводитель в Китае по объему продаж на 2021 год. Создавая надежные автомобильные шедевры для местного рынка, автоконцерн запустил проект роскошного минивэна для выхода на глобальный рынок.",
+      "cover": "/assets/cases/gm8/6547261b36cfb4be.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 31195.896484375
+      },
+      "scenes": [
+        {
+          "nodeId": "166:12",
+          "name": "Видео · GM8 · автомобиль, hero · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:21",
+          "name": "Композиция · Образ GAC M8 и визуальная концепция",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 1094.870849609375,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:47"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:45",
+          "name": "Текстовый блок · Главная промо-страница",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2117.870849609375,
+            "width": 1189.0,
+            "height": 172.0,
+            "pageX": 379.0,
+            "pageY": 2228.870849609375
+          },
+          "precedingGap": 100.0,
+          "text": "Главная промо-страница GAC M8 - надежный бизнес-партнер для лидеров нового поколения. Наша задача состояла в том, чтобы раскрыть ценностный потенциал нового продукта китайского автопроизводителя через визуальные образы, элегантное внимание к каждой детали интерьера, экстерьера и технических характеристик. Мы комплексно продемонстрировали надежность продукции компании и привлекательность инвестиций в будущее для тех, кто выбирает роскошь владения GAC M8.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:72",
+          "name": "Видео · GM8 · главная промо-страница · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2389.870849609375,
+            "width": 1189.0,
+            "height": 770.8683471679688,
+            "pageX": 379.0,
+            "pageY": 2500.870849609375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:26",
+          "name": "Композиция · Экраны главной промо-страницы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3260.7392578125,
+            "width": 1189.0,
+            "height": 1454.1253662109375,
+            "pageX": 379.0,
+            "pageY": 3371.7392578125
+          },
+          "precedingGap": 100.00006103515625,
+          "text": null,
+          "childIds": [
+            "166:73"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:48",
+          "name": "Текстовый блок · При разработке промо-сайта мы использовали яркие атмосферные изображен",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4814.86474609375,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 4925.86474609375
+          },
+          "precedingGap": 100.0001220703125,
+          "text": "При разработке промо-сайта мы использовали яркие атмосферные изображения модели автомобиля в сочетании с удобной постраничной навигацией, чтобы максимально сосредоточить внимание на сути повествования.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:29",
+          "name": "Композиция · Промо-визуал интеллектуальных технологий",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4986.86474609375,
+            "width": 1189.0,
+            "height": 1235.2388916015625,
+            "pageX": 379.0,
+            "pageY": 5097.86474609375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:90"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:50",
+          "name": "Текстовый блок · Структура сайта",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6322.103515625,
+            "width": 1189.0,
+            "height": 92.0,
+            "pageX": 379.0,
+            "pageY": 6433.103515625
+          },
+          "precedingGap": 99.9998779296875,
+          "text": "Структура сайта Нетрадиционная структура сетки фокусируется на эмоциональных аспектах продвижения изысканного имиджа роскошного продукта GAC Motors. Концепция основана на минимализме, который сочетается с четкой структурой и динамичной анимацией.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:32",
+          "name": "Композиция · Структура сайта",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6514.103515625,
+            "width": 1189.0,
+            "height": 1041.20068359375,
+            "pageX": 379.0,
+            "pageY": 6625.103515625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:96"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:35",
+          "name": "Композиция · Схема структуры сайта",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 7655.30419921875,
+            "width": 1189.0,
+            "height": 465.6916809082031,
+            "pageX": 379.0,
+            "pageY": 7766.30419921875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:110"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:36",
+          "name": "Композиция · Адаптивный интерфейс",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8220.99609375,
+            "width": 1189.0,
+            "height": 687.9970092773438,
+            "pageX": 379.0,
+            "pageY": 8331.99609375
+          },
+          "precedingGap": 100.00021362304688,
+          "text": null,
+          "childIds": [
+            "166:114"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:53",
+          "name": "Текстовый блок · Продуманный и удобный интерфейс адаптирован под все возможные настольн",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9008.9931640625,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 9119.9931640625
+          },
+          "precedingGap": 100.00006103515625,
+          "text": "Продуманный и удобный интерфейс адаптирован под все возможные настольные и мобильные устройства.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:128",
+          "name": "Видео · GM8 · адаптивный интерфейс · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9140.9931640625,
+            "width": 1189.0,
+            "height": 770.8683471679688,
+            "pageX": 379.0,
+            "pageY": 9251.9931640625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:39",
+          "name": "Композиция · Адаптивные экраны",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10011.861328125,
+            "width": 1189.0,
+            "height": 745.614990234375,
+            "pageX": 379.0,
+            "pageY": 10122.861328125
+          },
+          "precedingGap": 99.99981689453125,
+          "text": null,
+          "childIds": [
+            "166:129"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:55",
+          "name": "Текстовый блок · Цветовая палитра",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10857.4765625,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 10968.4765625
+          },
+          "precedingGap": 100.000244140625,
+          "text": "Цветовая палитра ​",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:42",
+          "name": "Палитра · GAC M8 · HEX, HSL и RGB",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10983.4765625,
+            "width": 1189.0,
+            "height": 1106.4305419921875,
+            "pageX": 379.0,
+            "pageY": 11094.4765625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:142",
+            "166:152",
+            "166:162",
+            "166:169",
+            "166:179",
+            "166:189"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:58",
+          "name": "Текстовый блок · Блок интеллектуальных технологий",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12189.9072265625,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 12300.9072265625
+          },
+          "precedingGap": 100.0001220703125,
+          "text": "Блок интеллектуальных технологий Не думайте о дороге, думайте о бизнесе. Основной интеллектуальный центр автомобиля берет на себя все аспекты безопасного вождения.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:208",
+          "name": "Видео · GM8 · интеллектуальные технологии · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12341.9072265625,
+            "width": 1189.0,
+            "height": 770.8683471679688,
+            "pageX": 379.0,
+            "pageY": 12452.9072265625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:47",
+          "name": "Композиция · Экраны интеллектуальных технологий",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13212.775390625,
+            "width": 1189.0,
+            "height": 1646.163818359375,
+            "pageX": 379.0,
+            "pageY": 13323.775390625
+          },
+          "precedingGap": 99.99981689453125,
+          "text": null,
+          "childIds": [
+            "166:213"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:48",
+          "name": "Композиция · Мобильный экран интеллектуальных технологий",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14958.939453125,
+            "width": 1189.0,
+            "height": 874.3071899414062,
+            "pageX": 379.0,
+            "pageY": 15069.939453125
+          },
+          "precedingGap": 100.000244140625,
+          "text": null,
+          "childIds": [
+            "166:223"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:61",
+          "name": "Текстовый блок · Панель управления",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15933.2470703125,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 16044.2470703125
+          },
+          "precedingGap": 100.00042724609375,
+          "text": "Панель управления",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:51",
+          "name": "Композиция · Видео панели управления",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 16059.2470703125,
+            "width": 1189.0,
+            "height": 642.3902587890625,
+            "pageX": 379.0,
+            "pageY": 16170.2470703125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:227"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:232",
+          "name": "Видео · GM8 · панель управления · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 16801.63671875,
+            "width": 1189.0,
+            "height": 770.8683471679688,
+            "pageX": 379.0,
+            "pageY": 16912.63671875
+          },
+          "precedingGap": 99.9993896484375,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:52",
+          "name": "Композиция · Салон и органы управления",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 17672.505859375,
+            "width": 1189.0,
+            "height": 649.821533203125,
+            "pageX": 379.0,
+            "pageY": 17783.505859375
+          },
+          "precedingGap": 100.00079345703125,
+          "text": null,
+          "childIds": [
+            "166:238"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:64",
+          "name": "Текстовый блок · Конфигурация моделей",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 18422.328125,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 18533.328125
+          },
+          "precedingGap": 100.000732421875,
+          "text": "Конфигурация моделей",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:254",
+          "name": "Видео · GM8 · конфигуратор модели · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 18548.328125,
+            "width": 1189.0,
+            "height": 757.9874877929688,
+            "pageX": 379.0,
+            "pageY": 18659.328125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:55",
+          "name": "Композиция · Экраны конфигуратора",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 19406.31640625,
+            "width": 1189.0,
+            "height": 1594.6094970703125,
+            "pageX": 379.0,
+            "pageY": 19517.31640625
+          },
+          "precedingGap": 100.00079345703125,
+          "text": null,
+          "childIds": [
+            "166:255"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:67",
+          "name": "Текстовый блок · GM8 Design",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 21100.92578125,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 21211.92578125
+          },
+          "precedingGap": 99.9998779296875,
+          "text": "GM8 Design С помощью интерактивных витрин, динамических слайдеров и 3D-анимаций акцент сделан на детальное изучение дизайна GAC M8.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:58",
+          "name": "Композиция · Видео дизайна GM8",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 21252.92578125,
+            "width": 1189.0,
+            "height": 642.3902587890625,
+            "pageX": 379.0,
+            "pageY": 21363.92578125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:268"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:273",
+          "name": "Видео · GM8 · дизайн автомобиля · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 21995.31640625,
+            "width": 1189.0,
+            "height": 770.8683471679688,
+            "pageX": 379.0,
+            "pageY": 22106.31640625
+          },
+          "precedingGap": 100.0003662109375,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:59",
+          "name": "Композиция · Дизайн автомобиля и интерактивные витрины",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 22866.185546875,
+            "width": 1189.0,
+            "height": 1340.10205078125,
+            "pageX": 379.0,
+            "pageY": 22977.185546875
+          },
+          "precedingGap": 100.00079345703125,
+          "text": null,
+          "childIds": [
+            "166:279"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:70",
+          "name": "Текстовый блок · Галерея дизайна интерьера",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 24306.287109375,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 24417.287109375
+          },
+          "precedingGap": 99.99951171875,
+          "text": "Галерея дизайна интерьера ​",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:298",
+          "name": "Видео · GM8 · галерея интерьера · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 24432.287109375,
+            "width": 1189.0,
+            "height": 770.8683471679688,
+            "pageX": 379.0,
+            "pageY": 24543.287109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:64",
+          "name": "Композиция · Экраны галереи интерьера",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 25303.15625,
+            "width": 1189.0,
+            "height": 724.5597534179688,
+            "pageX": 379.0,
+            "pageY": 25414.15625
+          },
+          "precedingGap": 100.00079345703125,
+          "text": null,
+          "childIds": [
+            "166:299"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "187:73",
+          "name": "Текстовый блок · Страница компании",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 26127.716796875,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 26238.716796875
+          },
+          "precedingGap": 100.00079345703125,
+          "text": "Страница компании",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:319",
+          "name": "Видео · GM8 · страница компании · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 26253.716796875,
+            "width": 1189.0,
+            "height": 787.7125244140625,
+            "pageX": 379.0,
+            "pageY": 26364.716796875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:67",
+          "name": "Композиция · Экраны страницы компании",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 27141.4296875,
+            "width": 1189.0,
+            "height": 2216.318603515625,
+            "pageX": 379.0,
+            "pageY": 27252.4296875
+          },
+          "precedingGap": 100.0003662109375,
+          "text": null,
+          "childIds": [
+            "166:320"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:68",
+          "name": "Композиция · Финальные экраны проекта",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 29457.748046875,
+            "width": 1189.0,
+            "height": 1577.15380859375,
+            "pageX": 379.0,
+            "pageY": 29568.748046875
+          },
+          "precedingGap": 99.999755859375,
+          "text": null,
+          "childIds": [
+            "166:330"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 16,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": [
+        "166:145",
+        "166:148",
+        "166:151",
+        "166:155",
+        "166:158",
+        "166:161",
+        "166:172",
+        "166:175",
+        "166:178",
+        "166:182",
+        "166:185",
+        "166:188",
+        "166:192",
+        "166:195",
+        "166:198"
+      ]
+    },
+    {
+      "slug": "haval",
+      "nodeId": "166:575",
+      "title": "Haval Dealer Conference",
+      "description": "В рамках кампании «Важен каждый день» HAVAL представляет свой манифест, в котором выражает ценности, объединяющие бренд и его аудиторию: «Каждый день в вашей жизни случается разное. Запланированное и неожиданное, удивительное и обыденное, реальное и нереальное».",
+      "cover": "/assets/cases/haval/455ed5595bc5fbd9.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 18975.505859375
+      },
+      "scenes": [
+        {
+          "nodeId": "181:13",
+          "name": "Обложка · HAVAL · Полный кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [
+            "166:582"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:54",
+          "name": "Текстовый блок · Key Visual",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": "Key Visual ​",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:99",
+          "name": "Композиция · Key Visual и айдентика конференции",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1049.0,
+            "width": 1189.0,
+            "height": 1294.8565673828125,
+            "pageX": 379.0,
+            "pageY": 1160.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:611"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:100",
+          "name": "Композиция · Презентация на экране · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2443.8564453125,
+            "width": 1189.0,
+            "height": 822.3916625976562,
+            "pageX": 379.0,
+            "pageY": 2554.8564453125
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [
+            "166:629"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:57",
+          "name": "Текстовый блок · Ключевой слоган",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3366.248046875,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 3477.248046875
+          },
+          "precedingGap": 99.99993896484375,
+          "text": "Ключевой слоган В основе философии бренда HAVAL лежат люди. Их эмоции, чувства и моменты.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:103",
+          "name": "Композиция · Ключевой слоган и философия бренда",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3498.248046875,
+            "width": 1189.0,
+            "height": 304.0232849121094,
+            "pageX": 379.0,
+            "pageY": 3609.248046875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:634"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:106",
+          "name": "Композиция · Презентация на экране · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3902.271240234375,
+            "width": 1189.0,
+            "height": 822.3916625976562,
+            "pageX": 379.0,
+            "pageY": 4013.271240234375
+          },
+          "precedingGap": 99.99990844726562,
+          "text": null,
+          "childIds": [
+            "166:644"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:107",
+          "name": "Композиция · Слайды ключевого сообщения",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4824.6630859375,
+            "width": 1189.0,
+            "height": 859.3414916992188,
+            "pageX": 379.0,
+            "pageY": 4935.6630859375
+          },
+          "precedingGap": 100.00018310546875,
+          "text": null,
+          "childIds": [
+            "166:649"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:60",
+          "name": "Текстовый блок · Модельный ряд HAVAL",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5784.00439453125,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 5895.00439453125
+          },
+          "precedingGap": 99.99981689453125,
+          "text": "Модельный ряд HAVAL ​",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:668",
+          "name": "Видео · HAVAL · модельный ряд · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5910.00439453125,
+            "width": 1189.0,
+            "height": 363.25042724609375,
+            "pageX": 379.0,
+            "pageY": 6021.00439453125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:63",
+          "name": "Текстовый блок · Мы сосредоточились на интерактивной подаче информации, концентрируясь ",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6373.2548828125,
+            "width": 1189.0,
+            "height": 106.0,
+            "pageX": 379.0,
+            "pageY": 6484.2548828125
+          },
+          "precedingGap": 100.00006103515625,
+          "text": "Мы сосредоточились на интерактивной подаче информации, концентрируясь на важных деталях и устраняя все лишнее.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:112",
+          "name": "Композиция · Слайды модельного ряда HAVAL",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6579.2548828125,
+            "width": 1189.0,
+            "height": 459.2151184082031,
+            "pageX": 379.0,
+            "pageY": 6690.2548828125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:669"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:113",
+          "name": "Композиция · Презентация на экране · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 7138.4697265625,
+            "width": 1189.0,
+            "height": 762.941650390625,
+            "pageX": 379.0,
+            "pageY": 7249.4697265625
+          },
+          "precedingGap": 99.99972534179688,
+          "text": null,
+          "childIds": [
+            "166:676"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:65",
+          "name": "Текстовый блок · Характеристики и статистика",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8001.4111328125,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 8112.4111328125
+          },
+          "precedingGap": 99.999755859375,
+          "text": "Характеристики и статистика ​",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:116",
+          "name": "Композиция · Характеристики и статистика",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8127.4111328125,
+            "width": 1189.0,
+            "height": 1212.73876953125,
+            "pageX": 379.0,
+            "pageY": 8238.4111328125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:679"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:117",
+          "name": "Композиция · Презентация на экране · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9440.150390625,
+            "width": 1189.0,
+            "height": 810.8319702148438,
+            "pageX": 379.0,
+            "pageY": 9551.150390625
+          },
+          "precedingGap": 100.00048828125,
+          "text": null,
+          "childIds": [
+            "166:695"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:68",
+          "name": "Текстовый блок · Графики и цифры",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10350.982421875,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 10461.982421875
+          },
+          "precedingGap": 100.00006103515625,
+          "text": "Графики и цифры Продуманная визуальная система графиков и диаграмм обеспечивает легкость восприятия информации, чтобы не упустить ни одной важной детали повествования и добиться нужного впечатления.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:709",
+          "name": "Видео · HAVAL · графики и цифры · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10522.982421875,
+            "width": 1189.0,
+            "height": 363.25042724609375,
+            "pageX": 379.0,
+            "pageY": 10633.982421875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:122",
+          "name": "Композиция · Презентация на экране площадки · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10986.232421875,
+            "width": 1189.0,
+            "height": 731.5653076171875,
+            "pageX": 379.0,
+            "pageY": 11097.232421875
+          },
+          "precedingGap": 99.99957275390625,
+          "text": null,
+          "childIds": [
+            "166:710"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:123",
+          "name": "Композиция · Слайды аналитики и анимация",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11817.7978515625,
+            "width": 1189.0,
+            "height": 557.1373291015625,
+            "pageX": 379.0,
+            "pageY": 11928.7978515625
+          },
+          "precedingGap": 100.0001220703125,
+          "text": null,
+          "childIds": [
+            "166:715"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:727",
+          "name": "Видео · HAVAL · анимация аналитических слайдов · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12474.935546875,
+            "width": 1189.0,
+            "height": 363.25042724609375,
+            "pageX": 379.0,
+            "pageY": 12585.935546875
+          },
+          "precedingGap": 100.0003662109375,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:77",
+          "name": "Графика · Доля HAVAL по регионам",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12938.185546875,
+            "width": 1189.0,
+            "height": 253.28176879882812,
+            "pageX": 379.0,
+            "pageY": 13049.185546875
+          },
+          "precedingGap": 99.99957275390625,
+          "text": null,
+          "childIds": [
+            "166:716"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:124",
+          "name": "Композиция · Общий вид презентации",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13291.4677734375,
+            "width": 1189.0,
+            "height": 762.941650390625,
+            "pageX": 379.0,
+            "pageY": 13402.4677734375
+          },
+          "precedingGap": 100.00045776367188,
+          "text": null,
+          "childIds": [
+            "166:728"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:125",
+          "name": "Композиция · Сетка слайдов презентации",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14154.4091796875,
+            "width": 1189.0,
+            "height": 484.05047607421875,
+            "pageX": 379.0,
+            "pageY": 14265.4091796875
+          },
+          "precedingGap": 99.999755859375,
+          "text": null,
+          "childIds": [
+            "166:733"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:126",
+          "name": "Композиция · Презентация на экране площадки · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14738.4599609375,
+            "width": 1189.0,
+            "height": 810.8319702148438,
+            "pageX": 379.0,
+            "pageY": 14849.4599609375
+          },
+          "precedingGap": 100.00030517578125,
+          "text": null,
+          "childIds": [
+            "166:764"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:71",
+          "name": "Текстовый блок · Брендирование мероприятия",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15649.2919921875,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 15760.2919921875
+          },
+          "precedingGap": 100.00006103515625,
+          "text": "Брендирование мероприятия ​",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:129",
+          "name": "Композиция · Видео и графика брендирования мероприятия",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15775.2919921875,
+            "width": 1189.0,
+            "height": 502.87371826171875,
+            "pageX": 379.0,
+            "pageY": 15886.2919921875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:769"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:130",
+          "name": "Композиция · Презентация на экране площадки · мокап",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 16378.166015625,
+            "width": 1189.0,
+            "height": 860.3735961914062,
+            "pageX": 379.0,
+            "pageY": 16489.166015625
+          },
+          "precedingGap": 100.00030517578125,
+          "text": null,
+          "childIds": [
+            "166:789"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "174:131",
+          "name": "Композиция · Носители брендирования мероприятия",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 17338.5390625,
+            "width": 1189.0,
+            "height": 1475.967529296875,
+            "pageX": 379.0,
+            "pageY": 17449.5390625
+          },
+          "precedingGap": 99.99945068359375,
+          "text": null,
+          "childIds": [
+            "166:794"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": false,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 3,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": []
+    },
+    {
+      "slug": "serenity",
+      "nodeId": "166:988",
+      "title": "Serenity Aviation",
+      "description": "Бренд-платформа для компании частной авиации из Саудовской Аравии. Serenity Aviation предоставляет услуги консалтинга, поставки оборудования и оценки рисков для авиалиний по всему миру.",
+      "cover": "/assets/cases/serenity/26aea9938040db58.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 17445.87890625
+      },
+      "scenes": [
+        {
+          "nodeId": "168:13",
+          "name": "01 · Обложка · Мокап фирменного буклета",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:116",
+          "name": "02 · Текстовая вставка · Символ радара",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": "Символ радара Вдохновением для разработки фирменного стиля компании стала форма радара. Этот символ был создан, чтобы отразить специфику авиационной отрасли и путь, который проходит компания.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:1028",
+          "name": "03 · Анимация · Логотип Serenity · Lottie, статичный векторный кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1095.0,
+            "width": 1189.0,
+            "height": 569.7291870117188,
+            "pageX": 379.0,
+            "pageY": 1206.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:1029"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2341",
+          "name": "04 · Композиция · Ливрея самолета",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1764.729248046875,
+            "width": 1189.0,
+            "height": 908.263916015625,
+            "pageX": 379.0,
+            "pageY": 1875.729248046875
+          },
+          "precedingGap": 100.00006103515625,
+          "text": null,
+          "childIds": [
+            "166:2342",
+            "166:2343"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:102",
+          "name": "05 · Текстовая вставка · Материалы бренда",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2772.9931640625,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 2883.9931640625
+          },
+          "precedingGap": 100.0,
+          "text": "Материалы бренда Используя премиальные материалы при разработке фирменной продукции, мы добились уникального сочетания минималистичного дизайна и благородной функциональности.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2345",
+          "name": "06 · Композиция · Премиальный буклет",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2924.9931640625,
+            "width": 1189.0,
+            "height": 743.125,
+            "pageX": 379.0,
+            "pageY": 3035.9931640625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2346"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2351",
+          "name": "07 · Композиция · Обложки книги и буклета",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3768.1181640625,
+            "width": 1189.0,
+            "height": 579.5,
+            "pageX": 379.0,
+            "pageY": 3879.1181640625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "189:119"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2356",
+          "name": "08 · Композиция · Разворот брендбука",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4447.6181640625,
+            "width": 1189.0,
+            "height": 784.4097290039062,
+            "pageX": 379.0,
+            "pageY": 4558.6181640625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2357",
+            "166:2359"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:105",
+          "name": "09 · Текстовая вставка · Фирменная система",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5332.02783203125,
+            "width": 1189.0,
+            "height": 152.0,
+            "pageX": 379.0,
+            "pageY": 5443.02783203125
+          },
+          "precedingGap": 99.99993896484375,
+          "text": "Фирменная система Корпоративная айдентика строится на двух основных цветах: холодном сером и изумрудно-зеленом. Они передают элегантное настроение, формальный деловой стиль и являются характерными оттенками, преобладающими в авиации. Логотип выполнен уникальным шрифтом с острыми изгибами, что придает ему силу, четкость и роскошь.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2367",
+          "name": "10 · Композиция · Логотип и фирменная графика",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5584.02783203125,
+            "width": 1189.0,
+            "height": 743.125,
+            "pageX": 379.0,
+            "pageY": 5695.02783203125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2368",
+            "166:2371",
+            "166:2374"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2380",
+          "name": "11 · Композиция · Самолет и визитные карточки",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6427.15283203125,
+            "width": 1189.0,
+            "height": 2367.56005859375,
+            "pageX": 379.0,
+            "pageY": 6538.15283203125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "189:123",
+            "189:124",
+            "189:125"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:108",
+          "name": "12 · Текстовая вставка · Фирменные носители",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8894.712890625,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 9005.712890625
+          },
+          "precedingGap": 100.0,
+          "text": "Фирменные носители Serenity Aviation верит, что клиенты авиалиний заслуживают безопасных, стильных и выгодных путешествий.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2389",
+          "name": "13 · Композиция · Фирменная одежда",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9026.712890625,
+            "width": 1189.0,
+            "height": 743.125,
+            "pageX": 379.0,
+            "pageY": 9137.712890625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2390"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2395",
+          "name": "14 · Композиция · Сувенирная продукция",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9869.837890625,
+            "width": 1189.0,
+            "height": 1363.8751220703125,
+            "pageX": 379.0,
+            "pageY": 9980.837890625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "189:120",
+            "189:121",
+            "189:122"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:111",
+          "name": "15 · Текстовая вставка · Цветовая палитра",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11333.712890625,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 11444.712890625
+          },
+          "precedingGap": 99.9998779296875,
+          "text": "Цветовая палитра",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2410",
+          "name": "16 · Палитра · Фирменная палитра",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11459.712890625,
+            "width": 1189.0,
+            "height": 701.8402709960938,
+            "pageX": 379.0,
+            "pageY": 11570.712890625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2411",
+            "166:2413",
+            "166:2415",
+            "166:2417",
+            "166:2419",
+            "166:2422",
+            "166:2425",
+            "166:2428",
+            "166:2431",
+            "166:2434",
+            "166:2437",
+            "166:2440",
+            "166:2443",
+            "166:2446",
+            "166:2449",
+            "166:2452"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2455",
+          "name": "17 · Композиция · Пассажирка в салоне самолета",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12261.552734375,
+            "width": 1189.0,
+            "height": 660.5555419921875,
+            "pageX": 379.0,
+            "pageY": 12372.552734375
+          },
+          "precedingGap": 99.99957275390625,
+          "text": null,
+          "childIds": [
+            "166:2456"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2458",
+          "name": "18 · Композиция · Интерьер и фирменная фактура",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13022.1083984375,
+            "width": 1189.0,
+            "height": 445.875,
+            "pageX": 379.0,
+            "pageY": 13133.1083984375
+          },
+          "precedingGap": 100.0001220703125,
+          "text": null,
+          "childIds": [
+            "166:2459",
+            "166:2460"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:113",
+          "name": "19 · Текстовая вставка · Промо-материалы",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13567.9833984375,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 13678.9833984375
+          },
+          "precedingGap": 100.0,
+          "text": "Промо-материалы Промо-материалы бренда созданы на пересечении технологий и роскоши, воплощенных в минималистичной сетке.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2465",
+          "name": "20 · Композиция · Промо-макеты",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13699.9833984375,
+            "width": 1189.0,
+            "height": 516.0590209960938,
+            "pageX": 379.0,
+            "pageY": 13810.9833984375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2466",
+            "166:2469",
+            "166:2472",
+            "166:2475"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2478",
+          "name": "21 · Композиция · Наружные постеры",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14316.0419921875,
+            "width": 1189.0,
+            "height": 792.6666870117188,
+            "pageX": 379.0,
+            "pageY": 14427.0419921875
+          },
+          "precedingGap": 99.99957275390625,
+          "text": null,
+          "childIds": [
+            "166:2479",
+            "166:2481"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2483",
+          "name": "22 · Композиция · Цифровые рекламные стенды",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15208.708984375,
+            "width": 1189.0,
+            "height": 579.5,
+            "pageX": 379.0,
+            "pageY": 15319.708984375
+          },
+          "precedingGap": 100.00030517578125,
+          "text": null,
+          "childIds": [
+            "189:126"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2488",
+          "name": "23 · Композиция · Промо на планшете",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15888.208984375,
+            "width": 1189.0,
+            "height": 665.8345336914062,
+            "pageX": 379.0,
+            "pageY": 15999.208984375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "189:127"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2491",
+          "name": "24 · Композиция · Заключительный ключевой визуал",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 16654.04296875,
+            "width": 1189.0,
+            "height": 665.8345336914062,
+            "pageX": 379.0,
+            "pageY": 16765.04296875
+          },
+          "precedingGap": 99.99945068359375,
+          "text": null,
+          "childIds": [
+            "189:128"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 4,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": [
+        "166:2421",
+        "166:2424",
+        "166:2430",
+        "166:2433",
+        "166:2439",
+        "166:2442",
+        "166:2448",
+        "166:2451"
+      ]
+    },
+    {
+      "slug": "pik",
+      "nodeId": "166:2676",
+      "title": "ПИК - Кинотеатриум",
+      "description": "Цифровая платформа «Кинотеатриума» - фестиваля фильмов под открытым небом для всей семьи на территории жилых кварталов ПИК. Хорошее кино, атмосфера добрососедства и приятные знакомства с единомышленниками.",
+      "cover": "/assets/cases/pik/81a69f890e9a943d.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 16267.306640625
+      },
+      "scenes": [
+        {
+          "nodeId": "170:20",
+          "name": "01 · Обложка · 3D-рендер Кинотеатриума",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [
+            "166:2683"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:21",
+          "name": "02 · Видео · ПИК Кинотеатриум · Исходный постер",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:132",
+          "name": "03 · Текстовая вставка · Результаты фестиваля",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1691.0,
+            "width": 1189.0,
+            "height": 66.0,
+            "pageX": 379.0,
+            "pageY": 1802.0
+          },
+          "precedingGap": 100.0,
+          "text": "26 кинопоказов под открытым небом в семи кварталах",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2717",
+          "name": "04 · Композиция · Результаты фестиваля и устройства",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1857.0,
+            "width": 1189.0,
+            "height": 796.795166015625,
+            "pageX": 379.0,
+            "pageY": 1968.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2718",
+            "166:2724",
+            "166:2726",
+            "166:2728",
+            "166:2731",
+            "166:2734"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:134",
+          "name": "05 · Текстовая вставка · Программа фестиваля",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2753.795166015625,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 2864.795166015625
+          },
+          "precedingGap": 100.0,
+          "text": "Программа фестиваля Программа показов, площадки и регистрация на сеансы собраны на одной платформе.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2737",
+          "name": "06 · Композиция · Кинопрограмма в жилом квартале",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2885.795166015625,
+            "width": 1189.0,
+            "height": 1088.888916015625,
+            "pageX": 379.0,
+            "pageY": 2996.795166015625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2742"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2743",
+          "name": "07 · Композиция · Десктопные страницы фестиваля",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4074.68408203125,
+            "width": 1189.0,
+            "height": 4852.6064453125,
+            "pageX": 379.0,
+            "pageY": 4185.68408203125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2744",
+            "166:2746",
+            "166:2774",
+            "166:2777"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:24",
+          "name": "08 · Видео · Greenpark · На фоне жилого квартала",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9027.291015625,
+            "width": 1189.0,
+            "height": 1088.888916015625,
+            "pageX": 379.0,
+            "pageY": 9138.291015625
+          },
+          "precedingGap": 100.00048828125,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2784",
+          "name": "09 · Композиция · Мобильные страницы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10216.1796875,
+            "width": 1189.0,
+            "height": 1136.981201171875,
+            "pageX": 379.0,
+            "pageY": 10327.1796875
+          },
+          "precedingGap": 99.999755859375,
+          "text": null,
+          "childIds": [
+            "166:2785",
+            "166:2788",
+            "166:2791"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2794",
+          "name": "10 · Композиция · Карточки фильмов",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11453.1611328125,
+            "width": 1189.0,
+            "height": 1018.0812377929688,
+            "pageX": 379.0,
+            "pageY": 11564.1611328125
+          },
+          "precedingGap": 100.000244140625,
+          "text": null,
+          "childIds": [
+            "166:2795",
+            "166:2798"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2801",
+          "name": "11 · Композиция · Сайт на ноутбуке",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12571.2421875,
+            "width": 1189.0,
+            "height": 825.6944580078125,
+            "pageX": 379.0,
+            "pageY": 12682.2421875
+          },
+          "precedingGap": 99.99981689453125,
+          "text": null,
+          "childIds": [
+            "166:2802",
+            "166:2804"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:129",
+          "name": "12 · Текстовая вставка · Активности фестиваля",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13496.9365234375,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 13607.9365234375
+          },
+          "precedingGap": 99.9998779296875,
+          "text": "Активности фестиваля Для участников «Кинотеатриума» были проведены увлекательные викторины, встречи с экспертами киноиндустрии, яркие мастер-классы, воркшопы и даже тренировки на свежем воздухе.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:2806",
+          "name": "13 · Композиция · Активности фестиваля",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13668.9365234375,
+            "width": 1189.0,
+            "height": 761.0,
+            "pageX": 379.0,
+            "pageY": 13779.9365234375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:2807",
+            "166:2809",
+            "166:2811",
+            "166:2814"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "189:137",
+          "name": "14 · Текстовая вставка · Фотографии фестиваля",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14529.9365234375,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 14640.9365234375
+          },
+          "precedingGap": 100.0,
+          "text": "Фотографии фестиваля",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:27",
+          "name": "15 · Фотогалерея · Семь уникальных фотографий фестиваля",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14655.9365234375,
+            "width": 1189.0,
+            "height": 1538.75,
+            "pageX": 379.0,
+            "pageY": 14766.9365234375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "170:28",
+            "170:29",
+            "170:30",
+            "170:31"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 3,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": [
+        "166:2730",
+        "166:2733",
+        "166:2736"
+      ]
+    },
+    {
+      "slug": "rocket",
+      "nodeId": "166:3049",
+      "title": "Rocket Group Platform",
+      "description": "Разработка цифровой бренд-платформы чистой энергетики и домов с нулевым энергопотреблением Используя инновационные технологии, Rocket Group транслирует идею абсолютной свободы в выборе места для жизни и независимости от обстоятельств и условностей. Бренд Rocket Group продвигает новый подход к жизни и мышлению.",
+      "cover": "/assets/cases/rocket/44de11982e3b6035.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 20261.232421875
+      },
+      "scenes": [
+        {
+          "nodeId": "170:40",
+          "name": "01 · Обложка · 3D-рендер · Модульный дом Rocket Group",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:41",
+          "name": "02 · Видео · Промо сайта Rocket Group · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:85",
+          "name": "Текст · Дизайн-концепция · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 2057.0
+          },
+          "precedingGap": 200.0,
+          "text": "Дизайн-концепция Концепция основана на минимализме, который сочетается с четкой структурой и динамичными анимациями. Элементы дизайна в стиле элегантного брутализма подчеркивают идеологическую эстетику продуктов и услуг компании.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3102",
+          "name": "04 · Графика · Карта сайта",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 272.0,
+            "width": 1189.0,
+            "height": 250.53375244140625,
+            "pageX": 379.0,
+            "pageY": 2229.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3103"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3106",
+          "name": "05 · Композиция · Ключевые разделы платформы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 622.5337524414062,
+            "width": 1189.0,
+            "height": 1400.3778076171875,
+            "pageX": 379.0,
+            "pageY": 2579.5337524414062
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3107",
+            "166:3109",
+            "166:3111",
+            "166:3113",
+            "166:3116",
+            "166:3119",
+            "166:3122"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:88",
+          "name": "Текст · Главная страница · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2122.91162109375,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 4079.91162109375
+          },
+          "precedingGap": 100.00006103515625,
+          "text": "Главная страница На стыке природы и инноваций дизайн-концепция сайта становится симфонией экологической гармонии.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:48",
+          "name": "08 · Видео · Главная страница Rocket на ноутбуке · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2254.91162109375,
+            "width": 1189.0,
+            "height": 751.0,
+            "pageX": 379.0,
+            "pageY": 4211.91162109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:91",
+          "name": "Текст · Дома с нулевым потреблением · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3105.91162109375,
+            "width": 1189.0,
+            "height": 132.0,
+            "pageX": 379.0,
+            "pageY": 5062.91162109375
+          },
+          "precedingGap": 100.0,
+          "text": "Дома с нулевым потреблением Интуитивная навигация по модификациям умных домов помогает пользователю принять окончательное решение. ​ Представленные варианты могут использоваться как дома для постоянного проживания, а также в качестве шоурума, гостиничного номера или коммерческого помещения в рамках бизнес-модели клиента.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:51",
+          "name": "10 · Видео · Дома с нулевым потреблением · презентация сайта · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3337.91162109375,
+            "width": 1189.0,
+            "height": 771.0,
+            "pageX": 379.0,
+            "pageY": 5294.91162109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3166",
+          "name": "11 · Композиция · Дома: desktop и mobile",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4208.91162109375,
+            "width": 1189.0,
+            "height": 1492.0299072265625,
+            "pageX": 379.0,
+            "pageY": 6165.91162109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3167",
+            "166:3169",
+            "166:3171",
+            "166:3185"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:52",
+          "name": "12 · Видео · Модель дома Mod30 · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5800.94140625,
+            "width": 1189.0,
+            "height": 628.0,
+            "pageX": 379.0,
+            "pageY": 7757.94140625
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:53",
+          "name": "13 · Скриншот · Конфигуратор дома",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6528.94140625,
+            "width": 1189.0,
+            "height": 1547.0,
+            "pageX": 379.0,
+            "pageY": 8485.94140625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:95",
+          "name": "Текст · Возобновляемые и альтернативные источники энергии · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1189.0,
+            "height": 92.0,
+            "pageX": 379.0,
+            "pageY": 10232.94140625
+          },
+          "precedingGap": 200.0,
+          "text": "Возобновляемые и альтернативные источники энергии Когда солнце протягивает свои золотые лучи, эти панели улавливают свет дня, превращая его в неиссякаемый источник энергии. Их красота кроется не только в эффективности, но и в гармоничном «танце» с изысканным дизайном веб-интерфейса.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:58",
+          "name": "16 · Видео · Раздел возобновляемых источников энергии · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 292.0,
+            "width": 1189.0,
+            "height": 778.0,
+            "pageX": 379.0,
+            "pageY": 10424.94140625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3230",
+          "name": "17 · Композиция · Адаптивные страницы энергетики",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1170.0,
+            "width": 1189.0,
+            "height": 2560.156005859375,
+            "pageX": 379.0,
+            "pageY": 11302.94140625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3236",
+            "166:3239",
+            "166:3242",
+            "166:3245",
+            "166:3248"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:98",
+          "name": "Текст · Интерактивность · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3830.156005859375,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 13963.097412109375
+          },
+          "precedingGap": 100.0,
+          "text": "Интерактивность С помощью интерактивных витрин, динамических слайдеров и 3D-анимаций акцент сделан на возможность детального изучения процессов производства и демонстрации продуктов компании.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:63",
+          "name": "20 · Видео · Анимированная демонстрация мобильного меню · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4002.156005859375,
+            "width": 1189.0,
+            "height": 718.0,
+            "pageX": 379.0,
+            "pageY": 14135.097412109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:102",
+          "name": "Текст · Солнечные и ветряные электростанции · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1189.0,
+            "height": 132.0,
+            "pageX": 379.0,
+            "pageY": 15053.09765625
+          },
+          "precedingGap": 200.000244140625,
+          "text": "Солнечные и ветряные электростанции Дизайн обеспечивает интуитивный и бесшовный пользовательский опыт. Чистый и минималистичный макет направляет посетителей по странице, позволяя легко исследовать преимущества солнечных и ветряных технологий. Понятные элементы навигации и анимации, активируемые при прокрутке, усиливают вовлеченность, делая информацию доступной и увлекательной.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "170:66",
+          "name": "22 · Видео · Раздел солнечных и ветряных электростанций · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 332.0,
+            "width": 1189.0,
+            "height": 778.0,
+            "pageX": 379.0,
+            "pageY": 15285.09765625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3293",
+          "name": "23 · Композиция · Адаптивные страницы электростанций",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1210.0,
+            "width": 1189.0,
+            "height": 2806.716064453125,
+            "pageX": 379.0,
+            "pageY": 16163.09765625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3294",
+            "166:3297",
+            "166:3299",
+            "166:3301",
+            "166:3303",
+            "166:3306",
+            "166:3320",
+            "166:3323",
+            "166:3329"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:106",
+          "name": "Текст · Материалы айдентики · Крупная вставка",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1189.0,
+            "height": 26.0,
+            "pageX": 379.0,
+            "pageY": 19169.8125
+          },
+          "precedingGap": 199.998779296875,
+          "text": "Материалы айдентики",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3344",
+          "name": "26 · Композиция · Фирменные визитные карточки",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 226.0,
+            "width": 1189.0,
+            "height": 865.4180908203125,
+            "pageX": 379.0,
+            "pageY": 19295.8125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3345",
+            "166:3348"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 14,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": []
+    },
+    {
+      "slug": "vrt",
+      "nodeId": "166:3533",
+      "title": "VRT World Community",
+      "description": "Разработка бренд-платформы в виртуальной реальности VRT World — это платформа виртуальной реальности для глобальной интеграции разработчиков, пользователей и бизнеса. Технологии виртуальной реальности становятся инструментарием для создания VR-контента и децентрализованной VR-экосистемы.",
+      "cover": "/assets/cases/vrt/af9d087b7f73f6f3.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 17164.51953125
+      },
+      "scenes": [
+        {
+          "nodeId": "170:105",
+          "name": "01 · Обложка · 3D-рендер · VRT World Community",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3579",
+          "name": "02 · Графика · VR-гарнитура и контроллеры",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 1062.668701171875,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3580",
+            "166:3581",
+            "166:3582",
+            "166:3583",
+            "166:3584",
+            "166:3587"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:119",
+          "name": "Текст · Идея · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2085.668701171875,
+            "width": 1189.0,
+            "height": 112.0,
+            "pageX": 379.0,
+            "pageY": 2196.668701171875
+          },
+          "precedingGap": 100.0,
+          "text": "Идея Айдентика VRT World - это не просто визуальное оформление, а погружение в уникальный опыт. Она отражает дух инноваций, сотрудничества и безграничного креативного потенциала, который определяет эту платформу. Бренд приглашает пользователей в путешествие, где цифровой и физический миры объединяются в единой гармонии.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3601",
+          "name": "04 · Графика · Логотип и цветовые варианты",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2297.668701171875,
+            "width": 1189.0,
+            "height": 1136.5421142578125,
+            "pageX": 379.0,
+            "pageY": 2408.668701171875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3602",
+            "166:3603",
+            "166:3611",
+            "166:3617",
+            "166:3627"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:122",
+          "name": "Текст · Бренд-концепция · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3534.2109375,
+            "width": 1189.0,
+            "height": 92.0,
+            "pageX": 379.0,
+            "pageY": 3645.2109375
+          },
+          "precedingGap": 100.0001220703125,
+          "text": "Бренд-концепция Бренд-концепция компании - функциональный минимализм. Простота и чистота линий обеспечивает ощущение пространства и глубины. Бренд виртуальной реальности должен быть технологичным и минималистичным, чтобы отразить суть и возможности этой перспективной технологии.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3637",
+          "name": "05 · Композиция · Бренд-концепция и фирменная графика",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3726.2109375,
+            "width": 1189.0,
+            "height": 1853.01318359375,
+            "pageX": 379.0,
+            "pageY": 3837.2109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3638",
+            "166:3639",
+            "166:3640",
+            "166:3641",
+            "166:3642"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:125",
+          "name": "Текст · Палитра и типографика · Подпись",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5679.22412109375,
+            "width": 1189.0,
+            "height": 112.0,
+            "pageX": 379.0,
+            "pageY": 5790.22412109375
+          },
+          "precedingGap": 100.0,
+          "text": "Цветовая палитра, включающая яркие и насыщенные оттенки, символизирует энергию и вдохновение, которые пользователи могут испытать в мире виртуальной реальности. Используемый шрифт для заголовков и основного текста современный и лаконичный, что подчеркивает минималистичную эстетику бренда.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3646",
+          "name": "07 · Композиция · Носители айдентики",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5891.22412109375,
+            "width": 1189.0,
+            "height": 2610.02001953125,
+            "pageX": 379.0,
+            "pageY": 6002.22412109375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3647",
+            "166:3648",
+            "166:3649",
+            "166:3650",
+            "166:3651"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:127",
+          "name": "Текст · SMM-стратегия · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8601.244140625,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 8712.244140625
+          },
+          "precedingGap": 100.0,
+          "text": "SMM-стратегия воплощение бренда через визуализацию новых горизонтов на пересечении искусства, бизнеса и технологий",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3656",
+          "name": "09 · Композиция · Социальные сети на смартфоне",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8733.244140625,
+            "width": 1189.0,
+            "height": 1046.33544921875,
+            "pageX": 379.0,
+            "pageY": 8844.244140625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3658",
+            "166:3659",
+            "166:3660",
+            "166:3661"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:131",
+          "name": "Текст · Погружение в бренд · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 100.0,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 9990.5791015625
+          },
+          "precedingGap": 99.99951171875,
+          "text": "Погружение в бренд SMM-стратегия направлена на создание эффекта погружения, стимулируя любопытство пользователей и желание узнать больше о возможностях платформы.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3665",
+          "name": "11 · Видео · Карусель социальных сетей VRT · Стоп-кадр",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 252.0,
+            "width": 1189.0,
+            "height": 365.0,
+            "pageX": 379.0,
+            "pageY": 10142.5791015625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3666",
+            "166:3667"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3669",
+          "name": "13 · Композиция · Погружение в бренд",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 717.0,
+            "width": 1189.0,
+            "height": 1882.5833740234375,
+            "pageX": 379.0,
+            "pageY": 10607.5791015625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "166:3671",
+            "166:3672",
+            "166:3674",
+            "166:3675"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3679",
+          "name": "14 · Композиция · Серия носителей бренда",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 3196.26318359375,
+            "pageX": 379.0,
+            "pageY": 12590.162109375
+          },
+          "precedingGap": 99.9996337890625,
+          "text": null,
+          "childIds": [
+            "166:3680",
+            "166:3686",
+            "166:3687",
+            "166:3688",
+            "166:3689",
+            "166:3690",
+            "166:3691",
+            "166:3692"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "166:3693",
+          "name": "15 · Композиция · Заключительный визуал VR-комплекта",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 1026.093017578125,
+            "pageX": 379.0,
+            "pageY": 15886.42578125
+          },
+          "precedingGap": 100.00048828125,
+          "text": null,
+          "childIds": [
+            "166:3694"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "188:136",
+          "name": "Текст · Результат проекта · Подпись",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1126.093017578125,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 17012.518798828125
+          },
+          "precedingGap": 100.0,
+          "text": "Мощная и запоминающаяся айдентика бренда отражает дух инноваций и творчества, которыми славится платформа виртуальной реальности VRT.",
+          "childIds": [],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 6,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": [],
+      "externalNativeVideoControls": 1
+    },
+    {
+      "slug": "askona",
+      "nodeId": "200:115",
+      "title": "Askona Life Group",
+      "description": "Корпоративная платформа группы компаний ALG Askona Life Group объединяет направления, связанные со здоровым сном, отдыхом и качеством жизни. Для холдинга разработан корпоративный портал с информацией о группе компаний, ее направлениях и истории.",
+      "cover": "/assets/cases/askona/368933bbbf5e627b.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 20007.4765625
+      },
+      "scenes": [
+        {
+          "nodeId": "203:186",
+          "name": "01 · Видеообложка · Askona Life Group",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [
+            "203:187",
+            "203:189"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:190",
+          "name": "02 · Видео · Главная страница в планшете",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 768.0,
+            "width": 1189.0,
+            "height": 801.2610473632812,
+            "pageX": 379.0,
+            "pageY": 879.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:191",
+            "203:193"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:194",
+          "name": "Текст · Корпоративный портал · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1669.260986328125,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 1780.260986328125
+          },
+          "precedingGap": 99.99993896484375,
+          "text": "Корпоративный портал Информационный корпоративный портал группы компаний Askona разработан с упором на технологичную эстетику, подчеркивающую главные ориентиры бизнес-целей компании: модернизацию и комфорт жизни людей во всех аспектах.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:197",
+          "name": "03 · Мобильный интерфейс · Главная и направления",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1841.260986328125,
+            "width": 1189.0,
+            "height": 958.0,
+            "pageX": 379.0,
+            "pageY": 1952.260986328125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:198"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:199",
+          "name": "04 · Сетка интерфейса · SVG",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2899.260986328125,
+            "width": 1189.0,
+            "height": 820.905029296875,
+            "pageX": 379.0,
+            "pageY": 3010.260986328125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:200",
+            "203:201"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:202",
+          "name": "05 · Мокап · Бизнес группы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3820.166015625,
+            "width": 1189.0,
+            "height": 631.5621337890625,
+            "pageX": 379.0,
+            "pageY": 3931.166015625
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:203"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:204",
+          "name": "06 · Мокап · Бизнес-визиты",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4551.72802734375,
+            "width": 1189.0,
+            "height": 629.5049438476562,
+            "pageX": 379.0,
+            "pageY": 4662.72802734375
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [
+            "203:205"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:206",
+          "name": "07 · Мокап · Ценности компании",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5281.23291015625,
+            "width": 1189.0,
+            "height": 801.038330078125,
+            "pageX": 379.0,
+            "pageY": 5392.23291015625
+          },
+          "precedingGap": 99.99993896484375,
+          "text": null,
+          "childIds": [
+            "203:207"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:208",
+          "name": "08 · Мокап · Документы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6182.271484375,
+            "width": 1189.0,
+            "height": 631.5621337890625,
+            "pageX": 379.0,
+            "pageY": 6293.271484375
+          },
+          "precedingGap": 100.000244140625,
+          "text": null,
+          "childIds": [
+            "203:209"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:210",
+          "name": "09 · Мобильная система · Четыре экрана",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6913.83349609375,
+            "width": 1189.0,
+            "height": 1552.0,
+            "pageX": 379.0,
+            "pageY": 7024.83349609375
+          },
+          "precedingGap": 99.9998779296875,
+          "text": null,
+          "childIds": [
+            "203:211",
+            "203:212",
+            "203:213",
+            "203:214"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:215",
+          "name": "10 · Палитра · Полноширинные цветовые полосы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8565.833984375,
+            "width": 1189.0,
+            "height": 450.0,
+            "pageX": 379.0,
+            "pageY": 8676.833984375
+          },
+          "precedingGap": 100.00048828125,
+          "text": null,
+          "childIds": [
+            "203:216",
+            "203:220",
+            "203:224"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:228",
+          "name": "11 · Типографика бренда · Исходные SVG",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9115.833984375,
+            "width": 1189.0,
+            "height": 510.2153625488281,
+            "pageX": 379.0,
+            "pageY": 9226.833984375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:229",
+            "203:230"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:231",
+          "name": "Текст · Принцип интерфейса · Крупный акцент",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9726.048828125,
+            "width": 1189.0,
+            "height": 106.0,
+            "pageX": 379.0,
+            "pageY": 9837.048828125
+          },
+          "precedingGap": 99.99948120117188,
+          "text": "Простой и ненавязчивый интерфейс погружает пользователя в цифровое путешествие по сайту компании",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:233",
+          "name": "12 · Видео · Обзор сайта на ноутбуке",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9932.048828125,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 10043.048828125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:234"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:236",
+          "name": "13 · О компании · Десктоп и мобильная версия",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10700.048828125,
+            "width": 1189.0,
+            "height": 940.0,
+            "pageX": 379.0,
+            "pageY": 10811.048828125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:237",
+            "203:238"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:239",
+          "name": "14 · История компании · Десктоп",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11740.048828125,
+            "width": 1189.0,
+            "height": 801.2610473632812,
+            "pageX": 379.0,
+            "pageY": 11851.048828125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:240"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:241",
+          "name": "Текст · История компании · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12641.3095703125,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 12752.3095703125
+          },
+          "precedingGap": 99.99969482421875,
+          "text": "История компании История компании исчисляется десятилетиями. Механика страницы истории компании включает в себя важнейшие разделы, поделенные на циклы с простой и понятной механикой скролла.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:244",
+          "name": "15 · История компании · Мобильная версия в руке",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12813.3095703125,
+            "width": 1189.0,
+            "height": 834.6748046875,
+            "pageX": 379.0,
+            "pageY": 12924.3095703125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:245"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:246",
+          "name": "16 · Мокапы · Ноутбук, телефон и фирменная карточка",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13747.984375,
+            "width": 1189.0,
+            "height": 1279.5980224609375,
+            "pageX": 379.0,
+            "pageY": 13858.984375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:247",
+            "203:248"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:251",
+          "name": "17 · Askona · Полноширинная фотография и интерфейсы",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15127.58203125,
+            "width": 1189.0,
+            "height": 2128.0,
+            "pageX": 379.0,
+            "pageY": 15238.58203125
+          },
+          "precedingGap": 99.9996337890625,
+          "text": null,
+          "childIds": [
+            "203:252",
+            "203:253",
+            "203:254"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:255",
+          "name": "18 · Направления группы · Все семь экранов",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 17355.58203125,
+            "width": 1189.0,
+            "height": 1640.8936767578125,
+            "pageX": 379.0,
+            "pageY": 17466.58203125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:256",
+            "203:259",
+            "203:262",
+            "203:265"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:267",
+          "name": "19 · Финальная композиция · Askona Life Group",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 19096.4765625,
+            "width": 1189.0,
+            "height": 700.0,
+            "pageX": 379.0,
+            "pageY": 19207.4765625
+          },
+          "precedingGap": 100.0008544921875,
+          "text": null,
+          "childIds": [
+            "203:268",
+            "203:269",
+            "203:270",
+            "203:271"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 13,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": []
+    },
+    {
+      "slug": "tochka",
+      "nodeId": "200:160",
+      "title": "Check-Up Точка Банк",
+      "description": "Интерактивный квиз «Банковский Check-Up» Промо-проект банка Точка помогает предпринимателям определить задачи своего бизнеса и подобрать банковские решения. Квиз построен как прием у бизнес-доктора: восемь вопросов, диагностика и рекомендации.",
+      "cover": "/assets/cases/tochka/5fa2d40c05c9d51e.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 14034.810546875
+      },
+      "scenes": [
+        {
+          "nodeId": "203:120",
+          "name": "Обложка · Банковский Check-Up · Стетоскоп и логотип",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 616.7937622070312,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:121",
+          "name": "01 · Концепция · Бизнес-доктор",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 716.7937622070312,
+            "width": 1189.0,
+            "height": 988.8516845703125,
+            "pageX": 379.0,
+            "pageY": 827.7937622070312
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:122",
+            "203:123",
+            "203:124"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:129",
+          "name": "02 · Старт квиза · Ноутбук на столе",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1805.6455078125,
+            "width": 1189.0,
+            "height": 1174.0,
+            "pageX": 379.0,
+            "pageY": 1916.6455078125
+          },
+          "precedingGap": 100.00006103515625,
+          "text": null,
+          "childIds": [
+            "203:130"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:132",
+          "name": "Скриншот · Старт квиза · Мобильная версия",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 429.03082275390625,
+            "y": 0.0,
+            "width": 330.9383239746094,
+            "height": 711.1286010742188,
+            "pageX": 808.0308227539062,
+            "pageY": 3190.6455078125
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:133",
+          "name": "03 · Иллюстрация · Девушка за компьютером",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3890.774169921875,
+            "width": 1189.0,
+            "height": 1219.0,
+            "pageX": 379.0,
+            "pageY": 4001.774169921875
+          },
+          "precedingGap": 100.00006103515625,
+          "text": null,
+          "childIds": [
+            "203:134"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:136",
+          "name": "Мокап · Вопрос об изменениях в законах · Монитор",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 94.62457275390625,
+            "y": 0.0,
+            "width": 999.7508544921875,
+            "height": 964.3519287109375,
+            "pageX": 473.62457275390625,
+            "pageY": 5320.7744140625
+          },
+          "precedingGap": 100.000244140625,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:137",
+          "name": "Текст · Сценарии квиза · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6274.12646484375,
+            "width": 1189.0,
+            "height": 32.0,
+            "pageX": 379.0,
+            "pageY": 6385.12646484375
+          },
+          "precedingGap": 100.0001220703125,
+          "text": "Сценарии квиза Квиз состоит из восьми вопросов. По ответам алгоритм определяет «симптомы» и «болезнь» клиента.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:140",
+          "name": "04 · Вопросы · Десктоп и мобильная версия",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6406.12646484375,
+            "width": 1189.0,
+            "height": 580.7058715820312,
+            "pageX": 379.0,
+            "pageY": 6517.12646484375
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "203:141",
+            "203:142"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:143",
+          "name": "05 · Вопросы · Галерея из шести экранов",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 7086.83251953125,
+            "width": 1189.0,
+            "height": 1190.179443359375,
+            "pageX": 379.0,
+            "pageY": 7197.83251953125
+          },
+          "precedingGap": 100.00018310546875,
+          "text": null,
+          "childIds": [
+            "203:144",
+            "203:147",
+            "203:150"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:153",
+          "name": "06 · Обработка ответов · Телефон в руках",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8377.01171875,
+            "width": 1189.0,
+            "height": 885.4063720703125,
+            "pageX": 379.0,
+            "pageY": 8488.01171875
+          },
+          "precedingGap": 99.999755859375,
+          "text": null,
+          "childIds": [
+            "203:154",
+            "203:155"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:156",
+          "name": "Текст · Результаты диагностики · Заголовок и описание",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9362.41796875,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 9473.41796875
+          },
+          "precedingGap": 99.9998779296875,
+          "text": "Результаты диагностики Результат объединяет диагноз, краткое объяснение и предложение банка. Для него подготовлены версии для десктопа и мобильных устройств.",
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:160",
+          "name": "Мокап · Рекомендация по профилактике · Ноутбук",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 702.6626586914062,
+            "pageX": 379.0,
+            "pageY": 9625.41796875
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:161",
+          "name": "07 · Результат · Десктоп и мобильная версия",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10317.0810546875,
+            "width": 1189.0,
+            "height": 580.7058715820312,
+            "pageX": 379.0,
+            "pageY": 10428.0810546875
+          },
+          "precedingGap": 100.00042724609375,
+          "text": null,
+          "childIds": [
+            "203:162",
+            "203:163"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:165",
+          "name": "Иллюстрация · Диагноз на смартфоне · Телефон в руке",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 296.2591552734375,
+            "y": 0.0,
+            "width": 596.481689453125,
+            "height": 769.2378540039062,
+            "pageX": 675.2591552734375,
+            "pageY": 11108.787109375
+          },
+          "precedingGap": 100.00018310546875,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:166",
+          "name": "08 · Результаты · Галерея диагнозов",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11867.025390625,
+            "width": 1189.0,
+            "height": 783.4529418945312,
+            "pageX": 379.0,
+            "pageY": 11978.025390625
+          },
+          "precedingGap": 100.00042724609375,
+          "text": null,
+          "childIds": [
+            "203:167",
+            "203:170"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "203:173",
+          "name": "09 · Финальная иллюстрация · Планшет на коленях",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12750.478515625,
+            "width": 1189.0,
+            "height": 1173.3333740234375,
+            "pageX": 379.0,
+            "pageY": 12861.478515625
+          },
+          "precedingGap": 100.00018310546875,
+          "text": null,
+          "childIds": [
+            "203:174"
+          ],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": true,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 7,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": [
+        "203:125"
+      ]
+    },
+    {
+      "slug": "avito",
+      "nodeId": "182:66",
+      "title": "Авито Авто — Высшая передача",
+      "description": "«Авито Авто» остается ведущей платформой по продаже автомобилей в России. Согласно данным за сентябрь 2024 года, каждый второй автомобиль в стране продается через «Авито Авто». «Высшая передача» – ключевая конференция для профессионалов автобизнеса, направленная на укрепление лояльности B2B-клиентов к бренду «Авито Авто» в стратегически важных регионах.",
+      "cover": "",
+      "needsCatalogCover": true,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 16436.0
+      },
+      "scenes": [
+        {
+          "nodeId": "182:110",
+          "name": "Frame 2131328839",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [
+            "182:111",
+            "182:112"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:124",
+          "name": "Frame 2131328833",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 132.0,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": "Key Visual Key Visual конференции Авито Авто — «Высшая передача» отражает динамику, движение и технологичность автомобильного бизнеса. ​ Общий визуальный стиль — футуристичный, технологичный и энергичный, идеально подходящий для B2B-аудитории и профессионалов автобизнеса.",
+          "childIds": [
+            "182:125",
+            "182:126"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:127",
+          "name": "Video 16x9 full",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1155.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 1266.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:128",
+          "name": "image big",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1923.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 2034.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:129",
+          "name": "Frame 2131328834",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 2846.0,
+            "width": 1189.0,
+            "height": 146.0,
+            "pageX": 379.0,
+            "pageY": 2957.0
+          },
+          "precedingGap": 100.0,
+          "text": "Мы сосредоточились на интерактивной подаче информации, концентрируясь на важных деталях и устраняя все лишнее.",
+          "childIds": [
+            "182:130"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:131",
+          "name": "Video 16x9 full",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3092.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 3203.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:132",
+          "name": "image big",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3860.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 3971.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:133",
+          "name": "videoslider",
+          "kind": "slider",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 4783.0,
+            "width": 1704.0,
+            "height": 474.0,
+            "pageX": 379.0,
+            "pageY": 4894.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "182:134",
+            "182:135"
+          ],
+          "carouselCards": 2
+        },
+        {
+          "nodeId": "182:136",
+          "name": "image big",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 5357.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 5468.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:137",
+          "name": "Frame 2131328835",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6280.0,
+            "width": 1189.0,
+            "height": 132.0,
+            "pageX": 379.0,
+            "pageY": 6391.0
+          },
+          "precedingGap": 100.0,
+          "text": "Продуманная система стилистических решений, объединяющая минимализм и нативную анимацию, обеспечивает высокую вовлеченность аудитории. Такой подход не только удерживает внимание зрителя, но и трансформирует даже сложную или рутинную информацию в яркий, запоминающийся контент.",
+          "childIds": [
+            "182:138"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:139",
+          "name": "videoslider",
+          "kind": "slider",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6512.0,
+            "width": 2566.0,
+            "height": 474.0,
+            "pageX": 379.0,
+            "pageY": 6623.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "182:140",
+            "182:141",
+            "182:142"
+          ],
+          "carouselCards": 3
+        },
+        {
+          "nodeId": "182:143",
+          "name": "Video 16x9 full",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 7086.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 7197.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:144",
+          "name": "Rectangle 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 7854.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 7965.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:145",
+          "name": "Frame 2131328836",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8777.0,
+            "width": 1189.0,
+            "height": 72.0,
+            "pageX": 379.0,
+            "pageY": 8888.0
+          },
+          "precedingGap": 100.0,
+          "text": "Благодаря гармоничному сочетанию лаконичного дизайна и плавных, естественных анимационных эффектов, презентация приобретает динамику, повышая ее восприятие и усиливая ключевые смысловые акценты.",
+          "childIds": [
+            "182:146"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:147",
+          "name": "Rectangle 240662883",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8949.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 9060.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:148",
+          "name": "videoslider",
+          "kind": "slider",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9717.0,
+            "width": 3428.0,
+            "height": 474.0,
+            "pageX": 379.0,
+            "pageY": 9828.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "182:149",
+            "182:150",
+            "182:151",
+            "182:152"
+          ],
+          "carouselCards": 4
+        },
+        {
+          "nodeId": "182:153",
+          "name": "Rectangle 240662885",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10291.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 10402.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:154",
+          "name": "Rectangle 240662884",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11059.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 11170.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:155",
+          "name": "Rectangle 240662886",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11982.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 12093.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:156",
+          "name": "videoslider",
+          "kind": "slider",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12750.0,
+            "width": 1704.0,
+            "height": 474.0,
+            "pageX": 379.0,
+            "pageY": 12861.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "182:157",
+            "182:158"
+          ],
+          "carouselCards": 2
+        },
+        {
+          "nodeId": "182:159",
+          "name": "Frame 2131328838",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13324.0,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 13435.0
+          },
+          "precedingGap": 100.0,
+          "text": "Инновационный раздел платформы, где пользователи могут вести историю владения автомобилем, получать персонализированные рекомендации и контролировать важные параметры авто.",
+          "childIds": [
+            "182:160"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:161",
+          "name": "Rectangle 240662887",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13476.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 13587.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:162",
+          "name": "Rectangle 240662888",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14399.0,
+            "width": 1189.0,
+            "height": 668.0,
+            "pageX": 379.0,
+            "pageY": 14510.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:163",
+          "name": "Frame 2131328837",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15167.0,
+            "width": 1189.0,
+            "height": 52.0,
+            "pageX": 379.0,
+            "pageY": 15278.0
+          },
+          "precedingGap": 100.0,
+          "text": "В 2024 году «Авито» продолжает удерживать лидирующие позиции среди онлайн-классифайдов. Ежемесячная аудитория платформы превышает 70 миллионов уникальных пользователей.",
+          "childIds": [
+            "182:164"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "182:165",
+          "name": "Rectangle 240662889",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15319.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 15430.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": false,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 0,
+      "removedOccludedImages": 0,
+      "outlinedArtworkLabels": []
+    },
+    {
+      "slug": "vk",
+      "nodeId": "197:112",
+      "title": "СтримМур — VK",
+      "description": "СтримМур — благотворительный проект VK и фонда «Ника» по поддержке бездомных домашних животных. В течение месяца на стриминговой платформе VK Play Live проходили трансляции из приюта для бездомных животных. Пользователи могли наблюдать за повседневной жизнью кошек и совершать пожертвования в пользу фонда.",
+      "cover": "/assets/cases/vk/6b99cb2a256d60eb.webp",
+      "needsCatalogCover": false,
+      "sourceCanvas": {
+        "width": 1600,
+        "height": 25396.0
+      },
+      "scenes": [
+        {
+          "nodeId": "197:156",
+          "name": "Cover img or video",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 111.0
+          },
+          "precedingGap": 0.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:157",
+          "name": "image big",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 923.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 1034.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:158",
+          "name": "Long image",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 1846.0,
+            "width": 1189.0,
+            "height": 1327.0,
+            "pageX": 379.0,
+            "pageY": 1957.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:159",
+          "name": "Frame 2131328842",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 3273.0,
+            "width": 1189.0,
+            "height": 3372.0,
+            "pageX": 379.0,
+            "pageY": 3384.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [
+            "197:160",
+            "197:161"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:162",
+          "name": "Rectangle 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 6745.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 6856.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:163",
+          "name": "Rectangle 240662890",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 7668.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 7779.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:164",
+          "name": "Frame 2131328836",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8591.0,
+            "width": 1189.0,
+            "height": 210.0,
+            "pageX": 379.0,
+            "pageY": 8702.0
+          },
+          "precedingGap": 100.0,
+          "text": "В рамках «СтримМур» на платформах VK Видео и VK Play Live проходила трансляция жизни кошек в специальном пространстве от VK в приюте благотворительного фонда помощи бездомным животных «НИКА»: здесь для питомцев были оборудованы зоны для отдыха, лежанки, этажерки и многое другое. Студию «СтримМура» посетили известные личности и артисты — Mary Gu, Наадя, Тося Чайкина и Юхим исполнили свои хиты, а Карина Мейханаджян, Сауле Юсупова и Люба Бич приняли участие в активностях. ​",
+          "childIds": [
+            "197:165"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:166",
+          "name": "Rectangle 240662891",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 8901.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 9012.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:167",
+          "name": "Frame 2131328843",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 9824.0,
+            "width": 1189.0,
+            "height": 122.0,
+            "pageX": 379.0,
+            "pageY": 9935.0
+          },
+          "precedingGap": 100.0,
+          "text": "Трансляция жизни питомцев собрала свыше 5,5 млн просмотров. Пользователи могли наблюдать за пушистыми героями стрима, посещать онлайн-занятия йогой и медитацией, лекции от зоологов проекта PRO.Cats и мастер-классы по созданию игрушек и аксессуаров с брендом «Мурмуризм». ​",
+          "childIds": [
+            "197:168"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:169",
+          "name": "24 (2) 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 10046.0,
+            "width": 1189.0,
+            "height": 1192.0,
+            "pageX": 379.0,
+            "pageY": 10157.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:170",
+          "name": "Rectangle 240662892",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 11338.0,
+            "width": 1189.0,
+            "height": 823.0,
+            "pageX": 379.0,
+            "pageY": 11449.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:171",
+          "name": "23 (2) 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 12261.0,
+            "width": 1189.0,
+            "height": 1120.0,
+            "pageX": 379.0,
+            "pageY": 12372.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:172",
+          "name": "13 (8) 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 13481.0,
+            "width": 1189.0,
+            "height": 891.0,
+            "pageX": 379.0,
+            "pageY": 13592.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:173",
+          "name": "14 (8) 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 14472.0,
+            "width": 1189.0,
+            "height": 1331.0,
+            "pageX": 379.0,
+            "pageY": 14583.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:174",
+          "name": "Group 2131330668 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 15903.0,
+            "width": 1189.0,
+            "height": 2377.0,
+            "pageX": 379.0,
+            "pageY": 16014.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:175",
+          "name": "Frame 2131328844",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 18380.0,
+            "width": 1189.0,
+            "height": 122.0,
+            "pageX": 379.0,
+            "pageY": 18491.0
+          },
+          "precedingGap": 100.0,
+          "text": "За период проведения проекта было собрано свыше 700 тысяч рублей. Все собранные средства будут направлены на ремонт ветеринарной клиники фонда, создание и оборудование отдельного помещения для подопечных с вирусным иммунодефицитом кошек, где питомцы смогут чувствовать себя в безопасности.",
+          "childIds": [
+            "197:176"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:177",
+          "name": "17 (9) 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 18602.0,
+            "width": 1189.0,
+            "height": 746.0,
+            "pageX": 379.0,
+            "pageY": 18713.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:178",
+          "name": "13 (8) 2",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 19448.0,
+            "width": 1189.0,
+            "height": 891.0,
+            "pageX": 379.0,
+            "pageY": 19559.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:179",
+          "name": "Frame 2131328845",
+          "kind": "editorial",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 20439.0,
+            "width": 1189.0,
+            "height": 78.0,
+            "pageX": 379.0,
+            "pageY": 20550.0
+          },
+          "precedingGap": 100.0,
+          "text": "Котодом оборудован всем необходимым для полноценной жизни питомцев. Игрушки, интерактивы и множество разных кото-активностей. ​",
+          "childIds": [
+            "197:180"
+          ],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:181",
+          "name": "19 (6) 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 20617.0,
+            "width": 1189.0,
+            "height": 594.0,
+            "pageX": 379.0,
+            "pageY": 20728.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:182",
+          "name": "13 (8) 3",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 21311.0,
+            "width": 1189.0,
+            "height": 737.0,
+            "pageX": 379.0,
+            "pageY": 21422.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:183",
+          "name": "Group 2131330669 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 22148.0,
+            "width": 1189.0,
+            "height": 2382.0,
+            "pageX": 379.0,
+            "pageY": 22259.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        },
+        {
+          "nodeId": "197:184",
+          "name": "22 1",
+          "kind": "art",
+          "sourceGeometry": {
+            "x": 0.0,
+            "y": 24630.0,
+            "width": 1189.0,
+            "height": 509.0,
+            "pageX": 379.0,
+            "pageY": 24741.0
+          },
+          "precedingGap": 100.0,
+          "text": null,
+          "childIds": [],
+          "carouselCards": null
+        }
+      ],
+      "unknownYearHidden": false,
+      "sourceDesktopOnly": true,
+      "nativeIntroSelector": ".baev-case-intro",
+      "nativeCaptionSelector": ".baev-case-caption",
+      "sourceBackgroundLayers": 0,
+      "removedOccludedImages": 13,
+      "outlinedArtworkLabels": [],
+      "onDemandExternalPlayers": 2
+    }
+  ],
+  "videos": [
+    {
+      "case": "orla",
+      "node": "216:179",
+      "path": "/assets/cases/orla/video-ceb989ae25f9c503.mp4",
+      "poster": "/assets/cases/orla/1f551ce79688ab78.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:197",
+      "path": "/assets/cases/orla/video-357041e542f5500b.mp4",
+      "poster": "/assets/cases/orla/d2ef03e8bc1568a2.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:211",
+      "path": "/assets/cases/orla/video-2cdd2531b64c4ff0.mp4",
+      "poster": "/assets/cases/orla/652c84e31f40481b.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:228",
+      "path": "/assets/cases/orla/video-b77a5198a14809d6.mp4",
+      "poster": "/assets/cases/orla/98caffec37727903.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:235",
+      "path": "/assets/cases/orla/video-172329562f0821cf.mp4",
+      "poster": "/assets/cases/orla/f587bca330029e23.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:258",
+      "path": "/assets/cases/orla/video-c8c6b65fecab313d.mp4",
+      "poster": "/assets/cases/orla/5ae104821616d2ac.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:266",
+      "path": "/assets/cases/orla/video-fc428850cb369615.mp4",
+      "poster": "/assets/cases/orla/5f1d819f5d5a07ca.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "orla",
+      "node": "216:289",
+      "path": "/assets/cases/orla/video-26a73979d413a370.mp4",
+      "poster": "/assets/cases/orla/4e0d3f8990893562.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:12",
+      "path": "/assets/cases/gm8/video-f3d8a0c9328332f1.mp4",
+      "poster": "/assets/cases/gm8/6547261b36cfb4be.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:72",
+      "path": "/assets/cases/gm8/video-c884177abf975df3.mp4",
+      "poster": "/assets/cases/gm8/469f87d58172234d.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:128",
+      "path": "/assets/cases/gm8/video-87e7d7d9660325e2.mp4",
+      "poster": "/assets/cases/gm8/a56c3d77b5ae7431.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:208",
+      "path": "/assets/cases/gm8/video-97ca69a68e16aad2.mp4",
+      "poster": "/assets/cases/gm8/679ad62b06b3c425.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:232",
+      "path": "/assets/cases/gm8/video-15198134107f92bb.mp4",
+      "poster": "/assets/cases/gm8/509f13c1c6a3cd2e.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:254",
+      "path": "/assets/cases/gm8/video-3482b9ba024e59d5.mp4",
+      "poster": "/assets/cases/gm8/cf1434d586902377.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:273",
+      "path": "/assets/cases/gm8/video-4b868f4164001a87.mp4",
+      "poster": "/assets/cases/gm8/6817d0189df37b53.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:298",
+      "path": "/assets/cases/gm8/video-e4958af53a02a7ca.mp4",
+      "poster": "/assets/cases/gm8/dea22e1ba7cd20be.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "gm8",
+      "node": "166:319",
+      "path": "/assets/cases/gm8/video-bf5663866e985cad.mp4",
+      "poster": "/assets/cases/gm8/1214b38b3d485278.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "haval",
+      "node": "166:582",
+      "path": "/assets/cases/haval/video-534c847a8ac94f9a.mp4",
+      "poster": "/assets/cases/haval/455ed5595bc5fbd9.webp",
+      "basis": "semantic_order_candidate"
+    },
+    {
+      "case": "haval",
+      "node": "166:668",
+      "path": "/assets/cases/haval/video-7aca122acd720113.mp4",
+      "poster": "/assets/cases/haval/29add6e2a2c94227.webp",
+      "basis": "semantic_order_candidate"
+    },
+    {
+      "case": "haval",
+      "node": "166:709",
+      "path": "/assets/cases/haval/video-0c67329afc186a06.mp4",
+      "poster": "/assets/cases/haval/a0764170d29e2058.webp",
+      "basis": "semantic_order_candidate"
+    },
+    {
+      "case": "haval",
+      "node": "166:727",
+      "path": "/assets/cases/haval/video-90da6308be99eb63.mp4",
+      "poster": "/assets/cases/haval/62052ccc0ccc62c6.webp",
+      "basis": "semantic_order_candidate"
+    },
+    {
+      "case": "haval",
+      "node": "166:772",
+      "path": "/assets/cases/haval/video-d62ba0373bab7cdf.mp4",
+      "poster": "/assets/cases/haval/5957de9d7a9b4b8d.webp",
+      "basis": "semantic_order_candidate"
+    },
+    {
+      "case": "serenity",
+      "node": "166:1028",
+      "path": "/assets/cases/serenity/logo-animation-7433994f7ccf9ba3.mp4",
+      "poster": "/assets/cases/serenity/49b024b36d765f19.svg",
+      "basis": "verified_author_lottie_fitted_to_original_figma_scene"
+    },
+    {
+      "case": "pik",
+      "node": "189:139",
+      "path": "/assets/cases/pik/video-ea1930b3742fef5d.mp4",
+      "poster": "/assets/cases/pik/bec26f5c61032e6f.webp",
+      "basis": "unique_subject"
+    },
+    {
+      "case": "pik",
+      "node": "189:141",
+      "path": "/assets/cases/pik/video-0b6cefa6785a399a.mp4",
+      "poster": "/assets/cases/pik/d2cfea6efe894fe4.webp",
+      "basis": "unique_subject"
+    },
+    {
+      "case": "rocket",
+      "node": "170:41",
+      "path": "/assets/cases/rocket/video-f19525fed05c5175.mp4",
+      "poster": "/assets/cases/rocket/facb4ea90c522d8e.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "rocket",
+      "node": "170:48",
+      "path": "/assets/cases/rocket/video-ee51100684e93ac5.mp4",
+      "poster": "/assets/cases/rocket/17fc1d552b36db4e.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "rocket",
+      "node": "170:51",
+      "path": "/assets/cases/rocket/video-50c06e37ad7dcd16.mp4",
+      "poster": "/assets/cases/rocket/5c6bb45e9ddc36a3.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "rocket",
+      "node": "170:52",
+      "path": "/assets/cases/rocket/video-29a4cc02eeb0819c.mp4",
+      "poster": "/assets/cases/rocket/e27c73b68742725a.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "rocket",
+      "node": "170:58",
+      "path": "/assets/cases/rocket/video-42354fc5a3eb0953.mp4",
+      "poster": "/assets/cases/rocket/3414ed05afcbc9f8.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "rocket",
+      "node": "170:63",
+      "path": "/assets/cases/rocket/video-1204785cc5d32665.mp4",
+      "poster": "/assets/cases/rocket/e317224fec255374.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "rocket",
+      "node": "170:66",
+      "path": "/assets/cases/rocket/video-32ba517f899cb4fe.mp4",
+      "poster": "/assets/cases/rocket/aa78d7e96bd03937.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "vrt",
+      "node": "166:3666",
+      "path": "/assets/cases/vrt/video-aff0681f8f568569.mp4",
+      "poster": "/assets/cases/vrt/51f3dae423cf382a.webp",
+      "basis": "source_order_and_design_slot"
+    },
+    {
+      "case": "askona",
+      "node": "203:187",
+      "path": "/assets/cases/askona/video-d599e32f0bf79f1c.mp4",
+      "poster": "/assets/cases/askona/368933bbbf5e627b.webp",
+      "basis": "exact_identifier"
+    },
+    {
+      "case": "askona",
+      "node": "203:191",
+      "path": "/assets/cases/askona/video-d457bec7ef775c95.mp4",
+      "poster": "/assets/cases/askona/00e42223655a8f22.webp",
+      "basis": "exact_identifier"
+    },
+    {
+      "case": "askona",
+      "node": "203:234",
+      "path": "/assets/cases/askona/video-901d9533bf23a2a4.mp4",
+      "poster": "/assets/cases/askona/5b60442280fd8ab8.webp",
+      "basis": "exact_identifier"
+    },
+    {
+      "case": "avito",
+      "node": "182:127",
+      "path": "/assets/cases/avito/video-07a4ebfb4f736f45.mp4",
+      "poster": "/assets/cases/avito/582f6e7b29a7e958.webp",
+      "basis": "accepted_after_visual_and_structural_review"
+    },
+    {
+      "case": "avito",
+      "node": "182:131",
+      "path": "/assets/cases/avito/video-a31be52cfea64b9f.mp4",
+      "poster": "/assets/cases/avito/5aa59d0d8d236b4b.webp",
+      "basis": "accepted_after_visual_and_structural_review"
+    },
+    {
+      "case": "avito",
+      "node": "182:134",
+      "path": "/assets/cases/avito/video-a2be4811e969d455.mp4",
+      "poster": "/assets/cases/avito/3d26352aa148e0d3.webp",
+      "basis": "accepted_after_visual_and_structural_review"
+    },
+    {
+      "case": "avito",
+      "node": "182:135",
+      "path": "/assets/cases/avito/video-a81d0ab0cc33daaa.mp4",
+      "poster": "/assets/cases/avito/7f9d59ccfb6b5852.webp",
+      "basis": "accepted_after_visual_and_structural_review"
+    },
+    {
+      "case": "avito",
+      "node": "182:143",
+      "path": "/assets/cases/avito/video-1d9126f19b04a7e0.mp4",
+      "poster": "/assets/cases/avito/ec893be454e4a0cf.webp",
+      "basis": "accepted_after_visual_and_structural_review"
+    }
+  ]
+}

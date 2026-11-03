@@ -1,0 +1,51 @@
+{
+  "serenity": [
+    {
+      "kind": "video",
+      "figma_node_id": "166:1028",
+      "local": "/assets/cases/serenity/logo-animation-7433994f7ccf9ba3.mp4",
+      "label": "Анимация логотипа Serenity Aviation",
+      "mapping_status": "verified_author_lottie_fitted_to_original_figma_scene",
+      "source_page": "https://imon.agency/ru/portfolio/serenity",
+      "source_record": "rec835388720",
+      "source_file": "content/cases/media-source/serenity-logo-lottie.json",
+      "source_sha256": "b7facc0d7979f5eff65799ae70f9a167d422e8d67e9791f7a736afa66a69a1e5",
+      "video_sha256": "7433994f7ccf9ba347ffaa801b250a86cdb6fc821b7a03b4cc9f37db3f61c89a",
+      "poster": "/assets/cases/serenity/49b024b36d765f19.svg",
+      "width": 1188,
+      "height": 570,
+      "fps": 60,
+      "frames": 673,
+      "duration_seconds": 11.216666666666667,
+      "geometry": {
+        "width": 1188,
+        "height": 570,
+        "figmaCanvas": [
+          1189,
+          570
+        ],
+        "figmaCircleBounds": [
+          477,
+          159,
+          708,
+          390
+        ],
+        "sourceCircleBounds": [
+          487,
+          245,
+          779.993125,
+          537.993125
+        ],
+        "background": "#ffffff",
+        "scale": 0.7877513135902887,
+        "translateX": 92.96393282147896,
+        "translateY": -33.89310042507908
+      },
+      "renderer": "lottie-web 5.13.0, SVG renderer, pinned official release",
+      "renderer_sha256": "9588432bec30c8ef8200bac4a67d8aaad881047bc2a6c9fa624d90ec96402410",
+      "render_script_sha256": "c9d08b915db3554ba2eebf2e96a1801a463c595208b683b5236b5c3f273e40c7",
+      "encoding": "H264 CRF18 yuv420p faststart, original 60 fps, no audio",
+      "motion": "Complete original timeline; no speed change; native video controls and reduced-motion behavior"
+    }
+  ]
+}

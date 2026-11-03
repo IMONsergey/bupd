@@ -16,7 +16,7 @@ class Handler(BaseHTTPRequestHandler):
         if candidate.is_dir(): candidate=candidate/"index.html"
         if not candidate.is_file() or (candidate.suffix not in {".html",".css",".js",".json",".woff",".woff2",".ttf",".otf",".png",".jpg",".jpeg",".webp",".gif",".svg",".ico",".mp4",".webm",".avif"}):
             self.send_error(404); return
-        if candidate.suffix==".json" or ("/scripts/" in str(candidate) and candidate.name!="site.js"):
+        if candidate.suffix==".json" or url.split('/')[1] in {'content','evidence'} or ("/scripts/" in str(candidate) and candidate.name not in {"site.js","cases.js"}):
             self.send_error(404); return
         size=candidate.stat().st_size; start=0; end=size-1; status=200
         byte_range=self.headers.get("Range","")

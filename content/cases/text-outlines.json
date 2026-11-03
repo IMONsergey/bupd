@@ -1,0 +1,1017 @@
+{
+  "schema": 1,
+  "sourceFileKey": "zpWqAQiiGRYv5lcrj4j97e",
+  "sourcePageId": "70:27",
+  "exportMethod": "Figma Plugin API node.exportAsync",
+  "exportSettings": {
+    "format": "SVG_STRING",
+    "svgOutlineText": true,
+    "contentsOnly": true,
+    "useAbsoluteBounds": true
+  },
+  "outlines": [
+    {
+      "case": "gm8",
+      "nodeId": "166:145",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-145.svg",
+      "width": 80.09236145019531,
+      "height": 20.64236068725586,
+      "text": "HEX DD0010",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:144",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -3257.916748046875,
+        "y": 11285.330078125,
+        "width": 80.09236145019531,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -3256.957275390625,
+        "y": 11290.275390625,
+        "width": 78.463623046875,
+        "height": 10.21875
+      },
+      "exportWidth": 81,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 81 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-145",
+      "svgSha256": "3ecc2cc8f15ddf0d3b8583fcc1bfa3115ff8c2464cea51ba3faeb2a48f140dd4",
+      "fileBytes": 3888,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:148",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-148.svg",
+      "width": 96.60624694824219,
+      "height": 20.64236068725586,
+      "text": "H356 S100 L43",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:147",
+      "x": 2.4770889282226562,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2362.0380859375,
+        "y": 11285.330078125,
+        "width": 96.60624694824219,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2360.71484375,
+        "y": 11290.2685546875,
+        "width": 94.5771484375,
+        "height": 10.232421875
+      },
+      "exportWidth": 97,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 97 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-148",
+      "svgSha256": "1427c08b3046f6fbbd361a5f8b93317539e0571f77aa1c8fa856835c8987bfc9",
+      "fileBytes": 8029,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:151",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-151.svg",
+      "width": 78.44097137451172,
+      "height": 20.64236068725586,
+      "text": "R221 G0 B16",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:150",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2516.443115234375,
+        "y": 11285.330078125,
+        "width": 78.44097137451172,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2515.483642578125,
+        "y": 11290.2685546875,
+        "width": 76.3662109375,
+        "height": 10.232421875
+      },
+      "exportWidth": 79,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 79 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-151",
+      "svgSha256": "ca6924e20ee483afa68c5ce7ba7e752ffb98ea6a7316937471bf4fb4413b1021",
+      "fileBytes": 5849,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:155",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-155.svg",
+      "width": 76.78958129882812,
+      "height": 20.64236068725586,
+      "text": "HEX 0E141C",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:154",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -3257.916748046875,
+        "y": 11409.1845703125,
+        "width": 76.78958129882812,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -3256.957275390625,
+        "y": 11414.1298828125,
+        "width": 74.755615234375,
+        "height": 10.21875
+      },
+      "exportWidth": 77,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 77 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-155",
+      "svgSha256": "080caea4abb626680a7c180780d6af4c6e7f2a650ca0f39b0364b57066e8f8b7",
+      "fileBytes": 2657,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:158",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-158.svg",
+      "width": 96.60624694824219,
+      "height": 20.64236068725586,
+      "text": "H356 S100 L43",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:157",
+      "x": 2.4770889282226562,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2362.0380859375,
+        "y": 11409.1845703125,
+        "width": 96.60624694824219,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2360.71484375,
+        "y": 11414.123046875,
+        "width": 94.5771484375,
+        "height": 10.232421875
+      },
+      "exportWidth": 97,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 97 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-158",
+      "sourceContentIssue": "Source HSL label H356 S100 L43 does not match #0E141C; preserved without editing Figma.",
+      "svgSha256": "1427c08b3046f6fbbd361a5f8b93317539e0571f77aa1c8fa856835c8987bfc9",
+      "fileBytes": 8029,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:161",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-161.svg",
+      "width": 80.91805267333984,
+      "height": 20.64236068725586,
+      "text": "R14 G20 B28",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:160",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2516.443115234375,
+        "y": 11409.1845703125,
+        "width": 80.91805267333984,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2515.483642578125,
+        "y": 11414.1298828125,
+        "width": 78.552734375,
+        "height": 10.21875
+      },
+      "exportWidth": 81,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 81 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-161",
+      "svgSha256": "862c92a0ec172714844363b83f50b9ec275bde1578fef6b2759fe052087f2f23",
+      "fileBytes": 6387,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:172",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-172.svg",
+      "width": 80.91805267333984,
+      "height": 20.64236068725586,
+      "text": "HEX A3B2C7",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:171",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -3257.916748046875,
+        "y": 11871.5732421875,
+        "width": 80.91805267333984,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -3256.957275390625,
+        "y": 11876.5185546875,
+        "width": 78.70361328125,
+        "height": 10.21875
+      },
+      "exportWidth": 81,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 81 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-172",
+      "svgSha256": "e1e2b56dd14d3b0ac724e7bcc509ada39537528fde713d0c79aa5a2776a37032",
+      "fileBytes": 4313,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:175",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-175.svg",
+      "width": 84.22083282470703,
+      "height": 20.64236068725586,
+      "text": "H215 S24 L71",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:174",
+      "x": 14.862503051757812,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2349.652587890625,
+        "y": 11871.5732421875,
+        "width": 84.22083282470703,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2348.131103515625,
+        "y": 11876.5185546875,
+        "width": 80.99267578125,
+        "height": 10.21875
+      },
+      "exportWidth": 85,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 85 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-175",
+      "svgSha256": "bfb7a9d9df460f30107c996a6dd50763205b170bdf1dd6a2968f28fa757cce43",
+      "fileBytes": 4230,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:178",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-178.svg",
+      "width": 101.56041717529297,
+      "height": 20.64236068725586,
+      "text": "R163 G178 B199",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:177",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2516.443115234375,
+        "y": 11871.5732421875,
+        "width": 101.56041717529297,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2515.483642578125,
+        "y": 11876.51171875,
+        "width": 99.279052734375,
+        "height": 10.232421875
+      },
+      "exportWidth": 102,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 102 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-178",
+      "svgSha256": "b07cf99edc5b1d9141608c23d6fd35c4438ee6d417499f935fa59f802138ea7c",
+      "fileBytes": 9174,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:182",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-182.svg",
+      "width": 78.44097137451172,
+      "height": 20.64236068725586,
+      "text": "HEX ECF0F3",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:181",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -3257.916748046875,
+        "y": 12028.455078125,
+        "width": 78.44097137451172,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -3256.957275390625,
+        "y": 12033.400390625,
+        "width": 76.743408203125,
+        "height": 10.21875
+      },
+      "exportWidth": 79,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 79 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-182",
+      "svgSha256": "5946be54ffd92171380323627da7c84261e13580111be4413045bc0207ad8518",
+      "fileBytes": 3635,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:185",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-185.svg",
+      "width": 90.00069427490234,
+      "height": 20.64236068725586,
+      "text": "H206 S20 L94",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:184",
+      "x": 9.0826416015625,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2355.4326171875,
+        "y": 12028.455078125,
+        "width": 90.00069427490234,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2353.970703125,
+        "y": 12033.3935546875,
+        "width": 88.13427734375,
+        "height": 10.232421875
+      },
+      "exportWidth": 90,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 90 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-185",
+      "svgSha256": "706d8a335f8f28963f5ab8a3538978b71411eed767e935c030ea302e20b5a061",
+      "fileBytes": 7173,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:188",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-188.svg",
+      "width": 78.44097137451172,
+      "height": 20.64236068725586,
+      "text": "R221 G0 B16",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:187",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2516.443115234375,
+        "y": 12028.455078125,
+        "width": 78.44097137451172,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2515.483642578125,
+        "y": 12033.3935546875,
+        "width": 76.3662109375,
+        "height": 10.232421875
+      },
+      "exportWidth": 79,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 79 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-188",
+      "sourceContentIssue": "Source RGB label R221 G0 B16 does not match #ECF0F3; preserved without editing Figma.",
+      "svgSha256": "c70d25532e0117c3f1f6511aaf833522e4dc3762e58353436859cd81a2abc9ff",
+      "fileBytes": 5849,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:192",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-192.svg",
+      "width": 75.9638900756836,
+      "height": 20.64236068725586,
+      "text": "HEX F7F7F8",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:191",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -3257.916748046875,
+        "y": 12210.107421875,
+        "width": 75.9638900756836,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -3256.957275390625,
+        "y": 12215.052734375,
+        "width": 73.796142578125,
+        "height": 10.21875
+      },
+      "exportWidth": 76,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 76 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-192",
+      "svgSha256": "7c0850687fdec793ac170cddd59c039a628d3d939c4d98a1745b1d048a403f62",
+      "fileBytes": 2535,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:195",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-195.svg",
+      "width": 80.09236145019531,
+      "height": 20.64236068725586,
+      "text": "H240 S7 L97",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:194",
+      "x": 18.99097442626953,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2345.524169921875,
+        "y": 12210.107421875,
+        "width": 80.09236145019531,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2343.840576171875,
+        "y": 12215.0458984375,
+        "width": 77.798828125,
+        "height": 10.2255859375
+      },
+      "exportWidth": 81,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 81 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-195",
+      "svgSha256": "504e6dc66bddf1ee3b4db08f74155a86774c70247ae52608af0135e074ec9b7a",
+      "fileBytes": 4643,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "gm8",
+      "nodeId": "166:198",
+      "scene": "174:42",
+      "src": "/assets/cases/text-outlines/node-166-198.svg",
+      "width": 104.0374984741211,
+      "height": 20.64236068725586,
+      "text": "R247 G247 B247",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Regular",
+      "parentId": "166:197",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": -2516.443115234375,
+        "y": 12210.107421875,
+        "width": 104.0374984741211,
+        "height": 20.64236068725586
+      },
+      "absoluteRenderBounds": {
+        "x": -2515.483642578125,
+        "y": 12215.052734375,
+        "width": 101.951904296875,
+        "height": 10.21875
+      },
+      "exportWidth": 105,
+      "exportHeight": 21,
+      "exportViewBox": "0 0 105 21",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-198",
+      "sourceContentIssue": "Source RGB label B247 does not match #F7F7F8 (B248); preserved without editing Figma.",
+      "svgSha256": "82698b6dffa5a52e9f9ce798dd6efd026d2c36d1b39f8382be783f047e55ea76",
+      "fileBytes": 5407,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "pik",
+      "nodeId": "166:2730",
+      "scene": "166:2717",
+      "src": "/assets/cases/text-outlines/node-166-2730.svg",
+      "width": 77,
+      "height": 26,
+      "text": "зрителей",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2729",
+      "x": 0,
+      "y": -0.2017364501953125,
+      "absoluteBoundingBox": {
+        "x": 3035.759033203125,
+        "y": 2478.195556640625,
+        "width": 77,
+        "height": 26
+      },
+      "absoluteRenderBounds": {
+        "x": 3036.221435546875,
+        "y": 2483.892822265625,
+        "width": 74.951171875,
+        "height": 15.2421875
+      },
+      "exportWidth": 77,
+      "exportHeight": 26,
+      "exportViewBox": "0 0 77 26",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2730",
+      "svgSha256": "5204367c696de2a471606d4f843a1b4cee48606d31450e96de513502d8fda027",
+      "fileBytes": 4580,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "pik",
+      "nodeId": "166:2733",
+      "scene": "166:2717",
+      "src": "/assets/cases/text-outlines/node-166-2733.svg",
+      "width": 218.80902099609375,
+      "height": 99,
+      "text": "Фестиваль «Кинотеатриум» объединил",
+      "fontFamily": "SF Pro Display",
+      "fontStyle": "Semibold",
+      "parentId": "166:2732",
+      "x": 0,
+      "y": -8.628124237060547,
+      "absoluteBoundingBox": {
+        "x": 3014.291015625,
+        "y": 2291.4189453125,
+        "width": 218.80902099609375,
+        "height": 99
+      },
+      "absoluteRenderBounds": {
+        "x": 3015.19580078125,
+        "y": 2294.87451171875,
+        "width": 207.528564453125,
+        "height": 78.229736328125
+      },
+      "exportWidth": 219,
+      "exportHeight": 99,
+      "exportViewBox": "0 0 219 99",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2733",
+      "svgSha256": "7421fa1d7f0ff50a12b6061479100534bda86a756b2dbb2f02dfef61837ad5e8",
+      "fileBytes": 15534,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "pik",
+      "nodeId": "166:2736",
+      "scene": "166:2717",
+      "src": "/assets/cases/text-outlines/node-166-2736.svg",
+      "width": 206,
+      "height": 59,
+      "text": ">6 000",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2735",
+      "x": 0,
+      "y": -0.18784713745117188,
+      "absoluteBoundingBox": {
+        "x": 3015.11669921875,
+        "y": 2405.54833984375,
+        "width": 206,
+        "height": 59
+      },
+      "absoluteRenderBounds": {
+        "x": 3018.75146484375,
+        "y": 2411.045654296875,
+        "width": 199.321044921875,
+        "height": 43.1474609375
+      },
+      "exportWidth": 206,
+      "exportHeight": 59,
+      "exportViewBox": "0 0 206 59",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2736",
+      "svgSha256": "774102893a94237372cfe90b4555921cec82deb00571505e518e5fefde055e7c",
+      "fileBytes": 3267,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2421",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2421.svg",
+      "width": 69,
+      "height": 22,
+      "text": "PANTONE",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2420",
+      "x": 0,
+      "y": -0.2659721374511719,
+      "absoluteBoundingBox": {
+        "x": 438.59722900390625,
+        "y": 11786.0712890625,
+        "width": 69,
+        "height": 22
+      },
+      "absoluteRenderBounds": {
+        "x": 439.7622985839844,
+        "y": 11790.89453125,
+        "width": 66.65518188476562,
+        "height": 10.3310546875
+      },
+      "exportWidth": 69,
+      "exportHeight": 22,
+      "exportViewBox": "0 0 69 22",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2421",
+      "svgSha256": "e5c4fa25bf6452922699d2d408bf619727f07fdc26b3db9d5eedca5a21f5ec61",
+      "fileBytes": 1871,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2424",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2424.svg",
+      "width": 142,
+      "height": 33,
+      "text": "Emerald Green",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2423",
+      "x": 0,
+      "y": -0.3989582061767578,
+      "absoluteBoundingBox": {
+        "x": 438.59722900390625,
+        "y": 12060.068359375,
+        "width": 142,
+        "height": 33
+      },
+      "absoluteRenderBounds": {
+        "x": 440.310546875,
+        "y": 12067.3798828125,
+        "width": 138.08514404296875,
+        "height": 15.916015625
+      },
+      "exportWidth": 142,
+      "exportHeight": 33,
+      "exportViewBox": "0 0 142 33",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2424",
+      "svgSha256": "1d6b49d131027dc7c037f1cbbd200878920426020693bbe0148022828a97be2b",
+      "fileBytes": 6441,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2430",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2430.svg",
+      "width": 69,
+      "height": 22,
+      "text": "PANTONE",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2429",
+      "x": 0,
+      "y": -0.2659721374511719,
+      "absoluteBoundingBox": {
+        "x": 749.058349609375,
+        "y": 11827.3564453125,
+        "width": 69,
+        "height": 22
+      },
+      "absoluteRenderBounds": {
+        "x": 750.223388671875,
+        "y": 11832.1796875,
+        "width": 66.65521240234375,
+        "height": 10.3310546875
+      },
+      "exportWidth": 69,
+      "exportHeight": 22,
+      "exportViewBox": "0 0 69 22",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2430",
+      "svgSha256": "e5c4fa25bf6452922699d2d408bf619727f07fdc26b3db9d5eedca5a21f5ec61",
+      "fileBytes": 1871,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2433",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2433.svg",
+      "width": 95,
+      "height": 33,
+      "text": "Сold Gray",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2432",
+      "x": 0,
+      "y": -0.3989582061767578,
+      "absoluteBoundingBox": {
+        "x": 749.058349609375,
+        "y": 12101.353515625,
+        "width": 95,
+        "height": 33
+      },
+      "absoluteRenderBounds": {
+        "x": 750.0078735351562,
+        "y": 12108.6650390625,
+        "width": 92.82275390625,
+        "height": 19.36328125
+      },
+      "exportWidth": 95,
+      "exportHeight": 33,
+      "exportViewBox": "0 0 95 33",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2433",
+      "svgSha256": "5cb618a22f5c2d2c2839968a70665fa84193c27daebce0d8db0e5d10b4a96097",
+      "fileBytes": 4563,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2439",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2439.svg",
+      "width": 69,
+      "height": 22,
+      "text": "PANTONE",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2438",
+      "x": 0,
+      "y": -0.2659721374511719,
+      "absoluteBoundingBox": {
+        "x": 1057.0423583984375,
+        "y": 11744.787109375,
+        "width": 69,
+        "height": 22
+      },
+      "absoluteRenderBounds": {
+        "x": 1058.2073974609375,
+        "y": 11749.6103515625,
+        "width": 66.6551513671875,
+        "height": 10.3310546875
+      },
+      "exportWidth": 69,
+      "exportHeight": 22,
+      "exportViewBox": "0 0 69 22",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2439",
+      "svgSha256": "e5c4fa25bf6452922699d2d408bf619727f07fdc26b3db9d5eedca5a21f5ec61",
+      "fileBytes": 1871,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2442",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2442.svg",
+      "width": 99,
+      "height": 33,
+      "text": "Sand Gold",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2441",
+      "x": 0,
+      "y": -0.3989582061767578,
+      "absoluteBoundingBox": {
+        "x": 1057.0423583984375,
+        "y": 12018.783203125,
+        "width": 99,
+        "height": 33
+      },
+      "absoluteRenderBounds": {
+        "x": 1057.8267822265625,
+        "y": 12026.0947265625,
+        "width": 96.1619873046875,
+        "height": 15.916015625
+      },
+      "exportWidth": 99,
+      "exportHeight": 33,
+      "exportViewBox": "0 0 99 33",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2442",
+      "svgSha256": "55bb9a0c63f5e453f94ee177a2c78f98c8c65ae0cdd86b225fc38dd837ffcec9",
+      "fileBytes": 5800,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2448",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2448.svg",
+      "width": 69,
+      "height": 22,
+      "text": "PANTONE",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2447",
+      "x": 0,
+      "y": -0.2659721374511719,
+      "absoluteBoundingBox": {
+        "x": 1245.30078125,
+        "y": 11786.0712890625,
+        "width": 69,
+        "height": 22
+      },
+      "absoluteRenderBounds": {
+        "x": 1246.4658203125,
+        "y": 11790.89453125,
+        "width": 66.6551513671875,
+        "height": 10.3310546875
+      },
+      "exportWidth": 69,
+      "exportHeight": 22,
+      "exportViewBox": "0 0 69 22",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2448",
+      "svgSha256": "43582e4001faa9e5fede68ced5cb645138dee29803379de24883eaa226d59452",
+      "fileBytes": 1873,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "serenity",
+      "nodeId": "166:2451",
+      "scene": "166:2410",
+      "src": "/assets/cases/text-outlines/node-166-2451.svg",
+      "width": 106,
+      "height": 33,
+      "text": "Ultra White",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Semibold",
+      "parentId": "166:2450",
+      "x": 0,
+      "y": -0.3989582061767578,
+      "absoluteBoundingBox": {
+        "x": 1245.30078125,
+        "y": 12060.068359375,
+        "width": 106,
+        "height": 33
+      },
+      "absoluteRenderBounds": {
+        "x": 1246.8902587890625,
+        "y": 12067.3798828125,
+        "width": 103.575439453125,
+        "height": 15.916015625
+      },
+      "exportWidth": 106,
+      "exportHeight": 33,
+      "exportViewBox": "0 0 106 33",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=166-2451",
+      "svgSha256": "94cc69d155cd4a7fdf9783da6ec4b39c581c9fbdaf47d7c1456aa5faebaa9ae7",
+      "fileBytes": 4056,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    },
+    {
+      "case": "tochka",
+      "nodeId": "203:125",
+      "scene": "203:121",
+      "src": "/assets/cases/text-outlines/node-203-125.svg",
+      "width": 390.3883361816406,
+      "height": 28,
+      "text": "Банковский Check-Up",
+      "fontFamily": "Graphik LCG",
+      "fontStyle": "Regular",
+      "parentId": "203:124",
+      "x": 0,
+      "y": 0,
+      "absoluteBoundingBox": {
+        "x": 9523.9912109375,
+        "y": 1525.788818359375,
+        "width": 390.3883361816406,
+        "height": 28
+      },
+      "absoluteRenderBounds": {
+        "x": 9525.5966796875,
+        "y": 1532.0023193359375,
+        "width": 186.708984375,
+        "height": 17.032470703125
+      },
+      "exportWidth": 391,
+      "exportHeight": 28,
+      "exportViewBox": "0 0 391 28",
+      "sourceUrl": "https://www.figma.com/design/zpWqAQiiGRYv5lcrj4j97e/CASES-2026?node-id=203-125",
+      "svgSha256": "442ee4c0435e4a5411e2f6aabd9f1704ee959e096cd80aa97fa91cfa9365e774",
+      "fileBytes": 8788,
+      "svgTags": {
+        "svg": 1,
+        "path": 1
+      },
+      "sourceHasMissingFont": true
+    }
+  ],
+  "sourceFontRenderingReference": "https://developers.figma.com/docs/plugins/working-with-text/"
+}

@@ -1,0 +1,36 @@
+{
+  "source": "https://github.com/tiktok/TikTokSans/releases/tag/v4.000",
+  "path": "assets/fonts/tiktok-sans-variable.woff2",
+  "bytes": 349316,
+  "sha256": "eef1aafbab1a5089324be51828600536117fcf69fe54206591851c9d168aa622",
+  "source_archive_sha256": "b238e0e794735142896025ea1f091a1a9ca49a9b26ca77ab5dc2ef5681b80243",
+  "source_member": "TikTokSans-v4.000/fonts/webfonts/TikTokSans[opsz,slnt,wdth,wght].woff2",
+  "metadata_member": "TikTokSans-v4.000/fonts/variable/TikTokSans[opsz,slnt,wdth,wght].ttf",
+  "extraction": "WOFF2 bytes copied unchanged; axes inspected from same-release matching TTF",
+  "axes": [
+    {
+      "tag": "opsz",
+      "min": 12.0,
+      "default": 36.0,
+      "max": 36.0
+    },
+    {
+      "tag": "wdth",
+      "min": 75.0,
+      "default": 100.0,
+      "max": 150.0
+    },
+    {
+      "tag": "wght",
+      "min": 300.0,
+      "default": 300.0,
+      "max": 900.0
+    },
+    {
+      "tag": "slnt",
+      "min": -6.0,
+      "default": 0.0,
+      "max": 0.0
+    }
+  ]
+}

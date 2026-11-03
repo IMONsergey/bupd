@@ -510,6 +510,7 @@
 
   function initVideos() {
     const videos = [...doc.querySelectorAll('video')].filter(video => {
+      if (video.hasAttribute('data-case-video')) return false;
       const sources = [video.getAttribute('src'), ...[...video.querySelectorAll('source[src]')].map(source => source.getAttribute('src'))];
       return sources.some(source => {
         if (!source || /^(null|undefined)$/i.test(source.trim())) return false;
@@ -518,17 +519,54 @@
       });
     });
     const nearby = new Set();
+    const pending = new WeakSet();
+    const blocked = new Set();
+    const originalControls = new WeakMap();
     function play(video) {
-      if (doc.hidden || reduce.matches || !nearby.has(video)) return;
-      const result = video.play();
-      if (result?.catch) result.catch(() => video.setAttribute('data-baev-play-blocked', ''));
+      if (doc.hidden || reduce.matches || !nearby.has(video) || pending.has(video) ||
+          (!video.paused && !video.ended)) return;
+      blocked.delete(video);
+      pending.add(video);
+      const failed = error => {
+        pending.delete(video);
+        video.setAttribute('data-baev-play-blocked', '');
+        if (error?.name !== 'NotSupportedError') blocked.add(video);
+      };
+      try {
+        const result = video.play();
+        if (typeof result?.then === 'function') {
+          result.then(() => {
+            pending.delete(video);
+            blocked.delete(video);
+            video.removeAttribute('data-baev-play-blocked');
+          }, failed);
+        } else pending.delete(video);
+      } catch (error) { failed(error); }
+    }
+    function retryBlocked(event) {
+      if (!event.isTrusted) return;
+      if (event.type === 'keydown' && (
+          !['Enter', ' '].includes(event.key) || event.repeat ||
+          event.altKey || event.ctrlKey || event.metaKey ||
+          event.target?.isContentEditable ||
+          event.target?.closest?.('input, textarea, select'))) return;
+      [...blocked].forEach(play);
     }
     for (const video of videos) {
+      // Playback is owned here so native autoplay cannot bypass reduced motion.
+      video.autoplay = false;
+      video.removeAttribute('autoplay');
+      originalControls.set(video, video.controls);
+      video.controls = reduce.matches || originalControls.get(video);
+      if (reduce.matches) video.pause();
       video.muted = true;
       video.defaultMuted = true;
       video.playsInline = true;
       video.preload = 'none';
-      video.addEventListener('playing', () => video.removeAttribute('data-baev-play-blocked'));
+      video.addEventListener('playing', () => {
+        blocked.delete(video);
+        video.removeAttribute('data-baev-play-blocked');
+      });
       video.addEventListener('loadeddata', () => play(video));
     }
     if (typeof window.IntersectionObserver === 'function') {
@@ -541,8 +579,13 @@
       videos.forEach(video => observer.observe(video));
     } else videos.forEach(video => { nearby.add(video); play(video); });
     doc.addEventListener('visibilitychange', () => videos.forEach(video => doc.hidden ? video.pause() : play(video)));
-    doc.addEventListener('pointerdown', () => nearby.forEach(play), { passive: true });
-    onMediaChange(reduce, () => videos.forEach(video => reduce.matches ? video.pause() : play(video)));
+    doc.addEventListener('click', retryBlocked, { passive: true });
+    doc.addEventListener('keydown', retryBlocked, { passive: true });
+    onMediaChange(reduce, () => videos.forEach(video => {
+      video.controls = reduce.matches || originalControls.get(video);
+      if (reduce.matches) video.pause();
+      else play(video);
+    }));
   }
 
   function initHovers() {
@@ -736,3 +779,4 @@
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 })();
+

@@ -1,0 +1,9 @@
+{
+  "basis": "Four final full-area VK fills with opaque interiors, allowing only a one-pixel transparent export edge. Avito fills and the transparent VK cat composition retain their original underlays.",
+  "opaqueAssets": [
+    "/assets/cases/vk/0340f98911c17a42.webp",
+    "/assets/cases/vk/6819c74373eed1b7.webp",
+    "/assets/cases/vk/ae90d0a918b96ac3.webp",
+    "/assets/cases/vk/e9399c88b4e3ee5a.webp"
+  ]
+}

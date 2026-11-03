@@ -1,24 +1,21 @@
-# BAEV: faithful independent copy
+# BAEV recovered cases: verified candidate
 
-Updated 2026-11-03.
+Updated 2026-11-03T12:02:24.393528+00:00.
 
-## Authoritative request
-The user rejected https://baev-website-eta.vercel.app/ as the design base. Reproduce https://stale-darling-800892.framer.app/ exactly, while removing Framer runtime, hosting dependencies and platform UI. Keep all 19 routes, original media, typography, responsive variants and interactions. CMS/database/admin work remains deferred.
+- Repository: IMONsergey/bupd.
+- Worktree: /home/sergey/Projects/baev-cases-recovered-20261103.
+- Branch: feat/baev-cases-recovered-20261103.
+- Fresh pipeline: /home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z.
+- Source preparation/build/static/browser: all passed; 42/42 browser scenarios.
+- Content: 26 routes, 15 project pages, 11 Figma stories, 259 scenes, 41 local native video slots and two deferred VK players.
+- Root visual review: evidence/cases-review.json and design-qa.md.
+- Runtime/source files unchanged during QA and checked again when creating the root review marker.
+- Publication receipt: latest-publication.json in the Reports directory below. Exact-commit Vercel and HTTP verification is recorded separately in deployment-verification.json.
+- Authorized target: baev-case-lab feature preview. No main merge or production promotion.
+- The original worktree /home/sergey/Projects/baev-framer-free-20261103 is independent and must not be overwritten or have its jobs canceled.
 
-## Isolation
-Worktree: /home/sergey/Projects/baev-framer-free-20261103
-Branch: feat/baev-framer-free-20261103
-Base: IMONsergey/bupd origin/main 0bde7e26679f3c98e630ab185a4c6fe4c4b8ad45. Existing experimental worktrees and production are untouched.
+The known external VK playback and physical-device Safari limitations are recorded in design-qa.md. Contact QA did not send messages. The form prepares an email draft.
 
-## Source
-Verified capture: /home/sergey/Work/Inbox/baev-framer-source-20261103
-19 pages, 176 image URLs, 87 font URLs, 17 video URLs, 220882555 asset bytes; no download errors. Runtime modules are recorded only as URLs and are excluded from implementation.
+Reports: /home/sergey/Work/Reports/baev-cases-recovered-20261103.
 
-## Implementation
-Static HTML/CSS retain original layout and breakpoints. scripts/build_static.py imports the captured pages, localizes resources and removes platform scripts/badges. scripts/site.js and styles/site.css supply independent interactions. scripts/serve.py serves a loopback-only preview on4187.
-
-## Pending verification
-Build and browser QA run in one bounded imon-job. Compare1440x1000 and390x844, all routes/assets, mobile menu, scroll stacking, forms and no Framer network requests. Do not claim visual parity before inspection. Contact submission must be honest; no test messages may be sent. No production deployment has been performed.
-
-## Verification complete
-2026-11-03:19routes ×2viewports passed;12reference pairs matched geometry; final focused captures confirmed43px compact logo, main text scrub and mobile menu. Final static audit and capability fallbacks passed. See design-qa.md. Source capture errors0, runtime/CDN requests0. Root approved only the feature-branch commit/push to obtain the existing baev-case-lab preview. No merge/main promotion or production publication is authorized by this checkpoint.
+The combined job completed render/build/static/browser successfully, then its first publication preflight stopped without git changes because of a report-schema mismatch. The original QA receipt is immutable. publication-candidate.json supplies an explicitly derived compatibility proof for 916 unchanged tested files plus two unchanged repository configuration files; all strict publisher guards remain. Consult the separate latest-publication.json for the actual commit/push result.

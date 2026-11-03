@@ -54,6 +54,7 @@ def props(style):
                 for k,v in [part.split(":",1)])
 
 def main():
+    from content_cleanup import apply_content_cleanup
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source",required=True,type=Path)
     parser.add_argument("--output",type=Path,default=Path(__file__).resolve().parents[1])
@@ -64,7 +65,7 @@ def main():
     for record in manifest.get("assets",{}).values():
         if record.get("path") and record.get("final_url"):
             mapping.setdefault(norm(record["final_url"]),record["path"])
-    report={"source":"https://"+HOST+"/","pages":[],"assets":[],"removed_scripts":0,"reveals":0}
+    report={"source":"https://"+HOST+"/","pages":[],"assets":[],"removed_scripts":0,"reveals":0,"content_cleanups":{}}
     unknown=set()
     def local_url(value,base):
         value=html.unescape(value)
@@ -164,14 +165,20 @@ def main():
                     a["action"]="mailto:hello@baev.agency"; a["method"]="post"; a["enctype"]="text/plain"
                     a["data-baev-contact-form"]=""; a["data-baev-email"]="hello@baev.agency"
                 if n.tag=="video":
+                    a.pop("autoplay",None)
                     a["muted"]=a["playsinline"]=""; a["preload"]="none"
                     if route=="/" and not hero_done:
-                        a["autoplay"]=""; a["fetchpriority"]="high"; a["data-baev-hero-video"]=""; hero_done=True
+                        a["fetchpriority"]="high"; a["data-baev-hero-video"]=""; hero_done=True
                 if n.tag=="a" and a.get("target")=="_blank": a["rel"]="noopener noreferrer"
                 visit(n); children.append(n)
             parent.children=children
         visit(doc)
+        report["content_cleanups"][route]=apply_content_cleanup(doc,route,project_covers)
         head=next(n for n in doc.walk() if n.tag=="head")
+        if args.site_url:
+            for n in head.walk():
+                if n.tag=="meta" and (n.attrs.get("property") or n.attrs.get("name")) in {"og:image","og:image:secure_url","twitter:image","twitter:image:src"} and n.attrs.get("content","").startswith("/"):
+                    n.attrs["content"]=args.site_url.rstrip("/")+n.attrs["content"]
         body=next(n for n in doc.walk() if n.tag=="body")
         head.children.append(Node("link",{"rel":"stylesheet","href":"/styles/site.css"}))
         body.children.append(Node("script",{"src":"/scripts/site.js","defer":None}))
@@ -196,6 +203,21 @@ def main():
         if record.get("kind")=="css" or path.endswith(".css"): dst.write_text(css(src.read_text(),url))
         else: shutil.copy2(src,dst)
         report["assets"].append({"path":path,"bytes":dst.stat().st_size,"source_sha256":record.get("sha256")})
+    if (output/"content/cases/catalog.json").is_file():
+        from case_catalog import apply_cases
+        report["case_import"]=apply_cases(output,site_url=args.site_url)
+        routes={urlsplit(url).path.rstrip("/") or "/" for url in pages}
+        routes.update(item["route"] for item in json.loads((output/"content/cases/catalog.json").read_text())["cases"])
+        report["pages"]=[]
+        for route in sorted(routes):
+            dest=output/(route.strip("/")+"/index.html" if route!="/" else "index.html")
+            content=dest.read_bytes()
+            report["pages"].append({"route":route,"path":str(dest.relative_to(output)),
+                "bytes":len(content),"sha256":hashlib.sha256(content).hexdigest()})
+        for asset in sorted((output/"assets/cases").rglob("*")):
+            if asset.is_file():
+                report["assets"].append({"path":str(asset.relative_to(output)),"bytes":asset.stat().st_size,
+                    "sha256":hashlib.sha256(asset.read_bytes()).hexdigest()})
     report["unresolved"]=sorted(unknown); evidence=output/"evidence"; evidence.mkdir(exist_ok=True)
     (evidence/"import-report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
     (evidence/"source-provenance.json").write_text(json.dumps({"source":report["source"],"pages":pages,
@@ -204,3 +226,4 @@ def main():
         "removed_scripts":report["removed_scripts"],"unresolved_count":len(unknown),"unresolved_sample":sorted(unknown)[:5]},ensure_ascii=False))
     if unknown: raise SystemExit("Incomplete asset capture; rerun after downloader completes.")
 if __name__=="__main__": main()
+

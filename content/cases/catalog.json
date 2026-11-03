@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "source": "Figma CASES|2026 / Page 9 / 2026-11-03",
+  "cases": [
+    {
+      "key": "avito",
+      "route": "/work/avito-auto-2024",
+      "title": "Авито Авто — Высшая передача",
+      "client": "Авито",
+      "category": "Презентация, Брендинг",
+      "year": 2024
+    },
+    {
+      "key": "haval",
+      "route": "/work/linear-identity",
+      "title": "Haval Dealer Conference",
+      "client": "HAVAL",
+      "category": "Презентация, Брендинг",
+      "year": 2023
+    },
+    {
+      "key": "orla",
+      "route": "/work/pattern-language",
+      "title": "ORLA — Dorchester Collection",
+      "client": "OMNIYAT, Dorchester Collection",
+      "category": "Веб",
+      "year": 2024
+    },
+    {
+      "key": "vk",
+      "route": "/work/spectrum-project",
+      "title": "СтримМур — VK",
+      "client": "VK",
+      "category": "Брендинг, Веб",
+      "year": 2024
+    },
+    {
+      "key": "gm8",
+      "route": "/work/gm8",
+      "title": "GM8 Luxury Van Promotion",
+      "client": "GAC Motor",
+      "category": "Веб",
+      "year": null
+    },
+    {
+      "key": "serenity",
+      "route": "/work/serenity-aviation",
+      "title": "Serenity Aviation",
+      "client": "Serenity Aviation",
+      "category": "Брендинг",
+      "year": null
+    },
+    {
+      "key": "pik",
+      "route": "/work/pik-kinoteatrium",
+      "title": "ПИК Кинотеатриум",
+      "client": "ПИК",
+      "category": "Веб",
+      "year": null
+    },
+    {
+      "key": "rocket",
+      "route": "/work/rocket-group",
+      "title": "Rocket Group",
+      "client": "Rocket Group",
+      "category": "Веб",
+      "year": null
+    },
+    {
+      "key": "vrt",
+      "route": "/work/vrt-world",
+      "title": "VRT World",
+      "client": "VRT World",
+      "category": "Брендинг, Веб",
+      "year": null
+    },
+    {
+      "key": "askona",
+      "route": "/work/askona-life-group",
+      "title": "Askona Life Group",
+      "client": "Askona Life Group",
+      "category": "Веб",
+      "year": null
+    },
+    {
+      "key": "tochka",
+      "route": "/work/tochka-bank",
+      "title": "Точка Банк",
+      "client": "Точка Банк",
+      "category": "Веб",
+      "year": null
+    }
+  ]
+}

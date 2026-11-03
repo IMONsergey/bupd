@@ -1,0 +1,118 @@
+/* Existing BAEV navigation, with legible colors over each case's opening section. */
+body[data-baev-case] nav.framer-Agr03 {
+  background: var(--case-nav-bg, #141517) !important;
+  color: var(--case-nav-fg, #fff);
+}
+body[data-baev-case] nav.framer-Agr03 :is(p,a,span) {
+  color: var(--case-nav-fg, #fff) !important;
+}
+body[data-baev-case] nav.framer-Agr03.baev-menu-open {
+  --case-nav-bg: #000;
+  --case-nav-fg: #fff;
+}
+body[data-baev-case] nav.framer-Agr03 a:hover { opacity: .65; }
+.baev-case video[data-case-video] { pointer-events: auto; }
+.baev-case video[data-case-video]:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+.baev-case [data-case-embed] {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.baev-case [data-case-embed]:focus-visible { outline: 3px solid currentColor; outline-offset: -3px; }
+.baev-case-embed-caption {
+  position: absolute;
+  inset: auto 20px 20px;
+  border-radius: 999px;
+  padding: 12px 20px;
+  color: #fff;
+  background: rgba(0,0,0,.7);
+  font: 400 16px/1.2 "Inter",sans-serif;
+  text-align: center;
+}
+.baev-case-embed-frame { border: 0; display: block; width: 100%; aspect-ratio: 16/9; }
+.baev-case-embed-box { display: grid; gap: 12px; }
+.baev-case .baev-case-embed-link {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 14px 20px;
+  border: 1px solid #ffffff60;
+  border-radius: 8px;
+  font: 300 17px/1.3 "TikTok Sans",sans-serif;
+  text-decoration: none;
+}
+.baev-case .baev-case-embed-link::after { content: '↗'; margin-left: auto; padding-left: 20px; }
+.baev-case .baev-case-embed-link:hover { background: #ffffff12; }
+.baev-case .baev-case-embed-source { font-size: 13px; text-decoration: underline; text-underline-offset: .2em; opacity: .7; }
+.baev-gallery-controls {
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 12px;
+  color: inherit;
+  font: 400 13px/1.2 "Inter",sans-serif;
+}
+.baev-gallery-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 32px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font: 400 20px/1 sans-serif;
+  cursor: pointer;
+}
+.baev-gallery-controls button:disabled { opacity: .3; cursor: default; }
+.baev-gallery-controls button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.baev-case[data-case-key="avito"] .baev-gallery-controls { color: #fff; }
+.baev-case[data-case-key="avito"] .baev-case-slider:focus-visible { outline-color: #fff; }
+.baev-video-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+  color: #fff;
+  font: 300 14px/1.3 "TikTok Sans",sans-serif;
+}
+.baev-video-controls [hidden] { display: none !important; }
+.baev-video-controls button {
+  appearance: none;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #ffffff80;
+  border-radius: 999px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+.baev-case .baev-video-controls a { text-decoration: underline; text-underline-offset: .2em; }
+.baev-video-controls :is(a,button):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.baev-case-credits {
+  display: grid;
+  grid-template-columns: 319px minmax(0,1fr);
+  gap: 30px;
+  padding: 96px 32px 0 30px;
+  background: #141517;
+  color: #fff;
+  font: 300 17px/1.4 "TikTok Sans",sans-serif;
+}
+.baev-case-credits h2 { font-size: 24px; font-weight: 300; line-height: 1.2; }
+.baev-case-credits ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.baev-case-credits a { color: #fff; text-decoration: underline; text-decoration-color: #ffffff40; text-underline-offset: .25em; }
+.baev-case-credits a:hover { text-decoration-color: currentColor; }
+.baev-case-credits a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+@media (max-width: 800px) {
+  .baev-case-credits { grid-template-columns: minmax(0,1fr); gap: 24px; padding: 64px 16px 0; }
+  .baev-case-credits ul { display: grid; gap: 12px; }
+}

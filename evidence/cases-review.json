@@ -1,0 +1,313 @@
+{
+  "schema": 1,
+  "reviewedAt": "2026-11-03T12:02:24.393528+00:00",
+  "branch": "feat/baev-cases-recovered-20261103",
+  "baseCommit": "d59f7132f33529eee043206d48942ea3f7b03c45",
+  "pipeline": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z",
+  "pipelineSha256": "ecc4a69ee3c542b18a6dda044c2c4c4c3e7e84d14048c3ff5786f22e8d1b34ca",
+  "figma": {
+    "fileKey": "zpWqAQiiGRYv5lcrj4j97e",
+    "pageNode": "70:27",
+    "orlaCurrentNode": "216:131"
+  },
+  "counts": {
+    "routes": 26,
+    "catalogProjects": 15,
+    "figmaCases": 11,
+    "sourceScenes": 259,
+    "nativeVideoSlots": 41,
+    "externalPlayers": 2,
+    "localAssets": 659,
+    "staticChecks": 552,
+    "browserTests": 42,
+    "outlinedArtworkLabels": 27
+  },
+  "browserSummary": {
+    "tests": 42,
+    "passed": 42,
+    "failed": 0
+  },
+  "browserLaunches": [
+    {
+      "engine": "chromium",
+      "ok": true,
+      "version": "145.0.7632.6"
+    },
+    {
+      "engine": "firefox",
+      "ok": true,
+      "version": "146.0.1"
+    },
+    {
+      "engine": "webkit",
+      "ok": true,
+      "version": "26.0"
+    }
+  ],
+  "viewports": {
+    "desktop": {
+      "width": 1600,
+      "height": 1000
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "safety": {
+    "formSubmissions": 0,
+    "mailtoActivations": 0
+  },
+  "visualReview": {
+    "pipeline": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z",
+    "passed": true,
+    "scope": "Targeted root visual inspection of changed case media/navigation plus independent review of all four outlined-artwork scenes in both viewports.",
+    "screenshots": [
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-avito-gallery-2.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "69ada943b045bbc7c76e0e4f3c19bbe9188c7d5dd1d3e1591bede0271afdd844"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-avito-gallery-0.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "c10ca08ce8134fdcdc65b31938b358f74869df3c8d9ccc4196dbbcffac793d38"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-avito-next-projects.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "6eff64a13c9dbab0c946a4ca97f121d957ae15732e7dd289bc7639ed6fc1e020"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-avito-footer.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "102ad3a41b08dd211e0db9c65631fa0e0f6dd3f30a7a7d11d7a5944298278543"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-avito-next-projects.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "432174a25300598deb1cf4f5e3d7efbecf7c8ad72a8880acd173f0e10544087e"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/serenity-lottie-2026-11-03T11-50-04-615Z/frames/00180.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "f23a4cde2861fa8d14e35e39e9d0e63946084b2cb8c12e879774e78d1ad3204a"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/serenity-lottie-2026-11-03T11-50-04-615Z/frames/00300.png",
+        "reviewers": [
+          "root",
+          "figma_cases"
+        ],
+        "sha256": "6c6cb701520875dc4b40e563d33a4fbc76292dadb87882572cf97249b7edb34c"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-gm8-scene-15.png",
+        "reviewers": [
+          "root",
+          "figma_cases"
+        ],
+        "sha256": "8923f9cf28c57d9c73de5de3a6a3ec9ca070d74d1cd2b354b0fcb8a31f246108"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-pik-scene-3.png",
+        "reviewers": [
+          "root",
+          "figma_cases"
+        ],
+        "sha256": "b686594ab9dac4ce3024a35bd54ea9d6261244c0dbd48fd23cc6331d5b968aa4"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-serenity-scene-15.png",
+        "reviewers": [
+          "root",
+          "figma_cases"
+        ],
+        "sha256": "0bf2a074eb3d7bef98200c6334bcd8a39d85b01ca2279eb2ed8e918d889e8761"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-serenity-scene-2.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "17b303b30f66d763a33d4dfb8defe7ab6b7c9d18d035af5792f9a85b26ba7d6b"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-vrt-scene-10.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "7556f6c96e85cc71c77029ae5d45f982e4b76d45d1861df73e330a83b49ee5e8"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-vrt-scene-10.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "ed3eb8c7476f546a14fa67d5923d033af591682eaa14fa82dacaf4180a0362d9"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-tochka-scene-1.png",
+        "reviewers": [
+          "root",
+          "figma_cases"
+        ],
+        "sha256": "16ec5e53b4cfac121f519be05852942c4b203b9133425ae666c8bf7e3d402e39"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-tochka-scene-5.png",
+        "reviewers": [
+          "root"
+        ],
+        "sha256": "22ebd9876121f5fb648d37d45aafbc576605e149742d47ed1be2ad055d8a6722"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-gm8-scene-15.png",
+        "reviewers": [
+          "figma_cases"
+        ],
+        "sha256": "34109d7685a38ea41f88756a3d53866244416f70946b35f5e3c3ba0ad74f4cec"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-mobile-serenity-scene-15.png",
+        "reviewers": [
+          "figma_cases"
+        ],
+        "sha256": "768106b5f3bc6a5ccc295bc37fe160d260ca5b00da3c0d072c9be3a36c738447"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-pik-scene-3.png",
+        "reviewers": [
+          "figma_cases"
+        ],
+        "sha256": "8e5808fd26e2387a734d5d958280a7792662d961484fb7b0b1d8cf5cc01fe096"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/browser/chromium-desktop-tochka-scene-1.png",
+        "reviewers": [
+          "figma_cases"
+        ],
+        "sha256": "0e1a5a36a3a5faaf046f6f980deb2e7eed7be23f01786a78cbc3ca9ca21d47ef"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/serenity-lottie-2026-11-03T11-50-04-615Z/frames/00420.png",
+        "reviewers": [
+          "figma_cases"
+        ],
+        "sha256": "69153d823c6cac9b80b246ac21f1fc92f8a8b246eecbd4215e4c7a3eb60fcb02"
+      },
+      {
+        "path": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/serenity-lottie-2026-11-03T11-50-04-615Z/frames/00660.png",
+        "reviewers": [
+          "figma_cases"
+        ],
+        "sha256": "d35d1e319988f2e848d6431386ac4be5c8dd766dd5573bec0e04fe1c0eddd83b"
+      }
+    ],
+    "notes": [
+      "Root inspected Avito gallery controls in desktop and mobile, related-project cards and the mobile footer. Active controls are readable on black and the gallery content remains intact.",
+      "Root verified the baseline and candidate HTML both retain the exact @media(max-width: 943.98px){.hidden-1osq5oe{display:none!important}} rule and two hidden-card wrappers. Three desktop cards and one mobile card are preserved source behavior.",
+      "Root compared Serenity frame180 with the supplied Figma node166:1028 export. The circle size and placement match within the expected one-pixel encoding canvas adjustment; the internal curves follow the original animation.",
+      "Root inspected Serenity frame300 and the desktop page scene2. The complete wordmark/tagline fits; the native player retains its local poster and reachable controls. Independent inspection also covered frames420 and660; the final white pause is present in the original timeline.",
+      "Root spot-checked GM8 desktop palette, Serenity desktop palette, PIK mobile results and Tochka mobile artwork. Independent visual review covered all four scenes in both viewports, eight PNGs. The 27 outlined labels have no observed duplication, stretching or misplaced overlays.",
+      "Root inspected VRT desktop/mobile scene10. The mobile Play/Pause control and full-video link sit outside the cropped artwork and remain readable. Functional clicks in both Chromium viewports are included in the browser gate.",
+      "Root inspected Tochka mobile scene5: the background boundary stays clear of the heading and paragraph. Some tall desktop scene captures start behind the sticky header because of the capture scroll position; this does not remove source artwork.",
+      "This visual review records the inspected PNGs; complete functional acceptance remains conditional on the fresh42-scenario pipeline and unchanged candidate hashes."
+    ]
+  },
+  "knownLimitations": [
+    "Two external VK players are click-to-load. Only the first source was viewed earlier; playback of the second source and both players in the final integration was not independently established.",
+    "A VK navigation was refused by a security check; it was not retried through another channel.",
+    "Linux WebKit is an engine check, not a physical Safari/iOS device test.",
+    "Contact QA did not submit messages. The contact form prepares an email draft; it does not perform server delivery.",
+    "Production domain, main merge and production promotion are outside this preview publication."
+  ],
+  "candidateManifestSha256": "0bfe9d1c1de63aa40917f47d58b88b1767ad332d7318fbd48ee3f69d20643b99",
+  "serenity": {
+    "kind": "video",
+    "figma_node_id": "166:1028",
+    "local": "/assets/cases/serenity/logo-animation-7433994f7ccf9ba3.mp4",
+    "label": "Анимация логотипа Serenity Aviation",
+    "mapping_status": "verified_author_lottie_fitted_to_original_figma_scene",
+    "source_page": "https://imon.agency/ru/portfolio/serenity",
+    "source_record": "rec835388720",
+    "source_file": "content/cases/media-source/serenity-logo-lottie.json",
+    "source_sha256": "b7facc0d7979f5eff65799ae70f9a167d422e8d67e9791f7a736afa66a69a1e5",
+    "video_sha256": "7433994f7ccf9ba347ffaa801b250a86cdb6fc821b7a03b4cc9f37db3f61c89a",
+    "poster": "/assets/cases/serenity/49b024b36d765f19.svg",
+    "width": 1188,
+    "height": 570,
+    "fps": 60,
+    "frames": 673,
+    "duration_seconds": 11.216666666666667,
+    "geometry": {
+      "width": 1188,
+      "height": 570,
+      "figmaCanvas": [
+        1189,
+        570
+      ],
+      "figmaCircleBounds": [
+        477,
+        159,
+        708,
+        390
+      ],
+      "sourceCircleBounds": [
+        487,
+        245,
+        779.993125,
+        537.993125
+      ],
+      "background": "#ffffff",
+      "scale": 0.7877513135902887,
+      "translateX": 92.96393282147896,
+      "translateY": -33.89310042507908
+    },
+    "renderer": "lottie-web 5.13.0, SVG renderer, pinned official release",
+    "renderer_sha256": "9588432bec30c8ef8200bac4a67d8aaad881047bc2a6c9fa624d90ec96402410",
+    "render_script_sha256": "c9d08b915db3554ba2eebf2e96a1801a463c595208b683b5236b5c3f273e40c7",
+    "encoding": "H264 CRF18 yuv420p faststart, original 60 fps, no audio",
+    "motion": "Complete original timeline; no speed change; native video controls and reduced-motion behavior"
+  },
+  "candidateChangedDuringBrowser": [],
+  "previewDeployment": {
+    "separateGate": true,
+    "receiptPath": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/deployment-verification.json"
+  },
+  "publicationCompatibility": {
+    "method": "runtime_equality_assertion_plus_unchanged_ancillary_snapshot",
+    "composedAt": "2026-11-03T12:10:12.366484+00:00",
+    "originalQaReceiptPath": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/cases-pipelines-recovered/2026-11-03T11-51-24Z/pipeline.json",
+    "originalQaReceiptSha256": "ecc4a69ee3c542b18a6dda044c2c4c4c3e7e84d14048c3ff5786f22e8d1b34ca",
+    "runtimeFileCount": 916,
+    "runtimeBeforeAssertion": "The executed pipeline compares candidate_before with candidate_after and exits successfully only when candidateChangedDuringBrowser is empty.",
+    "beforeIsDerived": true,
+    "derivationExplanation": "Runtime before values are inferred from the successful recorded equality assertion and saved after values. The two ancillary before values come from the actual pre-QA recovery snapshot. This is a composed proof, not a claim that a separate full-scope snapshot file was saved at QA start.",
+    "directFullScopeSnapshotStoredAtQaStart": false,
+    "recoveryReceiptPath": "/home/sergey/Work/Reports/baev-cases-recovered-20261103/recovery-snapshot.json",
+    "recoveryReceiptSha256": "a6167f6d9b72d23653470bffb170e8ce20e5ddd4ea092abe2c42c85d801c7b4c",
+    "recoveryCapturedAt": "2026-11-03T11:03:47.052221+00:00",
+    "ancillaryFiles": {
+      ".github/workflows/pages.yml": "831f2fab5e64c98d614b2ee1b98d6bfa3adfd438530b487ea6e14481e3b3ccce",
+      ".gitignore": "6fac27cfcc68b2516f47ecc2459a1cf1c1b4ec87257c026007c27caeb055f7a4"
+    },
+    "ancillaryVerification": "Both files match the pre-QA recovery snapshot, current worktree and unchanged HEAD blobs.",
+    "fullCurrentSnapshotAt": "2026-11-03T12:10:12.366484+00:00",
+    "derivedReceiptSha256": "939e1ce498b799ca062f2e4bccba4a26b1eedad1b4411616a5991ecc60d01d53",
+    "fullCandidateFileCount": 918,
+    "fullCandidateManifestSha256": "9471ec9ad0bd4b121f9f2b6f84ab9d9667698810c88a40da31e9f5bb5d30045a"
+  }
+}
