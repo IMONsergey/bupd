@@ -1,0 +1,144 @@
+/* Interaction-only additions. Original generated CSS owns page geometry. */
+html.baev-menu-locked,
+body.baev-menu-locked {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+nav.framer-Agr03.baev-menu-open {
+  max-height: var(--framer-viewport-height, 100dvh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.baev-menu-links[hidden],
+.baev-hover-copy[hidden],
+.baev-cursor[hidden],
+.baev-form-status[hidden] {
+  display: none;
+}
+.framer-Agr03 [role="button"]:focus-visible,
+.framer-Agr03 a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+}
+.framer-6PoLP.framer-1951d0q {
+  transition: border-radius 1s cubic-bezier(.22,1,.36,1);
+}
+.framer-6PoLP.baev-service-visible.framer-1951d0q {
+  border-radius: 8px !important;
+}
+.framer-6PoLP .framer-hg5b6x {
+  transition: width 1s cubic-bezier(.22,1,.36,1);
+}
+.framer-6PoLP.baev-service-visible .framer-hg5b6x {
+  width: 100%;
+}
+.framer-RYIBq .framer-1u1idt7 {
+  transition: opacity .5s cubic-bezier(.22,1,.36,1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .framer-Ng5E0 .framer-119v12n,
+  .framer-pquBv .framer-1eon9bq {
+    transition: scale .4s cubic-bezier(.16,1.12,.3,1);
+  }
+  .framer-Ng5E0.baev-hover .framer-119v12n {
+    scale: 1.03;
+  }
+  .framer-pquBv.baev-hover .framer-1eon9bq {
+    scale: 1.02;
+  }
+  .framer-pE5Vm.baev-hover[data-border]::after {
+    border-color: rgba(255,255,255,.3);
+  }
+}
+.baev-cursor {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147480000;
+  pointer-events: none;
+  white-space: nowrap;
+  width: max-content;
+  padding: 10px 16px;
+  border-radius: 100px;
+  color: #fff;
+  font-family: "Inter", "Inter Placeholder", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+  background: var(--token-f620a1ef-ace0-4fde-b30d-7c3d0cbe0a77, rgba(0,0,0,.5));
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 .602187px 2.047437px -1.166667px rgba(0,0,0,.12), 0 2.288533px 7.781013px -2.333333px rgba(0,0,0,.11), 0 10px 34px -3.5px rgba(0,0,0,.05);
+}
+.baev-cursor--contact {
+  width: 52px;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #fff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.baev-cursor-arrow {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+.baev-cursor--image {
+  width: 381px;
+  height: 276px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 3px;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.baev-cursor--image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+form.framer-hqhav0 button.framer-2LXrH {
+  pointer-events: none;
+}
+.baev-form-status {
+  margin: 0;
+  color: rgba(255,255,255,.7);
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.baev-form-status a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .framer-6PoLP.framer-1951d0q,
+  .framer-6PoLP .framer-hg5b6x,
+  .framer-Ng5E0 .framer-119v12n,
+  .framer-pquBv .framer-1eon9bq,
+  .framer-RYIBq .framer-1u1idt7 {
+    transition: none;
+  }
+  .framer-Ng5E0.baev-hover .framer-119v12n,
+  .framer-pquBv.baev-hover .framer-1eon9bq {
+    scale: 1;
+  }
+}
+
+/* Match the source's word and character boxes only in its scrubbed About headline. */
+.framer-PP9RZ .framer-18zrs4q .baev-scrub-word {
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+}
+.framer-PP9RZ .framer-18zrs4q .baev-scrub-char {
+  display: inline-block;
+  position: relative;
+}

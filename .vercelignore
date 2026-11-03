@@ -1,0 +1,11 @@
+.git
+.github
+evidence
+CHECKPOINT.md
+design-qa.md
+README.md
+scripts/*.py
+scripts/*.cjs
+__pycache__
+.env
+.env.*
